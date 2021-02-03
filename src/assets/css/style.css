@@ -1,0 +1,553 @@
+html,body{
+	margin:0;height:100% !important;
+	/*min-width:540px !important;*/
+
+}
+.nav{
+    /*primary vue material*/
+    /*background-color:#448aff;*/
+    /*accent vue material*/
+	/*background-color:#ff5252;*/
+    /*background:linear-gradient(to bottom, rgba(125, 38, 205,1) 10%, rgba(125,38,205,.8), rgba(125, 38, 205,1) 90%);*/
+    width:100%;
+    background:linear-gradient(to bottom, rgba(99, 0, 228,.8) 0%, rgba(99,0,228,1), rgba(99, 0, 228,.8) 100%);
+	padding:0;
+	position:relative;
+    /*mantenemos el z-index del componente header en 1 , ya que desde la opción
+    //pantalla completa del componente Collections genera error al linkear al MainPanel,
+    //al colocar z-index a 1 no permite acceder al ningún elemento del nav, el problema es
+    //que el cutpanel si necesita acceder*/
+	z-index:1;
+}
+.floatL{
+    float:left;
+}
+.floatR{
+    float:right;    
+}
+.session-panel-dialog{
+    background:rgba(0,0,0,.8) !important; 
+    z-index:110 !important;
+}
+.dialog-alert-email{
+    background:rgba(0,0,0,.8) !important; 
+    z-index:111 !important;
+}
+
+				/* MAIN PANEL */
+.back-main-panel{
+    /*asignar en javascript el min-width*/
+	min-width:170px;
+	width:600px;
+	margin:auto;
+	display:block;
+	position:relative;
+	text-align:initial;
+}
+.back-effect-panel{
+    margin:auto;
+    text-align:initial;
+}
+.back-main-panel label{
+    height:20px;
+    margin:0 auto;
+    color:white;
+    font-family:"ManiaExtendedC",ManiaExtendedC;
+}
+
+.back-main-panel label p{    
+    border-radius:10px;
+    padding:5px;
+    background-color:rgba(0,0,0,.8);
+    font-size:18px;
+}
+
+.md-button.fab_button_head {
+    
+}
+
+.div-main{
+	clear:left;	
+	width:600px;
+	margin:10px auto;
+	position:relative;
+	z-index:4;
+	border-radius:10px;
+}
+.main-panel {
+	/*width:600px;
+	position:relative;
+	z-index:4;
+	margin:auto;*/
+	/*background-color:red;
+	color:orange;*/
+}
+.main-img{
+	position:absolute;
+	z-index:2;
+    /*necesario para sobreescribir el height:auto que incorpora vue material*/
+	height:100% !important;
+	
+}
+.main-img-resize{
+    box-shadow:  0px 0px 1px 10px rgba(0,0,0,0.2);
+    border-radius:10px;
+
+}
+#canvas{
+	position:absolute;
+	z-index:3;
+}
+
+.free_resize_activated{
+    background-color:lightblue !important;
+}
+
+.no-selectable{
+	user-select:none;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+}
+
+						/* fin MAIN PANEL */
+						/* CUT PANEL */
+
+
+                        /*caja y cuadrante*/
+.back-box-panel{
+    width:100%;
+    height:100%;
+    position:absolute;
+    /* descontamos 40px del botón de recorte + 5px de margin-top para el botón, si no se queda muy pegado*/
+    /*margin:50px auto;*/ 
+    margin:5px auto;
+    /*padding-bottom:100px;*/
+    z-index:103;
+    
+    transition:all 2s ease-in-out;
+    
+    /*user-select:none;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;*/
+}
+#back-box-panel{
+    background:transparent;    
+    /*z-index:103;*/
+}
+.box-panel{
+	margin:auto;
+    margin-top:8px;
+    width:0px;
+    height:0px;
+    /*background-color:rgba(255,255,255.3);*/
+    z-index:105;
+    /*border:solid #b7ffc6;*/
+    position:relative;
+    user-select:none;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+
+    
+}
+#square-panel{
+    /*si se modifica el porcentaje revisar que en boxPanel y Square tengan el parseInt el width*/
+	width:30%;  
+  	height:30%;
+    /*el min-width funciona solo con right, con left se mueve el cuadro*/
+    min-width:50px;
+    min-height:50px;
+    /*min-width:128px;*/
+    /*el min-height funciona solo con bottom, con top se mueve el cuadro*/
+    /*min-height:128px;*/
+  	color:white;
+  	outline: 4px solid #b0b0b0;
+	z-index:105;
+	background-color:transparent;
+	/*padding:10px 12px;*/
+	
+	cursor:move;  
+	position:relative;
+	top:0px;left:0px;
+    box-sizing:border-box !important;
+
+}
+
+.box-square{
+    background-color:rgba(0,0,0,.5);
+    margin:auto;
+    overflow:hidden;
+    width:100%;height:100%;
+    z-index:104;
+    position:absolute;
+    pointer-events:none;
+}
+.box-square-effect{
+    background-color:rgba(0,0,0,.5);
+    margin:auto;
+    overflow:hidden;
+    width:100%;height:100%;
+    z-index:106;
+    position:absolute;
+    pointer-events:none;   
+}
+#box-square-effect{
+    display:none;
+    position:absolute;
+    transition:all 5s linear;
+}
+
+.box-img{
+    /*necesario max-width para sobreescribir el que trae vue-material por defecto, si no no realiza el efecto*/    
+    
+    /*max-width:1280px;*/
+    
+	z-index:104;pointer-events:none;/*width:100%;height:100%;*/
+    user-select:none;
+    -webkit-user-select:none;    
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-drag:none;
+    -webkit-user-drag:none;
+    -moz-user-drag:none;
+    -ms-user-drag:none;
+    
+
+}
+#box-img-main{
+    margin:0;position:relative;/*necesario abolute para clip*/
+}
+.box-img-effect{
+    /*necesario max-width para sobreescribir el que trae vue-material por defecto, si no no realiza el efecto*/    
+    
+    /*max-width:1280px;*/
+    
+    z-index:104;pointer-events:none;/*width:100%;height:100%;*/
+    user-select:none;
+    -webkit-user-select:none;    
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-drag:none;
+    -webkit-user-drag:none;
+    -moz-user-drag:none;
+    -ms-user-drag:none;
+    
+
+}
+#box-square-clone{
+    overflow:hidden;
+    z-index:110;
+    transition:all 1s linear;
+}
+
+                /*panel de imagen */
+.back-cut-panel{
+	width:100%;
+	height:100%;			
+	z-index:101;
+
+	margin:126px auto; /*50 + 76 del elemento nav, ya que el back-cut-panel es un dialog*/
+}
+
+#back-cut-panel{
+	height:auto;
+    z-index:102;
+    position:absolute;
+    /*necesario auto en bottom para sobreescribir los estilos del md-dialog*/
+    top:0%;left:0%;right:auto;bottom:auto;
+
+}
+#back-cut-panel .md-dialog-container{
+    background:transparent ;
+    box-shadow: none;
+}
+.cut-panel{
+	height:100%;
+    position:relative;
+    margin:auto;
+    z-index:102;
+    
+    
+    text-align: center;
+    background:transparent;
+
+}
+
+.panel-img{
+	
+}
+
+						/* fin CUT PANEL */
+
+
+                        /* collections   */
+
+.md-dialog.fullImage{
+    background-color:rgba(0,0,0,.7);
+    z-index:7;
+
+}
+.md-dialog.fullImage:first-child{
+    
+}
+
+.md-dialog.confirmEffect{
+    background:transparent;
+}
+.md-overlay{
+    background:transparent;
+}
+
+
+                        /* fin collections   */
+    								/* handle resize */
+
+.handle-resize{
+	background:radial-gradient(white,#454545);
+	border:2px dashed white;
+	width:40px;
+	height:40px;
+	position:absolute;
+	border-radius:50%;
+	z-index:999;
+}
+.handle-top
+{
+    top:-14px;
+}
+.handle-bottom
+{    
+    bottom:-14px;
+}
+.handle-right
+{    
+    right:-14px;    
+}
+.handle-left
+{    
+    left:-14px;    
+}
+.cursor-handle-resize
+{
+    cursor:nwse-resize;
+}
+
+						/* fin handle resize */
+						/*handle */
+
+    /*handles*/
+.handle
+{
+    /*background-color: #000;*/
+    /*background:radial-gradient(white,#1c1c1c);*/
+    
+    position:absolute;
+    
+    border:none;
+    width: 50px;
+    height: 20px;
+    z-index: 110;
+    user-select:none;
+    
+    /*border-radius:50%;*/
+    
+    
+}
+.handle_imgTop
+{
+    width:100%;height:100%;
+    background-image:url("../img/boton_handle.png");
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:80%;
+    transform:rotate(0deg);
+    
+    
+}
+.handle_imgTop:active
+{
+    background-image:url("../img/boton_handle_active.png");
+    
+    
+}
+.handle_imgRight
+{
+    width:100%;height:100%;
+    background-image:url("../img/boton_handle.png");
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:80%;
+    transform:rotate(90deg);
+}
+.handle_imgRight:active
+{
+    width:100%;height:80%;
+    background-image:url("../img/boton_handle_active.png");
+    
+}
+.handle_imgLeft
+{
+    width:100%;height:100%;
+    background-image:url("../img/boton_handle.png");
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:80%;
+    transform:rotate(270deg);
+    padding:0;margin:0;
+}
+.handle_imgLeft:active
+{
+    
+    background-image:url("../img/boton_handle_active.png");
+    
+}
+.handle_imgBottom
+{
+    width:100%;height:100%;
+    background-image:url("../img/boton_handle.png");
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:80%;
+    transform:rotate(180deg);
+}
+.handle_imgBottom:active
+{
+    
+    background-image:url("../img/boton_handle_active.png");
+    
+}
+
+.handle2
+{
+    background:radial-gradient(white,#454545);
+    border:2px dashed white;
+    width: 40px;
+    height: 40px;    
+    position:absolute;
+    border-radius:50%;
+    z-index:999;
+}
+.handle_top
+{
+    top:-14px;
+}
+.handle_bottom
+{    
+    bottom:-14px;
+}
+.handle_right
+{    
+    right:-14px;    
+}
+.handle_left
+{    
+    left:-14px;    
+}
+.cursor1
+{
+    cursor:nwse-resize;
+}
+.cursor2
+{
+    cursor:nesw-resize;
+}
+.left
+{
+    cursor:ew-resize;
+    left:-35px;
+    top:50%;
+    
+    transform:translate(0,-50%);
+    
+}
+
+.right
+{
+    cursor:ew-resize;
+    right:-35px;
+    top:50%;
+    
+    transform:translate(0,-50%);
+}
+.bottom
+{
+    transform:rotate(180deg);
+    cursor:ns-resize;
+    bottom:-20px;    
+       left:50%;
+    transform:translate(-50%,0);
+    
+}
+.top
+{
+    cursor:ns-resize;
+    top:-20px;
+    left:50%;        
+    transform:translate(-50%,0%); 
+}
+
+    /*fin handles*/
+
+
+    /*efecto parpadeo */
+/*codigo para efecto parpadeo*/
+.animated {
+ -webkit-animation-duration: 2s;
+ animation-duration: 2s;
+ -webkit-animation-fill-mode: both;
+ animation-fill-mode: both;
+}
+@-webkit-keyframes flash {
+    0%, 50%, 100% {
+        opacity: 1;
+    }
+    25%, 75% {
+        opacity: 0;
+    }
+}
+
+@keyframes flash {
+    0%, 50%, 100% {
+        opacity: 1;
+    }
+    25%, 75% {
+    opacity: 0;
+    }
+}
+.flash {
+ -webkit-animation-name: flash;
+ animation-name: flash;
+}
+
+    /*fin efecto parpadeo */
+
+    /* efecto borroso (gausiano) en box-panel*/
+
+
+ /*support backdrop-filter */                
+@supports ( (-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px)) ) 
+{
+  .effect 
+  {
+    -webkit-backdrop-filter: blur(3px);
+            backdrop-filter: blur(3px);
+            background-color:rgba(255,255,255,.3);
+  }
+}
+/*revisar*/
+
+/* no support backdrop-filter */
+
+@supports ( not ( (-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px)) ) ) {
+  /*añadimos #cut-panel en lugar de .cut-panel para poder aprovechar el .cut-panel para
+  el caso de que la imagen sea menor a 100px menor al cuadrado de recorte*/
+  #cut-panel 
+  {
+    -webkit-filter: grayscale(100%) blur(3px);
+            filter: grayscale(100%) blur(3px);
+  }
+}
+
+
