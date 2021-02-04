@@ -1,6 +1,7 @@
 <template>
 	<div >		
-		<div class="back-effect-panel" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >
+		<!--<div class="back-effect-panel" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >-->
+		<div class="" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >
 			<div style="margin:auto;text-align:center" >	
 				<md-menu class="" md-align-trigger>
 					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger title="Filtros">
@@ -140,9 +141,13 @@
 						</md-menu-item>
 						
 					</md-menu-content>
-				</md-menu>	
+				</md-menu>
+				<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="setHeightCanvas()">
+					<md-icon class="">adjust</md-icon>
+				</md-button>
+
 				<!--<div style="margin:auto;text-align:center" >-->
-				</div>	
+			</div>	
 					
 					
 					<!--
@@ -183,16 +188,136 @@
 				<div style="margin:auto;text-align:center" v-if="resizeSwitch">
 					
 				</div>-->
-				<transition name="fade">
-				<div id="div-main" class="div-main no-selectable" :style="{width:ima.width+'px',height:ima.height+'px'}" ref="divmain" v-if="imgTrans">
-					<div class="main-panel">
-						<canvas id="canvas" class="no-selectable" :width="ima.width" :height="ima.height" ></canvas>
+		<!-- transition muy parecido al panel principal
+				<transition name="fade" >
+					<div id="div-main" class="div-main no-selectable" :style="{width:ima.width+'px',height:ima.height+'px'}" ref="divmain" v-if="imgTrans">
+						<div class="main-panel">
+							<canvas id="canvas" class="no-selectable" :width="ima.width" :height="ima.height" ></canvas>
 
-						<img :src="ima.name" id="image" class="main-img no-selectable" :width="ima.width" :height="ima.height" :class="{'main-img-resize':resizeSwitch}" ref="image"/>						
+							<img :src="ima.name" id="image" class="main-img no-selectable" :width="ima.width" :height="ima.height" :class="{'main-img-resize':resizeSwitch}" ref="image" style="position:relative"/>						
+						</div>					
 					</div>
-				</div>
 				</transition>
-			
+		-->
+				
+
+				<!--<transition name="fade">
+					
+						<div id="" class="" style="width:100%;margin:20px auto;height:100%;display:flex"  v-if="imgTrans">				<div style="width:60%;margin:auto">
+								<canvas id="canvas" class=""  :style="{'margin':'auto'}" :width="imaEffect.width" :height="imaEffect.height" ref="canvas"></canvas>
+
+								<img :src="ima.name" id="image" class="" ref="image" style="width:100%;height:100%;max-width:600px"/>
+							</div>
+							<div class="sidebar" style="margin:10px auto;width:40%;border:black 1px solid;padding:10px;display:flex">
+								<div style="width:100%">
+								
+									<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger >
+										<md-icon class="">adjust</md-icon>
+									</md-button>
+								</div>
+								<div style="width:100%">
+									<md-speed-dial md-event="click" md-direction="bottom">
+										<md-speed-dial-target class="md-icon-button">
+											<md-icon class="md-morph-initial">add</md-icon>
+											<md-icon class="md-morph-final">edit</md-icon>
+										</md-speed-dial-target>
+
+										<md-speed-dial-content>
+											<md-button class="md-icon-button">
+												<md-icon>note</md-icon>
+											</md-button>
+
+											<md-button class="md-icon-button">
+												<md-icon>event</md-icon>
+											</md-button>
+										</md-speed-dial-content>
+									</md-speed-dial>
+									<md-speed-dial md-event="click" md-direction="bottom">
+										<md-speed-dial-target class="md-icon-button">
+											<md-icon class="md-morph-initial">add</md-icon>
+											<md-icon class="md-morph-final">edit</md-icon>
+										</md-speed-dial-target>
+
+										<md-speed-dial-content>
+											<md-button class="md-icon-button">
+												<md-icon>note</md-icon>
+											</md-button>
+
+											<md-button class="md-icon-button">
+												<md-icon>event</md-icon>
+											</md-button>
+										</md-speed-dial-content>
+									</md-speed-dial>
+								</div>
+							</div>
+							
+						</div>
+						
+					
+				</transition>-->
+
+<transition name="fade">
+	<div class="md-layout md-gutter" style="margin-top:30px">		
+			<div class="md-layout-item md-large-size-15 md-medium-size-10 md-small-size-5">
+			</div>
+
+			<div id="" class="md-layout-item"   v-if="imgTrans" style="">				
+
+					<canvas id="canvas" class=""  :style="{'margin':'auto'}" :width="imaEffect.width" :height="imaEffect.height" ref="canvas"></canvas>
+
+					<img :src="ima.name" id="image" class="" ref="image" style="min-width:200px"/>
+			</div>
+		
+			<div class="md-layout-item md-layout md-gutter" >
+					<div class="md-layout-item md-large-size-100" style="">
+						
+							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger >
+								<md-icon class="">adjust</md-icon>
+							</md-button>
+					</div>
+					<div class="md-layout-item md-large-size-100">
+							<md-speed-dial md-event="click" md-direction="bottom">
+								<md-speed-dial-target class="md-icon-button">
+									<md-icon class="md-morph-initial">add</md-icon>
+									<md-icon class="md-morph-final">edit</md-icon>
+								</md-speed-dial-target>
+
+								<md-speed-dial-content>
+									<md-button class="md-icon-button">
+										<md-icon>note</md-icon>
+									</md-button>
+
+									<md-button class="md-icon-button">
+										<md-icon>event</md-icon>
+									</md-button>
+								</md-speed-dial-content>
+							</md-speed-dial>
+							<md-speed-dial md-event="click" md-direction="bottom">
+								<md-speed-dial-target class="md-icon-button">
+									<md-icon class="md-morph-initial">add</md-icon>
+									<md-icon class="md-morph-final">edit</md-icon>
+								</md-speed-dial-target>
+
+								<md-speed-dial-content>
+									<md-button class="md-icon-button">
+										<md-icon>note</md-icon>
+									</md-button>
+
+									<md-button class="md-icon-button">
+										<md-icon>event</md-icon>
+									</md-button>
+								</md-speed-dial-content>
+							</md-speed-dial>
+					</div>
+			</div>
+
+			<div class=" md-layout-item md-large-size-15 md-medium-size-10 md-small-size-5">
+
+			</div>
+		
+	</div>	
+</transition>
+
 				<md-dialog-confirm class="confirmEffect"
 				:md-active.sync="dialogConfirmActive"
 				:md-title = "dialog_selected"
@@ -214,7 +339,7 @@
 				md-confirm-text="OK" />
 			-->
 				
-			</div>
+		</div>
 		<md-dialog :md-active.sync="dialogImage" class="effect_dialog" >
 			<img :src="url+'get-image/'+tmpImage.random_name" v-if="tmpImage" :width="ima.width" :height="ima.height"/>
 			<!-- colocar una transición o un interruptor para aparezca un poquito
@@ -245,9 +370,12 @@ export default {
 	props:['ima'],
 	mixins:[methodsMixin],
 	data(){
-		return{
+		return{			
 			url:Global.url,
-			image:null,
+			imaEffect:{
+				width:null,
+				height:null
+			},
 			resizeSwitch:false,
 			imgTrans:false,
 			dialogConfirmActive:false,
@@ -281,6 +409,9 @@ export default {
 
 		}
 	},
+	created(){
+		window.addEventListener("resize", this.updateSizeCanvas);
+	},
 	mounted(){
 		if(this.ima){
 			console.log("llega this.ima");
@@ -297,6 +428,27 @@ export default {
 			console.log(this.ima.widthDefault);
 			console.log(sizes);	
 		}
+		//actualizamos canvas con setTimeout, ya que estamos recuperando el height
+		//del template con clientHeight y no se puede obtener antes pk el valor 
+		//está establecido en porcentaje
+		setTimeout(() => {
+				this.updateSizeCanvas();
+		},100)
+		
+		
+		
+		
+	},
+	
+	updated(){
+		
+	/*
+		let width=this.$refs.image.clientWidth;
+		let height=this.$refs;		
+		console.log(width);
+		console.log(height);		
+		this.$refs.canvas.width=width;
+	*/
 		
 	},
 	destroyed(){
@@ -306,7 +458,17 @@ export default {
 		}
 		
 	},
-	methods:{
+	methods:{		
+		updateSizeCanvas(){
+			this.deleteDrawCanvas();
+			console.log(this.$refs.image.clientWidth);
+			
+			let width=this.$refs.image.clientWidth;
+			let height=this.$refs.image.clientHeight;
+			this.imaEffect.width=width;
+			this.imaEffect.height=height;
+			
+		},		
 		cancelLoadImage(){
 			//pasamos a null para que se muestre el spinner
 			this.tmpImage=null;
@@ -425,7 +587,9 @@ export default {
 					this.tmpImage=null;
 			});
 		},
+		//sustituido, método está destinado al ancho y alto del panel principal
 		//función poligono dibuja un canvas en forma de polígono
+	/*
 		poligono(sides)
 		{  
 			if(this.polygonActivated==true){
@@ -456,6 +620,141 @@ export default {
 				else
 				{
 					radio=this.ima.height/2;
+				}	
+			}
+			
+			var canvas = document.getElementById("canvas");
+
+			if(canvas && canvas.getContext){
+				var ctx= canvas.getContext("2d");
+				if(ctx){
+					//ctx.fillStyle = "#6ab150";
+					//relleno
+					ctx.fillStyle = "rgba(0,0,0,.1)";
+					//ctx.strokeStyle="black";
+					//borde
+					ctx.strokeStyle="rgba(0,0,0)";
+					ctx.lineWidth=3;
+
+					//var X= canvas.width/2;
+					var X= 0;
+					//var Y= canvas.height/2;
+					var Y= 0;
+					var R= radio;
+					//el número de lados del polígono
+					var L=sides;
+
+					//en caso de circumferencia usamos el método arc(x,y,radio,0,2*Math.PI,false)            
+					if(L==0)
+					{                
+						ctx.translate(canvas.width/2,canvas.height/2);
+						ctx.rotate(3*Math.PI/2);
+						ctx.beginPath();
+						ctx.arc(X,Y,R,0,2*Math.PI,false);
+					}
+					//en caso de estrella 
+					else if(L==14)
+					{
+						ctx.fillStyle = "rgba(0,0,0,0.1)";
+						//en este caso seleccionamos el paso 3 y el lado 7 ya que coincide con el lado 14 al
+						//hacer el recorte con PHP
+						var paso =3;
+
+						var estrella=7/paso;
+						let rad=(2*Math.PI)/estrella;
+						ctx.translate(canvas.width/2,canvas.height/2);
+						ctx.rotate(3*Math.PI/2);
+						ctx.beginPath();
+						for(var i=0;i<7;i++)
+						{
+							const x=X+R*Math.cos(rad*i);
+							const y=Y+R*Math.sin(rad*i);
+							ctx.lineTo(x,y);
+						}
+						console.log("estrella");
+					}
+					else
+					{
+						//si L==6 el ángulo es de 2PI/6 o sea 60º
+						//let rad=(2*Math.PI)/L;
+						let rad=(2*Math.PI)/L;
+						//parte opcional (rotación del polígono)
+						//traslada el contexto en el centro del canvas
+						//para poder girar el contexto alrededor del centro
+						//ctx.translate(canvas.width/2,canvas.height/2);
+						ctx.translate(canvas.width/2,canvas.height/2);
+						//ctx.translate(canvas.height/2,canvas.width/2);
+						//gira el contexto unos 270deg
+						console.log("llega aui");				
+						if(L==4)
+							//si no se asigna nada o se asigna lo siguiente 		
+							//crea un cuadrado invertido
+							ctx.rotate(Math.PI/2);
+
+							//cuadrado centrado
+							//ctx.rotate(Math.PI/4);
+							//ctx.rotate(135*Math.PI/180);
+							//ctx.rotate(45*Math.PI/180)
+
+							//igual que cuadrado centrado
+							//ctx.rotate(3*Math.PI/4);
+						else
+							ctx.rotate(3*Math.PI/2);
+							//triángulo al revés
+							//ctx.rotate(2*Math.PI/4);
+
+						//dibuja el trazado
+						ctx.beginPath();
+						for(let i=0;i<L;i++)
+						{
+							const x=X+R*Math.cos(rad*i);
+							const y=Y+R*Math.sin(rad*i);
+							ctx.lineTo(x,y);
+							console.log(x+"->"+y);
+						}
+					}
+
+				ctx.closePath();
+				ctx.fill();
+				ctx.stroke();
+				}
+			}
+			else
+			{
+				console.log("No soporta canvas");return;
+			}
+		},
+	*/
+		poligono(sides)
+		{  
+			if(this.polygonActivated==true){
+				//elimina el dibujo canvas, por si existía uno anteriormente
+				this.deleteDrawCanvas();
+				console.log("llega a deleteDrawCanvas");			
+			}else{
+				this.polygonActivated=true;
+			}
+			this.polygonProp=sides;
+
+			
+			//elimina el atributo que se haya podido asignar, por si se ha seleccionado uno
+			//anteriormente
+			//deleteDataPolygon("menu3");
+
+			//var id=data;
+			//id.setAttribute("data-polygon",sides);
+			//var foto=document.getElementById("foto");
+			//deleteDataPolygon("menu3");
+			var radio;
+			//definimos el radio en función del ancho o el alto más corto
+			if(this.imaEffect){
+				if(this.imaEffect.width<=this.imaEffect.height)
+				{
+					radio =this.imaEffect.width/2;
+				}
+				else
+				{
+					radio=this.imaEffect.height/2;
 				}	
 			}
 			
@@ -604,7 +903,9 @@ export default {
 			var canvas = document.getElementById("canvas");
 			var ctx= canvas.getContext("2d");
 			ctx.beginPath();
-			canvas.width=this.ima.width; 
+			//cambiamos this.ima.width por el 
+			//canvas.width=this.ima.width; 
+			canvas.width=this.imaEffect.width;
 			//tb se puede usar el método clearrect pero no funciona en este caso
 		},
 
@@ -637,10 +938,9 @@ export default {
 					//console.log(email);		
 				}
 			}
-
-			
 		}
-	}
+	},
+
 }
 </script>
 <style>
@@ -703,5 +1003,6 @@ export default {
 	background:transparent !important;
 	box-shadow:none;
 }
+
 
 </style>
