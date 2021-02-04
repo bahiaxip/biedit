@@ -7,7 +7,7 @@
 					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger title="Filtros">
 						<md-icon class="">adjust</md-icon>
 					</md-button>
-					<md-menu-content class="menu_filter" :style="{'max-height':ima.height+'px'}">
+					<md-menu-content class="menu_filter" :style="{'max-height':imaEffect.height+'px'}">
 						<md-menu-item @click="filter('none')" title="Desactivar filtro">
 							<md-icon class="">clear</md-icon>						
 						</md-menu-item>
@@ -38,7 +38,7 @@
 					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger title="Formas">
 						<md-icon class="">exposure</md-icon>
 					</md-button>
-					<md-menu-content class="menu_filter" :style="{'max-height':ima.height+'px'}">					
+					<md-menu-content class="menu_filter" :style="{'max-height':imaEffect.height+'px'}">					
 						<md-menu-item title="Desactivar forma" @click="deleteDrawCanvas()">
 							<md-icon>clear</md-icon>	
 						</md-menu-item>
@@ -86,7 +86,7 @@
 					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger>
 						<md-icon class="">adjust</md-icon>
 					</md-button>
-					<md-menu-content class="menu_filter" :style="{'max-height':ima.height+'px'}">
+					<md-menu-content class="menu_filter" :style="{'max-height':imaEffect.height+'px'}">
 					<!--
 						<md-menu-item>
 							<md-icon></md-icon>
@@ -101,7 +101,7 @@
 						<md-menu-item>Redondear</md-menu-item>
 						<md-menu-item>Onda</md-menu-item>
 					-->
-						<md-menu-item title="Polaroid" @click="setEffect('polaroid')">
+						<md-menu-item title="Polaroid" @click="roundCorners()">
 							<md-icon md-src="img/effect/polaroid.svg"></md-icon>	
 						</md-menu-item>
 						<md-menu-item title="Reflejo Vertical" @click="setEffect('vertical')">
@@ -258,24 +258,43 @@
 
 <transition name="fade">
 	<div class="md-layout md-gutter" style="margin-top:30px">		
-			<div class="md-layout-item md-large-size-15 md-medium-size-10 md-small-size-5">
+			<div class="md-layout-item md-large-size-15 md-medium-size-10 md-small-size-5" >
 			</div>
 
-			<div id="" class="md-layout-item"   v-if="imgTrans" style="">				
+			<div id="" class="md-layout-item"   v-if="imgTrans" style="" ref="div_effect_image">				
 
 					<canvas id="canvas" class=""  :style="{'margin':'auto'}" :width="imaEffect.width" :height="imaEffect.height" ref="canvas"></canvas>
 
-					<img :src="ima.name" id="image" class="" ref="image" style="min-width:200px"/>
+					<img :src="ima.name" id="image" class="" ref="image" style="min-width:200px;"/>
 			</div>
-		
+			<!--botones de sidebar -->
 			<div class="md-layout-item md-layout md-gutter" >
-					<div class="md-layout-item md-large-size-100" style="">
-						
-							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger >
-								<md-icon class="">adjust</md-icon>
+					<!--botones de rotación -->
+					<div class="md-layout-item md-large-size-50 md-medium-size-50 md-small-size-100" style="">
+							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="rotate('left')">
+								<md-icon class="">rotate_left</md-icon>
+							</md-button>							
+							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="rotate('top_bottom')">
+								<md-icon class="">loop</md-icon>
+							</md-button>
+							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="rotate('right')">
+								<md-icon class="">rotate_right</md-icon>
+							</md-button>
+							<div style="margin-top:10px;display:block">
+								<label for="range_compress">valor</label>
+								<div style="clear:left"></div>
+								<input name="range_compress" type="range" min="0" max="100"/>
+							</div>
+							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="reflex('vertical')">
+								<md-icon class="">loop</md-icon>
+							</md-button>
+							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="reflex('horizontal')">
+								<md-icon class="">loop</md-icon>
 							</md-button>
 					</div>
-					<div class="md-layout-item md-large-size-100">
+					<!-- botones de reflejo horizontal y vertical -->
+
+					<div class="md-layout-item md-large-size-50 md-medium-size-50 md-small-size-100">
 							<md-speed-dial md-event="click" md-direction="bottom">
 								<md-speed-dial-target class="md-icon-button">
 									<md-icon class="md-morph-initial">add</md-icon>
@@ -434,14 +453,8 @@ export default {
 		setTimeout(() => {
 				this.updateSizeCanvas();
 		},100)
-		
-		
-		
-		
 	},
-	
-	updated(){
-		
+	updated(){		
 	/*
 		let width=this.$refs.image.clientWidth;
 		let height=this.$refs;		
@@ -449,16 +462,82 @@ export default {
 		console.log(height);		
 		this.$refs.canvas.width=width;
 	*/
-		
 	},
 	destroyed(){
 		//detectamos si existe un filtro seleccionado antes de salir
 		if(this.filterActivated){
 			alert("Desea descartar el filtro seleccionado?");
 		}
-		
 	},
-	methods:{		
+	methods:{
+		//rotación con transform de todo el div e intercambiando el width por el 
+		//height del div si la rotación es lateral, para que no se solape
+		rotate(side){
+			let d=this.$refs.div_effect_image.style;
+			if(side=="left" || side=="right"){
+				if(side=="left"){
+					(d.transform=="rotate(270deg)") ? 
+						d.transform="rotate(0deg)":d.transform="rotate(270deg)";
+					
+				}else if(side=="right"){
+					(d.transform=="rotate(90deg)") ?
+						d.transform="rotate(0deg)": d.transform="rotate(90deg)";
+				}
+				d.width=this.imaEffect.height+"px";
+				d.height=this.imaEffect.width+"px";
+			}else{
+				(d.transform=="rotate(180deg)") ? 
+					d.transform="rotate(0deg)": d.transform="rotate(180deg)";
+				d.width=this.imaEffect.width+"px";
+				d.height=this.imaEffect.height+"px";
+			}			
+			
+		},
+		reflex(type){
+			let d=this.$refs.div_effect_image.style;
+			if(type=="vertical"){
+				(d.transform=="scaleY(-1)") ?
+					d.transform="scaleY(1)": d.transform="scaleY(-1)";
+			}else{
+				(d.transform=="scaleX(-1)") ?
+					d.transform="scaleX(1)":d.transform="scaleX(-1)";
+			}
+			
+			
+
+		},
+		roundCorners(){
+			let canvas=this.$refs.canvas;
+
+			if(canvas && canvas.getContext){
+				var ctx= canvas.getContext("2d");
+				if(ctx){
+					//ctx.fillStyle = "#6ab150";
+					//relleno
+					ctx.fillStyle = "rgba(0,0,0,.1)";
+					//ctx.strokeStyle="black";
+					//borde
+					ctx.strokeStyle="rgba(0,0,0)";
+					ctx.lineWidth=3;
+					//radio
+					var r=10;
+					//coordenadas del rectángulo
+					let x0=50, y0=50,
+						x1=200,y1=50,
+						x2=200,y2=150,
+						x3=50,y3=150;
+					ctx.beginPath();
+					ctx.moveTo(x3,y3-r);
+					ctx.arcTo(x0,y0,x1,y1,r);
+					ctx.arcTo(x1,y1,x2,y2,r);
+					ctx.arcTo(x2,y2,x3,y3,r);
+					ctx.arcTo(x3,y3,x0,y0,r);
+					ctx.closePath();
+					ctx.fill();
+					ctx.stroke();
+				}
+			}
+		},
 		updateSizeCanvas(){
 			this.deleteDrawCanvas();
 			console.log(this.$refs.image.clientWidth);
@@ -925,6 +1004,7 @@ export default {
 						email:email
 					};
 					axios.post(this.url+'effect',data,headers).then(res=>{
+						console.log(res);
 						if(res.data.image){
 							this.dialogImage=true;
 							this.tmpImage=res.data.image;
