@@ -2,10 +2,19 @@
 	<div >		
 		<!--<div class="back-effect-panel" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >-->
 		<div class="" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >
-			<div style="margin:auto;text-align:center" >	
+			<div style="margin:auto;text-align:center" >
+				<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="rotate('left')" title="Rotación Izquierda">
+					<md-icon class="">rotate_left</md-icon>
+				</md-button>
+				<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="rotate('top_bottom')" title="Rotación Vertical">
+					<md-icon class="">loop</md-icon>
+				</md-button>
+				<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="rotate('right')" title="Rotación Derecha">
+					<md-icon class="">rotate_right</md-icon>
+				</md-button>
 				<md-menu class="" md-align-trigger>
 					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger title="Filtros">
-						<md-icon class="">adjust</md-icon>
+						<md-icon class="">settings_brightness</md-icon>
 					</md-button>
 					<md-menu-content class="menu_filter" :style="{'max-height':imaEffect.height+'px'}">
 						<md-menu-item @click="filter('none')" title="Desactivar filtro">
@@ -34,7 +43,7 @@
 						
 					</md-menu-content>
 				</md-menu>
-				<md-menu class=" " md-align-trigger style="margin-left:40px">
+				<md-menu class=" " md-align-trigger style="margin-left:10px">
 					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger title="Formas">
 						<md-icon class="">exposure</md-icon>
 					</md-button>
@@ -82,7 +91,7 @@
 						
 					</md-menu-content>
 				</md-menu>
-				<md-menu class="" md-align-trigger style="margin-left:40px">
+				<md-menu class="" md-align-trigger style="margin-left:10px">
 					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger>
 						<md-icon class="">adjust</md-icon>
 					</md-button>
@@ -101,7 +110,7 @@
 						<md-menu-item>Redondear</md-menu-item>
 						<md-menu-item>Onda</md-menu-item>
 					-->
-						<md-menu-item title="Polaroid" @click="roundCorners()">
+						<md-menu-item title="Polaroid" @click="setEffect('polaroid')">
 							<md-icon md-src="img/effect/polaroid.svg"></md-icon>	
 						</md-menu-item>
 						<md-menu-item title="Reflejo Vertical" @click="setEffect('vertical')">
@@ -142,10 +151,18 @@
 						
 					</md-menu-content>
 				</md-menu>
-				<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="setHeightCanvas()">
+				<!--<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="setHeightCanvas()">
 					<md-icon class="">adjust</md-icon>
+				</md-button>-->
+
+
+				<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="reflex('vertical')" title="Reflejo Vertical">
+					<md-icon class="">swap_vert</md-icon>
 				</md-button>
 
+				<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="reflex('horizontal')" title="Reflejo Horizontal">
+					<md-icon class="">swap_horiz</md-icon>
+				</md-button>
 				<!--<div style="margin:auto;text-align:center" >-->
 			</div>	
 					
@@ -261,36 +278,72 @@
 			<div class="md-layout-item md-large-size-15 md-medium-size-10 md-small-size-5" >
 			</div>
 
-			<div id="" class="md-layout-item"   v-if="imgTrans" style="" ref="div_effect_image">				
+			<div  class="md-layout-item div_effect_image"   v-if="imgTrans" :style="{'text-align':'initial','width':imaEffect.width+'px','height':imaEffect.height+'px'}" ref="div_effect_image">				
 
 					<canvas id="canvas" class=""  :style="{'margin':'auto'}" :width="imaEffect.width" :height="imaEffect.height" ref="canvas"></canvas>
-
-					<img :src="ima.name" id="image" class="" ref="image" style="min-width:200px;"/>
+					<div class="image_effect" :style="{'display':'block','backgroundImage':'url('+ima.name+')','width':imaEffect.width+'px','height':imaEffect.height+'px','position':'relative','background-size':'100%','background-repeat':'no-repeat','background-position':'center'}" ref="image_effect">
+						
+					</div>
+					<!-- mantenemos la imagen para obtener las medidas, ya que el md-layout redimensiona el elemento img pero no el elemento div aunque tenga una imagen incrustada con url en los estilos CSS-->
+					<img :src="ima.name" id="image" class="" ref="image" style="min-width:200px;opacity:0"/>
+					
 			</div>
 			<!--botones de sidebar -->
 			<div class="md-layout-item md-layout md-gutter" >
 					<!--botones de rotación -->
 					<div class="md-layout-item md-large-size-50 md-medium-size-50 md-small-size-100" style="">
-							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="rotate('left')">
-								<md-icon class="">rotate_left</md-icon>
-							</md-button>							
-							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="rotate('top_bottom')">
-								<md-icon class="">loop</md-icon>
-							</md-button>
-							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="rotate('right')">
-								<md-icon class="">rotate_right</md-icon>
-							</md-button>
-							<div style="margin-top:10px;display:block">
-								<label for="range_compress">valor</label>
-								<div style="clear:left"></div>
-								<input name="range_compress" type="range" min="0" max="100"/>
-							</div>
 							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="reflex('vertical')">
-								<md-icon class="">loop</md-icon>
+								<md-icon class="">swap_vert</md-icon>
 							</md-button>
 							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="reflex('horizontal')">
+								<md-icon class="">swap_horiz</md-icon>
+							</md-button>
+							<div style="clear:left"></div>
+							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="rangeTexturizeActive=true">
+								<md-icon class="">adjust</md-icon>
+							</md-button>							
+							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="testRangeCompress()">
 								<md-icon class="">loop</md-icon>
 							</md-button>
+							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="testRangeTexturize()">
+								<md-icon class="">rotate_right</md-icon>
+							</md-button>
+						<!-- range compression -->
+							<div style="margin-top:10px;display:block" v-if="rangeCompressActive">
+
+								<label for="range_compress" style="color:blue;font-weight:bold">{{rangeCompress}}</label>
+								<div style="clear:left"></div>
+								<!--detectar si es png o jpg para mostrar minimo y máximo distinto-->
+								<input name="range_compress" type="range" min="1" max="100" v-model="rangeCompress" v-if="this.ext=='jpg'"/>
+								<input name="range_compress" type="range" min="0" max="4" v-model="rangeCompress" v-if="this.ext=='png'" />
+
+								<div style="clear:left"></div>
+
+								<!--<md-button class="md-icon-button md-raised md-dense md-accent"  md-menu-trigger @click="compress(0)">
+									<md-icon class="">cancel</md-icon>
+								</md-button>-->
+
+								<md-button class="md-icon-button md-raised md-dense md-primary"  md-menu-trigger @click="setCompress(rangeCompress)">
+									<md-icon class="">check_circle_outline</md-icon>
+								</md-button>
+							</div>
+						<!-- range texturize -->
+							<div style="margin-top:10px;display:block" v-if="rangeTexturizeActive">
+
+								<label for="range_texturize" style="color:blue;font-weight:bold">{{'x'+rangeTexturize}}</label>
+								<div style="clear:left"></div>
+								<input name="range_texturize" type="range" min="1" max="10" v-model="rangeTexturize" @change="texturize(rangeTexturize)"/>
+
+								<div style="clear:left"></div>
+
+								<md-button class="md-icon-button md-raised md-dense md-accent"  md-menu-trigger @click="texturize(0)">
+									<md-icon class="">cancel</md-icon>
+								</md-button>
+
+								<md-button class="md-icon-button md-raised md-dense md-primary"  md-menu-trigger @click="texturize(rangeTexturize)">
+									<md-icon class="">check_circle_outline</md-icon>
+								</md-button>
+							</div>
 					</div>
 					<!-- botones de reflejo horizontal y vertical -->
 
@@ -395,6 +448,7 @@ export default {
 				width:null,
 				height:null
 			},
+			ext:null,
 			resizeSwitch:false,
 			imgTrans:false,
 			dialogConfirmActive:false,
@@ -425,6 +479,13 @@ export default {
 			dialogImage:false,
 			tmpImage:null,
 			displayLoading:false,
+			rangeTexturizeActive:false,
+			rangeTexturize:1,
+			texturizeActivated:false,
+			rotateActivated:false,
+			rangeCompressActive:false,
+			rangeCompress:1,
+
 
 		}
 	},
@@ -433,28 +494,52 @@ export default {
 	},
 	mounted(){
 		if(this.ima){
-			console.log("llega this.ima");
+			console.log("llega this.ima: ",this.ima);
 		}
 
 		//error al establecer width, height y problemas con
 		if(this.ima && this.ima.width){
 			console.log("llega this.ima y this.ima.width");	
 			console.log("mounted: ",this.ima);
+			//activación de efecto transición
 			this.imgTrans=true;
+	
+	//anulado, esto no hace nada, se mantienen las medidas por el md-layout
+			
+			//obtenemos las medidas
+			/*		
 			let sizes=this.setSizeToMainPanel(this.ima.widthInitial,this.ima.heightInitial,this.minWidthHeight,this.ima.widthDefault);
 			this.ima.width=sizes.width;
 			this.ima.height=sizes.height;
 			console.log(this.ima.widthDefault);
 			console.log(sizes);	
+			console.log("thisima2: ",this.ima);
+			*/
 		}
-		//actualizamos canvas con setTimeout, ya que estamos recuperando el height
-		//del template con clientHeight y no se puede obtener antes pk el valor 
-		//está establecido en porcentaje
+		//actualizamos canvas y el div con setTimeout, ya que estamos recuperando el 
+		//width y el height del template una vez obtenido por la redimensión del 
+		//md-layout y no se puede obtener hasta que no se carga la vista, por ello se encierra en un setTimeout
 		setTimeout(() => {
 				this.updateSizeCanvas();
 		},100)
 	},
-	updated(){		
+	updated(){
+		//asignamos en la variable this.ext la extensión de la imagen para mostrar un 
+		//tipo de input (range) u otro.
+		if(this.ima.src){
+			let ext=this.ima.src.split(".").pop();			
+			console.log("desde updated: ",ext)
+			if(ext.toLowerCase()=="png")
+				ext="png";
+			else if(ext.toLowerCase()=="gif")
+				ext="gif";
+			else
+				ext="jpg";
+			
+			this.ext=ext;
+		}
+		console.log(this.ext);
+		
 	/*
 		let width=this.$refs.image.clientWidth;
 		let height=this.$refs;		
@@ -469,28 +554,210 @@ export default {
 			alert("Desea descartar el filtro seleccionado?");
 		}
 	},
-	methods:{
+	methods:{		
+		//mostrar/ocultar input range de texturize
+		testRangeTexturize(){
+			if(this.rangeCompressActive)
+				this.rangeCompressActive=false;
+			if(this.rangeTexturizeActive){
+				this.rangeTexturizeActive=false;
+				console.log(this.rangeTexturize);
+			}else{
+				this.rangeTexturizeActive=true;
+			}
+		},
+		testRangeCompress(){
+			if(this.rangeTexturizeActive)
+				this.rangeTexturizeActive=false;
+			if(this.rangeCompressActive){
+				this.rangeCompressActive=false;
+				//console.log(this.rangeTexturize);
+			}else{
+				this.rangeCompressActive=true;
+			}
+		},
+
+		//crea un efecto de textura 
+		//oculta el image y genera un background con la imagen, el range 0,
+		//está destinado a la cancelación y vuelve al estado anterior.
+		texturize(range){
+			let imaStyle=this.$refs.image_effect.style;
+			//let imaStyle2=this.$refs.div_effect_image.style;
+						
+				//imaStyle.width=this.imaEffect.width+"px";
+				//imaStyle.height=this.imaEffect.height+"px";
+			
+			if(range==0 || range==1){				
+				imaStyle.backgroundSize="100%";
+				imaStyle.backgroundRepeat="no-repeat";
+				this.rangeTexturize=1;
+				
+			}else{
+				//asignamos las medidas de la repetición en función del rango que se 
+				//pasa como parámetro
+				let width=this.imaEffect.width/range;				
+				let height=this.getNewHeight(width,this.imaEffect.width,this.imaEffect.height);
+				console.log("imaEffectwidth: ",this.imaEffect.width);
+				console.log("imaEffectheight: ",this.imaEffect.height);
+		//anulado
+		/*
+				//si el efecto de rotación está activado y no es la rotación vertical, 
+				//es decir, está volcado para uno de los lados, se invierte el ancho x 
+				//el alto en el div padre y se establece un margin al div hijo
+				if(this.rotateActivated && imaStyle2.transform!="rotate(180deg)"){
+					imaStyle2.width=this.imaEffect.height+"px";
+					imaStyle2.height=this.imaEffect.width+"px";
+					imaStyle.width=this.imaEffect.width+"px";
+					imaStyle.height=this.imaEffect.height+"px";
+					//imaStyle.width=this.imaEffect.height+"px";
+					let newMargin=this.getMarginToCenter(this.imaEffect.width,this.imaEffect.height);
+
+					imaStyle.margin=newMargin+"px auto";
+					
+				}else{
+					//
+				}
+				//imaStyle2.width=this.imaEffect.width+"px";
+				//imaStyle2.height=this.imaEffect.width+"px";
+				//imaStyle.width=this.imaEffect.width+"px";
+				//imaStyle.height=this.imaEffect.height+"px";
+				//imaStyle.width=this.imaEffect.height+"px";
+				//let newMargin=this.getMarginToCenter(this.imaEffect.width,this.imaEffect.height);
+		*/
+				//heightBackground=this.getNewHeight(this.imaEffect.width,)
+					imaStyle.width=this.imaEffect.width+"px";
+					imaStyle.height=this.imaEffect.height+"px";
+				//imaStyle.margin="auto";
+				imaStyle.backgroundSize=width+"px "+height+"px";
+				//imaStyle.backgroundImage="url(http://localhost/biedit_backend/api/get-image/"+this.ima.src+")";
+				imaStyle.backgroundRepeat="repeat";
+				//this.$refs.image.style.opacity="0";	
+				//imaStyle.display="block";
+			}
+			(imaStyle.backgroundRepeat!="no-repeat") ? 
+				this.texturizeActivated=true:this.texturizeActivated=false;
+			console.log(this.texturizeActivated);
+			
+		},
+		setCompress(range){
+			if(this.testToken){
+				let apitoken=sessionStorage.getItem("biedit_apitoken");
+				let email=sessionStorage.getItem("biedit_email");
+				let data={
+					range:range,
+					email:email,
+					image:this.ima.src
+				}
+				let headers={
+					headers:{
+						Authorization: 'Bearer '+apitoken
+					}
+				}
+				axios.post(this.url+'compress',data,headers).then((res)=> {
+					console.log(res);
+					if(res.data.image){
+						this.dialogImage=true;						
+						this.tmpImage=res.data.image;
+						console.log("tmpImage2: ",this.tmpImage);
+						//console.log(this.tmpImage);
+						console.log("dialog_image",res.data.image);
+					}else{
+						//console.log(res.data.data);
+						console.log("hubo un error");
+					}
+				});
+				
+			}
+			
+			
+
+		},
+		testToken:()=>{
+			if(sessionStorage){
+				if(!sessionStorage.getItem("biedit_apitoken") || !sessionStorage.getItem("biedit_email"))
+					return "El usuario no ha iniciado sesión";
+				return true;
+				
+			}else{
+				return "El navegador no soporta sessionStorage";
+			}
+
+		},
+		cancelTexturize(){
+
+		},
+		//método devuelve el margin para centrar un elemento dentro de un div
+		getMarginToCenter(totalSize,sizeToCenter){
+			return (parseInt(totalSize)-sizeToCenter)/2;
+
+		},
 		//rotación con transform de todo el div e intercambiando el width por el 
 		//height del div si la rotación es lateral, para que no se solape
-		rotate(side){
-			let d=this.$refs.div_effect_image.style;
+		rotate(side){			
+			
+			//detectamos primero si existe algún efecto activado y si no ...
+
+			let d=this.$refs.image_effect.style;
+			let d2=this.$refs.div_effect_image.style;
+			
 			if(side=="left" || side=="right"){
-				if(side=="left"){
-					(d.transform=="rotate(270deg)") ? 
-						d.transform="rotate(0deg)":d.transform="rotate(270deg)";
-					
+				if(side=="left"){					
+					if(d2.transform=="rotate(270deg)"){						
+						d2.transform="rotate(0deg)";
+						//establecemos ancho y alto al div padre
+						d2.width=this.imaEffect.width+"px";
+						d2.height=this.imaEffect.height+"px";
+						//devolvemos el margin anterior
+						d.margin="auto";				
+						this.$refs.canvas.style.margin='auto';
+						
+					}else{
+						d2.transform="rotate(270deg)";
+						//establecemos ancho y alto inverso al div padre
+						d2.width=this.imaEffect.height+"px";
+						d2.height=this.imaEffect.width+"px";
+						
+						//obtenemos el margin de cada lado para centrar el canvas
+						let newMargin=this.getMarginToCenter(this.imaEffect.width,this.imaEffect.height);		console.log(newMargin);
+						d.margin=newMargin+"px auto";
+						this.$refs.canvas.style.margin=newMargin+'px auto';
+					}
 				}else if(side=="right"){
-					(d.transform=="rotate(90deg)") ?
-						d.transform="rotate(0deg)": d.transform="rotate(90deg)";
-				}
-				d.width=this.imaEffect.height+"px";
-				d.height=this.imaEffect.width+"px";
+					if(d2.transform=="rotate(90deg)"){
+						d2.transform="rotate(0deg)";
+						//devolvemos el ancho y alto del div padre
+						d2.width=this.imaEffect.width+"px";
+						d2.height=this.imaEffect.height+"px";
+						d.margin="auto";
+						//devolvemos el margin anterior						
+						this.$refs.canvas.style.margin='auto';
+					}else{
+						d2.transform="rotate(90deg)";
+						//establecemos ancho y alto inverso al div padre
+						d2.width=this.imaEffect.height+"px";
+						d2.height=this.imaEffect.width+"px";						
+						//obtenemos el margin de cada lado para centrar el canvas
+						let newMargin=this.getMarginToCenter(this.imaEffect.width,this.imaEffect.height);		console.log(newMargin);
+						d.margin=newMargin+"px auto";				
+						this.$refs.canvas.style.margin=newMargin+'px auto';
+					} 
+						
+				}				
+				
+				
 			}else{
-				(d.transform=="rotate(180deg)") ? 
-					d.transform="rotate(0deg)": d.transform="rotate(180deg)";
-				d.width=this.imaEffect.width+"px";
-				d.height=this.imaEffect.height+"px";
-			}			
+				(d2.transform=="rotate(180deg)") ? 
+					d2.transform="rotate(0deg)": d2.transform="rotate(180deg)";
+					//devolvemos margin y dimensiones anteriores
+				d.margin="auto";
+				d2.width=this.imaEffect.width+"px";
+				d2.height=this.imaEffect.height+"px";
+				this.$refs.canvas.style.margin='auto';
+			}
+			//activamos/desactivamos rotate
+			(d2.transform=="rotate(0deg)") ? 
+				this.rotateActivated=false:this.rotateActivated=true;
+			console.log(this.rotateActivated);
 			
 		},
 		reflex(type){
@@ -498,14 +765,18 @@ export default {
 			if(type=="vertical"){
 				(d.transform=="scaleY(-1)") ?
 					d.transform="scaleY(1)": d.transform="scaleY(-1)";
+				d.width=this.imaEffect.width+"px";
+				d.height=this.imaEffect.height+"px";
 			}else{
 				(d.transform=="scaleX(-1)") ?
 					d.transform="scaleX(1)":d.transform="scaleX(-1)";
 			}
+
 			
 			
 
 		},
+		//prueba redondeo esquinas, sin acabar
 		roundCorners(){
 			let canvas=this.$refs.canvas;
 
@@ -538,14 +809,35 @@ export default {
 				}
 			}
 		},
+		//actualiza las medidas destinadas al canvas y al div image_effect, una vez se 
+		//ha cargado la vista y el md-layout ha asignado automáticamente una medida 
+		//al elemento img
 		updateSizeCanvas(){
+			console.log("desde updateSizeCanvas: ",this.ima);
+			//console.log(this.$refs.div_effect_image.)
 			this.deleteDrawCanvas();
-			console.log(this.$refs.image.clientWidth);
+			//console.log(this.$refs.image.clientWidth);
 			
-			let width=this.$refs.image.clientWidth;
-			let height=this.$refs.image.clientHeight;
-			this.imaEffect.width=width;
-			this.imaEffect.height=height;
+			//let width=this.$refs.image.clientWidth;
+			//let height=this.$refs.image.clientHeight;
+			let width=this.$refs.div_effect_image.clientWidth;
+			console.log(width);
+			let height=this.getNewHeight(width,this.ima.width,this.ima.height);
+			//let height=parseInt(this.$refs.div_effect_image.clientHeight);
+			
+			//si el efecto rotate está activado no actualizamos, ya que al estar
+			//las dimensiones invertidas se descoloca la imagen
+			if(!this.rotateActivated){
+				this.imaEffect.width=width;
+				this.imaEffect.height=height;
+				this.$refs.image.style.display="none";	
+			}
+				
+			
+				
+			
+			
+
 			
 		},		
 		cancelLoadImage(){
@@ -590,7 +882,7 @@ export default {
 			this.filterActivated=true;
 			console.log("llega afiltro");
 			//let ima=document.getElementById('image');
-			let ima=this.$refs.image;
+			let ima=this.$refs.image_effect;
 			this.filterProp=prop;    
 			switch (prop){
 				case "grayscale":
@@ -1084,5 +1376,8 @@ export default {
 	box-shadow:none;
 }
 
+.div_effect_image{
+	padding:0px !important;
+}
 
 </style>
