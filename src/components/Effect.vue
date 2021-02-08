@@ -299,15 +299,27 @@
 								<md-icon class="">swap_horiz</md-icon>
 							</md-button>
 							<div style="clear:left"></div>
-							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="rangeTexturizeActive=true">
-								<md-icon class="">adjust</md-icon>
+							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger  title="Espacio de Color">
+								<md-icon   md-src="img/effect/monitor-eye.svg"></md-icon>
 							</md-button>							
-							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="testRangeCompress()">
-								<md-icon class="">loop</md-icon>
+							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="testRangeCompress()" title="Compresión">
+								<md-icon md-src="img/effect/zip-box.svg" ></md-icon>
 							</md-button>
-							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="testRangeTexturize()">
+							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="testRangeTexturize()" title="Texturizar">
 								<md-icon class="">rotate_right</md-icon>
 							</md-button>
+						<!--espacio de color -->
+							<div style="margin-top:10px;" v-if="spaceColorActive">
+								<md-field >
+									<label for="spaceColor">Espacio de Color</label>
+									<md-select v-model="spaceColor" name="spaceColor" id="spaceColor" @change="envio()">
+										<md-option value="rgb" >RGB</md-option>
+										<md-option value="cmyk">CMYK</md-option>
+									</md-select>
+								</md-field>
+								
+								<div style="clear:left"></div>								
+							</div>
 						<!-- range compression -->
 							<div style="margin-top:10px;display:block" v-if="rangeCompressActive">
 
@@ -315,7 +327,7 @@
 								<div style="clear:left"></div>
 								<!--detectar si es png o jpg para mostrar minimo y máximo distinto-->
 								<input name="range_compress" type="range" min="1" max="100" v-model="rangeCompress" v-if="this.ext=='jpg'"/>
-								<input name="range_compress" type="range" min="0" max="4" v-model="rangeCompress" v-if="this.ext=='png'" />
+								<input name="range_compress" type="range" min="0" max="4" v-model="rangeCompress" v-if="this.ext=='png'"/>
 
 								<div style="clear:left"></div>
 
@@ -332,7 +344,7 @@
 
 								<label for="range_texturize" style="color:blue;font-weight:bold">{{'x'+rangeTexturize}}</label>
 								<div style="clear:left"></div>
-								<input name="range_texturize" type="range" min="1" max="10" v-model="rangeTexturize" @change="texturize(rangeTexturize)"/>
+								<input name="range_texturize" type="range" min="1" max="10" step="1" v-model="rangeTexturize" @change="texturize(rangeTexturize)"/>
 
 								<div style="clear:left"></div>
 
@@ -484,9 +496,18 @@ export default {
 			texturizeActivated:false,
 			rotateActivated:false,
 			rangeCompressActive:false,
-			rangeCompress:1,
+			rangeCompress:80,
+			spaceColorActive:true,
+			spaceColor:null,
+			spaceColorSelected:null,
 
 
+
+		}
+	},
+	computed:{
+		selectedSpaceColor(){
+			return this.spaceColor =="rgb" ? "":this.spaceColor;
 		}
 	},
 	created(){
@@ -554,7 +575,10 @@ export default {
 			alert("Desea descartar el filtro seleccionado?");
 		}
 	},
-	methods:{		
+	methods:{
+		envio(){
+			console.log("envio: ",this.spaceColor);
+		},
 		//mostrar/ocultar input range de texturize
 		testRangeTexturize(){
 			if(this.rangeCompressActive)
