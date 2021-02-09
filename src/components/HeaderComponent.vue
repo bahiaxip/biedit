@@ -356,7 +356,9 @@ export default {
 						//como prop (que contiene tb el src) 
 						this.resizedImg.src=res.data.image.random_name;
 						this.image.src=res.data.image.random_name;
-						this.image.size=res.data.image.size;					
+						//no están en data y por tanto no prevalecen
+						this.image.size=res.data.image.size;
+						this.image.spaceColor=res.data.image.space_color;					
 			//comprobaciones para asignar el resizedImg (destinado al CutPanel e hijos)
 						let sizes = this.setSizeToCutPanel(res.data.image.width,res.data.image.height,this.minWidthHeight,this.maxWidthDefault,this.maxHeightDefault);
 						/*
@@ -577,6 +579,8 @@ export default {
 				}
 			}
 			this.image.name=this.url+'get-image/'+image.random_name,headers;
+
+
 			this.image.src=image.random_name;			
 			let sizesMain=this.setSizeToMainPanel(image.width,image.height,this.minWidthHeight,this.widthDefault);			
 			this.image.width=sizesMain.width;
@@ -588,6 +592,7 @@ export default {
 			let sizesCut=this.setSizeToCutPanel(image.width,image.height,this.minWidthHeight,this.maxWidthDefault,this.maxHeightDefault);
 			this.image.widthCut=sizesCut.width;
 			this.image.heightCut=sizesCut.height;
+			this.image.spaceColor=image.space_color;
 			//callback sin definir
 			if(callback!=null)
 				callback();

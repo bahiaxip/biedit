@@ -1,8 +1,24 @@
 import Vue from 'vue'
 import App from './App.vue'
+
+//para que evitar el bug(...badInput...) de md-select de vue-material es necesario
+//importar mediante la opción "full" de vue material (añadir todos los componentes)
+//y sustituir la línea del método isInvalidValue() del archivo 
+// /node_modules/vue-material/dist/vuematerial.js por la siguiente:
+//return this.$el.validity ? this.$el.validity.badInput : false;
+//Nota: Esto es solo temporal, ya que al actualizar se debe volver sustituir, aunque
+//el funcionamiento es correcto, aparece un error en consola cada vez que se selecciona 
+//un elemento
+
+
+import VueMaterial from 'vue-material';
+
+/*
 import {MdButton,MdMenu,MdList,MdIcon,MdCard,MdField,MdDialog,
 	MdTabs,MdDialogAlert,MdToolbar,MdSpeedDial,MdLayout,MdDialogConfirm,
 	MdSwitch,MdAvatar,MdTooltip,MdProgress} from 'vue-material/dist/components'
+*/
+
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 import VueRouter from 'vue-router';
@@ -12,6 +28,7 @@ import Collections from './components/Collections.vue';
 import Effect from './components/Effect.vue';
 //import NotFound from './components/NotFound.vue';
 Vue.config.productionTip = false
+/*
 Vue.use(MdButton);
 Vue.use(MdMenu);
 Vue.use(MdList);
@@ -29,6 +46,8 @@ Vue.use(MdSwitch);
 Vue.use(MdAvatar);
 Vue.use(MdTooltip);
 Vue.use(MdProgress);
+*/
+Vue.use(VueMaterial);
 Vue.use(VueRouter);
 
 const routes = [

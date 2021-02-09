@@ -64,6 +64,14 @@
 													{{image.size | parseint | prettyBytes}}
 												</span>
 											</md-list-item>
+											<md-list-item>
+												<md-icon md-src="img/effect/monitor-eye_black.svg">
+													<md-tooltip md-direction="bottom"></md-tooltip>
+												</md-icon>
+												<span>
+													{{image.space_color}}
+												</span>
+											</md-list-item>
 											
 										</md-list>
 									</md-menu-content>
@@ -219,6 +227,15 @@ export default {
 				console.log("linkPage: ",linkPage)
 			}
 			if(sessionStorage.getItem("biedit_apitoken")){
+				let api_token=sessionStorage.getItem("biedit_apitoken");
+				let email=sessionStorage.getItem("biedit_email");
+				let data={
+					params:{
+						api_token:api_token,
+						email:email	
+					}
+					
+				};
 				let headers={
 					headers: {
 						/*"Access-Control-Allow-Origin": "*",
@@ -238,7 +255,7 @@ export default {
 						Authorization: 'Bearer '+sessionStorage.getItem("biedit_apitoken")
 					}
 				};
-				axios.get(this.url+'images?page='+linkPage,headers).then(res=>{
+				axios.get(this.url+'images?page='+linkPage,data,headers).then(res=>{
 				console.log("desde atui: ",res.data);
 					this.images=res.data.data;
 					this.totalPages=res.data.last_page;
@@ -318,6 +335,7 @@ export default {
 				return;
 			}else{
 				this.$emit("reload",image);
+				console.log("no es la misma imagen y reload image: ",image);
 			}			
 			console.log("llega");
 		},

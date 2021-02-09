@@ -275,22 +275,23 @@
 
 <transition name="fade">
 	<div class="md-layout md-gutter" style="margin-top:30px">		
-			<div class="md-layout-item md-large-size-15 md-medium-size-10 md-small-size-5" >
+			<div class="md-layout-item md-large-size-15 md-medium-size-10 md-small-hide" >
 			</div>
 
-			<div  class="md-layout-item div_effect_image"   v-if="imgTrans" :style="{'text-align':'initial','width':imaEffect.width+'px','height':imaEffect.height+'px'}" ref="div_effect_image">				
+			<div  class="md-layout-item md-small-size-50 div_effect_image"   v-if="imgTrans" :style="{'text-align':'initial','width':imaEffect.width+'px','height':imaEffect.height+'px','display':'flex'}" ref="div_effect_image">				
 
-					<canvas id="canvas" class=""  :style="{'margin':'auto'}" :width="imaEffect.width" :height="imaEffect.height" ref="canvas"></canvas>
+					<canvas id="canvas" class=""  :style="{'margin':'auto','display':'flex'}" :width="imaEffect.width" :height="imaEffect.height" ref="canvas"></canvas>
 					<div class="image_effect" :style="{'display':'block','backgroundImage':'url('+ima.name+')','width':imaEffect.width+'px','height':imaEffect.height+'px','position':'relative','background-size':'100%','background-repeat':'no-repeat','background-position':'center'}" ref="image_effect">
 						
 					</div>
 					<!-- mantenemos la imagen para obtener las medidas, ya que el md-layout redimensiona el elemento img pero no el elemento div aunque tenga una imagen incrustada con url en los estilos CSS-->
-					<img :src="ima.name" id="image" class="" ref="image" style="min-width:200px;opacity:0"/>
+					<!-- ya no es necesario-->
+					<!--<img :src="ima.name" id="image" class="" ref="image" style="min-width:200px;opacity:0"/>-->
 					
 			</div>
 			<!--botones de sidebar -->
-			<div class="md-layout-item md-layout md-gutter" >
-					<!--botones de rotación -->
+			<div class="md-layout-item md-layout md-gutter md-small-size-50" >
+					<!--botones de rotación repetidos-->
 					<div class="md-layout-item md-large-size-50 md-medium-size-50 md-small-size-100" style="">
 							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="reflex('vertical')">
 								<md-icon class="">swap_vert</md-icon>
@@ -299,22 +300,25 @@
 								<md-icon class="">swap_horiz</md-icon>
 							</md-button>
 							<div style="clear:left"></div>
-							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger  title="Espacio de Color">
-								<md-icon   md-src="img/effect/monitor-eye.svg"></md-icon>
+							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger  title="Espacio de Color" @click="showSpaceColor()">
+								<md-icon md-src="img/effect/monitor-eye.svg"></md-icon>
 							</md-button>							
-							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="testRangeCompress()" title="Compresión">
+							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showRangeCompress()" title="Compresión">
 								<md-icon md-src="img/effect/zip-box.svg" ></md-icon>
 							</md-button>
-							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="testRangeTexturize()" title="Texturizar">
-								<md-icon class="">rotate_right</md-icon>
+							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showRangeTexturize()" title="Texturizar">
+								<md-icon class="">texture</md-icon>
 							</md-button>
 						<!--espacio de color -->
 							<div style="margin-top:10px;" v-if="spaceColorActive">
 								<md-field >
 									<label for="spaceColor">Espacio de Color</label>
-									<md-select v-model="spaceColor" name="spaceColor" id="spaceColor" @change="envio()">
-										<md-option value="rgb" >RGB</md-option>
-										<md-option value="cmyk">CMYK</md-option>
+									<md-select v-model="spaceColorSelected" name="spaceColor" id="spaceColor" @input="selectSpaceColor()">
+										<md-option v-for="spacecolor in spacecolors" :key="spacecolor" :value="spacecolor">{{spacecolor}}
+											
+										</md-option>
+										
+										
 									</md-select>
 								</md-field>
 								
@@ -395,7 +399,7 @@
 					</div>
 			</div>
 
-			<div class=" md-layout-item md-large-size-15 md-medium-size-10 md-small-size-5">
+			<div class=" md-layout-item md-large-size-15 md-medium-size-10 md-small-hide">
 
 			</div>
 		
@@ -500,6 +504,7 @@ export default {
 			spaceColorActive:true,
 			spaceColor:null,
 			spaceColorSelected:null,
+			spacecolors:["RGB","CMYK","SRGB"],
 
 
 
@@ -507,15 +512,18 @@ export default {
 	},
 	computed:{
 		selectedSpaceColor(){
+			console.log(this.spaceColorSelected);
 			return this.spaceColor =="rgb" ? "":this.spaceColor;
+			
 		}
 	},
 	created(){
-		window.addEventListener("resize", this.updateSizeCanvas);
+		
 	},
 	mounted(){
 		if(this.ima){
 			console.log("llega this.ima: ",this.ima);
+			//window.addEventListener("resize", this.updateSizeCanvas);
 		}
 
 		//error al establecer width, height y problemas con
@@ -524,6 +532,9 @@ export default {
 			console.log("mounted: ",this.ima);
 			//activación de efecto transición
 			this.imgTrans=true;
+			//asignamos el colorspace
+			this.spaceColorSelected=this.ima.spaceColor;
+			console.log("spacecolor: ",this.spaceColorSelected);
 	
 	//anulado, esto no hace nada, se mantienen las medidas por el md-layout
 			
@@ -576,13 +587,25 @@ export default {
 		}
 	},
 	methods:{
-		envio(){
-			console.log("envio: ",this.spaceColor);
+		selectSpaceColor(){			
+			console.log("spaceColorSelected: ",this.spaceColor);
+		},
+		showSpaceColor(){
+			if(this.rangeCompressActive || this.rangeTexturizeActive){
+				this.rangeCompressActive=false;
+				this.rangeTexturizeActive=false;
+			}
+			if(this.spaceColorActive){
+				this.spaceColorActive=false;
+			}else{
+				this.spaceColorActive=true;
+			}
 		},
 		//mostrar/ocultar input range de texturize
-		testRangeTexturize(){
-			if(this.rangeCompressActive)
+		showRangeTexturize(){
+			if(this.rangeCompressActive || this.spaceColorActive)
 				this.rangeCompressActive=false;
+				this.spaceColorActive=false;
 			if(this.rangeTexturizeActive){
 				this.rangeTexturizeActive=false;
 				console.log(this.rangeTexturize);
@@ -590,9 +613,10 @@ export default {
 				this.rangeTexturizeActive=true;
 			}
 		},
-		testRangeCompress(){
-			if(this.rangeTexturizeActive)
+		showRangeCompress(){
+			if(this.rangeTexturizeActive || this.spaceColorActive)
 				this.rangeTexturizeActive=false;
+				this.spaceColorActive=false;
 			if(this.rangeCompressActive){
 				this.rangeCompressActive=false;
 				//console.log(this.rangeTexturize);
@@ -838,6 +862,7 @@ export default {
 		//al elemento img
 		updateSizeCanvas(){
 			console.log("desde updateSizeCanvas: ",this.ima);
+			console.log(document.querySelector(".div_effect_image"));
 			//console.log(this.$refs.div_effect_image.)
 			this.deleteDrawCanvas();
 			//console.log(this.$refs.image.clientWidth);
@@ -845,17 +870,23 @@ export default {
 			//let width=this.$refs.image.clientWidth;
 			//let height=this.$refs.image.clientHeight;
 			let width=this.$refs.div_effect_image.clientWidth;
+			//let width=document.querySelector(".div_effect_image").clientWidth;
+
+
 			console.log(width);
 			let height=this.getNewHeight(width,this.ima.width,this.ima.height);
 			//let height=parseInt(this.$refs.div_effect_image.clientHeight);
 			
 			//si el efecto rotate está activado no actualizamos, ya que al estar
 			//las dimensiones invertidas se descoloca la imagen
-			if(!this.rotateActivated){
+			if(!this.rotateActivated ){
+				console.log("iner: ",window.innerWidth);
 				this.imaEffect.width=width;
 				this.imaEffect.height=height;
-				this.$refs.image.style.display="none";	
+				//this.$refs.image.style.display="none";	
 			}
+
+			this.spaceColorActive=false;
 				
 			
 				
@@ -863,7 +894,21 @@ export default {
 			
 
 			
-		},		
+		},
+		handleCSS(elemento){
+			var prop=[];
+			if(document.defaultView && document.defaultView.getComputedStyle){   
+			var a=["width","height","top","left","margin-top","margin-left","margin-right","right","border-right-width","border-left-width","border-top-width","border-bottom-width"];
+				for(var i in a){    
+					prop[i]=parseInt(document.defaultView.getComputedStyle(elemento,null).getPropertyValue(a[i]));
+				}
+				return prop;
+			}
+			else{
+				//falta currentStyle para IE
+				alert("Error document.defaultView (handleCSS method)");
+			}
+		},	
 		cancelLoadImage(){
 			//pasamos a null para que se muestre el spinner
 			this.tmpImage=null;
