@@ -97,6 +97,8 @@ html,body{
 #canvas{
 	position:absolute;
 	z-index:3;
+    
+
 }
 
 .free_resize_activated{

@@ -275,10 +275,10 @@
 
 <transition name="fade">
 	<div class="md-layout md-gutter" style="margin-top:30px">		
-			<div class="md-layout-item md-large-size-15 md-medium-size-10 md-small-hide" >
+			<div class="md-layout-item md-large-size-15 md-medium-size-10 md-small-size-5" >
 			</div>
 
-			<div  class="md-layout-item md-small-size-50 div_effect_image"   v-if="imgTrans" :style="{'text-align':'initial','width':imaEffect.width+'px','height':imaEffect.height+'px','display':'flex'}" ref="div_effect_image">				
+			<div  class="md-layout-item md-small-size-45 div_effect_image"   v-if="imgTrans" :style="{'text-align':'initial','width':imaEffect.width+'px','height':imaEffect.height+'px','display':'flex'}" ref="div_effect_image">				
 
 					<canvas id="canvas" class=""  :style="{'margin':'auto','display':'flex'}" :width="imaEffect.width" :height="imaEffect.height" ref="canvas"></canvas>
 					<div class="image_effect" :style="{'display':'block','backgroundImage':'url('+ima.name+')','width':imaEffect.width+'px','height':imaEffect.height+'px','position':'relative','background-size':'100%','background-repeat':'no-repeat','background-position':'center'}" ref="image_effect">
@@ -290,116 +290,159 @@
 					
 			</div>
 			<!--botones de sidebar -->
-			<div class="md-layout-item md-layout md-gutter md-small-size-50" >
-					<!--botones de rotación repetidos-->
-					<div class="md-layout-item md-large-size-50 md-medium-size-50 md-small-size-100" style="">
-							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="reflex('vertical')">
-								<md-icon class="">swap_vert</md-icon>
-							</md-button>
-							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="reflex('horizontal')">
-								<md-icon class="">swap_horiz</md-icon>
-							</md-button>
-							<div style="clear:left"></div>
-							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger  title="Espacio de Color" @click="showSpaceColor()">
-								<md-icon md-src="img/effect/monitor-eye.svg"></md-icon>
-							</md-button>							
-							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showRangeCompress()" title="Compresión">
-								<md-icon md-src="img/effect/zip-box.svg" ></md-icon>
-							</md-button>
-							<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showRangeTexturize()" title="Texturizar">
-								<md-icon class="">texture</md-icon>
-							</md-button>
-						<!--espacio de color -->
-							<div style="margin-top:10px;" v-if="spaceColorActive">
-								<md-field >
-									<label for="spaceColor">Espacio de Color</label>
-									<md-select v-model="spaceColorSelected" name="spaceColor" id="spaceColor" @input="selectSpaceColor()">
-										<md-option v-for="spacecolor in spacecolors" :key="spacecolor" :value="spacecolor">{{spacecolor}}
-											
-										</md-option>
-										
-										
-									</md-select>
-								</md-field>
+			<div class="md-layout-item md-layout md-gutter md-small-size-45" >
+
+				<div class="md-layout-item md-xlarge-size-50 md-medium-size-50 md-small-size-100" style="">
+						<!--<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="reflex('vertical')">
+							<md-icon class="">swap_vert</md-icon>
+						</md-button>
+						<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="reflex('horizontal')">
+							<md-icon class="">swap_horiz</md-icon>
+						</md-button>
+						<div style="clear:left"></div>-->
+												
+					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showRangeCompress()" >
+						<md-icon md-src="img/effect/zip-box.svg" ></md-icon>
+						<md-tooltip>Compresión</md-tooltip>
+					</md-button>
+					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showRangeTexturize()" >
+						<md-icon class="">texture</md-icon>
+						<md-tooltip>Texturizar</md-tooltip>
+					</md-button>
+
+					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger  @click="showSpaceColor()">
+						<md-icon md-src="img/effect/monitor-eye.svg"></md-icon>
+						<md-tooltip>Espacio de color</md-tooltip>
+					</md-button>						
+				<!--espacio de color -->
+					<div style="margin-top:10px;" v-if="spaceColorActive">
+						<md-field style="">
+							<label for="spaceColor">Espacio de Color</label>
+							<md-select  v-model="spaceColorSelected" name="spaceColor" id="spaceColor" @input="selectSpaceColor()">
+								<md-option v-for="spacecolor in spacecolors" :key="spacecolor" :value="spacecolor">{{spacecolor}}
+									
+								</md-option>
 								
-								<div style="clear:left"></div>								
-							</div>
-						<!-- range compression -->
-							<div style="margin-top:10px;display:block" v-if="rangeCompressActive">
-
-								<label for="range_compress" style="color:blue;font-weight:bold">{{rangeCompress}}</label>
-								<div style="clear:left"></div>
-								<!--detectar si es png o jpg para mostrar minimo y máximo distinto-->
-								<input name="range_compress" type="range" min="1" max="100" v-model="rangeCompress" v-if="this.ext=='jpg'"/>
-								<input name="range_compress" type="range" min="0" max="4" v-model="rangeCompress" v-if="this.ext=='png'"/>
-
-								<div style="clear:left"></div>
-
-								<!--<md-button class="md-icon-button md-raised md-dense md-accent"  md-menu-trigger @click="compress(0)">
-									<md-icon class="">cancel</md-icon>
-								</md-button>-->
-
-								<md-button class="md-icon-button md-raised md-dense md-primary"  md-menu-trigger @click="setCompress(rangeCompress)">
-									<md-icon class="">check_circle_outline</md-icon>
-								</md-button>
-							</div>
-						<!-- range texturize -->
-							<div style="margin-top:10px;display:block" v-if="rangeTexturizeActive">
-
-								<label for="range_texturize" style="color:blue;font-weight:bold">{{'x'+rangeTexturize}}</label>
-								<div style="clear:left"></div>
-								<input name="range_texturize" type="range" min="1" max="10" step="1" v-model="rangeTexturize" @change="texturize(rangeTexturize)"/>
-
-								<div style="clear:left"></div>
-
-								<md-button class="md-icon-button md-raised md-dense md-accent"  md-menu-trigger @click="texturize(0)">
-									<md-icon class="">cancel</md-icon>
-								</md-button>
-
-								<md-button class="md-icon-button md-raised md-dense md-primary"  md-menu-trigger @click="texturize(rangeTexturize)">
-									<md-icon class="">check_circle_outline</md-icon>
-								</md-button>
-							</div>
+								
+							</md-select>
+						</md-field>
+						
+						<div style="clear:left"></div>								
 					</div>
-					<!-- botones de reflejo horizontal y vertical -->
+				<!-- range compression -->
+					<div style="margin-top:10px;display:block" v-if="rangeCompressActive">
 
-					<div class="md-layout-item md-large-size-50 md-medium-size-50 md-small-size-100">
-							<md-speed-dial md-event="click" md-direction="bottom">
-								<md-speed-dial-target class="md-icon-button">
-									<md-icon class="md-morph-initial">add</md-icon>
-									<md-icon class="md-morph-final">edit</md-icon>
-								</md-speed-dial-target>
+						<label for="range_compress" title="Tipo de compresión"><span style="color:blue;font-weight:bold">{{rangeCompress}}</span></label>
 
-								<md-speed-dial-content>
-									<md-button class="md-icon-button">
-										<md-icon>note</md-icon>
-									</md-button>
+						<div style="clear:left"></div>
+						<!--detectar si es png o jpg para mostrar minimo y máximo distinto-->
+						<input name="range_compress" type="range" min="1" max="100" v-model="rangeCompress" v-if="this.ext=='jpg'"/>
+						<input name="range_compress" type="range" min="0" max="4" v-model="rangeCompress" v-if="this.ext=='png'"/>
 
-									<md-button class="md-icon-button">
-										<md-icon>event</md-icon>
-									</md-button>
-								</md-speed-dial-content>
-							</md-speed-dial>
-							<md-speed-dial md-event="click" md-direction="bottom">
-								<md-speed-dial-target class="md-icon-button">
-									<md-icon class="md-morph-initial">add</md-icon>
-									<md-icon class="md-morph-final">edit</md-icon>
-								</md-speed-dial-target>
+						<div style="clear:left"></div>
 
-								<md-speed-dial-content>
-									<md-button class="md-icon-button">
-										<md-icon>note</md-icon>
-									</md-button>
+						<!--<md-button class="md-icon-button md-raised md-dense md-accent"  md-menu-trigger @click="compress(0)">
+							<md-icon class="">cancel</md-icon>
+						</md-button>-->
 
-									<md-button class="md-icon-button">
-										<md-icon>event</md-icon>
-									</md-button>
-								</md-speed-dial-content>
-							</md-speed-dial>
+						<md-button class="md-icon-button md-raised md-dense md-primary"  md-menu-trigger @click="setCompress(rangeCompress)">
+							<md-icon class="">check_circle_outline</md-icon>
+							<md-tooltip>Comprimir imagen</md-tooltip>
+						</md-button>
 					</div>
+				<!-- range texturize -->
+					<div style="margin-top:10px;display:block" v-if="rangeTexturizeActive">
+
+						<label for="range_texturize" style="color:blue;font-weight:bold">{{'x'+rangeTexturize}}</label>
+						<div style="clear:left"></div>
+						<input name="range_texturize" type="range" min="1" max="10" step="1" v-model="rangeTexturize" @change="texturize(rangeTexturize)"/>
+
+						<div style="clear:left"></div>
+
+						<md-button class="md-icon-button md-raised md-dense md-accent"  md-menu-trigger @click="texturize(0)">
+							<md-icon class="">cancel</md-icon>
+							<md-tooltip>Deshacer</md-tooltip>
+						</md-button>
+
+						<md-button class="md-icon-button md-raised md-dense md-primary"  md-menu-trigger @click="texturize(rangeTexturize)">
+							<md-icon class="">check_circle_outline</md-icon>
+							<md-tooltip>Aplicar texturización</md-tooltip>
+						</md-button>
+					</div>
+					<div style="clear:left"></div>
+				<!-- composite -->
+				<div class="" style="margin-top:20px">
+					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showComposite()">
+						<md-icon md-src="img/effect/layers-plus_white.svg"></md-icon>
+						<md-tooltip>Composición</md-tooltip>
+					</md-button>							
+					<md-button class="md-icon-button  md-raised md-accent md-dense"  md-menu-trigger @click="cancelComposite()"  style="margin-top:5px" v-if="compositeActive">
+						<md-icon >clear</md-icon>
+						<md-tooltip>Deshacer Composición</md-tooltip>
+					</md-button>
+					<md-button class="md-icon-button  md-raised md-primary md-dense"  md-menu-trigger @click="setComposite()" title="Crear composición" style="margin-top:5px" v-if="this.compositeSelectedId">
+						<md-icon class="">check</md-icon>
+					</md-button>
+				</div>
+					<div style="clear:left"></div>							
+					<!--composite -->
+					<div style="margin-top:10px;" v-if="compositeActive">
+						<md-list :md-expand-single="expandSingle">
+							<md-list-item md-expand :md-expanded.sync="expandCompositeSelect">
+								<span v-html="compositeSelectedHtml"></span>
+								<md-list slot="md-expand" >
+									<md-list-item v-for="image in filteredImages" :key="image.id" @click="selectComposite(image)" >
+										<span   :title="image.title" > 
+											<md-avatar>
+												<img :src="url+'get-image/'+image.thumb"/>
+											</md-avatar>
+											{{image.title}}
+										</span>
+								</md-list-item>										
+								</md-list>
+							</md-list-item>
+						</md-list>
+					</div>
+				</div>
+				<!-- botones de reflejo horizontal y vertical -->
+
+				<div class="md-layout-item md-xlarge-size-50 md-medium-size-50 md-small-size-100">
+						<md-speed-dial md-event="click" md-direction="bottom">
+							<md-speed-dial-target class="md-icon-button md-dense">
+								<md-icon class="md-morph-initial ">add</md-icon>
+								<md-icon class="md-morph-final">edit</md-icon>
+							</md-speed-dial-target>
+
+							<md-speed-dial-content>
+								<md-button class="md-icon-button ">
+									<md-icon>note</md-icon>
+								</md-button>
+
+								<md-button class="md-icon-button">
+									<md-icon>event</md-icon>
+								</md-button>
+							</md-speed-dial-content>
+						</md-speed-dial>
+						<md-speed-dial md-event="click" md-direction="bottom">
+							<md-speed-dial-target class="md-icon-button md-dense">
+								<md-icon class="md-morph-initial">add</md-icon>
+								<md-icon class="md-morph-final">edit</md-icon>
+							</md-speed-dial-target>
+
+							<md-speed-dial-content>
+								<md-button class="md-icon-button">
+									<md-icon>note</md-icon>
+								</md-button>
+
+								<md-button class="md-icon-button">
+									<md-icon>event</md-icon>
+								</md-button>
+							</md-speed-dial-content>
+						</md-speed-dial>
+				</div>
 			</div>
 
-			<div class=" md-layout-item md-large-size-15 md-medium-size-10 md-small-hide">
+			<div class=" md-layout-item md-large-size-15 md-medium-size-10 md-small-size-5">
 
 			</div>
 		
@@ -464,6 +507,7 @@ export default {
 				width:null,
 				height:null
 			},
+			images:null,
 			ext:null,
 			resizeSwitch:false,
 			imgTrans:false,
@@ -505,6 +549,11 @@ export default {
 			spaceColor:null,
 			spaceColorSelected:null,
 			spacecolors:["RGB","CMYK","SRGB"],
+			compositeActive:false,
+			compositeSelectedHtml:"Seleccionar",
+			compositeSelectedId:null,
+			expandSingle:true,
+			expandCompositeSelect:false
 
 
 
@@ -515,6 +564,11 @@ export default {
 			console.log(this.spaceColorSelected);
 			return this.spaceColor =="rgb" ? "":this.spaceColor;
 			
+		},
+		filteredImages(){			
+			return this.images.filter(image=>
+				image.random_name != this.ima.src
+			)
 		}
 	},
 	created(){
@@ -523,11 +577,12 @@ export default {
 	mounted(){
 		if(this.ima){
 			console.log("llega this.ima: ",this.ima);
-			//window.addEventListener("resize", this.updateSizeCanvas);
+			window.addEventListener("resize", this.updateSizeCanvas);
 		}
 
 		//error al establecer width, height y problemas con
 		if(this.ima && this.ima.width){
+			this.getTotalImages();
 			console.log("llega this.ima y this.ima.width");	
 			console.log("mounted: ",this.ima);
 			//activación de efecto transición
@@ -587,8 +642,57 @@ export default {
 		}
 	},
 	methods:{
+		getTotalImages(){
+			if(sessionStorage.getItem("biedit_apitoken")){
+				let api_token=sessionStorage.getItem("biedit_apitoken");
+				let email=sessionStorage.getItem("biedit_email");
+				let data={
+					params:{
+						api_token:api_token,
+						email:email,
+						total:"true"
+					}
+				};
+				let headers={
+					headers: {
+						Authorization: 'Bearer '+sessionStorage.getItem("biedit_apitoken")
+					}
+				};
+				axios.get(this.url+'images',data,headers).then(res=>{
+					this.images=res.data.images;
+					console.log("las imagenes: ",this.images);
+				})
+			}
+		},
+		selectComposite(image){
+			console.log("hola: ",image);			
+			//añadimos el span al select
+			this.compositeSelectedHtml=
+			`<span title=`+image.title+`>
+				<md-avatar>
+					<img width="48" src=`+this.url+'get-image/'+image.thumb+`/>
+				</md-avatar>`
+			+image.title+`</span>`;
+			//asignamos id para poder identificar la imagen en el server
+			this.compositeSelectedId=image.id;
+			//replegamos el select 
+			this.expandCompositeSelect=false;
+		},
+		cancelComposite(){
+			this.compositeSelectedHtml="Seleccionar";
+			this.compositeSelectedId=null;
+			this.compositeActive=false;
+		},
 		selectSpaceColor(){			
 			console.log("spaceColorSelected: ",this.spaceColor);
+		},
+		showComposite(){
+			if(this.compositeActive){
+				this.compositeActive=false;
+			}else{
+				this.compositeActive=true;	
+			}
+			
 		},
 		showSpaceColor(){
 			if(this.rangeCompressActive || this.rangeTexturizeActive){
@@ -794,7 +898,8 @@ export default {
 				
 				
 			}else{
-				(d2.transform=="rotate(180deg)") ? 
+
+				(d2.transform=="rotate(180deg)" || side==null) ? 
 					d2.transform="rotate(0deg)": d2.transform="rotate(180deg)";
 					//devolvemos margin y dimensiones anteriores
 				d.margin="auto";
@@ -862,28 +967,19 @@ export default {
 		//al elemento img
 		updateSizeCanvas(){
 			console.log("desde updateSizeCanvas: ",this.ima);
-			console.log(document.querySelector(".div_effect_image"));
-			//console.log(this.$refs.div_effect_image.)
 			this.deleteDrawCanvas();
-			//console.log(this.$refs.image.clientWidth);
 			
-			//let width=this.$refs.image.clientWidth;
-			//let height=this.$refs.image.clientHeight;
 			let width=this.$refs.div_effect_image.clientWidth;
 			//let width=document.querySelector(".div_effect_image").clientWidth;
-
-
-			console.log(width);
+			
 			let height=this.getNewHeight(width,this.ima.width,this.ima.height);
 			//let height=parseInt(this.$refs.div_effect_image.clientHeight);
-			
+			this.imaEffect.width=width;
+			this.imaEffect.height=height;
 			//si el efecto rotate está activado no actualizamos, ya que al estar
 			//las dimensiones invertidas se descoloca la imagen
-			if(!this.rotateActivated ){
-				console.log("iner: ",window.innerWidth);
-				this.imaEffect.width=width;
-				this.imaEffect.height=height;
-				//this.$refs.image.style.display="none";	
+			if(this.rotateActivated ){
+				this.rotate(null);
 			}
 
 			this.spaceColorActive=false;
