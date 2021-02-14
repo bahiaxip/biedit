@@ -303,16 +303,17 @@
 												
 					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showRangeCompress()" >
 						<md-icon md-src="img/effect/zip-box.svg" ></md-icon>
-						<md-tooltip>Compresión</md-tooltip>
+
+						<md-tooltip md-direction="top">Compresión</md-tooltip>
 					</md-button>
 					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showRangeTexturize()" >
 						<md-icon class="">texture</md-icon>
-						<md-tooltip>Texturizar</md-tooltip>
+						<md-tooltip md-direction="top">Texturizar</md-tooltip>
 					</md-button>
 
 					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger  @click="showSpaceColor()">
 						<md-icon md-src="img/effect/monitor-eye.svg"></md-icon>
-						<md-tooltip>Espacio de color</md-tooltip>
+						<md-tooltip md-direction="top">Espacio de color</md-tooltip>
 					</md-button>						
 		<!--espacio de color -->
 					<div style="margin-top:10px;" v-if="spaceColorActive">
@@ -460,14 +461,14 @@
 						</md-field>
 						<!--<label for="range_fontsize" style="font-family:usuzi">Tamaño de fuente</label>
 						<div style="clear:left"></div>-->
-
-						<md-chip class="md-primary">{{rangeWmFontSize}}</md-chip>
+					</div>
+					<div v-if="wmInputActive" class="inputFontSize">
+						<md-chip class="md-primary" style="padding-top:2px">{{rangeWmFontSize}}</md-chip>
 						<div style="clear:left"></div>
 						<md-icon style="display:inline-block" md-src="img/effect/format-size.svg"></md-icon>
-						<md-tooltip >Tamaño de letra</md-tooltip>
-						<input type="range" v-model="rangeWmFontSize" name="range_fontsize" min="1" max="100"/>
-
-
+						
+						<input type="range" v-model="rangeWmFontSize" name="range_fontsize" min="1" max="100" />
+						<md-tooltip md-direction="left">Tamaño de letra</md-tooltip>
 					</div>
 					<div style="margin-top:10px;" v-if="wmInputActive">
 
@@ -476,7 +477,7 @@
 							<md-list-item md-expand :md-expanded.sync="expandFontFamily"  >
 
 								<md-icon md-src="img/effect/format-font.svg" style="display:inline-block"></md-icon>
-								<md-tooltip>Tipo de letra</md-tooltip>
+								
 								<span :style="{'font-family':fontFamilySelected}"> {{fontSelected}}</span>
 								
 								<md-list slot="md-expand" class="md-scrollbar"  style="max-height:200px;overflow:auto">
@@ -495,14 +496,27 @@
 									<md-list-item style="font-family:fontanero" @click="setFontFamily('fontanero')">Fontanero</md-list-item>
 									
 								</md-list>
-								
+								<md-tooltip md-direction="left">Tipo de letra</md-tooltip>
 							</md-list-item>
 						
 						</md-list>
-					
+						
 					</div>
+					<div class="colorpicker" style="padding-top:10px;border-radius:5%">
+						<span v-if="wmInputActive" style="margin-left:15px;float:left;">
+							<md-icon style="">color_lens</md-icon>
+							
+						</span>
+						<div style="margin-top:10px;display:inline-block;margin:auto;" v-if="wmInputActive">
+							<verte picker="square" model="rgb" menuPosition="top" >
+							</verte>
+							
+						</div>
+						<md-tooltip md-direction="left">Color de texto</md-tooltip>
+					</div>
+					
 				</div>
-				<!-- botones de reflejo horizontal y vertical -->
+				
 
 				<div class="md-layout-item md-xlarge-size-50 md-medium-size-50 md-small-size-100">
 						<md-speed-dial md-event="click" md-direction="bottom">
@@ -1862,7 +1876,18 @@ export default {
 	font-family:zerogirl;
 	src:url(../assets/fonts/ZEROGIRL.TTF);
 }
-
+.verte button{
+	cursor:pointer;
+}
+input[type=range]{
+	cursor:pointer;
+}
+.colorpicker:hover{
+	background-color:rgba(0,0,0,0.12);
+}
+.inputFontSize:hover{
+	background-color:rgba(0,0,0,0.12);	
+}
 /*
 Primary: #448aff => Blue A200
 Accent: #ff5252 => Red A200
