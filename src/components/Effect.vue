@@ -278,7 +278,7 @@
 			<div class="md-layout-item md-large-size-15 md-medium-size-10 md-small-size-5" >
 			</div>
 
-			<div  class="md-layout-item md-small-size-45 div_effect_image"   v-if="imgTrans" :style="{'text-align':'initial','width':imaEffect.width+'px','height':imaEffect.height+'px','display':'flex'}" ref="div_effect_image">				
+			<div  class="md-layout-item md-medium-size-40 md-small-size-45 div_effect_image"   v-if="imgTrans" :style="{'text-align':'initial','width':imaEffect.width+'px','height':imaEffect.height+'px','display':'flex'}" ref="div_effect_image">				
 
 					<canvas id="canvas" class=""  :style="{'margin':'auto','display':'flex'}" :width="imaEffect.width" :height="imaEffect.height" ref="canvas"></canvas>
 					<div class="image_effect" :style="{'display':'block','backgroundImage':'url('+ima.name+')','width':imaEffect.width+'px','height':imaEffect.height+'px','position':'relative','background-size':'100%','background-repeat':'no-repeat','background-position':'center'}" ref="image_effect">
@@ -289,8 +289,8 @@
 					<!--<img :src="ima.name" id="image" class="" ref="image" style="min-width:200px;opacity:0"/>-->
 					
 			</div>
-			<!--botones de sidebar -->
-			<div class="md-layout-item md-layout md-gutter md-small-size-45" >
+		<!--botones de sidebar -->
+			<div class="md-layout-item md-layout md-gutter md-medium-size-40 md-small-size-50" >
 
 				<div class="md-layout-item md-xlarge-size-50 md-medium-size-50 md-small-size-100" style="">
 						<!--<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="reflex('vertical')">
@@ -314,7 +314,7 @@
 						<md-icon md-src="img/effect/monitor-eye.svg"></md-icon>
 						<md-tooltip>Espacio de color</md-tooltip>
 					</md-button>						
-				<!--espacio de color -->
+		<!--espacio de color -->
 					<div style="margin-top:10px;" v-if="spaceColorActive">
 						<md-field style="">
 							<label for="spaceColor">Espacio de Color</label>
@@ -329,7 +329,7 @@
 						
 						<div style="clear:left"></div>								
 					</div>
-				<!-- range compression -->
+		<!-- range compression -->
 					<div style="margin-top:10px;display:block" v-if="rangeCompressActive">
 
 						<label for="range_compress" title="Tipo de compresión"><span style="color:blue;font-weight:bold">{{rangeCompress}}</span></label>
@@ -350,7 +350,7 @@
 							<md-tooltip>Comprimir imagen</md-tooltip>
 						</md-button>
 					</div>
-				<!-- range texturize -->
+		<!-- range texturize -->
 					<div style="margin-top:10px;display:block" v-if="rangeTexturizeActive">
 
 						<label for="range_texturize" style="color:blue;font-weight:bold">{{'x'+rangeTexturize}}</label>
@@ -370,25 +370,74 @@
 						</md-button>
 					</div>
 					<div style="clear:left"></div>
-				<!-- composite -->
+		<!-- select -->
 				<div class="" style="margin-top:20px">
-					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showComposite()">
+					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showSelect('fussion')" :class="compActive ? 'primary':'accent'">
 						<md-icon md-src="img/effect/layers-plus_white.svg"></md-icon>
-						<md-tooltip>Composición</md-tooltip>
+						<md-tooltip>Fusión</md-tooltip>
+					</md-button>
+					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showSelect('watermark')" :class="compPosActive ? 'primary':'accent'">
+						<md-icon md-src="img/effect/watermark-white.svg"></md-icon>
+						<md-tooltip>Marca de Agua</md-tooltip>
+					</md-button>
+					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showSelect('create-watermark')" :class="wmInputActive ? 'primary':'accent'">
+						<md-icon md-src="img/effect/format-annotation-plus-white.svg"></md-icon>
+						<md-tooltip>Crear marca de agua</md-tooltip>
 					</md-button>							
-					<md-button class="md-icon-button  md-raised md-accent md-dense"  md-menu-trigger @click="cancelComposite()"  style="margin-top:5px" v-if="compositeActive">
-						<md-icon >clear</md-icon>
-						<md-tooltip>Deshacer Composición</md-tooltip>
-					</md-button>
-					<md-button class="md-icon-button  md-raised md-primary md-dense"  md-menu-trigger @click="setComposite()" title="Crear composición" style="margin-top:5px" v-if="this.compositeSelectedId">
-						<md-icon class="">check</md-icon>
-					</md-button>
+					
 				</div>
-					<div style="clear:left"></div>							
-					<!--composite -->
-					<div style="margin-top:10px;" v-if="compositeActive">
+					<div style="clear:left"></div>
+					<div style="margin-top:10px;" v-if="compListActive || wmInputActive">
+						<md-button class="md-icon-button  md-raised md-accent md-dense"  md-menu-trigger @click="cancelSelect()"  style="margin-top:5px">
+							<md-icon >clear</md-icon>
+							<md-tooltip>Deshacer</md-tooltip>
+						</md-button>
+						<md-button class="md-icon-button  md-raised md-primary md-dense"  md-menu-trigger @click="setComposite()" title="Crear composición" style="margin-top:5px" v-if="this.compositeSelectedId || this.inputWm">
+							<md-icon class="">check</md-icon>
+						</md-button>
+					</div>
+					<div style="clear:left"></div>						
+			<!--composite -->
+			<!--position-->
+					<div style="margin-top:10px;" v-if="compPosListActive">
 						<md-list :md-expand-single="expandSingle">
-							<md-list-item md-expand :md-expanded.sync="expandCompositeSelect">
+							<md-list-item md-expand :md-expanded.sync="expandCompPos">
+								<md-icon v-html="compPosSelectedHtml"></md-icon>
+								{{compoPosStr}}
+								<md-tooltip md-direction="right">Posición {{compoPosStr}}</md-tooltip>
+							<!--<md-icon :md-src="'img/effect/'+compositePositionIconSelected.center+'.svg'">
+								
+							</md-icon>-->
+							
+								<md-list slot="md-expand" >
+									<md-list-item @click="selectCompositePosition('center')">
+										<md-icon>crop_square</md-icon>
+										Centrado
+									</md-list-item>
+									<md-list-item @click="selectCompositePosition('topLeft')">
+										<md-icon style="transform:rotate(180deg)">branding_watermark</md-icon>
+										Sup. izquierda
+									</md-list-item>
+									<md-list-item @click="selectCompositePosition('topRight')">
+										<md-icon style="transform:scale(1,-1)">branding_watermark</md-icon>
+										Sup. derecha
+									</md-list-item>
+									<md-list-item @click="selectCompositePosition('bottomLeft')">
+										<md-icon style="transform:scale(-1,1)">branding_watermark</md-icon>
+										Inf. izquierda
+									</md-list-item>
+									<md-list-item @click="selectCompositePosition('bottomRight')">
+										<md-icon>branding_watermark</md-icon>
+										Inf. derecha
+									</md-list-item>										
+								</md-list>
+							</md-list-item>
+						</md-list>
+					</div>
+			<!--image-->
+					<div style="margin-top:10px;" v-if="compListActive">
+						<md-list :md-expand-single="expandSingle">
+							<md-list-item md-expand :md-expanded.sync="expandCompositeList">
 								<span v-html="compositeSelectedHtml"></span>
 								<md-list slot="md-expand" >
 									<md-list-item v-for="image in filteredImages" :key="image.id" @click="selectComposite(image)" >
@@ -403,19 +452,68 @@
 							</md-list-item>
 						</md-list>
 					</div>
+			<!-- input create watermark -->
+					<div style="margin-top:10px;" v-if="wmInputActive">
+						<md-field>
+							<label>Texto</label>
+							<md-input v-model="inputWm" maxlength="50"></md-input>
+						</md-field>
+						<!--<label for="range_fontsize" style="font-family:usuzi">Tamaño de fuente</label>
+						<div style="clear:left"></div>-->
+
+						<md-chip class="md-primary">{{rangeWmFontSize}}</md-chip>
+						<div style="clear:left"></div>
+						<md-icon style="display:inline-block" md-src="img/effect/format-size.svg"></md-icon>
+						<md-tooltip >Tamaño de letra</md-tooltip>
+						<input type="range" v-model="rangeWmFontSize" name="range_fontsize" min="1" max="100"/>
+
+
+					</div>
+					<div style="margin-top:10px;" v-if="wmInputActive">
+
+						<md-list :md-expand-single="expandSingle" >
+							
+							<md-list-item md-expand :md-expanded.sync="expandFontFamily"  >
+
+								<md-icon md-src="img/effect/format-font.svg" style="display:inline-block"></md-icon>
+								<md-tooltip>Tipo de letra</md-tooltip>
+								<span :style="{'font-family':fontFamilySelected}"> {{fontSelected}}</span>
+								
+								<md-list slot="md-expand" class="md-scrollbar"  style="max-height:200px;overflow:auto">
+
+									<md-list-item style="font-family:ubuntu" @click="setFontFamily('Ubuntu')" >Ubuntu</md-list-item>
+									<md-list-item style="font-family:timesnewroman" @click="setFontFamily('timesnewroman')">Times New Roman</md-list-item>
+									<md-list-item style="font-family:nikaia" @click="setFontFamily('nikaia')">Nikaia</md-list-item>
+									<md-list-item style="font-family:usuzi" @click="setFontFamily('usuzi')">Usuzi</md-list-item>
+									<md-list-item style="font-family:abduction" @click="setFontFamily('abduction')">Abduction</md-list-item>
+									<md-list-item style="font-family:corporate" @click="setFontFamily('corporate')">Corporate</md-list-item>
+									<md-list-item style="font-family:designer" @click="setFontFamily('designer')">Designer</md-list-item>
+									<md-list-item style="font-family:zerogirl" @click="setFontFamily('zerogirl')">Zerogirl</md-list-item>
+									<md-list-item style="font-family:yanone" @click="setFontFamily('yanone')">Yanone</md-list-item>
+									<md-list-item style="font-family:glsnecb" @click="setFontFamily('glsnecb')">Glsnecb</md-list-item>
+									<md-list-item style="font-family:futura" @click="setFontFamily('futura')">Futura</md-list-item>
+									<md-list-item style="font-family:fontanero" @click="setFontFamily('fontanero')">Fontanero</md-list-item>
+									
+								</md-list>
+								
+							</md-list-item>
+						
+						</md-list>
+					
+					</div>
 				</div>
 				<!-- botones de reflejo horizontal y vertical -->
 
 				<div class="md-layout-item md-xlarge-size-50 md-medium-size-50 md-small-size-100">
 						<md-speed-dial md-event="click" md-direction="bottom">
 							<md-speed-dial-target class="md-icon-button md-dense">
-								<md-icon class="md-morph-initial ">add</md-icon>
+								<md-icon class="md-morph-initial" md-src="img/effect/format-annotation-plus-white.svg"></md-icon>
 								<md-icon class="md-morph-final">edit</md-icon>
 							</md-speed-dial-target>
 
 							<md-speed-dial-content>
 								<md-button class="md-icon-button ">
-									<md-icon>note</md-icon>
+									<md-icon md-src="img/effect/format-annotation-plus.svg"></md-icon>
 								</md-button>
 
 								<md-button class="md-icon-button">
@@ -442,7 +540,7 @@
 				</div>
 			</div>
 
-			<div class=" md-layout-item md-large-size-15 md-medium-size-10 md-small-size-5">
+			<div class=" md-layout-item md-large-size-15 md-medium-size-10 md-small-hide">
 
 			</div>
 		
@@ -549,13 +647,39 @@ export default {
 			spaceColor:null,
 			spaceColorSelected:null,
 			spacecolors:["RGB","CMYK","SRGB"],
-			compositeActive:false,
+			compActive:false,
+			compListActive:false,
 			compositeSelectedHtml:"Seleccionar",
 			compositeSelectedId:null,
 			expandSingle:true,
-			expandCompositeSelect:false
-
-
+			expandCompositeList:false,
+			compositeAction:null,
+			compPosActive:false,
+			compPosListActive:null,			
+			expandCompPos:false,			
+			compoPosStr:"Centrado",			
+			compPosStrOptions:{
+				center:"Centrado",
+				topRight:"Sup. derecha",
+				topLeft: "Sup. izquierda",
+				bottomRight: "Inf. derecha",
+				bottomLeft: "Inf. izquierda"
+			},
+			compPosSelected:false,
+			compPosSelectedHtml:'<md-icon>crop_square</md-icon>',
+			compPosIconSelected:{
+				center:'<md-icon >crop_square</md-icon>',
+				topRight:'<md-icon style="transform:scale(1,-1)">branding_watermark</md-icon>',
+				topLeft:'<md-icon style="transform:rotate(180deg)">branding_watermark</md-icon>',
+				bottomRight:'<md-icon>picture_in_picture_alt</md-icon>',
+				bottomLeft:'<md-icon>branding_watermark</md-icon>'
+			},
+			wmInputActive:false,
+			inputWm:null,
+			rangeWmFontSize:30,
+			fontFamilySelected:"ubuntu",
+			fontSelected:"Ubuntu",
+			expandFontFamily:false,
 
 		}
 	},
@@ -640,6 +764,7 @@ export default {
 		if(this.filterActivated){
 			alert("Desea descartar el filtro seleccionado?");
 		}
+		window.removeEventListener("resize", this.updateSizeCanvas);
 	},
 	methods:{
 		getTotalImages(){
@@ -664,8 +789,9 @@ export default {
 				})
 			}
 		},
+		//select(no buscar select es un list "material") para seleccionar la imagen del efecto de fusión
 		selectComposite(image){
-			console.log("hola: ",image);			
+						
 			//añadimos el span al select
 			this.compositeSelectedHtml=
 			`<span title=`+image.title+`>
@@ -675,24 +801,157 @@ export default {
 			+image.title+`</span>`;
 			//asignamos id para poder identificar la imagen en el server
 			this.compositeSelectedId=image.id;
-			//replegamos el select 
-			this.expandCompositeSelect=false;
+			//replegamos el desplegable 
+			this.expandCompositeList=false;
+			//console.log("id: ",image.id);
 		},
-		cancelComposite(){
+		//select(no buscar select es un list "material") para seleccionar la posición del efecto de marca de agua
+		selectCompositePosition(position){
+			this.compPosSelectedHtml=this.compPosIconSelected[position];
+			this.compoPosStr=this.compPosStrOptions[position];
+			this.compPosSelected=true;
+			this.expandCompPos=false;
+			console.log(this.compPosIconSelected,position);
+		},
+		cancelSelect(){
+			//image
 			this.compositeSelectedHtml="Seleccionar";
 			this.compositeSelectedId=null;
-			this.compositeActive=false;
+			this.compListActive=false;
+			this.wmListaActive=false;
+			this.compositeAction=null;
+			//set watermark
+			this.compPosListActive=false;
+			this.compPosSelected=false;
+			this.compoPosStr=this.compPosStrOptions.center;
+			this.compPosSelectedHtml=this.compPosIconSelected.center;
+			this.compPosActive=false;
+			this.compActive=false;
+			//create watermark
+			this.wmInputActive=false;
+			this.inputWm=null;
 		},
 		selectSpaceColor(){			
 			console.log("spaceColorSelected: ",this.spaceColor);
 		},
-		showComposite(){
-			if(this.compositeActive){
-				this.compositeActive=false;
+		showSelect(action){
+			//si hay desplegable abierto
+			if(this.compListActive || this.wmInputActive){				
+				if(action=="fussion"){
+					if(!this.compActive){
+						this.cancelSelect();					
+						this.compActive=true;
+						this.compListActive=true;
+						//pasar a null el archivo seleccionado si lo hubiera de otra 
+						//acción y así resetearlo (opcional)
+					}
+				}else if(action=="watermark"){
+					if(!this.compPosActive){
+						this.cancelSelect();
+						this.compPosActive=true;
+						this.compPosListActive=true;
+						this.compListActive=true;
+						//pasar a null el archivo seleccionado si lo hubiera de otra 
+						//acción y así resetearlo (opcional)
+					}
+				}else if(action=="create-watermark"){
+					if(!this.wmInputActive){
+						this.cancelSelect()
+						//falta la vista del input para entrada de texto
+						this.wmInputActive=true;
+						//el resto de opciones
+					}
+				}
+				//algo falla aquí
+				this.compositeAction=null;
+				
 			}else{
-				this.compositeActive=true;	
+				if(action=="fussion"){
+					this.compActive=true;
+					this.compListActive=true;
+				}else if(action=="watermark"){
+					this.compPosActive=true;
+					this.compListActive=true;
+					this.compPosListActive=true;
+				}else if(action=="create-watermark"){
+					this.wmInputActive=true;
+					//entrada de texto
+				}
+				this.compositeAction=action;
 			}
+		},
+		setComposite(){
+			if(this.compositeAction){
+				let session=this.testSession();
+				if(!session)
+					return
+				let api_token=session.api_token,
+					email=session.email;
+				//comprobamos si se han seleccionado datos del desplegable
+				if(this.compositeSelectedHtml && this.compositeSelectedId){
+
+					let data={
+						email:email,
+						imageSrc:this.ima.src,
+						imageId:this.compositeSelectedId
+					}
+					let headers={
+						headers:{
+							'Authorization': 'Bearer '+api_token
+						}
+					}
+					if(this.compositeAction=="fussion"){
+						axios.post(this.url+'composite',data,headers).then(res => {
+							console.log(res);
+						})
+
+					}else if(this.compositeAction=="watermark"){
+						axios.post(this.url+'watermark',data,headers).then(res => {
+							console.log(res);
+						})
+					}
+				//comprobamos si se ha introducido texto en el input de creación de marca de agua			
+				}else if(this.inputWm){
+					let data={
+						email:email,
+						inputWm:this.inputWm,
+						FontSize:this.rangeWmFontSize
+					}
+					let headers={
+						headers:{
+							'Authorization': 'Bearer '+api_token
+						}
+					}
+					console.log(this.inputWm);
+					if(this.compositeAction=="create-watermark"){
+						
+						axios.post(this.url+'watermark/create',data,headers).then(res=>{
+							console.log(res);
+						})
+					}
+				
+				}
+			}
+			else{
+				console.log("no hay ningún archivo seleccionado");
+			}
+		},
+		setFontFamily(font){
+			this.fontFamilySelected=font;
+			this.fontSelected=font[0].toUpperCase()+font.slice(1);
+			if(font=="timesnewroman")
+				this.fontSelected="Times New Roman";
+			this.expandFontFamily=false;
+		},
+		testSession:()=>{
+			if(!sessionStorage.getItem("biedit_apitoken") || !sessionStorage.getItem("biedit_email") || !sessionStorage.getItem("biedit_name"))
+				return
 			
+			return {
+				api_token:sessionStorage.getItem("biedit_apitoken"),
+				email:sessionStorage.getItem("biedit_email"),
+				name:sessionStorage.getItem("biedit_name")
+			}
 		},
 		showSpaceColor(){
 			if(this.rangeCompressActive || this.rangeTexturizeActive){
@@ -969,12 +1228,16 @@ export default {
 			console.log("desde updateSizeCanvas: ",this.ima);
 			this.deleteDrawCanvas();
 			
-			let width=this.$refs.div_effect_image.clientWidth;
+			//let width=this.$refs.div_effect_image.clientWidth;
+			let prop=this.handleCSS(this.$refs.div_effect_image);
+			let width=prop[0];
+			console.log("solo refs: ",this.$refs.div_effect_image);
+			console.log(width);
 			//let width=document.querySelector(".div_effect_image").clientWidth;
 			
-			let height=this.getNewHeight(width,this.ima.width,this.ima.height);
+			let height=this.getNewHeight(prop[0],this.ima.width,this.ima.height);
 			//let height=parseInt(this.$refs.div_effect_image.clientHeight);
-			this.imaEffect.width=width;
+			this.imaEffect.width=prop[0];
 			this.imaEffect.height=height;
 			//si el efecto rotate está activado no actualizamos, ya que al estar
 			//las dimensiones invertidas se descoloca la imagen
@@ -1544,5 +1807,65 @@ export default {
 .div_effect_image{
 	padding:0px !important;
 }
+.primary{
+	background-color:#448aff !important;
+}
+
+.accent{
+	background-color:#ff5252 !important;	
+}
+@font-face{
+	font-family:usuzi;
+	src:url(../assets/fonts/USUZI.TTF);
+}
+@font-face{
+	font-family:abduction;
+	src:url(../assets/fonts/abduction2002.ttf);
+}
+@font-face{
+	font-family:corporate;
+	src:url(../assets/fonts/corporateroundedextrabold.ttf);
+}
+@font-face{
+	font-family:designer;
+	src:url(../assets/fonts/designer-block.regular.ttf);
+}
+@font-face{
+	font-family:fontanero;
+	src:url(../assets/fonts/Fontanero-FFP.ttf);
+}
+@font-face{
+	font-family:futura;
+	src:url(../assets/fonts/FUTURAB.ttf);
+}
+@font-face{
+	font-family:glsnecb;
+	src:url(../assets/fonts/GLSNECB.TTF);
+}
+@font-face{
+	font-family:nikaia;
+	src:url(../assets/fonts/Nikaia_Medium.ttf);
+}
+@font-face{
+	font-family:timesnewroman;
+	src:url(../assets/fonts/timesbd.ttf);
+}
+@font-face{
+	font-family:ubuntu;
+	src:url(../assets/fonts/Ubuntu-Title.ttf);
+}
+@font-face{
+	font-family:yanone;
+	src:url(../assets/fonts/Yanone-Bold.otf);
+}
+@font-face{
+	font-family:zerogirl;
+	src:url(../assets/fonts/ZEROGIRL.TTF);
+}
+
+/*
+Primary: #448aff => Blue A200
+Accent: #ff5252 => Red A200
+*/
 
 </style>
