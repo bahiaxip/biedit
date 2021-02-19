@@ -1,57 +1,60 @@
 <template>
-	<div v-if="ima.width" >
-		<audio id="crop-audio" src="audio/crop_audio.wav" preload="auto"></audio>
-		<md-progress-spinner md-mode="indeterminate" v-if="displayLoading" ></md-progress-spinner>
-		<!--<md-button @click="toogle()" style="z-index:10">
-			Hola
-		</md-button>
-		<md-button @click="toogle2()" style="z-index:10">
-			Adios
-		</md-button>-->
-
-		<md-button class="md-icon-button md-accent md-raised" style="z-index:10;margin-top:5px" @click="cropImage()" v-if="ima.widthCut>100 && ima.heightCut >100">
-			<md-icon>adjust</md-icon>						
-		</md-button>
-		
-		<p  v-else>Para disponer del cuadro de recorte es necesaria una imagen con un ancho y alto mínimo de 100 píxeles</p>
-		
-		<div class="back-box-panel" id="back-box-panel"  >
-			<transition name="fade" >		
-			<!--<BoxPanel :ima="ima" v-if="ima.widthCut>100 && ima.heightCut>100"></BoxPanel>-->
-			<BoxPanel :ima="ima" v-if="onTransition"></BoxPanel>
-			
-			</transition>
+	<div>
+		<div v-if="!ima.width">
+			<md-progress-spinner md-mode="indeterminate" v-if="displayLoading" ></md-progress-spinner>
 		</div>
-				
-				
-				<!--<transition name="fade">-->
-				<md-dialog :md-active.sync="dialogBox" class="back-cut-panel " :md-click-outside-to-close="closeDialog" id="back-cut-panel" >
-					
-					<div class="cut-panel" id="cut-panel" v-if="ima.widthCut>100 && ima.heightCut>100">
-						<transition name="fade">
-						<img class="" :src="url+'get-image/'+ima.src" :width="ima.widthCut" :height="ima.heightCut" v-if="onTransition"/>
-						</transition>
-					</div>
-					<div class="cut-panel" v-else>
-						<img class="" :src="url+'get-image/'+ima.src" :width="ima.widthCut" :height="ima.heightCut"/>
-					</div>
-					
-				</md-dialog>
-				<!--</transition>-->
-				<md-dialog-alert class="confirmDialog" id="confirmDialog" 
-				:md-active.sync="dialogErrorActive"
-				:md-title = "msgeDialogTitle"
-				:md-content = "msgeDialogContent"
-				md-confirm-text="OK" />
-
-				<md-dialog-alert class="confirmDialog"
-				:md-active.sync="dialogSuccessActive"
-				:md-title = "msgeDialogTitle"
-				:md-content = "msgeDialogContent"
-				md-confirm-text="OK" />
+		<div v-else >
+			<audio id="crop-audio" src="audio/crop_audio.wav" preload="auto"></audio>
 			
-		
-	</div>	
+			<!--<md-button @click="toogle()" style="z-index:10">
+				Hola
+			</md-button>
+			<md-button @click="toogle2()" style="z-index:10">
+				Adios
+			</md-button>-->
+
+			<md-button class="md-icon-button md-accent md-raised" style="z-index:10;margin-top:5px" @click="cropImage()" v-if="ima.widthCut>100 && ima.heightCut >100">
+				<md-icon>adjust</md-icon>						
+			</md-button>
+			
+			<p  v-else>Para disponer del cuadro de recorte es necesaria una imagen con un ancho y alto mínimo de 100 píxeles</p>
+			
+			<div class="back-box-panel" id="back-box-panel"  >
+				<transition name="fade" >		
+				<!--<BoxPanel :ima="ima" v-if="ima.widthCut>100 && ima.heightCut>100"></BoxPanel>-->
+				<BoxPanel :ima="ima" v-if="onTransition"></BoxPanel>
+				
+				</transition>
+			</div>
+					
+					
+					<!--<transition name="fade">-->
+					<md-dialog :md-active.sync="dialogBox" class="back-cut-panel " :md-click-outside-to-close="closeDialog" id="back-cut-panel" >
+						
+						<div class="cut-panel" id="cut-panel" v-if="ima.widthCut>100 && ima.heightCut>100">
+							<transition name="fade">
+							<img class="" :src="url+'get-image/'+ima.src" :width="ima.widthCut" :height="ima.heightCut" v-if="onTransition"/>
+							</transition>
+						</div>
+						<div class="cut-panel" v-else>
+							<img class="" :src="url+'get-image/'+ima.src" :width="ima.widthCut" :height="ima.heightCut"/>
+						</div>
+						
+					</md-dialog>
+					<!--</transition>-->
+					<md-dialog-alert class="confirmDialog" id="confirmDialog" 
+					:md-active.sync="dialogErrorActive"
+					:md-title = "msgeDialogTitle"
+					:md-content = "msgeDialogContent"
+					md-confirm-text="OK" />
+
+					<md-dialog-alert class="confirmDialog"
+					:md-active.sync="dialogSuccessActive"
+					:md-title = "msgeDialogTitle"
+					:md-content = "msgeDialogContent"
+					md-confirm-text="OK" />
+		</div>
+	</div>
 </template>
 <script>
 import BoxPanel from './BoxPanel.vue';
@@ -72,7 +75,18 @@ export default {
 		*/
 	},
 	mounted(){
-		if(!this.ima.src){
+		//necesario actualizar medidas en redimensión (getWithAccording...)
+			//window.addEventListener(resize..)
+			//luego en destroy: window.removeEventListener(resize...)
+		
+		//si no existe imagen en el panel principal pk no se ha subido ni se ha 
+		//seleccionado desde el album mostramos mensaje
+		if(!this.name){
+			//lanzar dialog con mensaje
+		}
+		//si se ha seleccionado subir una imagen y aun no se ha cargado en el server 
+		//mostramos loading...
+		if(this.name && !this.ima.src){			
 			this.displayLoading=true;
 		}else{
 			this.onTransition=true;

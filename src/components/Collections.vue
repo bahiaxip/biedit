@@ -284,7 +284,7 @@ export default {
 							datos:"dato"
 						}
 					}*/
-					axios.post(this.url+'images/'+this.image.id,{dato:this.actualPage},headers).then(res => {
+					axios.post(this.url+'image/'+this.image.id,{dato:this.actualPage},headers).then(res => {
 						console.log("resssss: ",res);
 						if(res.data.error){
 							//this.msgeDialogAlert=res.data.error;
