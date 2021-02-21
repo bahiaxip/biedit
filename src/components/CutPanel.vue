@@ -14,7 +14,7 @@
 			</md-button>-->
 
 			<md-button class="md-icon-button md-accent md-raised" style="z-index:10;margin-top:5px" @click="cropImage()" v-if="ima.widthCut>100 && ima.heightCut >100">
-				<md-icon>adjust</md-icon>						
+				<md-icon>camera</md-icon>						
 			</md-button>
 			
 			<p  v-else>Para disponer del cuadro de recorte es necesaria una imagen con un ancho y alto mínimo de 100 píxeles</p>

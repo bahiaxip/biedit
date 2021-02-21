@@ -214,7 +214,7 @@
 							<md-icon>clear</md-icon>
 							<md-tooltip md-direction="left">Deshacer</md-tooltip>	
 						</md-menu-item>
-						<md-menu-item @click="confirmChange('shapes')"   v-if="polygonActivated">
+						<md-menu-item @click="confirmChange('polygon')"   v-if="polygonActivated">
 							<md-icon>check</md-icon>
 							<md-tooltip md-direction="left">Aplicar recorte</md-tooltip>
 						</md-menu-item>
@@ -302,15 +302,15 @@
 							<md-tooltip md-direction="left">Viñeta</md-tooltip>
 						</md-menu-item>
 						<md-menu-item title="Remolino" @click="confirmChange('remolino')">
-							<md-icon>toys</md-icon>
+							<md-icon md-src="img/effect/fan.svg"></md-icon>
 							<md-tooltip md-direction="left">Remolino</md-tooltip>	
 						</md-menu-item>
 						<md-menu-item title="Onda" @click="confirmChange('onda')">
 							<md-icon>waves</md-icon>
 							<md-tooltip md-direction="left">Onda</md-tooltip>	
 						</md-menu-item>
-						<md-menu-item title="Oleo" @click="confirmChange('oleo')">
-							<md-icon>toys</md-icon>
+						<md-menu-item title="Oleo" @click="confirmChange('oleo')" >
+							<md-icon md-src="img/effect/postage-stamp.svg"></md-icon>
 							<md-tooltip md-direction="left">Oleo</md-tooltip>	
 						</md-menu-item>
 						<md-menu-item title="Redondear" @click="confirmChange('esquinas')">
@@ -364,14 +364,14 @@
 			<!--
 					<div style="margin-top:10px;display:block" v-if="rangeCompressActive">
 
-						<label for="range_compress" title="Tipo de compresión"><span style="color:blue;font-weight:bold">{{rangeCompressVal}}</span></label>
+						<label for="range_compress" title="Tipo de compresión"><span style="color:blue;font-weight:bold">{{rangeCompress}}</span></label>
 
 						<div style="clear:left"></div>
 			-->
 						<!--detectar si es png o jpg para mostrar minimo y máximo distinto-->
 			<!--
-						<input name="range_compress" type="range" min="1" max="100" v-model="rangeCompressVal" v-if="this.ext=='jpg'"/>
-						<input name="range_compress" type="range" min="0" max="4" v-model="rangeCompressVal" v-if="this.ext=='png'"/>
+						<input name="range_compress" type="range" min="1" max="100" v-model="rangeCompress" v-if="this.ext=='jpg'"/>
+						<input name="range_compress" type="range" min="0" max="4" v-model="rangeCompress" v-if="this.ext=='png'"/>
 
 						<div style="clear:left"></div>
 			-->
@@ -379,7 +379,7 @@
 							<md-icon class="">cancel</md-icon>
 						</md-button>-->
 			<!--
-						<md-button class="md-icon-button md-raised md-dense md-primary"  md-menu-trigger @click="setCompress(rangeCompressVal)">
+						<md-button class="md-icon-button md-raised md-dense md-primary"  md-menu-trigger @click="setCompress(rangeCompress)">
 							<md-icon class="">check_circle_outline</md-icon>
 							<md-tooltip>Comprimir imagen</md-tooltip>
 						</md-button>
@@ -416,19 +416,19 @@
 						<md-icon md-src="img/effect/watermark-white.svg"></md-icon>
 						<md-tooltip>Marca de Agua</md-tooltip>
 					</md-button>
-					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showListImage('create-watermark')" :class="wmInputActivated ? 'primary':'accent'" style="margin:0 6px">
+					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showListImage('create-watermark')" :class="createWmActivated ? 'primary':'accent'" style="margin:0 6px">
 						<md-icon md-src="img/effect/format-annotation-plus-white.svg"></md-icon>
 						<md-tooltip>Crear marca de agua</md-tooltip>
 					</md-button>							
 					
 				</div>
 					<div style="clear:left"></div>
-					<div style="margin-top:10px;" v-if="compListActive || wmInputActivated">
+					<div style="margin-top:10px;" v-if="compListActive || wmInputActive||rangeTexturizeActive||rangeCompressActive">
 						<md-button class="md-icon-button  md-raised md-accent md-dense"  md-menu-trigger @click="cancelSelect()"  style="margin-top:5px">
 							<md-icon >clear</md-icon>
 							<md-tooltip>Deshacer</md-tooltip>
 						</md-button>
-						<md-button class="md-icon-button  md-raised md-primary md-dense"  md-menu-trigger @click="setComposite()" title="Crear composición" style="margin-top:5px" v-if="this.compositeSelectedId || this.inputWm">
+						<md-button class="md-icon-button  md-raised md-primary md-dense"  md-menu-trigger @click="confirmChange(typeAction)" title="Crear composición" style="margin-top:5px" v-if="compositeSelectedId || inputWm || rangeTexturize!=1 || rangeCompressActive ">
 							<md-icon class="">check</md-icon>
 						</md-button>
 					</div>
@@ -439,8 +439,8 @@
 						<md-list :md-expand-single="expandSingle">
 							<md-list-item md-expand :md-expanded.sync="expandCompPos">
 								<md-icon v-html="compPosSelectedHtml"></md-icon>
-								{{compoPosStr}}
-								<md-tooltip md-direction="right">Posición {{compoPosStr}}</md-tooltip>
+								{{compPosStr}}
+								<md-tooltip md-direction="right">Posición {{compPosStr}}</md-tooltip>
 							<!--<md-icon :md-src="'img/effect/'+compositePositionIconSelected.center+'.svg'">
 								
 							</md-icon>-->
@@ -489,7 +489,7 @@
 						</md-list>
 					</div>
 			<!-- input create watermark -->
-					<div style="margin-top:10px;" v-if="wmInputActivated">
+					<div style="margin-top:10px;" v-if="wmInputActive">
 						<md-field>
 							<label>Texto</label>
 							<md-input v-model="inputWm" maxlength="50"></md-input>
@@ -497,7 +497,7 @@
 						<!--<label for="range_fontsize" style="font-family:usuzi">Tamaño de fuente</label>
 						<div style="clear:left"></div>-->
 					</div>
-					<div v-if="wmInputActivated" class="inputFontSize">
+					<div v-if="wmInputActive" class="inputFontSize">
 						<md-chip class="md-primary" style="padding-top:2px">{{rangeWmFontSize}}</md-chip>
 						<div style="clear:left"></div>
 						<md-icon style="display:inline-block" md-src="img/effect/format-size.svg"></md-icon>
@@ -505,7 +505,7 @@
 						<input type="range" v-model="rangeWmFontSize" name="range_fontsize" min="1" max="100" />
 						<md-tooltip md-direction="left">Tamaño de letra</md-tooltip>
 					</div>
-					<div style="margin-top:10px;" v-if="wmInputActivated">
+					<div style="margin-top:10px;" v-if="wmInputActive">
 
 						<md-list :md-expand-single="expandSingle" >
 							
@@ -517,7 +517,7 @@
 								
 								<md-list slot="md-expand" class="md-scrollbar"  style="max-height:200px;overflow:auto">
 
-									<md-list-item style="font-family:ubuntu" @click="setFontFamily('Ubuntu')" >Ubuntu</md-list-item>
+									<md-list-item style="font-family:ubuntu" @click="setFontFamily('ubuntu')" >Ubuntu</md-list-item>
 									<md-list-item style="font-family:timesnewroman" @click="setFontFamily('timesnewroman')">Times New Roman</md-list-item>
 									<md-list-item style="font-family:nikaia" @click="setFontFamily('nikaia')">Nikaia</md-list-item>
 									<md-list-item style="font-family:usuzi" @click="setFontFamily('usuzi')">Usuzi</md-list-item>
@@ -538,12 +538,12 @@
 						
 					</div>
 					<div class="colorpicker" style="padding-top:10px;border-radius:5%">
-						<span v-if="wmInputActivated" style="margin-left:15px;float:left;">
+						<span v-if="wmInputActive" style="margin-left:15px;float:left;">
 							<md-icon style="">color_lens</md-icon>
 							
 						</span>
-						<div style="margin-top:10px;display:inline-block;margin:auto;" v-if="wmInputActivated">
-							<verte picker="square" model="rgb" menuPosition="top" >
+						<div style="margin-top:10px;display:inline-block;margin:auto;" v-if="wmInputActive">
+							<verte v-model="color" picker="square" model="rgb" menuPosition="top">
 							</verte>
 							
 						</div>
@@ -568,18 +568,18 @@
 					<!-- range compression -->
 					<div style="margin-top:10px;display:block" v-if="rangeCompressActive">
 
-						<label for="range_compress" title="Tipo de compresión"><span style="color:blue;font-weight:bold">{{rangeCompressVal}}</span></label>
+						<label for="range_compress" title="Tipo de compresión"><span style="color:blue;font-weight:bold">{{rangeCompress}}</span></label>
 
 						<div style="clear:left"></div>
 						<!--detectar si es png o jpg para mostrar minimo y máximo distinto-->
-						<input name="range_compress" type="range" min="1" max="100" v-model="rangeCompressVal" v-if="this.ext=='jpg'"/>
-						<input name="range_compress" type="range" min="0" max="4" v-model="rangeCompressVal" v-if="this.ext=='png'"/>
+						<input name="range_compress" type="range" min="1" max="100" v-model="rangeCompress" v-if="this.ext=='jpg'"/>
+						<input name="range_compress" type="range" min="0" max="4" v-model="rangeCompress" v-if="this.ext=='png'"/>
 
 						<div style="clear:left"></div>
-						<md-button class="md-icon-button md-raised md-dense md-primary"  md-menu-trigger @click="setCompress(rangeCompressVal)">
+						<!--<md-button class="md-icon-button md-raised md-dense md-primary"  md-menu-trigger @click="setCompress(rangeCompress)">
 							<md-icon class="">check_circle_outline</md-icon>
 							<md-tooltip>Comprimir imagen</md-tooltip>
-						</md-button>
+						</md-button>-->
 					</div>
 					<div style="margin-top:10px;display:block" v-if="rangeTexturizeActive">
 
@@ -589,15 +589,15 @@
 
 						<div style="clear:left"></div>
 
-						<md-button class="md-icon-button md-raised md-dense md-accent"  md-menu-trigger @click="texturize(0)">
+						<!--<md-button class="md-icon-button md-raised md-dense md-accent"  md-menu-trigger @click="texturize(0)">
 							<md-icon class="">cancel</md-icon>
 							<md-tooltip>Deshacer</md-tooltip>
-						</md-button>
+						</md-button>-->
 
-						<md-button class="md-icon-button md-raised md-dense md-primary"  md-menu-trigger @click="texturize(rangeTexturize)">
+						<!--<md-button class="md-icon-button md-raised md-dense md-primary"  md-menu-trigger @click="texturize(rangeTexturize)">
 							<md-icon class="">check_circle_outline</md-icon>
 							<md-tooltip>Aplicar texturización</md-tooltip>
-						</md-button>
+						</md-button>-->
 					</div>
 					<div style="clear:left"></div>
 					
@@ -657,13 +657,21 @@
 				md-cancel-text="Cancelar"
 				@md-cancel="cancelChange"
 				@md-confirm="setChange" />
-	<!--
-				<md-dialog-alert class="confirmDialog"
-				:md-active.sync="dialogErrorActive"
-				md-title = "Ocurrió un error"
-				:md-content = "msgeDialogAlert"
-				md-confirm-text="OK" />
 
+				<!--<md-dialog-confirm class="confirmEffect"
+				:md-active.sync="dialogConfirmActive2"
+				:md-title = "'Se han detectado otros cambios sin aplicar. ¿Continuar?'"
+				md-confirm-text="OK"
+				md-cancel-text="Cancelar"
+				@md-cancel="cancelChange"
+				@md-confirm="setChange" />-->
+	
+				<md-dialog-alert class="confirmDialog"
+				:md-active.sync="dialogInfoActive"
+				md-title = "Nada que actualizar"
+				md-content = "No se han detectado cambios"
+				md-confirm-text="OK" />
+	<!--
 				<md-dialog-alert class="confirmDialog"
 				:md-active.sync="dialogSuccessActive"
 				md-title = "Creado correctamente"
@@ -721,13 +729,21 @@ export default {
 			imgTrans:false,
 			//confirmación modal dialog
 			dialogConfirmActive:false,
+			//dialogConfirmActive2:false,
 			//textos modal dialog
 			dialog_title:{
 				filter:"¿Aplicar el filtro seleccionado?",
 				shapes:"¿Aplicar el recorte con la forma seleccionada?",
 				undoAll:"¿Desea deshacer todos los cambios?",
 				processAll:"¿Desea aplicar todos los efectos seleccionados?",
-				effect: "¿Desea aplicar el efecto seleccionado?"
+				effect: "¿Desea aplicar el efecto seleccionado?",
+				pendentTasks:"Se han detectado tareas pendientes. ¿Desea continuar con el efecto seleccionado?",
+				fussion:"¿Desea aplicar la fusión con la imagen seleccionada?",
+				watermark:"¿Desea aplicar la marca de agua con la imagen seleccionada?",
+				createWatermark:"¿Desea crear la marca de agua?",
+				compress: "¿Desea comprimir la imagen?",
+				texturize:"¿Desea texturizar la imagen con el valor seleccionado?"
+
 			},
 			dialog_selected:null,
 			//type utilizado para confirmación de filtro y de forma
@@ -759,15 +775,21 @@ export default {
 			//modal dialog que muestra una vista previa de la imagen con los efectos que 
 			//ya se ha guardado en el server			
 			dialogImage:false,
+
+			dialogInfoActive:false,
+
 			//almacena la imagen que devuelve el server al procesar un efecto
 			tmpImage:null,
 			//efecto de carga
 			displayLoading:false,
 		//texturize
-			rangeTexturizeActive:false,
-			rangeTexturize:1,
-			//identificador del efecto texturizar 
+			//identificador del efecto texturizar			
 			texturizeActivated:false,
+			//identificador de visibilidad del input type range de texturize
+			rangeTexturizeActive:false,
+			//valor por defecto de range de texturize
+			rangeTexturize:1,
+			
 		//rotate
 			//identificador del efecto de rotate
 			rotateActivated:false,
@@ -780,11 +802,17 @@ export default {
 			typeReflex:null,
 		//compress
 			//identificador del efecto de compresión
+			compressActivated:false,
+			//identificador del input range de compresión
 			rangeCompressActive:false,
-			//compresión por defecto
-			rangeCompressVal:80,
+			//valor input range
+			rangeCompress:null,	
+			rangeCompressAssigned:null,		
 		//spacecolor
+			//falta comprobar identificador
 			//identificador del efecto convertir a espacio de color (RGB||CMYK||SRGB)
+			spaceColorActivated:false,
+			//identificador de desplegable de espacio de color
 			spaceColorActive:true,
 			spaceColor:null,
 			spaceColorSelected:null,
@@ -801,15 +829,18 @@ export default {
 			expandSingle:true,
 			expandCompositeList:false,
 			//tipo de composite (fussion||watermark||create-watermark)
-			compositeAction:null,
+			typeAction:null,
 		//watermark (composición de marca de agua)
 			//identificador del efecto watermark
 			wmActivated:false,
 			//position watermark
 			compPosListActive:null,
 			expandCompPos:false,
+			//identificador seleccionado en formato string standar para pasar al server
+			//center por defecto (topLeft||topRight||bottomLeft||bottomRight)
+			compPos:"center",
 			//valor de desplegable position, Centrado por defecto
-			compoPosStr:"Centrado",
+			compPosStr:"Centrado",
 			//opciones posibles de position del desplegable
 			compPosStrOptions:{
 				center:"Centrado",
@@ -818,7 +849,7 @@ export default {
 				bottomRight: "Inf. derecha",
 				bottomLeft: "Inf. izquierda"
 			},
-			compPosSelected:false,
+			//compPosSelected:false,
 			compPosSelectedHtml:'<md-icon>crop_square</md-icon>',
 			compPosIconSelected:{
 				center:'<md-icon >crop_square</md-icon>',
@@ -829,7 +860,10 @@ export default {
 			},
 		//create watermark (creación marca de agua)
 			//identificador del efecto create-watermark
-			wmInputActivated:false,
+			createWmActivated:false,
+			//identificador de visibilidad de input text, input range, desplegable (list)
+			//y colorpicker (verte)
+			wmInputActive:false,
 			//valor de texto introducido para creación marca de agua
 			inputWm:null,
 			//rango de tamaño de letra para la nueva marca de agua
@@ -837,9 +871,12 @@ export default {
 			//tipo de letra seleccionada
 			fontFamilySelected:"ubuntu",
 			fontSelected:"Ubuntu",
+			color:null,
 			expandFontFamily:false,
 			//lista de tareas en formato string para poder referenciarlas y actualizarlas
-			tasks:["rotateActivated","reflexActivated","filterActivated","polygonActivated","effectActivated","fussionActivated","wmActivated","wmInputActivated"],
+			tasks:["rotateActivated","reflexActivated","filterActivated","polygonActivated","effectActivated"],
+			//tasks2 siempre devuelve un solo efecto activado
+			tasks2:["fussionActivated","wmActivated","createWmActivated","compressActivated","texturizeActivated","spaceColorActivated"],
 			//efecto de carga mientras carga la imagen
 			loadingImage:false,
 
@@ -899,33 +936,12 @@ export default {
 			//mostrar dialog
 			console.log("no hay width")
 		}
+		this.updateExtension();
 		
 		
 	},
 	updated(){
-		//asignamos en la variable this.ext la extensión de la imagen para mostrar un 
-		//tipo de input (range) u otro.
-		if(this.ima.src){
-			let ext=this.ima.src.split(".").pop();			
-			console.log("desde updated: ",ext)
-			if(ext.toLowerCase()=="png")
-				ext="png";
-			else if(ext.toLowerCase()=="gif")
-				ext="gif";
-			else
-				ext="jpg";
-			
-			this.ext=ext;
-		}
-		console.log(this.ext);
-		
-	/*
-		let width=this.$refs.image.clientWidth;
-		let height=this.$refs;		
-		console.log(width);
-		console.log(height);		
-		this.$refs.canvas.width=width;
-	*/
+		//
 	},
 	destroyed(){
 		//detectamos si existe un filtro seleccionado antes de salir
@@ -935,22 +951,51 @@ export default {
 		window.removeEventListener("resize", this.updateSizeCanvas);
 	},
 	methods:{
+		updateExtension(){
+			//asignamos en la variable this.ext la extensión de la imagen para mostrar un 
+		//tipo de input (range) de compresión u otro y asignamos valor por defecto.
+			if(this.ima.src){
+				let ext=this.ima.src.split(".").pop();				
+				if(ext.toLowerCase()=="png"){
+					ext="png";
+					this.rangeCompress=4;					
+				}
+				else if(ext.toLowerCase()=="gif"){
+					//no necesario
+					ext="gif";
+				}else{
+					ext="jpg";
+					this.rangeCompress=80;
+				}
+				this.ext=ext;
+				this.rangeCompressAssigned=this.rangeCompress;
+			}			
+		},
 		//filtramos los efectos que están activados en formato string
-		testActivatedTasks(){
-			let list=this.tasks;
+		testActivatedTasks(tasksList){
+			let list=tasksList;
 			let listActivated=list.filter((effect,index)=>this[list[index]]);
 			if(listActivated.length<=0)
 				return;
 			return listActivated
 		},
 		//desactivar todas las tareas
-		undoAll(){			
-			if(!this.testActivatedTasks())
+		undoAll(){
+			//comprueba si no existe ningún efecto activado de ninguno de los 2 grupos
+			if(!this.testActivatedTasks(this.tasks) && !this.testActivatedTasks(this.tasks2))
 				return
-			this.testActivatedTasks().forEach((val)=>{
-				let split=val.split("A");
-				this.undoTask(split[0]);
-			})
+			//si hay, desactiva los efectos activados del primer grupo
+			if(this.testActivatedTasks(this.tasks))
+				this.testActivatedTasks(this.tasks).forEach((val)=>{
+					let split=val.split("A");
+					this.undoTask(split[0]);
+				})
+			//si hay, desactiva el efecto (solo puede haber uno) del segundo grupo
+			if(this.testActivatedTasks(this.tasks2) && this.testActivatedTasks(this.tasks2).length==1)
+				this.testActivatedTasks(this.tasks2).forEach((val) => {
+					let split=val.split("A");					
+					this.undoTask(split[0]);
+				})
 		},
 		undoTask(task){
 			if(task=="rotate"){
@@ -962,6 +1007,9 @@ export default {
 				this.deleteDrawCanvas();
 			}else if(task=="reflex"){
 				this.reflex();
+			}else{
+				//desactiva todos los efectos del segundo grupo
+				this.cancelSelect();
 			}
 		},
 		//procesa los efectos seleccionados uno a uno utilizando el resultado del 
@@ -971,11 +1019,11 @@ export default {
 		//recorte circular, y así consecutivamente en el mismo for 
 		
 		async processAll(){
-			if(!this.testActivatedTasks())
+			if(!this.testActivatedTasks(this.tasks))
 				return
 			
 			//lista de efectos activados
-			let listAll=this.testActivatedTasks();
+			let listAll=this.testActivatedTasks(this.tasks);
 			let imgTmp=[]; 
 			this.effectMultiple=true;
 			//usamos el for loop en lugar del foreach para que funcione la promesa con
@@ -1005,14 +1053,22 @@ export default {
 				*/
 				
 				imgTmp.push(result);
-			}//.then(()=>{console.log("después del foreach: ")})
-			//si hay más de 1 efecto eliminamos el último y pasamos el resto
+			}
+			//si hay más de 1 efecto eliminamos el último con pop() y pasamos el resto
+
+			//elemento final
+			let final;
 			if(imgTmp.length>1){
 				//eliminamos el último elemento del array (para que no se elimine)
-				imgTmp.pop();
+				final=imgTmp.pop();
 				//pasamos el array de objetos Image que se deben eliminar
 				this.deleteImages(imgTmp);
+			}else{
+				final=imgTmp[0];
 			}
+			this.dialogImage=true;
+			this.tmpImage=final;
+			console.log("final: ",final);
 			console.log("IMGTMP: ",imgTmp);
 			this.effectMultiple=false;
 			this.undoAll();
@@ -1198,31 +1254,51 @@ export default {
 		},
 		//selección en el desplegable(list "material") de la posición de la marca de agua (watermark)
 		selectCompositePosition(position){
+			//asignamos valores para mostrar en el desplegable
 			this.compPosSelectedHtml=this.compPosIconSelected[position];
-			this.compoPosStr=this.compPosStrOptions[position];
-			this.compPosSelected=true;
+			this.compPosStr=this.compPosStrOptions[position];
+			this.compPos=position;
+			console.log("position desde selectCompositePosition: ",position);
+
+			//this.compPosSelected=true;
 			this.expandCompPos=false;
 		},
 		//Cancela las selecciones iniciadas del efecto fusión, watermark y create-watermark
+		//En lugar de desactivar todo directamente se podría comprobar cual
+		//está activado (fussion, watermark o create-watermark) y desactivarlo
 		cancelSelect(){
-			//image
+		//reinicia la acción seleccionada (fussion|watermark|create-watermark)	
+			this.typeAction=null;
+
+		//desactiva desplegable que sirve para fussion y watermark
 			this.compositeSelectedHtml="Seleccionar";
 			this.compositeSelectedId=null;
 			this.compListActive=false;
-			//this.wmListaActive=false;
-			this.compositeAction=null;
-			//watermark
+		
+		//desactiva desplegable de posición (watermark)
 			this.compPosListActive=false;
-			this.compPosSelected=false;
+			//this.compPosSelected=false;
 			//establecida la opción de centrado, por defecto
-			this.compoPosStr=this.compPosStrOptions.center;
+			this.compPosStr=this.compPosStrOptions.center;
 			this.compPosSelectedHtml=this.compPosIconSelected.center;
-
+			this.compPos="center";
+		//desactiva los identificadores
+			this.fussionActivated=false;		
 			this.wmActivated=false;
-			this.fussionActivated=false;
-			//create watermark
-			this.wmInputActivated=false;
+			this.createWmActivated=false;
+
+			//desactiva el input text, el input range,el desplegable (list) y el colorpicker
+			this.wmInputActive=false;
+			//reinicia el valor del input para create-watermark
 			this.inputWm=null;
+		//desactiva el range texturize
+			this.rangeTexturizeActive=false;
+			//reincia el valor del input range de texturize
+			this.texturize(0);
+		//desactiva el range de compresión
+			this.rangeCompressActive=false;
+			//asignar el valor por defecto (80 para jpg, 4 para png)
+			this.updateExtension();
 		},
 		selectSpaceColor(){			
 			console.log("spaceColorSelected: ",this.spaceColor);
@@ -1230,8 +1306,8 @@ export default {
 		//muestra las opciones de selección de los efectos fusión, watermark y 
 		//create-watermark cancelando anteriores selecciones de algunos de los 3
 		showListImage(action){
-			//si hay desplegable visible...
-			if(this.compListActive || this.wmInputActivated){				
+		//si hay desplegable visible...
+			if(this.compListActive || this.wmInputActive || this.rangeTexturizeActive || this.rangeCompressActive){				
 				if(action=="fussion"){
 					if(!this.fussionActivated){
 						this.cancelSelect();					
@@ -1250,16 +1326,16 @@ export default {
 						//acción y así resetearlo (opcional)
 					}
 				}else if(action=="create-watermark"){
-					if(!this.wmInputActivated){
+					if(!this.createWmActivated){
 						this.cancelSelect()
 						//falta la vista del input para entrada de texto
-						this.wmInputActivated=true;
+						this.wmInputActive=true;
 						//el resto de opciones
 					}
 				}
 				//algo falla aquí
-				this.compositeAction=null;
-			//si no hay desplegable visible ni input de texto (destinado a crear la marca de agua) se hace visible el que se haya seleccionado (fussion, watermark o create-watermark) 
+				this.typeAction=action;
+		//si no hay desplegable visible ni input de texto (destinado a crear la marca de agua) se hace visible el que se haya seleccionado (fussion, watermark o create-watermark) 
 			}else{
 				if(action=="fussion"){
 					this.fussionActivated=true;
@@ -1269,16 +1345,21 @@ export default {
 					this.compListActive=true;
 					this.compPosListActive=true;
 				}else if(action=="create-watermark"){
-					this.wmInputActivated=true;
+					//wmInputActive en true muestra el input, el range, el list y el 
+					//componente verte (paleta interactiva)
+					this.createWmActivated=true;
+					this.wmInputActive=true;
 					//entrada de texto
 				}
-				this.compositeAction=action;
+				this.typeAction=action;
 			}
+
 		},
 		//solicita procesar los efectos de fusión, watermark y create-watermark al server
-		//identificando el tipo de efecto mediante la variable compositeAction
+		//identificando el tipo de efecto mediante la variable typeAction
 		setComposite(){
-			if(this.compositeAction){
+			if(this.typeAction){
+				console.log("typeAction desde setComposite: ",this.typeAction);
 				let session=this.testSession();
 				if(!session)
 					return;
@@ -1303,13 +1384,14 @@ export default {
 						}
 					}
 					//identificamos si es el efecto de fusión o el watermark
-					if(this.compositeAction=="fussion"){
+					if(this.typeAction=="fussion"){
 						axios.post(this.url+'composite',data,headers).then(res => {
 							//if()
 							console.log(res);
 						})
 
-					}else if(this.compositeAction=="watermark"){
+					}else if(this.typeAction=="watermark"){
+						data.position=this.compPos;
 						axios.post(this.url+'watermark',data,headers).then(res => {
 							console.log(res);
 						})
@@ -1320,7 +1402,9 @@ export default {
 					let data={
 						email:email,
 						inputWm:this.inputWm,
-						FontSize:this.rangeWmFontSize
+						fontSize:this.rangeWmFontSize,
+						fontFamily:this.fontFamilySelected,
+						color:this.color
 					}
 					let headers={
 						headers:{
@@ -1328,7 +1412,7 @@ export default {
 						}
 					}
 					console.log(this.inputWm);
-					if(this.compositeAction=="create-watermark"){
+					if(this.typeAction=="create-watermark"){
 						
 						axios.post(this.url+'watermark/create',data,headers).then(res=>{
 							console.log(res);
@@ -1338,7 +1422,7 @@ export default {
 				}
 			}
 			else{
-				console.log("no hay ningún archivo seleccionado");
+				console.log("Faltan datos por seleccionar");
 			}
 		},
 		//establece el font family para el efecto create-watermark (creación marca de agua)
@@ -1381,34 +1465,42 @@ export default {
 				this.rangeTexturizeActive=false;
 			}
 			if(this.spaceColorActive){
+				this.spaceColorActivated=false;
 				this.spaceColorActive=false;
 			}else{
+				this.spaceColorActivated=true;
 				this.spaceColorActive=true;
 			}
 		},
-		//mostrar/ocultar input range de texturize
+		//mostrar/ocultar input range de texturize 
 		showRangeTexturize(){
+			/*
 			if(this.rangeCompressActive || this.spaceColorActive)
 				this.rangeCompressActive=false;
 				this.spaceColorActive=false;
-			if(this.rangeTexturizeActive){
-				this.rangeTexturizeActive=false;
-				console.log(this.rangeTexturize);
-			}else{
+				*/
+			if(!this.rangeTexturizeActive){
+				this.cancelSelect();
 				this.rangeTexturizeActive=true;
+				this.texturizeActivated=true;
 			}
+				
+			
 		},
 		//mostrar-ocultar input range de compression
 		showRangeCompress(){
+			/*
 			if(this.rangeTexturizeActive || this.spaceColorActive)
 				this.rangeTexturizeActive=false;
 				this.spaceColorActive=false;
-			if(this.rangeCompressActive){
-				this.rangeCompressActive=false;
-				//console.log(this.rangeTexturize);
-			}else{
+			*/
+			if(!this.rangeCompressActive){				
+				this.cancelSelect();
 				this.rangeCompressActive=true;
-			}
+				this.compressActivated=true;
+				this.typeAction="compress";
+			}			
+			
 		},
 
 		//crea un efecto de textura 
@@ -1727,7 +1819,7 @@ export default {
 			if(this.rotateActivated ){
 				this.rotate(null);
 			}
-			this.spaceColorActive=false;
+			//this.spaceColorActive=false;
 			
 		},
 
@@ -1749,32 +1841,129 @@ export default {
 		cancelLoadImage(){
 			//pasamos a null para que se muestre el spinner
 			//this.tmpImage=null;
+
 			this.dialogImage=false;
 		},
+		//muestra modal con un mensaje de confirmación o de información, detectando
+		//si existen otras tareas pendientes 
 		confirmChange(type_effect){
-			//Activamos el modal de confirmación de filtro
-			
-			if(type_effect=='filter'){				
-				this.dialog_selected=this.dialog_title.filter;
-			}
-			else if(type_effect=='shapes'){
-				this.dialog_selected=this.dialog_title.shapes;	
-			}else if(type_effect=="undoAll"){
-				this.dialog_selected=this.dialog_title.undoAll;
-			}else if(type_effect=="processAll"){
-				this.dialog_selected=this.dialog_title.processAll;			
-			}else{
-				this.dialog_selected=this.dialog_title.effect;
-			}
-			this.dialogConfirmActive=true;
-			//asignando datos para setChange() (adonde es enviado si se pulsa OK)
+			//se asigna el tipo de efecto (filter,polygon,polaroid...), destinado
+			//al método setChange() que es llamado al pulsar OK en el modal de confirmación
 			this.type=type_effect;
+			let list=this.testActivatedTasks(this.tasks);
+			//si no existen cambios pendientes y se ha pulsado el botón de deshacer todo
+			//o procesar todo se envia un dialog-alert en lugar de un dialog-confirm
+			if(!list && type_effect=="undoAll" ||
+				!list && type_effect=="processAll" ){
+				this.dialogInfoActive=true;
+				return;
+			}
+		
+
+			//En caso de que se use el método de actualización propio de filter o de 
+			//shapes (que se encuentran con el icono de check en el desplegable) se 
+			//comprueba que haya tareas pendientes del primer grupo que no sea la 
+			//propia, es decir, si pulsamos el botón de procesar filtro comprobamos que 
+			//exista otra tarea además de filter o si pulsamos el botón de procesar 
+			//forma que exista otra tarea además de shapes, ya que entonces no tendría 
+			//sentido incluir el aviso de que existen tareas pendientes
+
+		//Para lo descrito anteriormente creamos un array e incluimos todos los efectos 
+		//activados del primer grupo exceptuando el propio 
+		let pendentTasks=[];
+		if(list){
+			list.forEach((item)=> {
+				let split=item.split("A");
+				if(split[0]!=type_effect)
+					pendentTasks.push(split[0]);
+				
+			})
+		}
+		//se comprueba si existen otros efectos pendientes (del primer grupo) 
+		//y se asigna un mensaje que incluye un aviso de esas tareas pendientes,
+		//exceptuando los métodos processAll() y undoAll()
+			if(list && type_effect!="undoAll" && type_effect!="processAll" && pendentTasks.length>0){
+
+					this.dialog_selected=this.dialog_title.pendentTasks;
+			}else{
 			
-			
-			console.log("Confirmando...");
+				switch(type_effect){
+					case "filter":
+						this.dialog_selected=this.dialog_title.filter;
+						break;
+					case "shapes":
+						this.dialog_selected=this.dialog_title.shapes;
+						break;
+					case "undoAll":
+							this.dialog_selected=this.dialog_title.undoAll;
+						break;
+					case "processAll":
+						this.dialog_selected=this.dialog_title.processAll;
+						break;
+					case "fussion":
+						this.dialog_selected=this.dialog_title.fussion;
+						break;
+					case "watermark":
+						this.dialog_selected=this.dialog_title.watermark;
+						break;
+					case "create-watermark":
+						this.dialog_selected=this.dialog_title.createWatermark;
+						break;
+					case "compress":
+						this.dialog_selected=this.dialog_title.compress;
+						break;
+					default:
+						this.dialog_selected=this.dialog_title.effect;
+				}
+				/*
+				if(type_effect=='filter'){				
+					this.dialog_selected=this.dialog_title.filter;
+				}else if(type_effect=='shapes'){
+					this.dialog_selected=this.dialog_title.shapes;	
+				}else if(type_effect=="undoAll"){
+					this.dialog_selected=this.dialog_title.undoAll;
+				}else if(type_effect=="processAll"){
+					this.dialog_selected=this.dialog_title.processAll;			
+				}else{
+					this.dialog_selected=this.dialog_title.effect;
+				}
+				*/
+			}			
+			this.dialogConfirmActive=true;
+			console.log("Confirmando...",this.typeAction);
 		},
 		//método al dar OK en la confirmación de un efecto de filtro, o recorte de forma
+		//o efecto
 		setChange(){
+			if(this.type){
+				switch(this.type){
+					case "filter":
+						this.setFilter()
+						break;
+					case "shapes":
+						this.setPolygon()
+						break;
+					case "undoAll":
+						this.undoAll()
+						break;
+					case "processAll":
+						this.processAll()
+						break;
+					case "texturize":
+						this.texturize()
+						break;
+					case "fussion":
+					case "watermark":
+					case "create-watermark":
+						this.setComposite()
+						break;
+					case "compress":
+						this.setCompress(this.rangeCompress);
+						break;
+					default:
+						this.setEffect(this.type)
+				}
+			/*
 			if(this.type=="filter"){
 				this.setFilter();
 			}else if(this.type=="shapes"){
@@ -1783,18 +1972,26 @@ export default {
 				this.undoAll();
 			}else if(this.type=="processAll"){
 				this.processAll();
-			}else{
+			}else if(this.type=="texturize"){
+				this.texturize();
+			}else if(this.type=="fussion"){
+				this.setComposite();
+			}else{				
 				this.setEffect(this.type);
+				
 			}
+			*/
 			console.log("desde setChange: ",this.type);
 			//console.log("estableciendo cambios en imagen: ",this.type);
 			//this.type=null;
-			//this.filterProp=null;
+			//this.filterProp=null;	
+			}
+			
+		
 		},
 		//deshace el filtro, necesario identificar desactivado
 		cancelChange(){
-			console.log("cancelado");
-			
+			console.log("cancelado");			
 		},
 		//asignamos el filtro solo en pantalla
 		filter(prop){
@@ -2191,24 +2388,18 @@ export default {
 					this.dialogImage=true;
 					console.log("tmpImage: ",this.tmpImage);
 					axios.post(this.url+'polygon',data,headers).then(res=>{
-
-						//comprobar si el origen es processAll()
-						if(res)
-							resolve(res.data.image);
-						else
-							reject(Error("Error en setPolygon"));
-						/*
 						if(res.data.image){
-							
-							this.tmpImage=res.data.image;
-							console.log("tmpImage2: ",this.tmpImage);
-							//console.log(this.tmpImage);
-							console.log("dialog_image",res.data.image);
+							//comprobar si el origen es processAll()
+							if(!this.effectMultiple){
+								this.dialogImage=true;
+								this.tmpImage=res.data.image;	
+							}else{
+								resolve(res.data.image);
+							}
 						}else{
-							//console.log(res.data.data);
-							console.log("hubo un error");
+							reject(Error("Error en effect"));
 						}
-						*/
+						
 					})
 				}
 			})
