@@ -423,12 +423,14 @@
 					
 				</div>
 					<div style="clear:left"></div>
-					<div style="margin-top:10px;" v-if="compListActive || wmInputActive||rangeTexturizeActive||rangeCompressActive">
-						<md-button class="md-icon-button  md-raised md-accent md-dense"  md-menu-trigger @click="cancelSelect()"  style="margin-top:5px">
+				<!-- cancel botón -->
+					<div style="margin-top:10px;" v-if="compListActive || wmInputActive||rangeTexturizeActive||rangeCompressActive||spaceColorActive || channelActive">
+						<md-button class="md-icon-button  md-raised md-accent md-dense"  md-menu-trigger @click="cancelAll()"  style="margin-top:5px">
 							<md-icon >clear</md-icon>
 							<md-tooltip>Deshacer</md-tooltip>
 						</md-button>
-						<md-button class="md-icon-button  md-raised md-primary md-dense"  md-menu-trigger @click="confirmChange(typeAction)" title="Crear composición" style="margin-top:5px" v-if="compositeSelectedId || inputWm || rangeTexturize!=1 || rangeCompressActive ">
+				<!-- check botón -->
+						<md-button class="md-icon-button  md-raised md-primary md-dense"  md-menu-trigger @click="confirmChange(typeAction)" title="Crear composición" style="margin-top:5px" v-if="compositeSelectedId || inputWm || rangeTexturize!=1 || rangeCompressActive || spaceColorSelected!=spaceColor || channelActive" >
 							<md-icon class="">check</md-icon>
 						</md-button>
 					</div>
@@ -550,11 +552,12 @@
 						<md-tooltip md-direction="left">Color de texto</md-tooltip>
 					</div>
 
-					<!--espacio de color -->
+				<!--espacio de color -->
 					<div style="margin-top:10px;" v-if="spaceColorActive">
 						<md-field style="">
-							<label for="spaceColor">Espacio de Color</label>
-							<md-select  v-model="spaceColorSelected" name="spaceColor" id="spaceColor" @input="selectSpaceColor()">
+							<label for="space_color" v-if="spaceColorSelected==spaceColor">Espacio de Color actual</label>
+							<label for="space_color" v-else>Convertir a</label>
+							<md-select  v-model="spaceColorSelected" name="space_color" id="space_color" @input="selectSpaceColor()">
 								<md-option v-for="spacecolor in spacecolors" :key="spacecolor" :value="spacecolor">{{spacecolor}}
 									
 								</md-option>
@@ -565,7 +568,41 @@
 						
 						<div style="clear:left"></div>								
 					</div>
-					<!-- range compression -->
+				<!-- separar canales en escala de grises -->
+					<div style="margin-top:10px;" v-if="channelActive">
+						<md-field style="">
+							<label for="channels">Canales</label>
+							<!--si el space color original es RGB o SRGB-->
+							<md-select  v-model="channelSelected" name="channels" id="channels" @input="selectChannel()" v-if="spaceColor=='RGB' || spaceColor=='SRGB'">
+								<md-option value="RED">
+									RED
+								</md-option>
+								<md-option value="GREEN">
+									GREEN
+								</md-option>
+								<md-option value="BLUE">
+									BLUE
+								</md-option>
+							</md-select>
+							<md-select  v-model="channelSelected" name="channels" id="channels" @input="selectChannel()" v-else-if="spaceColor=='CMYK'">
+								<md-option value="CYAN">
+									CYAN
+								</md-option>
+								<md-option value="MAGENTA">
+									MAGENTA
+								</md-option>
+								<md-option value="YELLOW">
+									YELLOW
+								</md-option>
+								<md-option value="BLACK">
+									BLACK
+								</md-option>
+							</md-select>
+						</md-field>
+						
+						<div style="clear:left"></div>								
+					</div>
+				<!-- range compression -->
 					<div style="margin-top:10px;display:block" v-if="rangeCompressActive">
 
 						<label for="range_compress" title="Tipo de compresión"><span style="color:blue;font-weight:bold">{{rangeCompress}}</span></label>
@@ -612,12 +649,12 @@
 							</md-speed-dial-target>
 
 							<md-speed-dial-content>
-								<md-button class="md-icon-button " @click="showRangeCompress()">
+								<md-button class="md-icon-button " @click="showInput('compress')">
 									<md-icon md-src="img/effect/zip-box.svg"></md-icon>
 									<md-tooltip>Comprimir imagen</md-tooltip>
 								</md-button>
 
-								<md-button class="md-icon-button" @click="showRangeTexturize()">
+								<md-button class="md-icon-button" @click="showInput('texturize')">
 									<md-icon>texture</md-icon>
 									<md-tooltip>Efecto Texturizar</md-tooltip>
 								</md-button>
@@ -630,13 +667,14 @@
 							</md-speed-dial-target>
 
 							<md-speed-dial-content>
-								<md-button class="md-icon-button" @click="showSpaceColor()">
+								<md-button class="md-icon-button" @click="showInput('space_color')">
 									<md-icon md-src="img/effect/monitor-eye_black.svg"></md-icon>
-									<md-tooltip>Espacio de color</md-tooltip>
+									<md-tooltip>Convertir a otro espacio de color</md-tooltip>
 								</md-button>
 
-								<md-button class="md-icon-button">
+								<md-button class="md-icon-button" @click="showInput('separate_channel')">
 									<md-icon>event</md-icon>
+									<md-tooltip>Extraer canal</md-tooltip>
 								</md-button>
 							</md-speed-dial-content>
 						</md-speed-dial>
@@ -707,12 +745,14 @@
 </template>
 <script>
 import methodsMixin from '../mixins/methodsMixin';
+import servicesMixin from '../mixins/servicesMixin';
+import effectsMixin from '../mixins/effectsMixin';
 import Global from '../Global.js';
-import axios from 'axios';
+//import axios from 'axios';
 export default {
 	name:'Effect',
 	props:['ima'],
-	mixins:[methodsMixin],
+	mixins:[methodsMixin,servicesMixin,effectsMixin],
 	data(){
 		return{	
 			//ruta global		
@@ -733,7 +773,7 @@ export default {
 			//textos modal dialog
 			dialog_title:{
 				filter:"¿Aplicar el filtro seleccionado?",
-				shapes:"¿Aplicar el recorte con la forma seleccionada?",
+				polygon:"¿Aplicar el recorte con la forma seleccionada?",
 				undoAll:"¿Desea deshacer todos los cambios?",
 				processAll:"¿Desea aplicar todos los efectos seleccionados?",
 				effect: "¿Desea aplicar el efecto seleccionado?",
@@ -742,7 +782,9 @@ export default {
 				watermark:"¿Desea aplicar la marca de agua con la imagen seleccionada?",
 				createWatermark:"¿Desea crear la marca de agua?",
 				compress: "¿Desea comprimir la imagen?",
-				texturize:"¿Desea texturizar la imagen con el valor seleccionado?"
+				texturize:"¿Desea texturizar la imagen con el valor seleccionado?",
+				separateChannel:"¿Desea extraer el canal seleccionado en escala de grises?",
+				spaceColor:"¿Desea convertir la imagen al espacio de color seleccionado?"
 
 			},
 			dialog_selected:null,
@@ -811,12 +853,21 @@ export default {
 		//spacecolor
 			//falta comprobar identificador
 			//identificador del efecto convertir a espacio de color (RGB||CMYK||SRGB)
+
 			spaceColorActivated:false,
 			//identificador de desplegable de espacio de color
-			spaceColorActive:true,
+			spaceColorActive:false,			
+			//espacio de color de la imagen registrado en la db, asignado en mounted()
 			spaceColor:null,
+			//option seleccionado en el select
 			spaceColorSelected:null,
-			spacecolors:["RGB","CMYK","SRGB"],
+			spacecolors:["RGB","CMYK","SRGB","GRAY"],
+		//separate_channel
+			//identificador de separar canales
+			channelActivated:false,
+			channelActive:false,
+			
+			channelSelected:null,
 		//fussion
 			//identificador del efecto fussion 
 			fussionActivated:false,
@@ -876,27 +927,29 @@ export default {
 			//lista de tareas en formato string para poder referenciarlas y actualizarlas
 			tasks:["rotateActivated","reflexActivated","filterActivated","polygonActivated","effectActivated"],
 			//tasks2 siempre devuelve un solo efecto activado
-			tasks2:["fussionActivated","wmActivated","createWmActivated","compressActivated","texturizeActivated","spaceColorActivated"],
+			tasks2:["fussionActivated","wmActivated","createWmActivated","compressActivated","texturizeActivated","spaceColorActivated","channelActivated"],
 			//efecto de carga mientras carga la imagen
 			loadingImage:false,
 
 		}
 	},
 	computed:{
+		/*
 		selectedSpaceColor(){
 			console.log(this.spaceColorSelected);
 			return this.spaceColor =="rgb" ? "":this.spaceColor;
 			
 		},
+		*/
+		//filtra el array de imágenes y devuelve todas menos la imagen principal
+		//destinado al desplegable de imágenes para fussion y watermark 
 		filteredImages(){			
 			return this.images.filter(image=>
 				image.random_name != this.ima.src
 			)
 		}
 	},
-	created(){
-		
-	},
+
 	mounted(){
 		//this.loadingImage=true;
 		if(this.ima){
@@ -911,24 +964,26 @@ export default {
 			console.log("mounted: ",this.ima);
 			//activación de efecto transición
 			this.imgTrans=true;
-			//asignamos el colorspace
+		//acualizando spaceColor para desplegables spacecolor y channels
+			//asignamos el colorspace (el colorspace no es nativo de image, se crea
+			//en el método reloadImage() para el origen en Collections y la carga de 
+			//imagen al procesar efectos, tb en uploadImageServer() para el origen en 
+			//la subida de imagen)
+			this.spaceColor=this.ima.spaceColor;
 			this.spaceColorSelected=this.ima.spaceColor;
-			console.log("spacecolor: ",this.spaceColorSelected);
-	
-	//anulado, esto no hace nada, se mantienen las medidas por el md-layout
 			
-			//obtenemos las medidas
-			/*		
-			let sizes=this.setSizeToMainPanel(this.ima.widthInitial,this.ima.heightInitial,this.minWidthHeight,this.ima.widthDefault);
-			this.ima.width=sizes.width;
-			this.ima.height=sizes.height;
-			console.log(this.ima.widthDefault);
-			console.log(sizes);	
-			console.log("thisima2: ",this.ima);
-			*/
-			//actualizamos canvas y el div con setTimeout, ya que estamos recuperando el 
-			//width y el height del template una vez obtenido por la redimensión del 
-			//md-layout y no se puede obtener hasta que no se carga la vista, por ello se encierra en un setTimeout
+			//comprobamos spaceColor para asignar una opción por defecto en el select
+			//de separate_channel, ya que si es RGB o SRGB el desplegable de canales  
+			//es distinto que el de CMYK
+			//falta por crear el GRAY y realizar esta comprobación si se carga la 
+			//nueva imagen en el mismo effect, quizás sea mejor sacarlo a un método
+			this.setChannelSelected();
+			console.log("spacecolor: ",this.ima);
+			
+			//actualizamos canvas y el div con setTimeout, ya que estamos 
+			//recuperando el width y el height del template una vez obtenido por 
+			//la redimensión del md-layout y no se puede obtener hasta que no se 
+			//carga la vista, por ello se encierra en un setTimeout
 			setTimeout(() => {
 					this.updateSizeCanvas();
 			},100)
@@ -936,13 +991,11 @@ export default {
 			//mostrar dialog
 			console.log("no hay width")
 		}
-		this.updateExtension();
+		//comprobamos si la imagen es png o jpg para mostrar el input range
+		//de la función compress con el rango de valores correspondiente.
+		this.updateExtAndReset();
 		
-		
-	},
-	updated(){
-		//
-	},
+	},	
 	destroyed(){
 		//detectamos si existe un filtro seleccionado antes de salir
 		if(this.filterActivated){
@@ -951,7 +1004,18 @@ export default {
 		window.removeEventListener("resize", this.updateSizeCanvas);
 	},
 	methods:{
-		updateExtension(){
+
+		setChannelSelected(){
+			if(this.spaceColor=="CMYK")
+				this.channelSelected="CYAN";
+			else
+				this.channelSelected="RED";
+		},
+
+		//asigna la extensión de la imagen para mostrar un input range con un rango
+		//de mínimo y máximo si es jpg y con otro rango distinto si es png, 
+		//destinado al efecto de compresión y ejecutado en mounted()
+		updateExtAndReset(){
 			//asignamos en la variable this.ext la extensión de la imagen para mostrar un 
 		//tipo de input (range) de compresión u otro y asignamos valor por defecto.
 			if(this.ima.src){
@@ -969,9 +1033,11 @@ export default {
 				}
 				this.ext=ext;
 				this.rangeCompressAssigned=this.rangeCompress;
+				//console.log("llega a updateExtAndReset");
 			}			
 		},
-		//filtramos los efectos que están activados en formato string
+		//filtramos los efectos que están activados en formato string pasando
+		//como parámetro el array del grupo 1 o del grupo 2
 		testActivatedTasks(tasksList){
 			let list=tasksList;
 			let listActivated=list.filter((effect,index)=>this[list[index]]);
@@ -979,8 +1045,10 @@ export default {
 				return;
 			return listActivated
 		},
-		//desactivar todas las tareas
+		//desactiva todas las tareas del primer grupo y cancela el efecto activo del
+		//segundo grupo
 		undoAll(){
+
 			//comprueba si no existe ningún efecto activado de ninguno de los 2 grupos
 			if(!this.testActivatedTasks(this.tasks) && !this.testActivatedTasks(this.tasks2))
 				return
@@ -996,7 +1064,9 @@ export default {
 					let split=val.split("A");					
 					this.undoTask(split[0]);
 				})
+			//cancelar el efecto del segundo grupo si hubiere
 		},
+		//desactiva la tarea pasada por parámetro 
 		undoTask(task){
 			if(task=="rotate"){
 				//desactivar rotate
@@ -1022,48 +1092,55 @@ export default {
 			if(!this.testActivatedTasks(this.tasks))
 				return
 			
-			//lista de efectos activados
+			//lista de efectos activados del primer grupo
 			let listAll=this.testActivatedTasks(this.tasks);
 			let imgTmp=[]; 
 			this.effectMultiple=true;
 			//usamos el for loop en lugar del foreach para que funcione la promesa con
-			//async (async processAll()) y await (await this.switchcase(data))
-			//listAll.forEach( async (data)=> {
-			//para obtener el key para imgTmp cambiamos de for...of a for sencillo
-			//for (let data of listAll){
+			//async (async processAll()) y await (await this.processTask(data))
+				//listAll.forEach( async (data)=> {
+			//para obtener el key(index) para imgTmp cambiamos de for...of a for 
+			//sencillo for (let data of listAll){
 			for(var i=0;i<listAll.length;i++){
 				//con await espera a resolver la promesa para devolver el resultado,
 				//de esa manera permite disponer de los datos devueltos para manejarlos
 				//antes de seguir el recorrido del for
 
 				//si existe más de un efecto la variable imgTmp se utiliza para enviar
-				//la imagen del resultado anterior (con efectos realizados) y no la inicial (sin efectos) en un modal con solicitud de carga y con vista previa				
+				//la imagen del resultado del server (con efectos realizados) y no la 
+				//inicial (sin efectos). Se compone de un modal con una solicitud de 
+				//carga con vista previa de la nueva imagen
 				let result;
 				if(imgTmp.length>0){
-					result=await this.switchcase(listAll[i],imgTmp[i-1]);	
+					result=await this.processTask(listAll[i],imgTmp[i-1]);	
 				}else{
-					result=await this.switchcase(listAll[i]);	
+					result=await this.processTask(listAll[i]);	
 				}
 				
 				/*
 				.then((data)=>{
-					console.log("después del switchcase: ",data)
+					console.log("después del processTask: ",data)
 					imgTmp.push(data);
 				});
 				*/
 				
 				imgTmp.push(result);
 			}
-			//si hay más de 1 efecto eliminamos el último con pop() y pasamos el resto
+			
 
-			//elemento final
+			//elemento final (se eliminan las imágenes creadas en cada efecto menos la
+			//última)
 			let final;
+			//si hay más de 1 efecto extraemos el último con pop() y pasamos el resto
 			if(imgTmp.length>1){
-				//eliminamos el último elemento del array (para que no se elimine)
+				//extraemos y almacenamos el último elemento del array (para que no 
+				//se elimine)
 				final=imgTmp.pop();
-				//pasamos el array de objetos Image que se deben eliminar
+				//pasamos el array de objetos Image que se deben eliminar, (con 
+				//.pop() queda excluido el último elemento en el array imgTmp)
 				this.deleteImages(imgTmp);
 			}else{
+			//si solo hay un efecto, seleccionamos el único elemento de la lista
 				final=imgTmp[0];
 			}
 			this.dialogImage=true;
@@ -1075,65 +1152,42 @@ export default {
 			//aquí resultado final y asignación de última imagen 
 
 		},
-
-		deleteImages(images_list){			
-			
-			let session=this.testSession();
-			if(!session)
-				return;
-			if(session.status=="error"){
-				console.log("session.message: ",session.message);
-				return;
-			}
-			let api_token=session.api_token,
-				email=session.email;
-
-			let data={
-				email:email,
-				images:images_list
-			}
-			let headers={
-				headers:{
-					'Authorization': 'Bearer '+api_token
-				}
-			}
-			axios.post(this.url+"images/delete",data,headers).then(res => {
-				console.log(res);
-			})
-		},
+		
 		//switch case que devuelve una promesa y que permite desde el loop for del método
 		//processAll() (y con la ayuda de async y await) esperar a que se resuelva la //promesa para continuar el for, y así, poder disponer de los datos devueltos
 		//en el siguiente case dentro del mismo loop for, para ello utilizamos el parámetro imgTmp
-		switchcase(data, imgTmp=null){
+		processTask(data, imgTmp=null){
 			return new Promise((resolve)=>{
 				let split=data.split("A");
 				var name="";
 				switch(split[0]){
-
 					case "rotate":
 						
-							//al ser el rotate el primer efecto del array no es necesario
-							//añadir el condicional de imgTmp, pero por si se añaden más 
-							//efectos lo incluimos
+				//al ser el rotate y el reflex el primer efecto (ya que uno desactiva 
+				//el otro y, por tanto, no se pueden realizar los dos a la vez) del 
+				//array no es necesario añadir el condicional de imgTmp, pero por si 
+				//se añaden más efectos lo incluimos
 
-							var params={ angle:this.rotateSide }
-							if(imgTmp)
-								params.name=imgTmp.random_name;
-								//params.src=imgTmp.src;
-							console.log("params :",params);
-							//imgTmp.push(this.setEffect('rotate',params));
-							resolve(this.setEffect('rotate',params));
-							//var datus=await this.setEffect('rotate',params);
-							//console.log("res desde switchcase: ",datus);
-							
-							//console.log(datus);
+						var params={ angle:this.rotateSide }
+						if(imgTmp)
+							params.name=imgTmp.random_name;
+							//params.src=imgTmp.src;
+						console.log("params :",params);
+						//imgTmp.push(this.setEffect('rotate',params));
+						resolve(this.setEffect('rotate',params));
+						//var datus=await this.setEffect('rotate',params);
+						//console.log("res desde processTask: ",datus);
+						
+						//console.log(datus);
 
-							console.log("this.rotateSide: ",this.rotateSide);
-							//llamar método rotate con los lados asignados	
+						console.log("this.rotateSide: ",this.rotateSide);
+						//llamar método rotate con los lados asignados	
 						
 						break;
 					case "reflex":
-						this.setEffect(this.typeReflex);
+						if(imgTmp)
+							name=imgTmp.random_name
+						resolve(this.setEffect(this.typeReflex,name));
 						console.log("this.typeReflex: ",this.typeReflex);
 						break;
 					case "filter":						
@@ -1155,89 +1209,7 @@ export default {
 			
 			})
 		},
-		/*
-		processAll(){
-			if(!this.testActivatedTasks())
-				return
-			
-				
-			let listAll=this.testActivatedTasks();
-			let imgTmp=[]; //array de objetos de imagen devueltos, al final solo
-				//se mantendrá el último y habrá que borrar del server los otros y no
-				//se deberá guardar en la db, solo el último
-				//efecto loading
-			listAll.forEach( async data=> {
-			//for await(let data of listAll){
-				return new Promise((resolve)=>{
-					let split=data.split("A");
-					
-					switch(split[0]){
-
-						case "rotate":
-							
-								//if(params)
-								var params={ angle:this.rotateSide }
-								console.log("params :",params);
-								//imgTmp.push(this.setEffect('rotate',params));
-								resolve(this.setEffect('rotate',params));
-								//var datus=await this.setEffect('rotate',params);
-								//console.log("res desde switchcase: ",datus);
-								
-								//console.log(datus);
-
-								console.log("this.rotateSide: ",this.rotateSide);
-								//llamar método rotate con los lados asignados	
-							
-							break;
-						case "reflex":
-							this.setEffect(this.typeReflex);
-							console.log("this.typeReflex: ",this.typeReflex);
-							break;
-						case "filter":
-							
-								console.log("this.filterProp: ",this.filterProp);
-								resolve(this.setFilter());
-								
-							break;
-						case "polygon":
-							console.log("this.polygonProp: ",this.polygonProp);
-							break;
-
-					}
-				
-				}).then((data)=>{
-								console.log("después del switchcase: ",data)
-								imgTmp.push(data);
-							});
-				
-			})//.then(()=>{console.log("después del foreach: ")})
-			console.log("imgTmp: ",imgTmp);
-			//aquí resultado final y asignación de última imagen 
-
-		},
-		*/
-		getTotalImages(){
-			if(sessionStorage.getItem("biedit_apitoken")){
-				let api_token=sessionStorage.getItem("biedit_apitoken");
-				let email=sessionStorage.getItem("biedit_email");
-				let data={
-					params:{
-						api_token:api_token,
-						email:email,
-						total:"true"
-					}
-				};
-				let headers={
-					headers: {
-						Authorization: 'Bearer '+sessionStorage.getItem("biedit_apitoken")
-					}
-				};
-				axios.get(this.url+'images',data,headers).then(res=>{
-					this.images=res.data.images;
-					console.log("las imagenes: ",this.images);
-				})
-			}
-		},
+		
 		//selección de imagen del desplegable (list "material") destinada al efecto de fusión o al efecto de watermark
 		selectComposite(image){						
 			//añadimos el span al select
@@ -1263,9 +1235,88 @@ export default {
 			//this.compPosSelected=true;
 			this.expandCompPos=false;
 		},
+		//desactiva el efecto activado del segundo grupo (solo puede haber uno), si 
+		//por algún error hubiera más de uno cancela todos los efectos del segundo 
+		//grupo (de uno en uno)
+		cancelAll(){
+			let listActivated=this.testActivatedTasks(this.tasks2);
+
+			if(listActivated && listActivated.length==1){
+				let split=listActivated[0].split("A");
+				console.log("cancelar todo: ",split[0]);
+				this.cancelTask(split[0])
+			}else if(listActivated){
+				this.tasks2.forEach((task)=> {
+					let split=task.split("A");
+					//console.log(split[0])
+					this.cancelTask(split[0]);
+				})
+				//método anterior que desactiva todo a la vez
+				//this.cancelSelect();
+			}
+		},
+
+		//desactiva el efecto pasado por parámetro y asigna los valores iniciales
+		cancelTask(action){
+			switch(action){
+				case "fussion":
+					//desactiva desplegable que sirve para fussion y watermark 
+					this.compListActive=false;
+					this.compositeSelectedHtml="Seleccionar";
+					this.compositeSelectedId=null;
+					this.fussionActivated=false;
+					break;
+				case "wm":
+					//desactiva desplegable que sirve para fussion y watermark
+					this.compListActive=false;
+					this.compositeSelectedHtml="Seleccionar";
+					this.compositeSelectedId=null;					
+					//desactiva desplegable de posición (watermark)
+					this.compPosListActive=false;
+					//this.compPosSelected=false;
+					//establecida la opción de centrado, por defecto
+					this.compPosStr=this.compPosStrOptions.center;
+					this.compPosSelectedHtml=this.compPosIconSelected.center;
+					this.compPos="center";
+					this.wmActivated=false;
+					break;
+				case "createWm":
+					//desactiva el input text, el input range,el desplegable (list) y el colorpicker
+					//de create-watermark
+					this.wmInputActive=false;
+					//reinicia el valor del input para create-watermark
+					this.inputWm=null;
+					this.createWmActivated=false;
+					break;
+				case "compress":					
+					this.rangeCompressActive=false;
+					this.updateExtAndReset();
+					this.compressActivated=false;
+					break;
+				case "texturize":
+					//desactiva el range texturize
+					this.rangeTexturizeActive=false;
+					//reincia el valor del input range de texturize
+					this.texturize(0);
+					this.texturizeActivated=false;
+					break;
+				case "spaceColor":
+					//desactiva el select de espacio de color
+					this.spaceColorActive=false;
+					this.spaceColorSelected=this.ima.spaceColor;
+					this.spaceColorActivated=false;
+					break;
+				case "channel":
+					//desactiva el desplegable de canales
+					this.channelActive=false;
+					this.channelActivated=false;
+					break;
+			}
+		},
+	//anulado (sutituido por cancelAll() y cancelTask())
 		//Cancela las selecciones iniciadas del efecto fusión, watermark y create-watermark
 		//En lugar de desactivar todo directamente se podría comprobar cual
-		//está activado (fussion, watermark o create-watermark) y desactivarlo
+		//está activado, sobre todo en el segundo grupo, ya que solo puede haber uno activado
 		cancelSelect(){
 		//reinicia la acción seleccionada (fussion|watermark|create-watermark)	
 			this.typeAction=null;
@@ -1282,12 +1333,16 @@ export default {
 			this.compPosStr=this.compPosStrOptions.center;
 			this.compPosSelectedHtml=this.compPosIconSelected.center;
 			this.compPos="center";
-		//desactiva los identificadores
+		//desactiva los identificadores (fussion, watermark, create-watermark, channels, spaceColor)
 			this.fussionActivated=false;		
 			this.wmActivated=false;
 			this.createWmActivated=false;
-
-			//desactiva el input text, el input range,el desplegable (list) y el colorpicker
+			this.channelActivated=false;
+			this.spaceColorActivated=false;
+			this.compressActivated=false;
+			this.texturizeActivated=false;
+		//desactiva el input text, el input range,el desplegable (list) y el colorpicker
+		//de create-watermark
 			this.wmInputActive=false;
 			//reinicia el valor del input para create-watermark
 			this.inputWm=null;
@@ -1298,10 +1353,26 @@ export default {
 		//desactiva el range de compresión
 			this.rangeCompressActive=false;
 			//asignar el valor por defecto (80 para jpg, 4 para png)
-			this.updateExtension();
+			this.updateExtAndReset();
+		//desactiva el desplegable de canales
+			this.channelActive=false;			
+		//desactiva el select de espacio de color
+			this.spaceColorActive=false;
+			this.spaceColorSelected=this.ima.spaceColor;
+			console.log("desde cancelSelect(): ",this.ima.spaceColor)
+
 		},
-		selectSpaceColor(){			
-			console.log("spaceColorSelected: ",this.spaceColor);
+		selectSpaceColor(){
+			console.log("spaceColor: ",this.spaceColor);
+			console.log("channelSelected: ",this.channelSelected)
+			console.log("spaceColorSelected: ",this.spaceColorSelected);
+		},
+		selectChannel(){
+			console.log("spaceColor: ",this.spaceColor);
+			console.log("channelSelected: ",this.channelSelected)
+			console.log("spaceColorSelected: ",this.spaceColorSelected);
+			
+
 		},
 		//muestra las opciones de selección de los efectos fusión, watermark y 
 		//create-watermark cancelando anteriores selecciones de algunos de los 3
@@ -1355,77 +1426,9 @@ export default {
 			}
 
 		},
-		//solicita procesar los efectos de fusión, watermark y create-watermark al server
-		//identificando el tipo de efecto mediante la variable typeAction
-		setComposite(){
-			if(this.typeAction){
-				console.log("typeAction desde setComposite: ",this.typeAction);
-				let session=this.testSession();
-				if(!session)
-					return;
-				if(session.status=="error"){
-					console.log("session.message: ",session.message);
-					return;
-				}
-				let api_token=session.api_token,
-					email=session.email;
-				//comprobamos si se han seleccionado datos del desplegable de ímágenes,
-
-				if(this.compositeSelectedHtml && this.compositeSelectedId){
-
-					let data={
-						email:email,
-						imageSrc:this.ima.src,
-						imageId:this.compositeSelectedId
-					}
-					let headers={
-						headers:{
-							'Authorization': 'Bearer '+api_token
-						}
-					}
-					//identificamos si es el efecto de fusión o el watermark
-					if(this.typeAction=="fussion"){
-						axios.post(this.url+'composite',data,headers).then(res => {
-							//if()
-							console.log(res);
-						})
-
-					}else if(this.typeAction=="watermark"){
-						data.position=this.compPos;
-						axios.post(this.url+'watermark',data,headers).then(res => {
-							console.log(res);
-						})
-					}
-				//identificamos si es el create-watermark y si se ha introducido texto 
-				//en el input destinado a la creación de marca de agua			
-				}else if(this.inputWm){
-					let data={
-						email:email,
-						inputWm:this.inputWm,
-						fontSize:this.rangeWmFontSize,
-						fontFamily:this.fontFamilySelected,
-						color:this.color
-					}
-					let headers={
-						headers:{
-							'Authorization': 'Bearer '+api_token
-						}
-					}
-					console.log(this.inputWm);
-					if(this.typeAction=="create-watermark"){
-						
-						axios.post(this.url+'watermark/create',data,headers).then(res=>{
-							console.log(res);
-						})
-					}
-				
-				}
-			}
-			else{
-				console.log("Faltan datos por seleccionar");
-			}
-		},
-		//establece el font family para el efecto create-watermark (creación marca de agua)
+		
+		//establece el font family actualizando la vista para el efecto 
+		//create-watermark (creación marca de agua)
 		setFontFamily(font){
 			this.fontFamilySelected=font;
 			this.fontSelected=font[0].toUpperCase()+font.slice(1);
@@ -1433,168 +1436,35 @@ export default {
 				this.fontSelected="Times New Roman";
 			this.expandFontFamily=false;
 		},
-		//identifica si el usuario ha iniciado sesión y en caso afirmativo devuelve
-		//las variables de sessionStorage
-		testSession:()=>{
-			if(!sessionStorage){
-				return {
-					status:"error",
-					message:"El navegador no soporta sessionStorage"
-				}
-			}
-
-			if(!sessionStorage.getItem("biedit_apitoken") || !sessionStorage.getItem("biedit_email") || !sessionStorage.getItem("biedit_name"))
-				return {
-					status:"error",
-					message:"Faltan datos o no son correctos"
-				}
+		
+		//mostrar range-texturize o range-compress o list-spacecolor o list-channels
+		showInput(action){
 			
-			return {
-				status:"success",
-				api_token:sessionStorage.getItem("biedit_apitoken"),
-				email:sessionStorage.getItem("biedit_email"),
-				name:sessionStorage.getItem("biedit_name"),
-				message:"Los datos son correctos"
-			}
-		},
-		//oculta y muestra el desplegable de spaceColor ocultando los input type range 
-		//de compression y texturización si están visibles
-		showSpaceColor(){
-			if(this.rangeCompressActive || this.rangeTexturizeActive){
-				this.rangeCompressActive=false;
-				this.rangeTexturizeActive=false;
-			}
-			if(this.spaceColorActive){
-				this.spaceColorActivated=false;
-				this.spaceColorActive=false;
-			}else{
-				this.spaceColorActivated=true;
-				this.spaceColorActive=true;
-			}
-		},
-		//mostrar/ocultar input range de texturize 
-		showRangeTexturize(){
-			/*
-			if(this.rangeCompressActive || this.spaceColorActive)
-				this.rangeCompressActive=false;
-				this.spaceColorActive=false;
-				*/
-			if(!this.rangeTexturizeActive){
+			if(action=="texturize" && !this.rangeTexturizeActive){				
 				this.cancelSelect();
 				this.rangeTexturizeActive=true;
 				this.texturizeActivated=true;
-			}
-				
-			
-		},
-		//mostrar-ocultar input range de compression
-		showRangeCompress(){
-			/*
-			if(this.rangeTexturizeActive || this.spaceColorActive)
-				this.rangeTexturizeActive=false;
-				this.spaceColorActive=false;
-			*/
-			if(!this.rangeCompressActive){				
+				this.typeAction=action;					
+			}else if(action=="compress" && !this.rangeCompressActive){				
 				this.cancelSelect();
 				this.rangeCompressActive=true;
 				this.compressActivated=true;
-				this.typeAction="compress";
-			}			
-			
-		},
-
-		//crea un efecto de textura 
-		//oculta el image y genera un background con la imagen, el range 0,
-		//está destinado a la cancelación y vuelve al estado anterior(original).
-		texturize(range){
-			let imaStyle=this.$refs.image_effect.style;
-			//let imaStyle2=this.$refs.div_effect_image.style;
-						
-				//imaStyle.width=this.imaEffect.width+"px";
-				//imaStyle.height=this.imaEffect.height+"px";
-			
-			if(range==0 || range==1){				
-				imaStyle.backgroundSize="100%";
-				imaStyle.backgroundRepeat="no-repeat";
-				this.rangeTexturize=1;
-				
-			}else{
-				//asignamos las medidas de la repetición en función del rango que se 
-				//pasa como parámetro
-				let width=this.imaEffect.width/range;				
-				let height=this.getNewHeight(width,this.imaEffect.width,this.imaEffect.height);
-				console.log("imaEffectwidth: ",this.imaEffect.width);
-				console.log("imaEffectheight: ",this.imaEffect.height);
-		//anulado
-		/*
-				//si el efecto de rotación está activado y no es la rotación vertical, 
-				//es decir, está volcado para uno de los lados, se invierte el ancho x 
-				//el alto en el div padre y se establece un margin al div hijo
-				if(this.rotateActivated && imaStyle2.transform!="rotate(180deg)"){
-					imaStyle2.width=this.imaEffect.height+"px";
-					imaStyle2.height=this.imaEffect.width+"px";
-					imaStyle.width=this.imaEffect.width+"px";
-					imaStyle.height=this.imaEffect.height+"px";
-					//imaStyle.width=this.imaEffect.height+"px";
-					let newMargin=this.getMarginToCenter(this.imaEffect.width,this.imaEffect.height);
-
-					imaStyle.margin=newMargin+"px auto";
-					
-				}else{
-					//
-				}
-				//imaStyle2.width=this.imaEffect.width+"px";
-				//imaStyle2.height=this.imaEffect.width+"px";
-				//imaStyle.width=this.imaEffect.width+"px";
-				//imaStyle.height=this.imaEffect.height+"px";
-				//imaStyle.width=this.imaEffect.height+"px";
-				//let newMargin=this.getMarginToCenter(this.imaEffect.width,this.imaEffect.height);
-		*/
-				//heightBackground=this.getNewHeight(this.imaEffect.width,)
-					imaStyle.width=this.imaEffect.width+"px";
-					imaStyle.height=this.imaEffect.height+"px";
-				//imaStyle.margin="auto";
-				imaStyle.backgroundSize=width+"px "+height+"px";
-				//imaStyle.backgroundImage="url(http://localhost/biedit_backend/api/get-image/"+this.ima.src+")";
-				imaStyle.backgroundRepeat="repeat";
-				//this.$refs.image.style.opacity="0";	
-				//imaStyle.display="block";
+				this.typeAction=action;
+			}else if(action=="separate_channel" && !this.channelActive){
+				this.cancelSelect();				
+				this.channelActivated=true;
+				this.channelActive=true;
+				this.typeAction=action;
+			}else if(action=="space_color" ){
+				this.cancelSelect();
+				this.spaceColorActivated=true;
+				this.spaceColorActive=true;
+				this.typeAction=action;
 			}
-			(imaStyle.backgroundRepeat!="no-repeat") ? 
-				this.texturizeActivated=true:this.texturizeActivated=false;
-			console.log(this.texturizeActivated);
 			
+			console.log("llega: ",this.spaceColor)
 		},
-		//procesa solicitud al server de compresión de imagen
-		setCompress(range){
-			if(this.testToken){
-				let apitoken=sessionStorage.getItem("biedit_apitoken");
-				let email=sessionStorage.getItem("biedit_email");
-				let data={
-					range:range,
-					email:email,
-					image:this.ima.src
-				}
-				let headers={
-					headers:{
-						Authorization: 'Bearer '+apitoken
-					}
-				}
-				axios.post(this.url+'compress',data,headers).then((res)=> {
-					console.log(res);
-					if(res.data.image){
-						this.dialogImage=true;						
-						this.tmpImage=res.data.image;
-						console.log("tmpImage2: ",this.tmpImage);
-						//console.log(this.tmpImage);
-						console.log("dialog_image",res.data.image);
-					}else{
-						//console.log(res.data.data);
-						console.log("hubo un error");
-					}
-				});
-			}
-		},
+		
 		testToken:()=>{
 			if(sessionStorage){
 				if(!sessionStorage.getItem("biedit_apitoken") || !sessionStorage.getItem("biedit_email"))
@@ -1604,197 +1474,8 @@ export default {
 			}else{
 				return "El navegador no soporta sessionStorage";
 			}
-
 		},
-		cancelTexturize(){
-
-		},
-		//método que devuelve el margin de cada lado para centrar un elemento dentro de 
-		//un div
-		getMarginToCenter(totalSize,sizeToCenter){
-			return (parseInt(totalSize)-sizeToCenter)/2;
-
-		},
-		//rotación con transform de todo el div e intercambiando el width por el 
-		//height del div si la rotación es lateral, para que no se solape
-		rotate(side){
-
-			//detectamos primero si existe algún efecto activado y si no ...
-			let d=this.$refs.image_effect.style;
-			let d2=this.$refs.div_effect_image.style;
-			//desactivar rotate (devolver a estado inicial)
-			if(side==0){
-				d2.transform="rotate(0deg)";
-				//establecemos ancho y alto al div padre
-				d2.width=this.imaEffect.width+"px";
-				d2.height=this.imaEffect.height+"px";
-				//devolvemos el margin anterior
-				d.margin="auto";				
-				this.$refs.canvas.style.margin='auto';
-				//se actualiza el identificador de rotate
-				this.rotateActivated=false;
-				return;
-			}
-			if(side=="left" || side=="right"){
-				if(side=="left"){					
-					if(d2.transform=="rotate(270deg)"){						
-						d2.transform="rotate(0deg)";
-						//establecemos ancho y alto al div padre
-						d2.width=this.imaEffect.width+"px";
-						d2.height=this.imaEffect.height+"px";
-						//devolvemos el margin anterior
-						d.margin="auto";				
-						this.$refs.canvas.style.margin='auto';
-						
-					}else{						
-						d2.transform="rotate(270deg)";
-						//establecemos ancho y alto inverso al div padre
-						d2.width=this.imaEffect.height+"px";
-						d2.height=this.imaEffect.width+"px";
-						
-						//obtenemos el margin de cada lado para centrar el canvas
-						let newMargin=this.getMarginToCenter(this.imaEffect.width,this.imaEffect.height);		console.log(newMargin);
-						d.margin=newMargin+"px auto";
-						this.$refs.canvas.style.margin=newMargin+'px auto';
-					}
-				}else if(side=="right"){
-					if(d2.transform=="rotate(90deg)"){
-						d2.transform="rotate(0deg)";
-						//devolvemos el ancho y alto del div padre
-						d2.width=this.imaEffect.width+"px";
-						d2.height=this.imaEffect.height+"px";
-						d.margin="auto";
-						//devolvemos el margin anterior						
-						this.$refs.canvas.style.margin='auto';
-					}else{						
-						d2.transform="rotate(90deg)";
-						//establecemos ancho y alto inverso al div padre
-						d2.width=this.imaEffect.height+"px";
-						d2.height=this.imaEffect.width+"px";						
-						//obtenemos el margin de cada lado para centrar el canvas
-						let newMargin=this.getMarginToCenter(this.imaEffect.width,this.imaEffect.height);		console.log(newMargin);
-						d.margin=newMargin+"px auto";				
-						this.$refs.canvas.style.margin=newMargin+'px auto';
-					} 
-						
-				}				
-				
-				
-			}else{
-
-				(d2.transform=="rotate(180deg)" || side==null) ? 
-					d2.transform="rotate(0deg)": d2.transform="rotate(180deg)";
-					//devolvemos margin y dimensiones anteriores
-				d.margin="auto";
-				d2.width=this.imaEffect.width+"px";
-				d2.height=this.imaEffect.height+"px";
-				this.$refs.canvas.style.margin='auto';
-			}
-			//activamos/desactivamos rotate, no es necesario comprobar null pk si es 
-			//null es que aun no se ha activado el identificador de rotate
-			if(d2.transform=="rotate(0deg)"){
-				this.rotateActivated=false
-				this.rotateSide=null;
-			}else{
-				this.rotateActivated=true;
-				this.rotateSide=side;
-			}
-			console.log("hola: ",this.rotateActivated);
-			
-		},
-		//reflejo horizontal y vertical de la imagen
-		reflex(type){
-			//para evitar errores si el efecto rotación está activado se deshace
-			if(this.rotateActivated){
-				this.undoTask("rotate");				
-			}
-			
-			let d=this.$refs.div_effect_image.style;
-			if(!type){
-				d.transform="scaleX(1)";
-				d.transform="scaleY(1)";
-				this.reflexActivated=false;
-			}
-			if(type=="vertical"){
-				(d.transform=="scaleY(-1)") ?
-					d.transform="scaleY(1)" : d.transform="scaleY(-1)";
-				d.width=this.imaEffect.width+"px";
-				d.height=this.imaEffect.height+"px";
-			}else if(type=="horizontal"){
-				(d.transform=="scaleX(-1)") ?
-					d.transform="scaleX(1)":d.transform="scaleX(-1)";
-			}
-			//actualizamos el identificador de reflex
-			if(d.transform=="scaleX(-1)" || d.transform=="scaleY(-1)"){
-				this.reflexActivated=true;
-				this.typeReflex=type;
-			}else{
-				this.reflexActivated=false;
-				this.typeReflex=null;
-			}
-
-		},
-		setReflex(type){			
-			let session=this.testSession();
-				if(!session || !type)
-					return;
-				if(session.status=="error"){
-					console.log("session.message: ",session.message);
-					return;
-				}
-				let api_token=session.api_token,
-					name=session.name,
-					email=session.email;
-				let data={
-					data:{
-						name:name,
-						email:email,
-						effect:type
-					}
-				}
-				let headers={
-					headers:{
-						'Authorization': 'Bearer '+api_token
-					}
-				}
-				axios.post("effect",data,headers).then(res=> {
-					console.log(res);
-				})
-
-		},
-		//prueba redondeo esquinas, sin acabar
-		roundCorners(){
-			let canvas=this.$refs.canvas;
-
-			if(canvas && canvas.getContext){
-				var ctx= canvas.getContext("2d");
-				if(ctx){
-					//ctx.fillStyle = "#6ab150";
-					//relleno
-					ctx.fillStyle = "rgba(0,0,0,.1)";
-					//ctx.strokeStyle="black";
-					//borde
-					ctx.strokeStyle="rgba(0,0,0)";
-					ctx.lineWidth=3;
-					//radio
-					var r=10;
-					//coordenadas del rectángulo
-					let x0=50, y0=50,
-						x1=200,y1=50,
-						x2=200,y2=150,
-						x3=50,y3=150;
-					ctx.beginPath();
-					ctx.moveTo(x3,y3-r);
-					ctx.arcTo(x0,y0,x1,y1,r);
-					ctx.arcTo(x1,y1,x2,y2,r);
-					ctx.arcTo(x2,y2,x3,y3,r);
-					ctx.arcTo(x3,y3,x0,y0,r);
-					ctx.closePath();
-					ctx.fill();
-					ctx.stroke();
-				}
-			}
-		},
+		
 		//actualiza las medidas destinadas al canvas y al div image_effect, una vez se 
 		//ha cargado la vista y el md-layout ha asignado automáticamente una medida 
 		//al elemento img. Es una forma de obtener los px de un div que se ha establecido
@@ -1820,33 +1501,19 @@ export default {
 				this.rotate(null);
 			}
 			//this.spaceColorActive=false;
-			
 		},
-
-		//obtiene una propiedad de un elemento mediante getComputedStyle()
-		handleCSS(elemento){
-			var prop=[];
-			if(document.defaultView && document.defaultView.getComputedStyle){   
-			var a=["width","height","top","left","margin-top","margin-left","margin-right","right","border-right-width","border-left-width","border-top-width","border-bottom-width"];
-				for(var i in a){    
-					prop[i]=parseInt(document.defaultView.getComputedStyle(elemento,null).getPropertyValue(a[i]));
-				}
-				return prop;
-			}
-			else{
-				//falta currentStyle para IE
-				alert("Error document.defaultView (handleCSS method)");
-			}
-		},	
+			
 		cancelLoadImage(){
 			//pasamos a null para que se muestre el spinner
 			//this.tmpImage=null;
-
+			//desactivamos y reiniciamos el efecto 
+			this.cancelAll();
 			this.dialogImage=false;
 		},
 		//muestra modal con un mensaje de confirmación o de información, detectando
 		//si existen otras tareas pendientes 
 		confirmChange(type_effect){
+			console.log("primero: ",this.typeAction);
 			//se asigna el tipo de efecto (filter,polygon,polaroid...), destinado
 			//al método setChange() que es llamado al pulsar OK en el modal de confirmación
 			this.type=type_effect;
@@ -1861,11 +1528,11 @@ export default {
 		
 
 			//En caso de que se use el método de actualización propio de filter o de 
-			//shapes (que se encuentran con el icono de check en el desplegable) se 
+			//polygon (que se encuentran con el icono de check en el desplegable) se 
 			//comprueba que haya tareas pendientes del primer grupo que no sea la 
 			//propia, es decir, si pulsamos el botón de procesar filtro comprobamos que 
 			//exista otra tarea además de filter o si pulsamos el botón de procesar 
-			//forma que exista otra tarea además de shapes, ya que entonces no tendría 
+			//forma que exista otra tarea además de polygon, ya que entonces no tendría 
 			//sentido incluir el aviso de que existen tareas pendientes
 
 		//Para lo descrito anteriormente creamos un array e incluimos todos los efectos 
@@ -1891,8 +1558,8 @@ export default {
 					case "filter":
 						this.dialog_selected=this.dialog_title.filter;
 						break;
-					case "shapes":
-						this.dialog_selected=this.dialog_title.shapes;
+					case "polygon":
+						this.dialog_selected=this.dialog_title.polygon;
 						break;
 					case "undoAll":
 							this.dialog_selected=this.dialog_title.undoAll;
@@ -1911,36 +1578,33 @@ export default {
 						break;
 					case "compress":
 						this.dialog_selected=this.dialog_title.compress;
+						break;					
+					case "texturize":
+						this.dialog_selected=this.dialog_title.texturize;
+						break;
+					case "separate_channel":
+						this.dialog_selected=this.dialog_title.separateChannel;
+						break;
+					case "space_color":
+						this.dialog_selected=this.dialog_title.spaceColor;
 						break;
 					default:
 						this.dialog_selected=this.dialog_title.effect;
 				}
-				/*
-				if(type_effect=='filter'){				
-					this.dialog_selected=this.dialog_title.filter;
-				}else if(type_effect=='shapes'){
-					this.dialog_selected=this.dialog_title.shapes;	
-				}else if(type_effect=="undoAll"){
-					this.dialog_selected=this.dialog_title.undoAll;
-				}else if(type_effect=="processAll"){
-					this.dialog_selected=this.dialog_title.processAll;			
-				}else{
-					this.dialog_selected=this.dialog_title.effect;
-				}
-				*/
 			}			
 			this.dialogConfirmActive=true;
 			console.log("Confirmando...",this.typeAction);
 		},
-		//método al dar OK en la confirmación de un efecto de filtro, o recorte de forma
-		//o efecto
+		//método al dar OK en la confirmación de un efecto de filtro, o recorte de
+		// forma o efecto
 		setChange(){
+			let effect="";
 			if(this.type){
 				switch(this.type){
 					case "filter":
 						this.setFilter()
 						break;
-					case "shapes":
+					case "polygon":
 						this.setPolygon()
 						break;
 					case "undoAll":
@@ -1950,7 +1614,7 @@ export default {
 						this.processAll()
 						break;
 					case "texturize":
-						this.texturize()
+						this.setEffect(this.type,{valTexturize:this.rangeTexturize});
 						break;
 					case "fussion":
 					case "watermark":
@@ -1960,111 +1624,28 @@ export default {
 					case "compress":
 						this.setCompress(this.rangeCompress);
 						break;
+					case "separate_channel":
+						this.setEffect(this.type,{channel:this.channelSelected});
+						break;
+					case "space_color":
+						this.setEffect(this.type,{spaceColor:this.spaceColorSelected});
+						break;
 					default:
 						this.setEffect(this.type)
 				}
-			/*
-			if(this.type=="filter"){
-				this.setFilter();
-			}else if(this.type=="shapes"){
-				this.setPolygon()
-			}else if(this.type=="undoAll"){
-				this.undoAll();
-			}else if(this.type=="processAll"){
-				this.processAll();
-			}else if(this.type=="texturize"){
-				this.texturize();
-			}else if(this.type=="fussion"){
-				this.setComposite();
-			}else{				
-				this.setEffect(this.type);
-				
+				console.log("desde setChange: ",this.type);
+				console.log("desde setChange: ",effect);
+				//this.dialogImage=true;
+				//this.tmpImage=effect.data.image;
+
 			}
-			*/
-			console.log("desde setChange: ",this.type);
-			//console.log("estableciendo cambios en imagen: ",this.type);
-			//this.type=null;
-			//this.filterProp=null;	
-			}
-			
-		
 		},
 		//deshace el filtro, necesario identificar desactivado
 		cancelChange(){
-			console.log("cancelado");			
+			//console.log("cancelado");			
 		},
-		//asignamos el filtro solo en pantalla
-		filter(prop){
-			//asignamos la existencia de una activación de filtro
-			this.filterActivated=true;
-			console.log("llega afiltro");
-			//let ima=document.getElementById('image');
-			let ima=this.$refs.image_effect;
-			this.filterProp=prop;    
-			switch (prop){
-				case "grayscale":
-					ima.style.filter="grayscale(100%)";					
-				break;
-				case "sepia":
-					ima.style.filter="sepia(150%)";
-				break;
-				case "brightness":
-					ima.style.filter="brightness(150%)";
-				break;
-				case "contrast":
-					ima.style.filter="contrast(150%)";
-				break;
-				case "none":
-					ima.style.filter=prop;
-					this.filterActivated=false;
-				break;
-				default:
-					ima.style.filter='none';
-					this.filterActivated=false;
-			}
-		},
-		//procesa la solicitud de efecto filtro al server
-		setFilter(name=null){
-			return new Promise((resolve,reject)=> {
-
-
-				console.log("llega a setFilter");
-				if(sessionStorage.getItem("biedit_apitoken")){
-					let api_token=sessionStorage.getItem("biedit_apitoken");
-					let email=sessionStorage.getItem("biedit_email");
-					let headers={
-						headers:{
-							Authorization:'Bearer '+api_token
-						}
-					}
-					let data={
-						name:this.ima.src,
-						filter:this.filterProp,
-						email:email
-					};
-					if(name)
-						data.name=name;
-					console.log(this.filterProp);				
-					//desactivamos el filtro de la imagen creado con JavaScript
-					this.filter();
-					//let d = JSON.stringify(data);
-					//solicitar confirmación de ajuste
-					axios.post(this.url+'filter',data,headers).then(res=>{
-						if(res.data.image){
-						console.log("effectMultiple: ",this.effectMultiple)						
-							if(!this.effectMultiple){
-								this.dialogImage=true;
-								this.tmpImage=res.data.image;	
-							}else{
-								resolve(res.data.image);
-							}
-						}else{
-							reject(Error("Error en effect"));
-						}
-					})
-				}
-			})		
-		},
+		
+		
 		//Al establecer una nueva imagen arpovechamos el método de recargar la imagen 
 		//desde el padre con reloadImage() creado para el componente Collections.
 		//Este método establece una vista previa al procesar un efecto o conjunto de 
@@ -2080,399 +1661,33 @@ export default {
 			this.dialogImage=false;
 			//pasamos a false para que realice la transición
 			this.imgTrans=false;
+		//con undoAll() desactivamos y reiniciamos las tareas activadas del primer 
+		//grupo y la tarea activada del segundo grupo
+		this.undoAll();		
 			//this.$emit("reload",dato);
 			//recargamos la nueva imagen
 			//pasamos un callback para que cuando recargue los datos de la imagen 
-			//vuelva a crear la transición (aunque no se aprecia en local)
+			//vuelva a crear la transición (aunque no se aprecia, por lo menos, en local)
 			this.$emit("reload",this.tmpImage,()=>{
-
+					console.log("llega al callback: ",this.type);
+					//comprobamos si el efecto es space_color y asignamos el nuevo
+					//spaceColor para reiniciar el desplegable de spaceColorActive y
+					//de esa forma muestra el botón de check cuando corresponde
+					//Nota: Recordar que la propiedad spaceColor no es nativa del 
+					//objeto image si no que se crea sobre la marcha:
+					//desde el componente Collections con un emit similar a éste y en 
+					//el headerComponent desde uploadServer()
+					if(this.type=="space_color"){
+						this.spaceColor=this.tmpImage.space_color;
+						this.setChannelSelected();
+					}
+					console.log("después de spaceColor: ",this);
 					this.imgTrans=true;
 					//pasamos a null para que se muestre el spinner
 					this.tmpImage=null;
 			});
 		},
-		//sustituido, método está destinado al ancho y alto del panel principal
-		//función drawPolygon dibuja un canvas en forma de polígono
-	/*
-		drawPolygon(sides)
-		{  
-			if(this.polygonActivated==true){
-				//elimina el dibujo canvas, por si existía uno anteriormente
-				this.deleteDrawCanvas();
-				console.log("llega a deleteDrawCanvas");			
-			}else{
-				this.polygonActivated=true;
-			}
-			this.polygonProp=sides;
-
-			
-			//elimina el atributo que se haya podido asignar, por si se ha seleccionado uno
-			//anteriormente
-			//deleteDataPolygon("menu3");
-
-			//var id=data;
-			//id.setAttribute("data-polygon",sides);
-			//var foto=document.getElementById("foto");
-			//deleteDataPolygon("menu3");
-			var radio;
-			//definimos el radio en función del ancho o el alto más corto
-			if(this.ima){
-				if(this.ima.width<=this.ima.height)
-				{
-					radio =this.ima.width/2;
-				}
-				else
-				{
-					radio=this.ima.height/2;
-				}	
-			}
-			
-			var canvas = document.getElementById("canvas");
-
-			if(canvas && canvas.getContext){
-				var ctx= canvas.getContext("2d");
-				if(ctx){
-					//ctx.fillStyle = "#6ab150";
-					//relleno
-					ctx.fillStyle = "rgba(0,0,0,.1)";
-					//ctx.strokeStyle="black";
-					//borde
-					ctx.strokeStyle="rgba(0,0,0)";
-					ctx.lineWidth=3;
-
-					//var X= canvas.width/2;
-					var X= 0;
-					//var Y= canvas.height/2;
-					var Y= 0;
-					var R= radio;
-					//el número de lados del polígono
-					var L=sides;
-
-					//en caso de circumferencia usamos el método arc(x,y,radio,0,2*Math.PI,false)            
-					if(L==0)
-					{                
-						ctx.translate(canvas.width/2,canvas.height/2);
-						ctx.rotate(3*Math.PI/2);
-						ctx.beginPath();
-						ctx.arc(X,Y,R,0,2*Math.PI,false);
-					}
-					//en caso de estrella 
-					else if(L==14)
-					{
-						ctx.fillStyle = "rgba(0,0,0,0.1)";
-						//en este caso seleccionamos el paso 3 y el lado 7 ya que coincide con el lado 14 al
-						//hacer el recorte con PHP
-						var paso =3;
-
-						var estrella=7/paso;
-						let rad=(2*Math.PI)/estrella;
-						ctx.translate(canvas.width/2,canvas.height/2);
-						ctx.rotate(3*Math.PI/2);
-						ctx.beginPath();
-						for(var i=0;i<7;i++)
-						{
-							const x=X+R*Math.cos(rad*i);
-							const y=Y+R*Math.sin(rad*i);
-							ctx.lineTo(x,y);
-						}
-						console.log("estrella");
-					}
-					else
-					{
-						//si L==6 el ángulo es de 2PI/6 o sea 60º
-						//let rad=(2*Math.PI)/L;
-						let rad=(2*Math.PI)/L;
-						//parte opcional (rotación del polígono)
-						//traslada el contexto en el centro del canvas
-						//para poder girar el contexto alrededor del centro
-						//ctx.translate(canvas.width/2,canvas.height/2);
-						ctx.translate(canvas.width/2,canvas.height/2);
-						//ctx.translate(canvas.height/2,canvas.width/2);
-						//gira el contexto unos 270deg
-						console.log("llega aui");				
-						if(L==4)
-							//si no se asigna nada o se asigna lo siguiente 		
-							//crea un cuadrado invertido
-							ctx.rotate(Math.PI/2);
-
-							//cuadrado centrado
-							//ctx.rotate(Math.PI/4);
-							//ctx.rotate(135*Math.PI/180);
-							//ctx.rotate(45*Math.PI/180)
-
-							//igual que cuadrado centrado
-							//ctx.rotate(3*Math.PI/4);
-						else
-							ctx.rotate(3*Math.PI/2);
-							//triángulo al revés
-							//ctx.rotate(2*Math.PI/4);
-
-						//dibuja el trazado
-						ctx.beginPath();
-						for(let i=0;i<L;i++)
-						{
-							const x=X+R*Math.cos(rad*i);
-							const y=Y+R*Math.sin(rad*i);
-							ctx.lineTo(x,y);
-							console.log(x+"->"+y);
-						}
-					}
-
-				ctx.closePath();
-				ctx.fill();
-				ctx.stroke();
-				}
-			}
-			else
-			{
-				console.log("No soporta canvas");return;
-			}
-		},
-	*/
-		drawPolygon(sides)
-		{  			
-			if(this.polygonActivated)
-				//elimina el dibujo canvas, por si existía uno anteriormente
-				this.deleteDrawCanvas();				
-						
-			this.polygonActivated=true;
-			
-			this.polygonProp=sides;
-			console.log("drawPolygon: ",this.polygonActivated);
-
-			
-			//elimina el atributo que se haya podido asignar, por si se ha seleccionado uno
-			//anteriormente
-			//deleteDataPolygon("menu3");
-
-			//var id=data;
-			//id.setAttribute("data-polygon",sides);
-			//var foto=document.getElementById("foto");
-			//deleteDataPolygon("menu3");
-			var radio;
-			//definimos el radio en función del ancho o el alto más corto
-			if(this.imaEffect){
-				if(this.imaEffect.width<=this.imaEffect.height)
-				{
-					radio =this.imaEffect.width/2;
-				}
-				else
-				{
-					radio=this.imaEffect.height/2;
-				}	
-			}
-			
-			var canvas = document.getElementById("canvas");
-
-			if(canvas && canvas.getContext){
-				var ctx= canvas.getContext("2d");
-				if(ctx){
-					//ctx.fillStyle = "#6ab150";
-					//relleno
-					ctx.fillStyle = "rgba(0,0,0,.1)";
-					//ctx.strokeStyle="black";
-					//borde
-					ctx.strokeStyle="rgba(0,0,0)";
-					ctx.lineWidth=3;
-
-					//var X= canvas.width/2;
-					var X= 0;
-					//var Y= canvas.height/2;
-					var Y= 0;
-					var R= radio;
-					//el número de lados del polígono
-					var L=sides;
-
-					//en caso de circumferencia usamos el método arc(x,y,radio,0,2*Math.PI,false)            
-					if(L==0)
-					{                
-						ctx.translate(canvas.width/2,canvas.height/2);
-						ctx.rotate(3*Math.PI/2);
-						ctx.beginPath();
-						ctx.arc(X,Y,R,0,2*Math.PI,false);
-					}
-					//en caso de estrella 
-					else if(L==14)
-					{
-						ctx.fillStyle = "rgba(0,0,0,0.1)";
-						//en este caso seleccionamos el paso 3 y el lado 7 ya que coincide con el lado 14 al
-						//hacer el recorte con PHP
-						var paso =3;
-
-						var estrella=7/paso;
-						let rad=(2*Math.PI)/estrella;
-						ctx.translate(canvas.width/2,canvas.height/2);
-						ctx.rotate(3*Math.PI/2);
-						ctx.beginPath();
-						for(var i=0;i<7;i++)
-						{
-							const x=X+R*Math.cos(rad*i);
-							const y=Y+R*Math.sin(rad*i);
-							ctx.lineTo(x,y);
-						}
-						//console.log("estrella");
-					}
-					else
-					{
-						//si L==6 el ángulo es de 2PI/6 o sea 60º
-						//let rad=(2*Math.PI)/L;
-						let rad=(2*Math.PI)/L;
-						//parte opcional (rotación del polígono)
-						//traslada el contexto en el centro del canvas
-						//para poder girar el contexto alrededor del centro
-						//ctx.translate(canvas.width/2,canvas.height/2);
-						ctx.translate(canvas.width/2,canvas.height/2);
-						//ctx.translate(canvas.height/2,canvas.width/2);
-						//gira el contexto unos 270deg
-						//console.log("llega aui");				
-						if(L==4)
-							//si no se asigna nada o se asigna lo siguiente 		
-							//crea un cuadrado invertido
-							ctx.rotate(Math.PI/2);
-
-							//cuadrado centrado
-							//ctx.rotate(Math.PI/4);
-							//ctx.rotate(135*Math.PI/180);
-							//ctx.rotate(45*Math.PI/180)
-
-							//igual que cuadrado centrado
-							//ctx.rotate(3*Math.PI/4);
-						else
-							ctx.rotate(3*Math.PI/2);
-							//triángulo al revés
-							//ctx.rotate(2*Math.PI/4);
-
-						//dibuja el trazado
-						ctx.beginPath();
-						for(let i=0;i<L;i++)
-						{
-							const x=X+R*Math.cos(rad*i);
-							const y=Y+R*Math.sin(rad*i);
-							ctx.lineTo(x,y);
-							//console.log(x+"->"+y);
-						}
-					}
-
-				ctx.closePath();
-				ctx.fill();
-				ctx.stroke();
-				}
-			}
-			else
-			{
-				console.log("No soporta canvas");return;
-			}
-		},
-		//almacenar imagen con la forma geométrica seleccionada
-		setPolygon(name=null){
-			return new Promise((resolve,reject) => {
-				console.log("llega a setPolygon");
-				if(sessionStorage.getItem("biedit_apitoken")){
-					let api_token=sessionStorage.getItem("biedit_apitoken");
-					let email=sessionStorage.getItem("biedit_email");
-					let headers={
-						headers:{
-							Authorization:'Bearer '+api_token
-						}
-					}
-					let data={
-						name:this.ima.src,
-						polygon:this.polygonProp,
-						email:email
-					};
-					if(name)
-						data.name=name;
-					console.log("lados: ",this.polygonProp);
-					//desactivamos el polígono mostrado en el canvas creado con JavaScript
-					this.deleteDrawCanvas();				
-					this.dialogImage=true;
-					console.log("tmpImage: ",this.tmpImage);
-					axios.post(this.url+'polygon',data,headers).then(res=>{
-						if(res.data.image){
-							//comprobar si el origen es processAll()
-							if(!this.effectMultiple){
-								this.dialogImage=true;
-								this.tmpImage=res.data.image;	
-							}else{
-								resolve(res.data.image);
-							}
-						}else{
-							reject(Error("Error en effect"));
-						}
-						
-					})
-				}
-			})
-		},
-		//resetea un dibujo en canvas y desactiva el identificador polygon
-		deleteDrawCanvas(){
-			//pasamos a null polygonProp
-			this.polygonProp=null;
-			var canvas = document.getElementById("canvas");
-			var ctx= canvas.getContext("2d");
-			ctx.beginPath();
-			//cambiamos this.ima.width por el 
-			//canvas.width=this.ima.width; 
-			canvas.width=this.imaEffect.width;
-			this.polygonActivated=false;
-			//tb se puede usar el método clearrect pero no funciona en este caso
-		},
-		//procesa la solicitud de creación de efecto con imagick(polaroid,viñeta,onda...)
-		setEffect(type_effect,params=null){
-			return new Promise((resolve,reject)=>{
-				if(sessionStorage){
-					if(sessionStorage.getItem("biedit_apitoken")){						
-						let api_token=sessionStorage.getItem("biedit_apitoken");
-						let email=sessionStorage.getItem("biedit_email");
-						let headers={
-							headers:{
-								Authorization:'Bearer '+api_token
-							}
-						};
-
-						//pòdemos pasar datos en el params y pasar el name temporal para el
-						//array, por ejemplo...
-						//if(params.name) data.name=params.name
-						/*
-						if(params && params.name){
-							
-						}
-						*/
-						
-						let data={
-							name:this.ima.src,
-							effect:type_effect,
-							email:email,
-							params:params
-						};
-
-						axios.post(this.url+'effect',data,headers).then(res=>{
-							//si es para el array de processAll() devolvemos
-							//return res.data.image
-							if(res.data.image){
-								if(!this.effectMultiple){
-									this.dialogImage=true;
-									this.tmpImage=res.data.image;	
-								}else{
-									resolve(res.data.image);
-								}
-							}else{
-								reject(Error("Error en effect"));
-							}
-							
-							
-							
-						})//.then(data => console.log(data));
-
-						//console.log(email);		
-					}
-				}
-				
-			})
-			
-		}
 	},
-
 }
 </script>
 <style>
@@ -2548,7 +1763,7 @@ export default {
 }
 @font-face{
 	font-family:usuzi;
-	src:url(../assets/fonts/USUZI.TTF);
+	src:url(../assets/fonts/usuzi.ttf);
 }
 @font-face{
 	font-family:abduction;

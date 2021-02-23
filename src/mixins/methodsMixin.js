@@ -174,5 +174,21 @@ export default {
 			}
 			return sizes;
 		},
+
+		//obtiene una propiedad de un elemento mediante getComputedStyle()
+		handleCSS(elemento){
+			var prop=[];
+			if(document.defaultView && document.defaultView.getComputedStyle){   
+			var a=["width","height","top","left","margin-top","margin-left","margin-right","right","border-right-width","border-left-width","border-top-width","border-bottom-width"];
+				for(var i in a){    
+					prop[i]=parseInt(document.defaultView.getComputedStyle(elemento,null).getPropertyValue(a[i]));
+				}
+				return prop;
+			}
+			else{
+				//falta currentStyle para IE
+				alert("Error document.defaultView (handleCSS method)");
+			}
+		},
 	}
 }

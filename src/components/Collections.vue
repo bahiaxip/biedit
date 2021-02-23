@@ -400,6 +400,7 @@ export default {
 		parseint(string){
 			return parseInt(string);
 		},
+		//convierte el peso de la imagen (entero) a modo legible, junto a su unidad de medida
 		prettyBytes(num){
 			if (typeof num !== 'number' || isNaN(num)) {
 				throw new TypeError('Expected a number');
