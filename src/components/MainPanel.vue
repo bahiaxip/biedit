@@ -1,12 +1,13 @@
 <template>
 	<div>
-	<!--<md-progress-spinner md-mode="indeterminate" v-if="displayLoading"></md-progress-spinner>-->
+	<md-progress-spinner md-mode="indeterminate" v-if="displayLoading"></md-progress-spinner>
 	<div class="back-main-panel" :style="{width:ima.width+'px'}" :v-if="ima.width!=null" ref="backMainPanel">
 		
 		<div style="margin:auto;text-align:center" >
-			<md-switch class="colorB " v-model="resizeSwitch"  title="Mostrar interfaz" v-if="showResize">
+			<md-switch class="colorB " v-model="resizeSwitch"  v-if="showResize">
 			</md-switch>
-
+			<md-tooltip >Redimensionar</md-tooltip>
+			<!--<md-tooltip v-else>No Redimensionar</md-tooltip>-->
 			<md-button class="md-icon-button md-mini md-raised md-accent fab_button_head floatL" title="Guardar en album" @click="dialogResizeActive=true" style="{display:inline-block;}" v-if="resizeSwitch"><md-icon>add_photo_alternate</md-icon></md-button>
 
 			<!--<md-button class="md-fab md-mini fab_button_standard floatR" title="Descargar" v-if="resizeSwitch" ><md-icon>save_alt</md-icon></md-button>-->
@@ -17,11 +18,11 @@
 
 		</div>
 		<div style="margin:auto;text-align:center" v-if="resizeSwitch">
-			<label ><p class="floatL font_label" :style="ima.width<220 ? 'font-size:14px':'font-size:18px'">w: {{ima.width}}px</p>
+			<label ><p class="floatL font_label" :style="ima.width<250 ? 'font-size:12px':'font-size:18px'">w: {{ima.width}}px</p>
 			</label>
 			<!--<md-button class="md-fab md-mini fab_button_standard" title="Guardar en album" @click="dialogResizeActive=true" v-if="ima.width>=220"><md-icon>photo_album</md-icon></md-button>
 			<md-button class="md-fab md-mini fab_button_standard" title="Descargar" v-if="ima.width>300"><md-icon>save_alt</md-icon></md-button>-->
-			<label><p class="floatR font_label" :style="ima.width<220 ? 'font-size:14px':'font-size:18px'">h: {{ima.height}}px</p></label>
+			<label><p class="floatR font_label" :style="ima.width<250 ? 'font-size:12px':'font-size:18px'">h: {{ima.height}}px</p></label>
 		</div>
 		<transition name="fade">
 		<div id="div-main" class="div-main no-selectable" :style="{width:ima.width+'px',height:ima.height+'px'}" ref="divmain" v-if="imgTrans">
@@ -31,7 +32,7 @@
 
 				<img :src="ima.name" id="image" class="main-img no-selectable" :width="ima.width" :height="ima.height" :class="{'main-img-resize':resizeSwitch}" />						
 			</div>
-			<div id="handle-resize" @mousedown="initResize($event)" @touchstart="initResize($event)" class="handle-resize handle-right handle-bottom cursor-handle-resize" v-if="resizeSwitch"></div>
+			<div id="handle-resize" @mousedown="initResize($event)" @touchstart="initResize($event)" class="handle-resize handle-right handle-bottom cursor-handle-resize" :style="ima.width<250 ? handleMin:handleStandar"  v-if="resizeSwitch" ></div>
 		</div>
 		</transition>
 		<md-dialog-confirm class="confirmDialog"
@@ -109,7 +110,8 @@ export default {
 	},
 	
 	data(){
-		return{	
+		return{
+			
 			listWatch:[],
 			filterWatch:null,	
 			resHandleX:null,
@@ -126,6 +128,16 @@ export default {
 			displayLoading:false,
 			imgTrans:false,
 			imagen:this.ima,
+			resizeHandleMin:false,
+			//medidas CSS del handle de redimensión
+			handleStandar:{
+				width:'40px',
+				height:'40px'
+			},
+			handleMin:{
+				width:'30px',
+				height:'30px'
+			},
 
 		}
 	},
@@ -143,7 +155,8 @@ export default {
 		*/
 	},
 	mounted(){
-		if(!this.ima.src){
+		//por revisar si es necesario o cambiar condicional
+		if(!this.ima.name){
 			this.displayLoading=true;
 		}
 		if(this.ima.file || this.ima.src){
@@ -179,6 +192,15 @@ export default {
 			}
 			let h;
 			
+			//reducimos el handle de redimensión  mediante el interruptor
+			//anulado, sustituido por :style
+			/*
+			if(w<220){
+				this.resizeHandleMin=true;				
+			}else{
+				this.resizeHandleMin=false;
+			}
+			*/
 		//el cambio de diseño de los iconos y labels de redimensión que siguen a 
 		//continuación han sido cambiado de procesarlo aquí al atributo :style en el template.
 				//reducimos las etiquetas de información de ancho y alto y ocultamos el botón de descarga, (ya que se puede descargar desde collections) y se sube el botón de redimensionar
@@ -337,4 +359,5 @@ export default {
 .fade-enter, .fade-leave-to{
 	opacity:0;
 }
+
 </style>

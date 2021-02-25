@@ -336,8 +336,7 @@ export default {
 			}else{
 				this.$emit("reload",image);
 				console.log("no es la misma imagen y reload image: ",image);
-			}			
-			console.log("llega");
+			}						
 		},
 		getNewHeight(newWidth,width,height){
 			let newHeight=Math.round((newWidth*height)/width);

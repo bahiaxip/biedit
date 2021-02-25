@@ -62,13 +62,9 @@ export default {
 						let newMargin=this.getMarginToCenter(this.imaEffect.width,this.imaEffect.height);		console.log(newMargin);
 						d.margin=newMargin+"px auto";				
 						this.$refs.canvas.style.margin=newMargin+'px auto';
-					} 
-						
-				}				
-				
-				
+					}						
+				}
 			}else{
-
 				(d2.transform=="rotate(180deg)" || side==null) ? 
 					d2.transform="rotate(0deg)": d2.transform="rotate(180deg)";
 					//devolvemos margin y dimensiones anteriores
@@ -85,9 +81,7 @@ export default {
 			}else{
 				this.rotateActivated=true;
 				this.rotateSide=side;
-			}
-			console.log("hola: ",this.rotateActivated);
-			
+			}			
 		},
 
 		//crea un efecto de textura 
@@ -96,15 +90,12 @@ export default {
 		texturize(range){
 			let imaStyle=this.$refs.image_effect.style;
 			//let imaStyle2=this.$refs.div_effect_image.style;
-						
 				//imaStyle.width=this.imaEffect.width+"px";
 				//imaStyle.height=this.imaEffect.height+"px";
-			
 			if(range==0 || range==1){				
 				imaStyle.backgroundSize="100%";
 				imaStyle.backgroundRepeat="no-repeat";
 				this.rangeTexturize=1;
-				
 			}else{
 				//asignamos las medidas de la repetición en función del rango que se 
 				//pasa como parámetro
@@ -148,8 +139,7 @@ export default {
 				//imaStyle.display="block";
 			}
 			(imaStyle.backgroundRepeat!="no-repeat") ? 
-				this.texturizeActivated=true:this.texturizeActivated=false;
-			//console.log(this.texturizeActivated);
+				this.texturizeActivated=true:this.texturizeActivated=false;			
 		},
 
 		//asignamos el filtro solo en pantalla
@@ -193,26 +183,17 @@ export default {
 			
 			this.polygonProp=sides;
 			console.log("drawPolygon: ",this.polygonActivated);
-
 			
-			//elimina el atributo que se haya podido asignar, por si se ha seleccionado uno
-			//anteriormente
-			//deleteDataPolygon("menu3");
-
-			//var id=data;
-			//id.setAttribute("data-polygon",sides);
-			//var foto=document.getElementById("foto");
-			//deleteDataPolygon("menu3");
-			var radio;
-			//definimos el radio en función del ancho o el alto más corto
+			var ratio;
+			//definimos el ratio en función del ancho o el alto más corto
 			if(this.imaEffect){
 				if(this.imaEffect.width<=this.imaEffect.height)
 				{
-					radio =this.imaEffect.width/2;
+					ratio =this.imaEffect.width/2;
 				}
 				else
 				{
-					radio=this.imaEffect.height/2;
+					ratio=this.imaEffect.height/2;
 				}	
 			}
 			
@@ -233,11 +214,11 @@ export default {
 					var X= 0;
 					//var Y= canvas.height/2;
 					var Y= 0;
-					var R= radio;
+					var R= ratio;
 					//el número de lados del polígono
 					var L=sides;
 
-					//en caso de circumferencia usamos el método arc(x,y,radio,0,2*Math.PI,false)            
+					//en caso de circumferencia usamos el método arc(x,y,ratio,0,2*Math.PI,false)            
 					if(L==0)
 					{                
 						ctx.translate(canvas.width/2,canvas.height/2);
@@ -385,7 +366,7 @@ export default {
 					//borde
 					ctx.strokeStyle="rgba(0,0,0)";
 					ctx.lineWidth=3;
-					//radio
+					//ratio
 					var r=10;
 					//coordenadas del rectángulo
 					let x0=50, y0=50,

@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<div v-if="!ima.width">
-			<md-progress-spinner md-mode="indeterminate" v-if="displayLoading" ></md-progress-spinner>
+		<div v-if="!ima.src">
+			<md-progress-spinner md-mode="indeterminate" v-if="displayLoading" style="position:absolute;top:50%;left:50%;"></md-progress-spinner>
 		</div>
 		<div v-else >
 			<audio id="crop-audio" src="audio/crop_audio.wav" preload="auto"></audio>
@@ -48,12 +48,14 @@
 					:md-content = "msgeDialogContent"
 					md-confirm-text="OK" />
 
-					<md-dialog-alert class="confirmDialog"
+					
+		</div>
+		<md-dialog-alert class="confirmDialog"
 					:md-active.sync="dialogSuccessActive"
 					:md-title = "msgeDialogTitle"
 					:md-content = "msgeDialogContent"
-					md-confirm-text="OK" />
-		</div>
+					md-confirm-text="OK" 
+					/>
 	</div>
 </template>
 <script>
@@ -81,13 +83,18 @@ export default {
 		
 		//si no existe imagen en el panel principal pk no se ha subido ni se ha 
 		//seleccionado desde el album mostramos mensaje
-		if(!this.name){
+		if(!this.ima.name){
 			//lanzar dialog con mensaje
+			this.msgeDialogTitle="No existe imagen";
+			this.dialogSuccessActive=true;			
+			return;
 		}
+
 		//si se ha seleccionado subir una imagen y aun no se ha cargado en el server 
 		//mostramos loading...
 		if(this.name && !this.ima.src){			
 			this.displayLoading=true;
+
 		}else{
 			this.onTransition=true;
 			//asignamos el min-width y el height al hijo que crea el panel-dialog de vue material
@@ -110,6 +117,7 @@ export default {
 		}
 	},
 	methods:{
+
 		toogle(){
 			console.log("llega");
 			this.onTransition=true;

@@ -4,7 +4,7 @@
 		<div class="nav ">
 		<!--<md-toolbar class="md-accent" >-->
 			<div class="floatL"   >
-				<md-button class="md-accent md-fab" title="Sesión" @click="switchDialog()">
+				<md-button class="md-accent md-fab" title="Sesión" @click="switchDialog()" >
 					<md-icon>person</md-icon>
 				</md-button>
 			</div>
@@ -22,7 +22,7 @@
 				<input type="file" name="images[]" id="archivo" class="archivo" @change="selectedFile($event)" >
 
 				<router-link :to="{name:'MainPanel',params:{ima:image}}">
-					<md-button class="md-fab md-accent" title="Panel principal"  >
+					<md-button class="md-fab md-accent" title="Panel principal" :disabled="mainImage" >
 						<md-icon>panorama</md-icon>										
 					</md-button>
 				</router-link>
@@ -30,7 +30,7 @@
 					<md-icon>open_in_full</md-icon>
 				</md-button>-->
 
-				<md-button class="md-fab md-accent" title="Panel de recorte" @click="cutImage()" >
+				<md-button class="md-fab md-accent" title="Panel de recorte" @click="cutImage()" :disabled="mainImage" >
 					<md-icon>crop</md-icon>
 				</md-button>
 
@@ -45,7 +45,7 @@
 				</router-link>
 
 				<router-link :to="{name:'effect',params:{ima:image}}">
-					<md-button class="md-fab md-accent" title="Panel de ajustes"  >
+					<md-button class="md-fab md-accent" title="Panel de ajustes" :disabled="mainImage">
 						<md-icon>photo_filter</md-icon>
 					</md-button>
 				</router-link>
@@ -122,8 +122,7 @@ export default {
 		
 	},
 	data(){
-		return{
-
+		return{			
 	//propiedades de ancho establecidas
 			//ancho asignado para panel principal por defecto
 			widthDefault:Global.widthDefault,
@@ -179,6 +178,10 @@ export default {
 			dialogSuccessActive:false,
 			msgeDialogContent:null,
 			msgeDialogTitle:null,
+			//interruptor para deshabilitar botones si no existe imagen principal
+			mainImage:false,
+			//interruptor para deshabilitar botones si la imagen es demasiado grande
+			imgTooSize:false,
 
 		}
 	},
@@ -200,6 +203,11 @@ export default {
 		//genere errores
 		this.image.widthDefault=this.widthDefault;		
 		//establecer máximo de redimensión  posible
+
+		//deshabilitar
+		if(!this.image.name){
+			this.mainImage=true;
+		}
 	},
 	
 	methods:{
@@ -257,6 +265,8 @@ export default {
 						this.image.width = sizes.width
 						this.image.height = sizes.height;
 						this.image.file=file;
+						//habilitamos botones
+						this.mainImage=false;
 						//enviar todos los datos de la imagen y redirigir a MainPanel
 						this.redirectToMainPanel(this.image);
 				
@@ -571,7 +581,7 @@ export default {
 				headers:{
 					"Access-Control-Allow-Origin" : "*",
 					"crossorigin":true,
-					'Access-Control-Allow-Methods': "GET",
+					'Access-Control-Allow-Methods': "GET,POST,PUT",
 					'Access-Control-Allow-Headers': "Content-Type",
 					'Access-Control-Allow-Credentials':true,
 					'cache-control':'no-cache',
@@ -593,6 +603,8 @@ export default {
 			this.image.widthCut=sizesCut.width;
 			this.image.heightCut=sizesCut.height;
 			this.image.spaceColor=image.space_color;
+			//habilitar botones
+			this.mainImage=false;
 			//callback sin definir
 			if(callback!=null)
 				callback();

@@ -30,33 +30,41 @@ export default {
 		
 	//procesa solicitud al server de compresión de imagen
 		setCompress(range){
-			if(this.testToken){
-				let apitoken=sessionStorage.getItem("biedit_apitoken");
-				let email=sessionStorage.getItem("biedit_email");
-				let data={
-					range:range,
-					email:email,
-					image:this.ima.src
-				}
-				let headers={
-					headers:{
-						Authorization: 'Bearer '+apitoken
-					}
-				}
-				axios.post(this.url+'compress',data,headers).then((res)=> {
-					console.log(res);
-					if(res.data.image){
-						this.dialogImage=true;						
-						this.tmpImage=res.data.image;
-						console.log("tmpImage2: ",this.tmpImage);
-						//console.log(this.tmpImage);
-						console.log("dialog_image",res.data.image);
-					}else{
-						//console.log(res.data.data);
-						console.log("hubo un error");
-					}
-				});
+			let session=this.testSession();
+			if(!session)
+				return;
+			if(session.status=="error"){
+				console.log("session.message: ",session.message);
+				return;
 			}
+			let api_token=session.api_token,
+				email=session.email;
+				//let apitoken=sessionStorage.getItem("biedit_apitoken");
+				//let email=sessionStorage.getItem("biedit_email");
+			let data={
+				range:range,
+				email:email,
+				image:this.ima.src
+			}
+			let headers={
+				headers:{
+					Authorization: 'Bearer '+api_token
+				}
+			}
+			axios.post(this.url+'compress',data,headers).then((res)=> {
+				console.log(res);
+				if(res.data.image){
+					this.dialogImage=true;						
+					this.tmpImage=res.data.image;
+					console.log("tmpImage2: ",this.tmpImage);
+					//console.log(this.tmpImage);
+					console.log("dialog_image",res.data.image);
+				}else{
+					//console.log(res.data.data);
+					console.log("hubo un error");
+				}
+			});
+			
 		},
 
 		setReflex(type){			
@@ -91,85 +99,105 @@ export default {
 		//procesa la solicitud de efecto filtro al server
 		setFilter(name=null){
 			return new Promise((resolve,reject)=> {
-
-
-				console.log("llega a setFilter");
-				if(sessionStorage.getItem("biedit_apitoken")){
-					let api_token=sessionStorage.getItem("biedit_apitoken");
-					let email=sessionStorage.getItem("biedit_email");
-					let headers={
-						headers:{
-							Authorization:'Bearer '+api_token
-						}
-					}
-					let data={
-						name:this.ima.src,
-						filter:this.filterProp,
-						email:email
-					};
-					if(name)
-						data.name=name;
-					console.log(this.filterProp);				
-					//desactivamos el filtro de la imagen creado con JavaScript
-					this.filter();
-					//let d = JSON.stringify(data);
-					//solicitar confirmación de ajuste
-					axios.post(this.url+'filter',data,headers).then(res=>{
-						if(res.data.image){
-						console.log("effectMultiple: ",this.effectMultiple)						
-							if(!this.effectMultiple){
-								this.dialogImage=true;
-								this.tmpImage=res.data.image;	
-							}else{
-								resolve(res.data.image);
-							}
-						}else{
-							reject(Error("Error en effect"));
-						}
-					})
+				//console.log("llega a setFilter");
+				let session=this.testSession();
+				if(!session)
+					return;
+				if(session.status=="error"){
+					console.log("session.message: ",session.message);
+					return;
 				}
+				let api_token=session.api_token,
+					email=session.email;
+				let headers={
+					headers:{
+						Authorization:'Bearer '+api_token
+					}
+				}
+				let data={
+					name:this.ima.src,
+					filter:this.filterProp,
+					email:email
+				};
+				if(name)
+					data.name=name;
+				console.log(this.filterProp);				
+				//desactivamos el filtro de la imagen creado con JavaScript
+				this.filter();					
+				
+				axios.post(this.url+'filter',data,headers).then(res=>{
+					if(res.data.image){
+					console.log("effectMultiple: ",this.effectMultiple)						
+						if(!this.effectMultiple){
+							this.dialogImage=true;
+							this.tmpImage=res.data.image;	
+						}else{
+							resolve(res.data.image);
+						}
+					}else{
+						reject(Error("Error en effect"));
+					}
+				}).catch(error=>{
+					this.msgeDialogAlert="Se generó un error al procesar el filtro";
+					this.dialogErrorActive=true;
+					console.log("Error server: ",error);
+				})
+				
 			})		
 		},
 
 		//almacenar imagen con la forma geométrica seleccionada
 		setPolygon(name=null){
 			return new Promise((resolve,reject) => {
-				console.log("llega a setPolygon");
-				if(sessionStorage.getItem("biedit_apitoken")){
-					let api_token=sessionStorage.getItem("biedit_apitoken");
-					let email=sessionStorage.getItem("biedit_email");
-					let headers={
-						headers:{
-							Authorization:'Bearer '+api_token
-						}
-					}
-					let data={
-						name:this.ima.src,
-						polygon:this.polygonProp,
-						email:email
-					};
-					if(name)
-						data.name=name;
-					console.log("lados: ",this.polygonProp);
-					//desactivamos el polígono mostrado en el canvas creado con JavaScript
-					this.deleteDrawCanvas();				
-					this.dialogImage=true;
-					console.log("tmpImage: ",this.tmpImage);
-					axios.post(this.url+'polygon',data,headers).then(res=>{
-						if(res.data.image){
-							//comprobar si el origen es processAll()
-							if(!this.effectMultiple){
-								this.dialogImage=true;
-								this.tmpImage=res.data.image;	
-							}else{
-								resolve(res.data.image);
-							}
-						}else{
-							reject(Error("Error en effect"));
-						}
-						
-					})
+			//	console.log("llega a setPolygon");
+				//if(sessionStorage.getItem("biedit_apitoken")){
+				//	let api_token=sessionStorage.getItem("biedit_apitoken");
+				//	let email=sessionStorage.getItem("biedit_email");
+				let session=this.testSession();
+				if(!session)
+				return;
+				if(session.status=="error"){
+					console.log("session.message: ",session.message);
+					return;
 				}
+				let api_token=session.api_token,
+					email=session.email;
+				let headers={
+					headers:{
+						Authorization:'Bearer '+api_token
+					}
+				}
+				let data={
+					name:this.ima.src,
+					polygon:this.polygonProp,
+					email:email
+				};
+				if(name)
+					data.name=name;
+				console.log("lados: ",this.polygonProp);
+				//desactivamos el polígono mostrado en el canvas creado con JavaScript
+				this.deleteDrawCanvas();				
+				this.dialogImage=true;
+				console.log("tmpImage: ",this.tmpImage);
+				axios.post(this.url+'polygon',data,headers).then(res=>{
+					if(res.data.image){
+						//comprobar si el origen es processAll()
+						if(!this.effectMultiple){
+							this.dialogImage=true;
+							this.tmpImage=res.data.image;	
+						}else{
+							resolve(res.data.image);
+						}
+					}else{
+						reject(Error("Error en effect"));
+					}
+					
+				}).catch(error=>{
+					this.msgeDialogAlert="Se generó un error al procesar el efecto de forma";
+					this.dialogErrorActive=true;
+					console.log("Error server: ",error);
+				})
+				//}
 			})
 		},
 
@@ -178,55 +206,77 @@ export default {
 			//la promesa tan solo es necesaria para el efecto rotate, ya que, al 
 			//pertenecer al primer grupo requiere asincronía para el processAll()
 			return new Promise((resolve,reject)=>{
-				if(sessionStorage){
-					if(sessionStorage.getItem("biedit_apitoken")){						
-						let api_token=sessionStorage.getItem("biedit_apitoken");
-						let email=sessionStorage.getItem("biedit_email");
-						let headers={
-							headers:{
-								Authorization:'Bearer '+api_token
-							}
-						};
-						//pòdemos pasar datos en el params y pasar el name temporal para el
-						//array, por ejemplo...
-						//if(params.name) data.name=params.name
-						/*
-						if(params && params.name){
-						}
-						*/
-						let data={
-							name:this.ima.src,
-							effect:type_effect,
-							email:email,
-							params:params
-						};
-						console.log("params: ",params);
-						axios.post(this.url+'effect',data,headers).then(res=>{
-							//si es para el array de processAll() devolvemos							
-
-							if(res.data.message){
-								console.log(res.data.message)
-							}
-							if(res.data.image){
-								if(!this.effectMultiple){
-									this.dialogImage=true;
-									this.tmpImage=res.data.image;	
-								}else{
-									resolve(res.data.image);
-								}
-							}else{
-								reject(Error("Error en effect"));
-							}
-						})
-					}
+				//if(sessionStorage){
+					//if(sessionStorage.getItem("biedit_apitoken")){						
+					//	let api_token=sessionStorage.getItem("biedit_apitoken");
+					//	let email=sessionStorage.getItem("biedit_email");
+				let session=this.testSession();
+				if(!session)
+					return;
+				if(session.status=="error"){
+					console.log("session.message: ",session.message);
+					return;
 				}
+				let api_token=session.api_token,
+				email=session.email;
+				let headers={
+					headers:{
+						Authorization:'Bearer '+api_token
+					}
+				};
+				//pòdemos pasar datos en el params y pasar el name temporal para el
+				//array, por ejemplo...
+				//if(params.name) data.name=params.name
+				/*
+				if(params && params.name){
+				}
+				*/
+				let data={
+					name:this.ima.src,
+					effect:type_effect,
+					email:email,
+					params:params
+				};
+				console.log("params: ",params);
+				axios.post(this.url+'effect',data,headers).then(res=>{
+					//si es para el array de processAll() devolvemos							
+					console.log(res);
+					if(res.data.message){
+						console.log(res.data.message)
+					}
+					if(res.data.image){
+						if(!this.effectMultiple){
+							this.dialogImage=true;
+							this.tmpImage=res.data.image;	
+						}else{
+							resolve(res.data.image);
+						}
+					}else{
+						reject(Error("Error en effect"));
+					}
+				}).catch(error=>{
+					this.msgeDialogAlert="Se generó un error al procesar el efecto";
+					this.dialogErrorActive=true;
+					console.log("Error server: ",error);
+				})
+					//}
+				//}
 			})
 		},
 
 		getTotalImages(){
-			if(sessionStorage.getItem("biedit_apitoken")){
-				let api_token=sessionStorage.getItem("biedit_apitoken");
-				let email=sessionStorage.getItem("biedit_email");
+			let session=this.testSession();
+			if(!session)
+				return;
+			if(session.status=="error"){
+				console.log("session.message: ",session.message);
+				return;
+			}
+			let api_token=session.api_token,
+				email=session.email;
+			//if(sessionStorage.getItem("biedit_apitoken")){
+			//	let api_token=sessionStorage.getItem("biedit_apitoken");
+			//	let email=sessionStorage.getItem("biedit_email");
 				let data={
 					params:{
 						api_token:api_token,
@@ -243,7 +293,7 @@ export default {
 					this.images=res.data.images;
 					console.log("las imagenes: ",this.images);
 				})
-			}
+			//}
 		},
 		//elimina una lista de imagenes del server y de la db
 		deleteImages(images_list){			
@@ -267,9 +317,10 @@ export default {
 					'Authorization': 'Bearer '+api_token
 				}
 			}
-			axios.post(this.url+"images/delete",data,headers).then(res => {
-				console.log(res);
-			})
+			axios.post(this.url+"images/delete",data,headers)
+			//.then(res => {
+			//	console.log(res);
+			//})
 		},
 
 		//solicita procesar los efectos de fusión, watermark y create-watermark al server
@@ -296,8 +347,19 @@ export default {
 						imageId:this.compositeSelectedId
 					}
 					let headers={
+						withCredentials:false,
 						headers:{
-							'Authorization': 'Bearer '+api_token
+							'Authorization': 'Bearer '+api_token,
+							//'Content-Type':'application/json',
+							"Access-Control-Allow-Origin" : "*",
+							//"crossorigin":true,
+							//'Access-Control-Allow-Methods': "GET,POST,PUT,DELETE,OPTIONS",
+							'Access-Control-Allow-Headers': " Origin, X-Requested-With, Content-Type, Accept",
+							//'Access-Control-Allow-Credentials':true,
+							//'cache-control':'no-cache',
+						},
+						header:{
+
 						}
 					}
 					//identificamos si es el efecto de fusión o el watermark
@@ -313,6 +375,10 @@ export default {
 							}else{
 								//
 							}
+						}).catch(error=>{
+							this.msgeDialogAlert="Se generó un error al procesar el efecto de fusión";
+							this.dialogErrorActive=true;
+							console.log("Error server: ",error);
 						})
 					}else if(this.typeAction=="watermark"){
 						data.position=this.compPos;
@@ -326,6 +392,10 @@ export default {
 							}else{
 								//
 							}
+						}).catch(error=>{
+							this.msgeDialogAlert="Se generó un error al procesar el efecto de marca de agua";
+							this.dialogErrorActive=true;
+							console.log("Error server: ",error);
 						})
 					}
 				//identificamos si es el create-watermark y si se ha introducido texto 
@@ -356,6 +426,10 @@ export default {
 							}else{
 								//
 							}
+						}).catch(error=>{
+							this.msgeDialogAlert="Se generó un error al crear la marca de agua";
+							this.dialogErrorActive=true;
+							console.log("Error server: ",error);
 						})
 					}
 				}

@@ -315,6 +315,10 @@ html,body{
 	border-radius:50%;
 	z-index:999;
 }
+.handle-resize-min{
+    width:30px;
+    height:30px;
+}
 .handle-top
 {
     top:-14px;

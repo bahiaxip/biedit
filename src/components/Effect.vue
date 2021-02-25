@@ -709,13 +709,13 @@
 				md-title = "Nada que actualizar"
 				md-content = "No se han detectado cambios"
 				md-confirm-text="OK" />
-	<!--
+	
 				<md-dialog-alert class="confirmDialog"
-				:md-active.sync="dialogSuccessActive"
-				md-title = "Creado correctamente"
+				:md-active.sync="dialogErrorActive"
+				md-title = "Error al procesar la imagen"
 				:md-content = "msgeDialogAlert"
 				md-confirm-text="OK" />
-			-->
+			
 				
 		</div>
 		
@@ -769,6 +769,12 @@ export default {
 			imgTrans:false,
 			//confirmación modal dialog
 			dialogConfirmActive:false,
+			//dialog para errores
+			dialogErrorActive:false,
+			//contenido de dialog para errores
+			//(actualizado durante los errores de los efectos: servicesMixin)
+			msgeDialogAlert:null,
+
 			//dialogConfirmActive2:false,
 			//textos modal dialog
 			dialog_title:{
@@ -1465,6 +1471,7 @@ export default {
 			console.log("llega: ",this.spaceColor)
 		},
 		
+	//anulado, sustituido por session()
 		testToken:()=>{
 			if(sessionStorage){
 				if(!sessionStorage.getItem("biedit_apitoken") || !sessionStorage.getItem("biedit_email"))
@@ -1598,7 +1605,7 @@ export default {
 		//método al dar OK en la confirmación de un efecto de filtro, o recorte de
 		// forma o efecto
 		setChange(){
-			let effect="";
+			
 			if(this.type){
 				switch(this.type){
 					case "filter":
@@ -1634,7 +1641,7 @@ export default {
 						this.setEffect(this.type)
 				}
 				console.log("desde setChange: ",this.type);
-				console.log("desde setChange: ",effect);
+				
 				//this.dialogImage=true;
 				//this.tmpImage=effect.data.image;
 
