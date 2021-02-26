@@ -40,7 +40,8 @@ export default {
 						d2.height=this.imaEffect.width+"px";
 						
 						//obtenemos el margin de cada lado para centrar el canvas
-						let newMargin=this.getMarginToCenter(this.imaEffect.width,this.imaEffect.height);		console.log(newMargin);
+						let newMargin=this.getMarginToCenter(this.imaEffect.width,this.imaEffect.height);		
+						console.log(newMargin);
 						d.margin=newMargin+"px auto";
 						this.$refs.canvas.style.margin=newMargin+'px auto';
 					}

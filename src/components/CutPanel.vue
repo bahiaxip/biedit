@@ -60,13 +60,15 @@
 </template>
 <script>
 import BoxPanel from './BoxPanel.vue';
-import axios from 'axios';
+//import axios from 'axios';
 import Global from '../Global.js';
+import servicesMixin from '../mixins/servicesMixin';
 export default {	
 	name:'CutPanel',
 	components:{BoxPanel},
 	//evitamos el ima asignando el src en el resized, además del ima
 	props:['ima'],
+	mixins:[servicesMixin],
 	//props:['ima','resized'],
 	created(){
 		/*
@@ -85,7 +87,7 @@ export default {
 		//seleccionado desde el album mostramos mensaje
 		if(!this.ima.name){
 			//lanzar dialog con mensaje
-			this.msgeDialogTitle="No existe imagen";
+			this.msgeDialogTitle="La imagen principal aun no está disponible";
 			this.dialogSuccessActive=true;			
 			return;
 		}
@@ -96,11 +98,31 @@ export default {
 			this.displayLoading=true;
 
 		}else{
-			this.onTransition=true;
-			//asignamos el min-width y el height al hijo que crea el panel-dialog de vue material
-			document.querySelector(".back-cut-panel").firstChild.style.minWidth=this.ima.widthCut+"px";
-			document.querySelector(".back-cut-panel").firstChild.style.height=this.ima.heightCut+"px";	
+			setTimeout(()=> {
+				//necesario no mostrar hasta el setTimout pase
+				window.scrollTo(0,0)
+				
+			
+				this.onTransition=true;
+				//asignamos el min-width y el height al hijo que crea el panel-dialog de vue material
+				document.querySelector(".back-cut-panel").firstChild.style.minWidth=this.ima.widthCut+"px";
+				document.querySelector(".back-cut-panel").firstChild.style.height=this.ima.heightCut+"px";
+			},100)
 		}
+		//establecemos el scroll arriba, sin el setTimeout no funciona, quizas
+		//el dialog modal de vue material interfiera
+//revisar en producción (+ o - tiempo de callback)
+		/*
+		setTimeout(()=> {
+			//necesario no mostrar hasta el setTimout pase
+			window.scrollTo(0,0)
+			
+		},100)
+		*/
+	},
+	updated(){
+		
+		//let hola=document.querySelector("#back-cut-panel");
 		
 	},
 	data(){
@@ -126,67 +148,7 @@ export default {
 			console.log("llega");
 			this.onTransition=false;
 		},
-		//proceso de recorte
-		cropImage(){
-			//si la ruta actual no es cutout detenemos
-			if(this.$route.name!="cutout"){
-				return;
-			}
-			if(this.ima.widthCut<100 || this.ima.heightCut<100){
-				//console.log("no es posible recortar ")
-			}
-			var self=this;
-			if(sessionStorage && sessionStorage.getItem("biedit_apitoken")){
-
-				let api_token = sessionStorage.getItem("biedit_apitoken");
-				let email = sessionStorage.getItem("biedit_email");
-				let square = document.querySelector("#square-panel");				
-				square.className="flash animated";
-
-				let prop = {
-					x : square.offsetLeft,
-					y : square.offsetTop,
-					width : square.offsetWidth,
-					height : square.offsetHeight,
-					resizeWidth:this.ima.widthCut,
-					resizeHeight:this.ima.heightCut,
-					src : this.ima.src,
-					email: email
-				}
-				let data = {
-					data: JSON.stringify(prop)
-				}
-				let headers= {
-					headers:{Authorization: "Bearer "+api_token}
-				}
-				axios.post(this.url+"crop",data,headers).then(res => {
-					if(res.data.error){
-						this.msgeDialogTitle="Ocurrió un error";
-						this.msgeDialogContent=res.data.error;						
-						this.dialogErrorActive=true;
-						return;		
-					}
-					if(res.data.message){
-						const cloneBoxSquare=this.cloneBoxSquare();
-						//realizamos un setTimeout para que funcione el transition
-						setTimeout(function(){
-							square.className="";
-							cloneBoxSquare.style.top="-1000px";
-							setTimeout(function(){
-								//cloneBoxSquare.style.display="none";
-								self.msgedialogTitle="Guardado con éxito"
-								self.msgeDialogContent=res.data.message;
-								self.dialogSuccessActive=true;
-							},1000);
-						},100);
-					}
-				})
-
-				this.playSound();
-			}else{
-				console.log("El usuario no está logueado o el navegador no soporta sessionStorage");
-			}
-		},
+		
 		//sonido de recorte
 		playSound(){
 			let audio= document.querySelector("#crop-audio");
@@ -262,7 +224,9 @@ export default {
 
 .md-overlay{
 	
-
+}
+#back-cut-panel{
+	/*overflow-y:scroll;*/
 }
 
 </style>

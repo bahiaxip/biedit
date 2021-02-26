@@ -81,13 +81,13 @@
 									<md-icon>highlight_alt</md-icon>
 								</md-button>
 
-								<md-button class="md-icon-button" title="Descargar imagen" @click="downloadFile(image)">
+								<md-button class="md-icon-button" title="Descargar imagen" @click="confirmAction(image,'download')">
 									<!--<a :href="'http://localhost:8000/'+image.path+image.random_name" download id="download">-->
 										<md-icon>save_alt</md-icon>
 									
 								</md-button>
 
-								<md-button class="md-icon-button" @click="confirmDelete(image)" title="Eliminar imagen">
+								<md-button class="md-icon-button" @click="confirmAction(image,'delete')" title="Eliminar imagen">
 									<md-icon>delete</md-icon>
 								</md-button>
 
@@ -113,17 +113,17 @@
 			</ul>
 			<md-dialog-alert class="confirmDialog" id="confirmDialog" 
 			:md-active.sync="dialogErrorActive"
-			md-title = "Ocurrió un error"
+			:md-title = "titleDialogAlert"
 			:md-content = "msgeDialogAlert"
 			md-confirm-text="OK" />
 
 			<md-dialog-confirm class="confirmDialog"
 			:md-active.sync="dialogSuccessActive"
 			md-title = "Confirmación"
-			md-content = "¿Seguro que desea eliminar la imagen?"
+			:md-content = "msgeDialogConfirm"
 			md-confirm-text="OK" 
 			md-cancel-text="Cancelar"		
-			@md-confirm="deleteImage()" 
+			@md-confirm="setAction(action)" 
 			:md-click-outside-to-close="dialogSwitch" />
 			<!-- modal de imagen en pantalla completa -->
 			<transition name="fadeimg">
@@ -136,13 +136,14 @@
 	<!--</div>-->
 </template>
 <script>
-import axios from 'axios';
+//import axios from 'axios';
+import servicesMixin from '../mixins/servicesMixin';
 //import Global from '../Global.js';
 import methodsMixin from '../mixins/methodsMixin';
 export default {
 	name:"collections",
 	props:['imageMain'],
-	mixins:[methodsMixin],
+	mixins:[methodsMixin,servicesMixin],
 	data(){
 		return{	
 			//para que funcione el efecto transition no puede ser null		
@@ -163,7 +164,10 @@ export default {
 			//dialogs
 			dialogErrorActive:false,
 			dialogSuccessActive:false,
+			msgeDialogConfirm:null,
+			action:null,
 			msgeDialogAlert:null,
+			titleDialogAlert:null,
 			dialogSwitch:false,
 			toggleCard:false,
 			tmpImage:null,
@@ -214,113 +218,35 @@ export default {
 		//this.showFullImage=false;
 	},
 	methods:{
+		/*
 		onMenu(e){
 			console.log(e.target.parentElement.parentElement);
 
 			//this.toggleCard=true;
 		},
-		getImages(page=null){
+		*/
+		setAction(action){
+			if(action=="delete")
+				this.deleteImage()
+			else if(action=='download')
+				this.downloadFile(this.image)
+			this.action=null;
 
-			let linkPage=1;
-			if(page){
-				linkPage=page;
-				console.log("linkPage: ",linkPage)
+		},		
+
+		confirmAction(image,action){			
+			this.image=image;
+			if(action=="delete"){
+				this.msgeDialogConfirm="¿Seguro que desea eliminar la imagen?"
+				this.action=action
 			}
-			if(sessionStorage.getItem("biedit_apitoken")){
-				let api_token=sessionStorage.getItem("biedit_apitoken");
-				let email=sessionStorage.getItem("biedit_email");
-				let data={
-					params:{
-						api_token:api_token,
-						email:email	
-					}
-					
-				};
-				let headers={
-					headers: {
-						/*"Access-Control-Allow-Origin": "*",
-						"Access-Control-Allow-Headers":"Authorization,X-API-KEY,Origin,X-Requested-With,Content-Type,Accept,Access-Control-Allow-Request-Method",
-						"Access-Control-Allow-Methods":"GET,POST,OPTIONS,PUT,DELETE",
-						"Allow":"GET,POST,OPTIONS,PUT,DELETE",
-						*/
-						/*
-						"Access-Control-Allow-Origin" : "*",
-						//crossorigin:true,
-						'Access-Control-Allow-Methods': "GET",
-						//'Access-Control-Allow-Headers': "Content-Type",
-						'Access-Control-Allow-Credentials':true,
-						'cache-control':'no-cache',
-						'Access-Control-Allow-Headers':"Origin, X-Requested-With, Content-Type, Accept",
-						*/
-						Authorization: 'Bearer '+sessionStorage.getItem("biedit_apitoken")
-					}
-				};
-				axios.get(this.url+'images?page='+linkPage,data,headers).then(res=>{
-				console.log("desde atui: ",res.data);
-					this.images=res.data.data;
-					this.totalPages=res.data.last_page;
-					this.actualPage=res.data.current_page;
-					this.totalImages=res.data.total;
-					console.log("actualPage: ",this.actualPage);
-					console.log("totalimages: ",res.data.data);
-				})
+			else if(action=="download"){
+				this.msgeDialogConfirm="¿Seguro que desea descargar la imagen?"
+				this.action=action
 			}
-		},
-		confirmDelete(image){
 			this.dialogSuccessActive=true;
-			this.image=image;		
 		},
-		deleteImage(){
-			this.dialogSuccessActive=false;
-			if(sessionStorage.getItem("biedit_apitoken")){
-				if(this.image){
-					let headers = {
-						headers:{
-							Authorization: 'Bearer '+sessionStorage.getItem("biedit_apitoken")
-						}
-					};
-					/*let params={
-						params:{
-							datos:"dato"
-						}
-					}*/
-					axios.post(this.url+'image/'+this.image.id,{dato:this.actualPage},headers).then(res => {
-						console.log("resssss: ",res);
-						if(res.data.error){
-							//this.msgeDialogAlert=res.data.error;
-							console.log(res.data.error);
-							this.dialogErrorActive=true;
-						}else if(res.status!=200){
-							this.msgeDialogAlert="No se ha podido conectar con el servidor";
-							this.dialogErrorActive
-						}else{
-							this.msgeDialogAlert=res.data.message;
-							this.dialogSuccessActive=false;
-							//detectamos si la imagen a eliminar es la misma del panel principal y vaciamos
-							
-							if(this.imageMain && this.image.random_name==this.imageMain.src){
-								this.dropImage(this.imageMain);
-							}
-							console.log(res.data.page)
-							if(res.data.page)
-							{
-								this.getImages(res.data.page)
-							}else{
-								this.getImages();	
-							}
-							
-							
-							
-							console.log("desde delete: ",this.imageMain);
-						}				
-						this.image=null;
-					})
-				}
-			}else{
-				console.log("No ha sido posible eliminar la imagen, el usuario no ha iniciado sesión");
-			}
-			
-		},
+		
 		//pasamos a null todas las propiedades de un objeto
 		dropImage(image){
 			for(let key in image){
@@ -331,11 +257,11 @@ export default {
 		},
 		sendToMainPanel(image){
 			if(this.imageMain && image.random_name==this.imageMain.src){
-				console.log("es la misma imagen");
+				//console.log("es la misma imagen");
 				return;
 			}else{
 				this.$emit("reload",image);
-				console.log("no es la misma imagen y reload image: ",image);
+				//console.log("no es la misma imagen y reload image: ",image);
 			}						
 		},
 		getNewHeight(newWidth,width,height){
@@ -343,22 +269,32 @@ export default {
 			return newHeight;
 		},
 		showImage(image){
-			console.log(this.imageMain);
+			//console.log(this.imageMain);
 			this.tmpImage=image;
 			this.dialogImage=true;
 			this.showFullImage=true;
 		},
 		//descargar imagen mediante método download de Laravel
 		//en lugar de axios usamos window.location para acceder a la api de Laravel
+		//(pasa el image por parámetro)
 		downloadFile(image){
-			//console.log(image);
-			if(sessionStorage.getItem("biedit_apitoken")){
-				let title;
-				if(image.title!=null){
-					title=image.title;
-				}else{
-					title=image.random_name;
-				}
+
+			let session=this.testSession();
+			if(!session){				
+				return;
+			}
+			if(session.status=="error"){
+				this.msgeDialogAlert=session.message;
+				this.dialogErrorActive=true;
+				return;
+			}
+			
+			let title;
+			if(image.title!=null){
+				title=image.title;
+			}else{
+				title=image.random_name;
+			}
 
 				//no es posible enviar cabeceras con window.open o window.location
 				/*
@@ -385,9 +321,7 @@ export default {
 	//pasando un objeto con axios como parámetro es necesario añadirlo en la 
 	//ruta
 				//axios.get(this.url+'download/'+{"image":imagefile}).then(res=>{
-			}else{
-				console.log("No ha sido posible descargar la imagen, el usuario no ha iniciado sesión");
-			}
+			
 		}
 			
 

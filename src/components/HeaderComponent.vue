@@ -59,7 +59,7 @@
 		</div>
 		<!--</md-toolbar>-->
 		<!-- el atributo key permite enviar la imagen al mainpanel -->
-		<router-view :key="$route.fullPath"  @reload="reloadImage"></router-view>
+		<router-view :key="$route.fullPath"  @reload="reloadImage" @setnav="setNav"></router-view>
 		
 		<!--<MainPanel :ima="image" :initial="imageInitial"></MainPanel>-->
 		<!--<CutPanel></CutPanel>-->
@@ -208,6 +208,8 @@ export default {
 		if(!this.image.name){
 			this.mainImage=true;
 		}
+		
+		
 	},
 	
 	methods:{
@@ -609,7 +611,10 @@ export default {
 			if(callback!=null)
 				callback();
 
-		},	
+		},
+		setNav(state){
+			this.mainImage=state;			
+		},
 	//método de intercambio de botón que sirve el mismo botón (sustituyendo el icono) para acceder al panel de recorte y volver al panel principal
 	/*anulado, se ha pasado el botón al mismo componente de recorte*/
 	/*
@@ -635,6 +640,7 @@ export default {
 }
 </script>
 <style>
+
 #app{
 
 }
@@ -665,4 +671,5 @@ export default {
 	position:absolute;
 	/*necesario auto en bottom para sobreescribir los estilos del md-dialog*/
 }
+
 </style>

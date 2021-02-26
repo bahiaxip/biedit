@@ -16,7 +16,7 @@ export default {
 			if(!sessionStorage.getItem("biedit_apitoken") || !sessionStorage.getItem("biedit_email") || !sessionStorage.getItem("biedit_name"))
 				return {
 					status:"error",
-					message:"Faltan datos o no son correctos"
+					message:"El usuario no está autenticado"
 				}
 			
 			return {
@@ -24,17 +24,20 @@ export default {
 				api_token:sessionStorage.getItem("biedit_apitoken"),
 				email:sessionStorage.getItem("biedit_email"),
 				name:sessionStorage.getItem("biedit_name"),
-				message:"Los datos son correctos"
+				message:"El usuario está autenticado correctamente"
 			}
 		},
-		
-	//procesa solicitud al server de compresión de imagen
+
+//Effect Panel	
+		//procesa solicitud al server de compresión de imagen
 		setCompress(range){
 			let session=this.testSession();
-			if(!session)
+			if(!session){				
 				return;
+			}
 			if(session.status=="error"){
-				console.log("session.message: ",session.message);
+				this.msgeDialogAlert=session.message;
+				this.dialogErrorActive=true;
 				return;
 			}
 			let api_token=session.api_token,
@@ -69,30 +72,32 @@ export default {
 
 		setReflex(type){			
 			let session=this.testSession();
-				if(!session || !type)
-					return;
-				if(session.status=="error"){
-					console.log("session.message: ",session.message);
-					return;
+			if(!session){				
+				return;
+			}
+			if(session.status=="error"){
+				this.msgeDialogAlert=session.message;
+				this.dialogErrorActive=true;
+				return;
+			}
+			let api_token=session.api_token,
+				name=session.name,
+				email=session.email;
+			let data={
+				data:{
+					name:name,
+					email:email,
+					effect:type
 				}
-				let api_token=session.api_token,
-					name=session.name,
-					email=session.email;
-				let data={
-					data:{
-						name:name,
-						email:email,
-						effect:type
-					}
+			}
+			let headers={
+				headers:{
+					'Authorization': 'Bearer '+api_token
 				}
-				let headers={
-					headers:{
-						'Authorization': 'Bearer '+api_token
-					}
-				}
-				axios.post("effect",data,headers).then(res=> {
-					console.log(res);
-				})
+			}
+			axios.post("effect",data,headers).then(res=> {
+				console.log(res);
+			})
 
 		},
 
@@ -101,10 +106,12 @@ export default {
 			return new Promise((resolve,reject)=> {
 				//console.log("llega a setFilter");
 				let session=this.testSession();
-				if(!session)
+				if(!session){				
 					return;
+				}
 				if(session.status=="error"){
-					console.log("session.message: ",session.message);
+					this.msgeDialogAlert=session.message;
+					this.dialogErrorActive=true;
 					return;
 				}
 				let api_token=session.api_token,
@@ -121,7 +128,7 @@ export default {
 				};
 				if(name)
 					data.name=name;
-				console.log(this.filterProp);				
+				//console.log(this.filterProp);				
 				//desactivamos el filtro de la imagen creado con JavaScript
 				this.filter();					
 				
@@ -155,9 +162,11 @@ export default {
 				//	let email=sessionStorage.getItem("biedit_email");
 				let session=this.testSession();
 				if(!session)
-				return;
+					return;
+				
 				if(session.status=="error"){
-					console.log("session.message: ",session.message);
+					this.msgeDialogAlert=session.message;
+					this.dialogErrorActive=true;
 					return;
 				}
 				let api_token=session.api_token,
@@ -213,8 +222,10 @@ export default {
 				let session=this.testSession();
 				if(!session)
 					return;
+				
 				if(session.status=="error"){
-					console.log("session.message: ",session.message);
+					this.msgeDialogAlert=session.message;
+					this.dialogErrorActive=true;
 					return;
 				}
 				let api_token=session.api_token,
@@ -264,12 +275,16 @@ export default {
 			})
 		},
 
-		getTotalImages(){
+		//obtiene las imágenes para el desplegable destinado al efecto de fusión y 
+		//marca de agua
+		getTotalImages(){			
 			let session=this.testSession();
 			if(!session)
 				return;
+			
 			if(session.status=="error"){
-				console.log("session.message: ",session.message);
+				this.msgeDialogAlert=session.message;
+				this.dialogErrorActive=true;
 				return;
 			}
 			let api_token=session.api_token,
@@ -295,14 +310,17 @@ export default {
 				})
 			//}
 		},
-		//elimina una lista de imagenes del server y de la db
+		//elimina una lista de imagenes del server y de la db, destinado al proceso de
+		//actualización de varios efectos de una vez
 		deleteImages(images_list){			
 			
 			let session=this.testSession();
 			if(!session)
 				return;
+			
 			if(session.status=="error"){
-				console.log("session.message: ",session.message);
+				this.msgeDialogAlert=session.message;
+				this.dialogErrorActive=true;
 				return;
 			}
 			let api_token=session.api_token,
@@ -331,8 +349,10 @@ export default {
 				let session=this.testSession();
 				if(!session)
 					return;
+				
 				if(session.status=="error"){
-					console.log("session.message: ",session.message);
+					this.msgeDialogAlert=session.message;
+					this.dialogErrorActive=true;
 					return;
 				}
 				let api_token=session.api_token,
@@ -437,6 +457,242 @@ export default {
 			else{
 				console.log("Faltan datos por seleccionar");
 			}
+		},
+
+//MainPanel
+		//redimensionar la imagen con las dimensiones seleccionadas
+		confirmResize(){
+			let session=this.testSession();
+			if(!session){				
+				return;
+			}
+			if(session.status=="error"){
+				this.msgeDialogAlert=session.message;
+				this.dialogErrorActive=true;
+				return;
+			}
+			
+			let api_token=sessionStorage.getItem("biedit_apitoken");
+			let email=sessionStorage.getItem("biedit_email");
+			let formdata=new FormData();
+			formdata.append("src",this.ima.src);
+			formdata.append("width",this.ima.width);
+			formdata.append("height",this.ima.height);
+			formdata.append("email",email);
+			//si se ha seleccionado la redimensión libre.
+			if(this.freeResize)
+				formdata.append("freeResize",this.freeResize);
+			let headers={
+				headers:{Authorization:'Bearer '+api_token}
+			}
+			axios.post(this.url+'resize',formdata,headers).then(res => {
+				if(res.data.error){
+					this.msgeDialogAlert=res.data.error;
+					this.dialogErrorActive=true;
+					return;		
+				}
+				if(res.data.message){
+					this.msgeDialogAlert=res.data.message;
+					this.dialogSuccessActive=true;
+				}					
+			}).catch(error=>{
+				this.msgeDialogAlert="Se generó un error al redimensionar la imagen";
+				this.dialogErrorActive=true;
+				console.log("Error server: ",error);
+			});
+			
+		},
+//CutPanel
+		//proceso de recorte
+		cropImage(){
+			//si la ruta actual no es cutout detenemos
+			if(this.$route.name!="cutout"){
+				return;
+			}
+			if(this.ima.widthCut<100 || this.ima.heightCut<100){
+				//console.log("no es posible recortar ")
+			}
+			var self=this;
+			if(sessionStorage && sessionStorage.getItem("biedit_apitoken")){
+
+				let api_token = sessionStorage.getItem("biedit_apitoken");
+				let email = sessionStorage.getItem("biedit_email");
+				let square = document.querySelector("#square-panel");				
+				square.className="flash animated";
+
+				let prop = {
+					x : square.offsetLeft,
+					y : square.offsetTop,
+					width : square.offsetWidth,
+					height : square.offsetHeight,
+					resizeWidth:this.ima.widthCut,
+					resizeHeight:this.ima.heightCut,
+					src : this.ima.src,
+					email: email
+				}
+				let data = {
+					data: JSON.stringify(prop)
+				}
+				let headers= {
+					headers:{Authorization: "Bearer "+api_token}
+				}
+				axios.post(this.url+"crop",data,headers).then(res => {
+					if(res.data.error){
+						this.msgeDialogTitle="Ocurrió un error";
+						this.msgeDialogContent=res.data.error;						
+						this.dialogErrorActive=true;
+						return;		
+					}
+					if(res.data.message){
+						const cloneBoxSquare=this.cloneBoxSquare();
+						//realizamos un setTimeout para que funcione el transition
+						setTimeout(function(){
+							square.className="";
+							cloneBoxSquare.style.top="-1000px";
+							setTimeout(function(){
+								//cloneBoxSquare.style.display="none";
+								self.msgeDialogTitle="Creado correctamente";
+								self.msgeDialogContent=res.data.message;
+								self.dialogSuccessActive=true;
+							},1000);
+						},100);
+					}
+				}).catch(error=>{
+					this.msgeDialogAlert="Se generó un error al procesar la nueva imagen";
+					this.dialogErrorActive=true;
+					console.log("Error server: ",error);
+				})
+
+				this.playSound();
+			}else{
+				console.log("El usuario no está logueado o el navegador no soporta sessionStorage");
+			}
+		},
+	
+//Collections component (pasa el image por variable)
+		deleteImage(){
+			this.dialogSuccessActive=false;
+			let session=this.testSession();
+			if(!session){				
+				return;
+			}
+			if(session.status=="error"){
+				this.msgeDialogAlert=session.message;
+				this.dialogErrorActive=true;
+				return;
+			}
+			//console.log("No ha sido posible eliminar la imagen, el usuario no ha iniciado sesión");
+			let api_token=session.api_token;
+				//email=session.email;
+			
+			let headers = {
+				headers:{
+					Authorization: 'Bearer '+api_token
+				}
+			};
+			axios.post(this.url+'image/'+this.image.id,{dato:this.actualPage},headers).then(res => {				
+				//manejo de errores en api
+				if(res.data.error){
+					this.titleDialogAlert="No se ha podido eliminar la imagen";
+					this.msgeDialogAlert=res.data.error;
+					//console.log(res.data.error);
+					this.dialogErrorActive=true;
+				//error con el servidor
+				}else if(res.status!=200){
+					this.titleDialogAlert="No se ha podido eliminar la imagen";
+					this.msgeDialogAlert="No se ha podido conectar con el servidor";
+					this.dialogErrorActive=true;
+				//eliminada correctamente
+				}else{
+					this.titleDialogAlert="Imagen eliminada correctamente";
+					this.msgeDialogAlert=res.data.message;
+					this.dialogErrorActive=true;
+
+				//detectamos si la imagen a eliminar es la misma del panel principal y vaciamos							
+					if(this.imageMain && this.image.random_name==this.imageMain.src){
+						this.dropImage(this.imageMain);
+						this.$emit("setnav",true);
+					}
+				//llamamos al método getImages() para volver a ordenar la 
+				//lista de imágenes, si se llama desde la paginación se pasa
+				//el número de página							
+					if(res.data.page)
+					{
+						this.getImages(res.data.page)
+					}else{
+						this.getImages();	
+					}							
+				}				
+				this.image=null;
+			}).catch(error=> {				
+				this.titleDialogAlert="No se ha podido eliminar la imagen";
+				this.msgeDialogAlert=error.response.data.error;
+				this.dialogErrorActive=true;
+			})
+			
+		},
+
+		//obtener lista de imágenes
+		getImages(page=null){
+
+			let linkPage=1;
+			if(page){
+				linkPage=page;
+				//console.log("linkPage: ",linkPage)
+			}
+
+			let session=this.testSession();
+			if(!session){				
+				return;
+			}
+			if(session.status=="error"){
+				this.msgeDialogAlert=session.message;
+				this.dialogErrorActive=true;
+				return;
+			}
+			//console.log("No ha sido posible eliminar la imagen, el usuario no ha iniciado sesión");
+			let api_token=session.api_token,
+				email=session.email;
+			let data={
+				params:{
+					api_token:api_token,
+					email:email	
+				}
+				
+			};
+			let headers={
+				headers: {
+					/*"Access-Control-Allow-Origin": "*",
+					"Access-Control-Allow-Headers":"Authorization,X-API-KEY,Origin,X-Requested-With,Content-Type,Accept,Access-Control-Allow-Request-Method",
+					"Access-Control-Allow-Methods":"GET,POST,OPTIONS,PUT,DELETE",
+					"Allow":"GET,POST,OPTIONS,PUT,DELETE",
+					*/
+					/*
+					"Access-Control-Allow-Origin" : "*",
+					//crossorigin:true,
+					'Access-Control-Allow-Methods': "GET",
+					//'Access-Control-Allow-Headers': "Content-Type",
+					'Access-Control-Allow-Credentials':true,
+					'cache-control':'no-cache',
+					'Access-Control-Allow-Headers':"Origin, X-Requested-With, Content-Type, Accept",
+					*/
+					Authorization: 'Bearer '+api_token
+				}
+			};			
+			axios.get(this.url+'images?page='+linkPage,data,headers).then(res=>{
+
+				this.images=res.data.data;
+				this.totalPages=res.data.last_page;
+				this.actualPage=res.data.current_page;
+				this.totalImages=res.data.total;
+				//console.log("actualPage: ",this.actualPage);
+				//console.log("totalimages: ",res.data.data);
+			}).catch(error => {
+				this.titleDialogAlert="No se han podido obtener las imágenes";
+				this.msgeDialogAlert=error.response.data.message;
+				this.dialogErrorActive=true;
+			})
+			
 		},
 	}
 }

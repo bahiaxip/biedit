@@ -3,7 +3,7 @@
 	<md-progress-spinner md-mode="indeterminate" v-if="displayLoading"></md-progress-spinner>
 	<div class="back-main-panel" :style="{width:ima.width+'px'}" :v-if="ima.width!=null" ref="backMainPanel">
 		
-		<div style="margin:auto;text-align:center" >
+		<div style="margin:auto;text-align:center;width:170px" >
 			<md-switch class="colorB " v-model="resizeSwitch"  v-if="showResize">
 			</md-switch>
 			<md-tooltip >Redimensionar</md-tooltip>
@@ -17,12 +17,26 @@
 			<md-button class="md-icon-button md-mini md-raised md-accent fab_button_standard floatR" title="Redimensión libre" v-if="resizeSwitch" @click="returnResizeMain()" :class="{'free_resize_activated':freeResize}"><md-icon>image_aspect_ratio</md-icon></md-button>
 
 		</div>
+		<!-- :style (doble condición) -->
 		<div style="margin:auto;text-align:center" v-if="resizeSwitch">
-			<label ><p class="floatL font_label" :style="ima.width<250 ? 'font-size:12px':'font-size:18px'">w: {{ima.width}}px</p>
+			<label>
+				<p class="floatL font_label" :style="ima.width<250 ? ima.width<170 ? 'font-size:10px;color:white' : 'font-size:12px;color:white' : 'font-size:15px;color:white'" >
+
+					<span v-if="ima.width>170" style="color:orange">w:</span>
+					{{ima.width}}px
+
+				</p>
 			</label>
 			<!--<md-button class="md-fab md-mini fab_button_standard" title="Guardar en album" @click="dialogResizeActive=true" v-if="ima.width>=220"><md-icon>photo_album</md-icon></md-button>
 			<md-button class="md-fab md-mini fab_button_standard" title="Descargar" v-if="ima.width>300"><md-icon>save_alt</md-icon></md-button>-->
-			<label><p class="floatR font_label" :style="ima.width<250 ? 'font-size:12px':'font-size:18px'">h: {{ima.height}}px</p></label>
+			<label>
+				<p class="floatR font_label" :style="ima.width<250 ? ima.width<170 ? 'font-size:10px':'font-size:12px' : 'font-size:15px'">
+
+				<span v-if="ima.width>170" style="color:orange">h:</span>
+				{{ima.height}}px
+
+			</p>
+			</label>
 		</div>
 		<transition name="fade">
 		<div id="div-main" class="div-main no-selectable" :style="{width:ima.width+'px',height:ima.height+'px'}" ref="divmain" v-if="imgTrans">
@@ -59,13 +73,14 @@
 </template>
 <script>
 //import imageDefault from '../assets/logo.png';
-import axios from 'axios';
+//import axios from 'axios';
 import Global from '../Global.js';
 import methodsMixin from '../mixins/methodsMixin';
+import servicesMixin from '../mixins/servicesMixin';
 export default {
 	name:'MainPanel',
 	props:['ima'],
-	mixins:[methodsMixin],
+	mixins:[methodsMixin,servicesMixin],
 	
 	watch:{
 		//al final no es necesario el watch para obtener el cambio del src a partir de la subida de la segunda imagen y las siguientes
@@ -284,40 +299,11 @@ export default {
 			}
 		},
 		cancelResize(){
-			//console.log("cancel");
+			console.log("canceled");
 		},
-		confirmResize(){
-			//console.log("width: ",this.ima.width," height: ",this.ima.height);
-			if(sessionStorage.getItem("biedit_apitoken")){
-				let api_token=sessionStorage.getItem("biedit_apitoken");
-				let email=sessionStorage.getItem("biedit_email");
-				let formdata=new FormData();
-				formdata.append("src",this.ima.src);
-				formdata.append("width",this.ima.width);
-				formdata.append("height",this.ima.height);
-				formdata.append("email",email);
-				//si se ha seleccionado la redimensión libre.
-				if(this.freeResize)
-					formdata.append("freeResize",this.freeResize);
-				let headers={
-					headers:{Authorization:'Bearer '+api_token}
-				}
-				axios.post(this.url+'resize',formdata,headers).then(res => {
-						if(res.data.error){
-							this.msgeDialogAlert=res.data.error;
-							this.dialogErrorActive=true;
-							return;		
-						}
-						if(res.data.message){
-							this.msgeDialogAlert=res.data.message;
-							this.dialogSuccessActive=true;
-						}
-						//console.log(res);
-				});
-			}
-		},
-		//volver a redimensionar la imagen al activar la redimensión libre con el 
-		//ancho que se encuentra en el momento de activarlo
+
+		//volver a redimensionar la imagen al activar la redimensión libre tomando 
+		//como referencia el ancho que se encuentra en el momento de activarlo
 		returnResizeMain(){
 			if(!this.freeResize){				
 				this.freeResize=true;				
@@ -331,7 +317,7 @@ export default {
 				this.ima.height=sizes.height;
 				
 			}
-			console.log("freeResize: ",this.freeResize);
+			//console.log("freeResize: ",this.freeResize);
 		},
 		
 	}

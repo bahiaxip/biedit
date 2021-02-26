@@ -147,11 +147,11 @@
 				</transition>-->
 
 <transition name="fade">
-	<div class="md-layout md-gutter" style="margin-top:30px">		
+	<div class="md-layout md-gutter" style="margin-top:30px" v-if="imgTrans">		
 			<div class="md-layout-item md-large-size-15 md-medium-size-10 md-small-size-5" >
 			</div>
 
-			<div  class="md-layout-item md-medium-size-40 md-small-size-45 div_effect_image"   v-if="imgTrans" :style="{'text-align':'initial','width':imaEffect.width+'px','height':imaEffect.height+'px','display':'flex'}" ref="div_effect_image">
+			<div  class="md-layout-item md-medium-size-40 md-small-size-45 div_effect_image"    :style="{'text-align':'initial','width':imaEffect.width+'px','height':imaEffect.height+'px','display':'flex'}" ref="div_effect_image">
 
 					<canvas id="canvas" class=""  :style="{'margin':'auto','display':'flex'}" :width="imaEffect.width" :height="imaEffect.height" ref="canvas" v-if="!loadingImage"></canvas>
 					<div class="image_effect" :style="{'display':'block','backgroundImage':'url('+ima.name+')','width':imaEffect.width+'px','height':imaEffect.height+'px','position':'relative','background-size':'100%','background-repeat':'no-repeat','background-position':'center'}" ref="image_effect" v-if="!loadingImage">
@@ -969,6 +969,36 @@ export default {
 			console.log("llega this.ima y this.ima.width");	
 			console.log("mounted: ",this.ima);
 			//activación de efecto transición
+		//al utilizar un método raro: updateSizeCanvas() para obtener las medidas, no
+		// se muestra el efecto de transición			
+				this.imgTrans=true;
+			//acualizando spaceColor para desplegables spacecolor y channels
+				//asignamos el colorspace (el colorspace no es nativo de image, se crea
+				//en el método reloadImage() para el origen en Collections y la carga de 
+				//imagen al procesar efectos, tb en uploadImageServer() para el origen en 
+				//la subida de imagen)
+				this.spaceColor=this.ima.spaceColor;
+				this.spaceColorSelected=this.ima.spaceColor;
+				
+				//comprobamos spaceColor para asignar una opción por defecto en el select
+				//de separate_channel, ya que si es RGB o SRGB el desplegable de canales  
+				//es distinto que el de CMYK
+				//falta por crear el GRAY y realizar esta comprobación si se carga la 
+				//nueva imagen en el mismo effect, quizás sea mejor sacarlo a un método
+				this.setChannelSelected();
+				console.log("spacecolor: ",this.ima);
+
+				
+				//this.updateSizeCanvas();
+				//actualizamos canvas y el div con setTimeout, ya que estamos 
+				//recuperando el width y el height del template una vez obtenido por 
+				//la redimensión del md-layout y no se puede obtener hasta que no se 
+				//carga la vista, por ello se encierra en un setTimeout
+			
+
+
+
+			/*
 			this.imgTrans=true;
 		//acualizando spaceColor para desplegables spacecolor y channels
 			//asignamos el colorspace (el colorspace no es nativo de image, se crea
@@ -990,9 +1020,18 @@ export default {
 			//recuperando el width y el height del template una vez obtenido por 
 			//la redimensión del md-layout y no se puede obtener hasta que no se 
 			//carga la vista, por ello se encierra en un setTimeout
+			
+
+			*/
 			setTimeout(() => {
-					this.updateSizeCanvas();
+				this.updateSizeCanvas();				
+				//this.imgTrans=false;	
 			},100)
+			setTimeout(()=> {
+
+				//this.imgTrans=true;
+			},1000)
+
 		}else{
 			//mostrar dialog
 			console.log("no hay width")
@@ -1001,7 +1040,10 @@ export default {
 		//de la función compress con el rango de valores correspondiente.
 		this.updateExtAndReset();
 		
-	},	
+	},
+	
+		
+	
 	destroyed(){
 		//detectamos si existe un filtro seleccionado antes de salir
 		if(this.filterActivated){
@@ -1115,7 +1157,8 @@ export default {
 				//si existe más de un efecto la variable imgTmp se utiliza para enviar
 				//la imagen del resultado del server (con efectos realizados) y no la 
 				//inicial (sin efectos). Se compone de un modal con una solicitud de 
-				//carga con vista previa de la nueva imagen
+				//de confirmación para cargar la imagen en el componente actual y con 
+				//vista previa de la nueva imagen
 				let result;
 				if(imgTmp.length>0){
 					result=await this.processTask(listAll[i],imgTmp[i-1]);	
@@ -1494,13 +1537,25 @@ export default {
 			//let width=this.$refs.div_effect_image.clientWidth;
 			let prop=this.handleCSS(this.$refs.div_effect_image);
 			let width=prop[0];
-			console.log("solo refs: ",this.$refs.div_effect_image);
-			console.log(width);
+			//console.log("solo refs: ",this.$refs.div_effect_image);
+			//se podría asignar el tamaño real si es más pequeño que el resultado
+			//que asigna el md-layout
+		//revisar asignar la misma medida si es más pequeña que la creada por el 
+		//md-layout y establecer un margin, pero al crear efecto rotate falla
+		//es necesario profundizar más para añadir esta característica, ya que,
+		//en el efecto rotate se intercambia el width  por el height, de momento,
+		//ignoramos
+			/*
+			if(this.ima.width<width){
+				console.log("medida estandar:",this.ima.width);
+				width=this.ima.width
+			}
+			*/			
 			//let width=document.querySelector(".div_effect_image").clientWidth;
 			
-			let height=this.getNewHeight(prop[0],this.ima.width,this.ima.height);
+			let height=this.getNewHeight(width,this.ima.width,this.ima.height);
 			//let height=parseInt(this.$refs.div_effect_image.clientHeight);
-			this.imaEffect.width=prop[0];
+			this.imaEffect.width=width;
 			this.imaEffect.height=height;
 			//si el efecto rotate está activado no actualizamos, ya que al estar
 			//las dimensiones invertidas se descoloca la imagen
@@ -1689,7 +1744,11 @@ export default {
 						this.setChannelSelected();
 					}
 					console.log("después de spaceColor: ",this);
-					this.imgTrans=true;
+					this.updateSizeCanvas();
+					setTimeout(()=> {
+						this.imgTrans=true;	
+					},100)
+					
 					//pasamos a null para que se muestre el spinner
 					this.tmpImage=null;
 			});
@@ -1698,6 +1757,16 @@ export default {
 }
 </script>
 <style>
+.fade-enter-active{
+	transition:opacity 2s
+}
+.fade-leave-active{
+	opacity:1;
+}
+.fade-enter, .fade-leave-to{
+	opacity:0;
+}
+
 
 .list-effects .md-list{
 	background-color:darkblue;	
