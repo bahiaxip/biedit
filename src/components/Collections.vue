@@ -1,4 +1,4 @@
-<template>
+<template >
 	<!--<div >-->
 		<!--<md-progress-spinner :md-diameter="diameterSpinner" md-mode="indeterminate" style="margin-top:200px" v-if="!images" ></md-progress-spinner>
 		<div v-if="images && images.length==0">
@@ -378,12 +378,7 @@ export default {
 	box-shadow:none;
 	opacity:1;
 }
-.md-card-header{
-	padding:0;
-}
-.md-card-actions{
-	padding:0;
-}
+
 .pagination li{
 	display:inline-block;
 }
@@ -391,22 +386,7 @@ export default {
 /*.back_collections .md-card-area{
 	background:rgba(0,0,0,1);
 }*/
-.md-card-header span.f15{
-	font-size:15px;
-}
 
-/*transitions vue */
-
-.fadeimg-enter-active{
-	transition:all 1s;
-	
-}
-.fadeimg-leave-active{
-	opacity:1;
-}
-.fadeimg-enter, .fadeimg-leave-to{
-	opacity:0;
-}
 
 /*transition list */
 /*estado inicial */
@@ -436,29 +416,10 @@ export default {
 /*.list-leave-active {	
 }
 */
-.list-enter-active{
-	transition:transform 1s ease-out,opacity 1.5s linear;
-}
-/*.list-leave-active{
-	transition:all .2s ;
-}
-*/
-.list-enter{
-	/*position:absolute;*/
-	transform:rotateY(360deg) scale(0);
-	opacity:0;
-}
-/*si esta clase se añade a continuación de .list-leave-to realiza un efecto distinto en la paginación*/
 
-.list-leave-to,.list-leave-active{
-	/*opción con position:absolute para pasar de página*/;
-	position:absolute; /*añade suavidad entre componentes*/
-	opacity:1;
-}
-.list-move{
-	transition:transform 0.5s;
-}
 
+		/* ejemplo animation */
+/*
 .lista-enter-active{
 	animation-name:example, example2;
 	animation-duration:2s,2s;
@@ -466,11 +427,10 @@ export default {
 .lista-leave-active{
 	animation:none reverse;
 	/*animation:example 0s reverse;*/
-}
-.fullImage{
-	
-}
+/*}*/
 
+
+/*
 @keyframes example{
 
 	0%{
@@ -488,6 +448,7 @@ export default {
 		opacity:1;
 	}	
 }
+*/
 /*esta @media sirve para corregir el md-dialog-fullscreen por defecto, que 
 incorpora una media query que por debajo de 600px de ancho pasa del width 80% a 100%, sobreescribimos para que se mantenga en 80%*/
 @media screen and (max-width:600px) {

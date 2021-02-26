@@ -8,7 +8,7 @@
 			</md-switch>
 			<md-tooltip >Redimensionar</md-tooltip>
 			<!--<md-tooltip v-else>No Redimensionar</md-tooltip>-->
-			<md-button class="md-icon-button md-mini md-raised md-accent fab_button_head floatL" title="Guardar en album" @click="dialogResizeActive=true" style="{display:inline-block;}" v-if="resizeSwitch"><md-icon>add_photo_alternate</md-icon></md-button>
+			<md-button class="md-icon-button md-mini md-raised md-accent fab_button_head floatL inlineB" title="Guardar en album" @click="dialogResizeActive=true" v-if="resizeSwitch"><md-icon>add_photo_alternate</md-icon></md-button>
 
 			<!--<md-button class="md-fab md-mini fab_button_standard floatR" title="Descargar" v-if="resizeSwitch" ><md-icon>save_alt</md-icon></md-button>-->
 			<!-- sustituimos md-switch por md-button para corregir ancho y alto -->
@@ -20,7 +20,7 @@
 		<!-- :style (doble condición) -->
 		<div style="margin:auto;text-align:center" v-if="resizeSwitch">
 			<label>
-				<p class="floatL font_label" :style="ima.width<250 ? ima.width<170 ? 'font-size:10px;color:white' : 'font-size:12px;color:white' : 'font-size:15px;color:white'" >
+				<p class="floatL font_label" :style="ima.width<250 ? ima.width<170 ? 'font-size:10px;color:white;padding:4px' : 'font-size:12px;color:white;padding:7px' : 'font-size:15px;color:white;padding:7px'" >
 
 					<span v-if="ima.width>170" style="color:orange">w:</span>
 					{{ima.width}}px
@@ -30,7 +30,7 @@
 			<!--<md-button class="md-fab md-mini fab_button_standard" title="Guardar en album" @click="dialogResizeActive=true" v-if="ima.width>=220"><md-icon>photo_album</md-icon></md-button>
 			<md-button class="md-fab md-mini fab_button_standard" title="Descargar" v-if="ima.width>300"><md-icon>save_alt</md-icon></md-button>-->
 			<label>
-				<p class="floatR font_label" :style="ima.width<250 ? ima.width<170 ? 'font-size:10px':'font-size:12px' : 'font-size:15px'">
+				<p class="floatR font_label" :style="ima.width<250 ? ima.width<170 ? 'font-size:10px;padding:4px':'font-size:12px;padding:7px' : 'font-size:15px;padding:7px'">
 
 				<span v-if="ima.width>170" style="color:orange">h:</span>
 				{{ima.height}}px
@@ -44,7 +44,7 @@
 			<div class="main-panel">
 				<canvas id="canvas" class="no-selectable" :width="ima.width" :height="ima.height" ></canvas>
 
-				<img :src="ima.name" id="image" class="main-img no-selectable" :width="ima.width" :height="ima.height" :class="{'main-img-resize':resizeSwitch}" />						
+				<img :src="ima.name" id="image" class="main-img no-selectable" :width="ima.width" :height="ima.height" :class="{'main-img-resize':resizeSwitch}" :style="resizeSwitch ? ima.width<170 ? 'box-shadow:0px 0px 1px 7px rgba(0,0,0,0.2)':'box-shadow:0px 0px 1px 10px rgba(0,0,0,0.2)':'box-shadow:none'"/>						
 			</div>
 			<div id="handle-resize" @mousedown="initResize($event)" @touchstart="initResize($event)" class="handle-resize handle-right handle-bottom cursor-handle-resize" :style="ima.width<250 ? handleMin:handleStandar"  v-if="resizeSwitch" ></div>
 		</div>
@@ -246,7 +246,7 @@ export default {
 			if(w<50){
 				//
 			}else{
-				console.log("e.clientY: ", e.clientY);
+				//console.log("e.clientY: ", e.clientY);
 				let widthDefault=this.ima.widthDefault;
 				this.ima.width=w;
 				if(this.freeResize){
@@ -262,14 +262,14 @@ export default {
 						h=(e.clientY-divMain.getBoundingClientRect().top);
 					}
 					
-					console.log("clientY: ",e.clientY);
+					//console.log("clientY: ",e.clientY);
 					
-					console.log("h: ",h);
+					//console.log("h: ",h);
 					//divMain.style.height=h+"px";
 					//backMainPanel.style.height=(suma-backMainPanel.offsetTop)+"px";
 					
 					this.ima.height=h;
-					console.log("llega");
+					//console.log("llega");
 
 				}else{
 
@@ -324,13 +324,7 @@ export default {
 }
 </script>
 <style>
-.confirmDialog .md-dialog-container{
-	background:linear-gradient(to bottom, rgba(99, 0, 228,.8) 0%, rgba(99,0,228,1), rgba(99, 0, 228,.8) 100%);
-	color:white;
-}
-.confirmDialog .md-button-content{
-	color:white;
-}
+
 .colorB label{
 	color:black;
 	

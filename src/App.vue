@@ -1,5 +1,5 @@
 <template>
-  <div id="app" @click="showConsole()">
+  <div id="app" @click="showConsole()" >
     
     <!--<img alt="Vue logo" src="./assets/logo.png">-->
     <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
@@ -49,4 +49,5 @@ export default {
   /*padding-top: 20px;*/  
 }
 @import 'assets/css/style.css';
+@import 'assets/css/overwrite_material.css';
 </style>

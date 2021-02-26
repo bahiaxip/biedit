@@ -1,0 +1,66 @@
+					/* Collections */
+
+/*dialogs*/
+.md-dialog.fullImage{
+    background-color:rgba(0,0,0,.7);
+    z-index:7;
+}
+
+.md-dialog.confirmEffect{
+    background:transparent;
+}
+.md-overlay{
+    background:transparent;
+}
+
+/*card*/
+.md-card-header{
+	padding:0;
+}
+.md-card-actions{
+	padding:0;
+}
+
+.md-card-header span.f15{
+	font-size:15px;
+}
+
+/*transitions vue */
+
+.fadeimg-enter-active{
+	transition:all 1s;
+	
+}
+.fadeimg-leave-active{
+	opacity:1;
+}
+.fadeimg-enter, .fadeimg-leave-to{
+	opacity:0;
+}
+.list-enter-active{
+	transition:transform 1s ease-out,opacity 1.5s linear;
+}
+
+.list-enter{
+	/*position:absolute;*/
+	transform:rotateY(360deg) scale(0);
+	opacity:0;
+}
+
+.list-leave-to,.list-leave-active{
+	/*opción con position:absolute para pasar de página*/;
+	position:absolute; /*añade suavidad entre componentes*/
+	opacity:1;
+}
+.list-move{
+	transition:transform 0.5s;
+}
+
+/*esta @media sirve para corregir el md-dialog-fullscreen por defecto, que 
+incorpora una media query que por debajo de 600px de ancho pasa del width 80% a 100%, sobreescribimos para que se mantenga en 80%*/
+@media screen and (max-width:600px) {
+	.fullImage .md-dialog-fullscreen{
+		max-width:80%;
+		height:auto;
+	}
+}

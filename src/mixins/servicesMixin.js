@@ -6,6 +6,8 @@ export default {
 		//identifica si el usuario ha iniciado sesión y en caso afirmativo devuelve
 		//las variables de sessionStorage
 		testSession:()=>{
+			//el mismo status error lo utilizamos para 2 errores: soporte sessionStorage
+			//y no autenticado (se podría asignar un status 401 para no autenticado)
 			if(!sessionStorage){
 				return {
 					status:"error",
@@ -443,6 +445,7 @@ export default {
 							if(res.data.image){								
 								this.dialogImage=true;
 								this.tmpImage=res.data.image;
+								this.getTotalImages();
 							}else{
 								//
 							}
@@ -693,6 +696,101 @@ export default {
 				this.dialogErrorActive=true;
 			})
 			
+		},
+//HeaderComponent
+		//faltan datos por subir(title,detail,...)
+		//subida de archivo al servidor, dependiente de resizeImageToWidth()
+		uploadImageToServer(){
+
+			//no es necesario comprobar FormData, ya está comprobado anteriormente en resizeImageToWidth()
+			//if(sessionStorage && FormData){
+			let session=this.testSession();
+			if(!session){				
+				return;
+			}
+			if(session.status=="error"){
+				this.msgeDialogAlert=session.message;
+				this.dialogErrorActive=true;
+				return;
+			}					
+			let api_token=sessionStorage.getItem("biedit_apitoken"),
+				email=sessionStorage.getItem("biedit_email"),
+				formdata= new  FormData();
+				formdata.append("images[]",this.image.file);
+				formdata.append("email",email);
+				//formdata.append("api_token",api_token);
+				//si la original es mayor se establece un máximo de ancho y alto por defecto(maxWidthDefault), si no se mantiene ancho y alto original	
+			if(this.image.widthInitial>this.maxWidthDefault){
+				formdata.append("width",this.maxWidthDefault);
+				formdata.append("height",this.maxHeightDefault);
+			}else{
+				formdata.append("width",this.image.widthInitial);
+				formdata.append("height",this.image.heightInitial);
+			}
+
+			//cabeceras
+			let headers={
+				headers:{ 
+					/*
+					"Access-Control-Allow-Origin" : "*",
+					//crossorigin:true,
+					//'Access-Control-Allow-Methods': "GET",
+					"Access-Control-Allow-Methods":"GET,POST,OPTIONS,PUT,DELETE",
+					//'Access-Control-Allow-Headers': "Content-Type",
+					//'Access-Control-Allow-Credentials':true,
+					//'cache-control':'no-cache',
+					'Access-Control-Allow-Headers':"Origin, X-Requested-With, Content-Type, Accept",
+					*/
+					Authorization: 'Bearer '+api_token 
+				}
+			};
+
+			axios.post(this.url+"images",formdata,headers).then(res=> {
+//Al guardar la imagen en el servidor actualizamos los datos del objeto 
+//image, pero mateniendo la imagen base64 en el MainPanel y asignamos 
+//los datos para el panel de recorte (resizedImg)
+				//console.log("lo que devuelve: ",res);
+				//el objeto resizedImg pasa los datos de ancho y alto al panel de recorte.
+				//Para pasar los datos en lugar de anular el objeto ima 
+				//como prop,indicados como params en la redirección se 
+				//puede  anular el resizedImg.src pasando el objeto ima 
+				//como prop (que contiene tb el src) 
+				this.resizedImg.src=res.data.image.random_name;
+				this.image.src=res.data.image.random_name;
+				//no están en data y por tanto no prevalecen
+				this.image.size=res.data.image.size;
+				this.image.spaceColor=res.data.image.space_color;					
+	//comprobaciones para asignar el resizedImg (destinado al CutPanel e hijos)
+				let sizes = this.setSizeToCutPanel(res.data.image.width,res.data.image.height,this.minWidthHeight,this.maxWidthDefault,this.maxHeightDefault);
+				/*
+				//comprobamos si el ancho o el alto de la imagen es menor //o igual que el mínimo establecido
+				if((res.data.image.width)<=this.minWidthHeight){
+					this.image.widthCut=this.minWidthHeight;
+					this.image.heightCut=this.getNewHeight(this.image.widthCut,res.data.image.width,res.data.image.height);
+					this.resizedImg.width=this.minWidthHeight;
+					this.resizedImg.height=this.getNewHeight(this.resizedImg.width,res.data.image.width,res.data.image.height);
+				}else{
+				//obtenemos el ancho y alto tomando como referencia
+				//un ancho y alto máximos establecidos.
+					let resizeImg=this.getMaxResize(res.data.image.width,res.data.image.height,this.maxWidthDefault,this.maxHeightDefault);
+					this.image.widthCut=resizeImg[0];
+					this.image.heightCut=resizeImg[1];
+					this.resizedImg.width=resizeImg[0];
+					this.resizedImg.height=resizeImg[1];
+				}
+				*/
+				this.image.widthCut=sizes.width;
+				this.image.heightCut=sizes.height;
+				this.resizedImg.width=sizes.width;
+				this.resizedImg.height=sizes.height;
+				//habilitamos botones
+				this.mainImage=false;
+				//console.log("desde upload() ",this.image);
+			}).catch(error => {
+				this.titleDialogAlert="Se ha generado un error";
+				this.msgeDialogAlert=error.response.data.message;
+				this.dialogErrorActive=true;
+			})
 		},
 	}
 }

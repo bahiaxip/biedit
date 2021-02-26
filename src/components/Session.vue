@@ -21,7 +21,7 @@
 								<span class="md-error" v-if="!$v.login.password.required">La contraseña es requerida</span>
 								<span class="md-error" v-if="!$v.login.password.minLength">La contraseña debe contener al menos 8 caracteres</span>
 							</md-field>							
-							<md-button name="envio" class="md-primary md-raised" @click="changeDialog()">Cancelar</md-button>
+							<md-button name="envio" class="md-primary md-raised" @click="changeDialog()" disabled>Cancelar</md-button>
 							<md-button name="envio" type="submit" class="md-primary md-raised">Enviar</md-button>
 						</div>
 					</form>
@@ -48,7 +48,7 @@
 								<span class="md-error" v-if="!$v.register.password.required">La contraseña es requerida</span>
 								<span class="md-error" v-if="!$v.register.password.minLength">La contraseña debe contener al menos 8 caracteres</span>
 							</md-field>							
-							<md-button name="envio" class="md-primary md-raised" @click="changeDialog()">Cancelar</md-button>
+							<md-button name="envio" class="md-primary md-raised" @click="changeDialog()" disabled>Cancelar</md-button>
 							<md-button name="submit" type="submit" class="md-primary md-raised">Enviar</md-button>
 						</div>
 					
@@ -76,7 +76,7 @@
 								<label for="email">Email</label>
 								<md-input name="email" id="email" v-model="session.email" disabled="disabled" />								
 							</md-field>													
-							<md-button name="envio" class="md-primary md-raised" @click="changeDialog()">Cancelar</md-button>
+							<md-button name="envio" class="md-primary md-raised" @click="changeDialog()" >Cancelar</md-button>
 							<md-button name="envio" type="submit" class="md-primary md-raised">Actualizar</md-button>
 						</div>
 					</form>
@@ -217,7 +217,7 @@ export default {
 			clearInterval(this.timerSessionData);
 		},
 		resetear(){
-			console.log("reset");
+			//console.log("reset");
 		},
 		//método que cambia el color del formulario para indicar las validaciones con vuelidate
 		getValidationClass(fieldName,data){
@@ -253,7 +253,7 @@ export default {
 		registerUser(){
 			var self=this;
 			this.$v.register.$touch();
-			console.log(this.$v);
+			//console.log(this.$v);
 			if(!this.$v.register.$invalid){
 				//con sending impedimos escritura en todos los input del formulario
 				this.sending=true;				
@@ -267,9 +267,9 @@ export default {
 				//this.dialog=false;
 				//efecto de carga en on
 				this.displayLoading=true;
-				console.log("pasó");
+				//console.log("pasó");
 				axios.post(this.url+"register",this.register).then(function(res){
-					console.log("pasó2");
+					//console.log("pasó2");
 					//efecto de carga en off
 					self.displayLoading=false;
 					if(res.data.data){
@@ -289,12 +289,7 @@ export default {
 							self.changeDialog();
 						}
 					}
-					
 				})
-				
-					
-				
-				
 				this.sending=false;
 			}
 		},
@@ -302,7 +297,7 @@ export default {
 		loginUser(){
 			var self=this;
 			this.$v.login.$touch();
-			console.log(this.$v);
+			//console.log(this.$v);
 			//al haber varios formularios es necesario especificar, no es suficiente con:
 			//if(!this.$v.$invalid) -> es necesario indicar si es login,register...,
 			//lo mismo con $touch más arriba
@@ -399,6 +394,9 @@ export default {
 						sessionStorage.removeItem("biedit_apitoken");
 						//enviamos mensaje
 						self.addAndActiveMsge("on",self.msges.logout);
+						this.$emit("setnav",true);
+
+
 					}else{
 						self.addAndActiveMsge("off","No se ha podido cerrar la sesión");
 					}
@@ -406,11 +404,8 @@ export default {
 				//detenemos el contador de sesión
 				this.clear();
 				//ocultamos el panel de diálogo
-				this.changeDialog();
+				this.changeDialog(true);
 				this.clearData();
-
-				
-
 			}
 		},
 		//limpiar datos
@@ -423,10 +418,9 @@ export default {
 			for(let d in image){
 				image[d]=null;
 			}
-			
 		},
-		changeDialog(){
-			console.log("llega a changeDialog");
+		changeDialog(state=null){
+			console.log("llega a changeDialog ",state);
 			//da error con el registro
 			//en el dialog de "perfil de usuario" añadimos la característica de que si se cierra la ventana se actualiza el nombre
 			if(sessionStorage && sessionStorage.getItem("biedit_name"))
@@ -435,8 +429,10 @@ export default {
 				
 			//limpiamos formulario
 			this.clearForm();
+			if(!state)
+				state=false;
 			//emitimos evento al padre para cambiar el valor de showDialog a false
-			this.$emit("offdialog")			
+			this.$emit("offdialog",state);			
 		},
 		addAndActiveMsge(bol,msge){
 			this.msge=msge;
@@ -445,10 +441,7 @@ export default {
 			}else{
 				this.errorDialog=true;
 			}
-		},
-		unMetodo(){
-			console.log("hacer algo");
-		},
+		},		
 //revisar en producción
 		redirect(){
 			//necesario para evitar error  "NavigationDuplicated: Avoided...", esto ocurre si se realiza un push() redirigiendo al mismo lugar donde se encuentra, si devuelve null es que se encuentra en la raíz

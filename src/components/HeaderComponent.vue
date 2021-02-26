@@ -13,7 +13,7 @@
 					<md-icon>person</md-icon>
 				</md-button>
 			</div>
-			<div style="margin:auto;">
+			<div class="m_auto">
 				<md-button class="md-fab md-accent" title="Subir imagen" @click="selectUpImage()" >
 					<md-icon>
 						add_photo_alternate
@@ -90,11 +90,12 @@
 //import CutPanel from './CutPanel.vue';
 import Global from '../Global.js';
 import Session from './Session.vue';
-import axios from 'axios';
+//import axios from 'axios';
 import methodsMixin from '../mixins/methodsMixin';
+import servicesMixin from '../mixins/servicesMixin';
 export default {
 	name:'HeaderComponent',
-	mixins:[methodsMixin],
+	mixins:[methodsMixin,servicesMixin],
 	components:{
 		Session
 		//CutPanel,
@@ -204,12 +205,13 @@ export default {
 		this.image.widthDefault=this.widthDefault;		
 		//establecer máximo de redimensión  posible
 
-		//deshabilitar
+		//deshabilitar botones navegador que requieren imagen principal
 		if(!this.image.name){
 			this.mainImage=true;
 		}
-		
-		
+		let session=this.testSession();
+		if(session.status=="error")
+			this.switchDialog();
 	},
 	
 	methods:{
@@ -267,8 +269,7 @@ export default {
 						this.image.width = sizes.width
 						this.image.height = sizes.height;
 						this.image.file=file;
-						//habilitamos botones
-						this.mainImage=false;
+						
 						//enviar todos los datos de la imagen y redirigir a MainPanel
 						this.redirectToMainPanel(this.image);
 				
@@ -315,96 +316,6 @@ export default {
 			}
 		},
 
-
-//faltan datos por subir(title,detail,...)
-		//subida de archivo al servidor, dependiente de resizeImageToWidth()
-		uploadImageToServer(){
-
-			//no es necesario comprobar FormData, ya está comprobado anteriormente en resizeImageToWidth()
-			//if(sessionStorage && FormData){
-			if(sessionStorage){
-				if(sessionStorage.getItem("biedit_apitoken")){					
-					let api_token=sessionStorage.getItem("biedit_apitoken"),
-						email=sessionStorage.getItem("biedit_email"),
-					formdata= new  FormData();
-					formdata.append("images[]",this.image.file);
-					formdata.append("email",email);
-					//formdata.append("api_token",api_token);
-					//si la original es mayor se establece un máximo de ancho y alto por defecto(maxWidthDefault), si no se mantiene ancho y alto original	
-					if(this.image.widthInitial>this.maxWidthDefault){
-						formdata.append("width",this.maxWidthDefault);
-						formdata.append("height",this.maxHeightDefault);
-					}else{
-						formdata.append("width",this.image.widthInitial);
-						formdata.append("height",this.image.heightInitial);
-					}
-
-					//cabeceras
-					let headers={
-						headers:{ 
-							/*
-							"Access-Control-Allow-Origin" : "*",
-							//crossorigin:true,
-							//'Access-Control-Allow-Methods': "GET",
-							"Access-Control-Allow-Methods":"GET,POST,OPTIONS,PUT,DELETE",
-							//'Access-Control-Allow-Headers': "Content-Type",
-							//'Access-Control-Allow-Credentials':true,
-							//'cache-control':'no-cache',
-							'Access-Control-Allow-Headers':"Origin, X-Requested-With, Content-Type, Accept",
-							*/
-							Authorization: 'Bearer '+api_token 
-						}
-					};
-
-					axios.post(this.url+"images",formdata,headers).then(res=> {
-		//Al guardar la imagen en el servidor actualizamos los datos del objeto 
-		//image, pero mateniendo la imagen base64 en el MainPanel y asignamos 
-		//los datos para el panel de recorte (resizedImg)
-						//console.log("lo que devuelve: ",res);
-						//el objeto resizedImg pasa los datos de ancho y alto al panel de recorte.
-						//Para pasar los datos en lugar de anular el objeto ima 
-						//como prop,indicados como params en la redirección se 
-						//puede  anular el resizedImg.src pasando el objeto ima 
-						//como prop (que contiene tb el src) 
-						this.resizedImg.src=res.data.image.random_name;
-						this.image.src=res.data.image.random_name;
-						//no están en data y por tanto no prevalecen
-						this.image.size=res.data.image.size;
-						this.image.spaceColor=res.data.image.space_color;					
-			//comprobaciones para asignar el resizedImg (destinado al CutPanel e hijos)
-						let sizes = this.setSizeToCutPanel(res.data.image.width,res.data.image.height,this.minWidthHeight,this.maxWidthDefault,this.maxHeightDefault);
-						/*
-						//comprobamos si el ancho o el alto de la imagen es menor //o igual que el mínimo establecido
-						if((res.data.image.width)<=this.minWidthHeight){
-							this.image.widthCut=this.minWidthHeight;
-							this.image.heightCut=this.getNewHeight(this.image.widthCut,res.data.image.width,res.data.image.height);
-							this.resizedImg.width=this.minWidthHeight;
-							this.resizedImg.height=this.getNewHeight(this.resizedImg.width,res.data.image.width,res.data.image.height);
-						}else{
-						//obtenemos el ancho y alto tomando como referencia
-						//un ancho y alto máximos establecidos.
-							let resizeImg=this.getMaxResize(res.data.image.width,res.data.image.height,this.maxWidthDefault,this.maxHeightDefault);
-							this.image.widthCut=resizeImg[0];
-							this.image.heightCut=resizeImg[1];
-							this.resizedImg.width=resizeImg[0];
-							this.resizedImg.height=resizeImg[1];
-						}
-						*/
-						this.image.widthCut=sizes.width;
-						this.image.heightCut=sizes.height;
-						this.resizedImg.width=sizes.width;
-						this.resizedImg.height=sizes.height;
-						console.log("desde upload() ",this.image);
-					})					
-				}else{
-					console.log("No está logueado");
-					//se puede realizar la subida sin estar logueado y al recargar página eliminar las imagenes automáticamente pero es necesario colocar el método post de subida de imágenes del backend fuera del middleware (para subir sin token)
-				}
-			}else{
-				console.log("No soporta sessionStorage");
-			}
-			
-		},
 						//métodos panel de recorte
 
 		//acceder al panel de recorte
@@ -537,35 +448,34 @@ export default {
 		},
 		*/		
 		//cerrar panel dialog de register o login (component Session)
-		changeDialog(){
+		//añadimos el parámetro state para mostrar el dialog de sesión de usuario 
+		//(login y register) al cerrar sesión y no permitir acceder sin registrarse
+		changeDialog(state=null){
+			console.log("desde header: ",state);
+			if(!state){
+				state=false;
+			}
 			//pasamos las 2 a false en lugar de comprobar si es el dialogo de login-register o el de perfil-logou
-			this.showDialog=false;
+			this.showDialog=state;
 			this.showDialog2=false;
 
 		},
 		//método para detectar si existe sesión y mostrar un dialog u otro
-		switchDialog(){
-			if(sessionStorage){
+		switchDialog(){			
+			let session=this.testSession();
+			if(!session){				
+				return;
+			}
+			
 				//comprobamos si están vacías para mostrar el dialog correcto
-				if(sessionStorage.getItem("biedit_apitoken") != 'null' && sessionStorage.getItem("biedit_apitoken") != 'undefined'){
-
-					let item = sessionStorage.getItem("biedit_apitoken");
-					//si existe sessionStorage mostramos dialog de session logout 
-					if(item){
-						//Aunque no debe estar y por tanto no es necesario, por seguridad pasamos el dialog login a false
-						if(this.showDialog==true) this.showDialog=false;
-						this.showDialog2=true;							
-					}else{
-						//si no existe sessionStorage mostramos dialog de session login y register
-						this.showDialog=true;	
-					}
-				}else{
-					console.log("no existe api_token");
-					this.showDialog=true;
-					this.showDialog2=false;
-				}
+				//if(sessionStorage.getItem("biedit_apitoken") != 'null' && sessionStorage.getItem("biedit_apitoken") != 'undefined'){
+			if(session.status=="success"){				
+					//Aunque no debe estar y por tanto no es necesario, por seguridad pasamos el dialog login a false
+				if(this.showDialog==true) this.showDialog=false;
+				this.showDialog2=true;							
 			}else{
-				console.log("no existe sessionStorage");
+					//si no existe sessionStorage mostramos dialog de session login y register
+				this.showDialog=true;
 			}
 		},
 		reloadImage(image,callback=null){
@@ -656,7 +566,7 @@ export default {
 }
 
 			/*dialogs*/
-
+/*
 .confirmDialog .md-dialog-container{
 	background:linear-gradient(to bottom, rgba(99, 0, 228,.8) 0%, rgba(99,0,228,1), rgba(99, 0, 228,.8) 100%);
 	color:white;
@@ -665,6 +575,7 @@ export default {
 .confirmDialog .md-button-content{
 	color:white;
 }
+*/
 .confirmDialog{
 	height:auto;
 	z-index:106 !important;

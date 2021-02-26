@@ -26,10 +26,11 @@ import MainPanel from './components/MainPanel.vue';
 import CutPanel from './components/CutPanel.vue';
 import Collections from './components/Collections.vue';
 import Effect from './components/Effect.vue';
-//color picker verte
 
+//color picker verte
 import Verte from 'verte';
 import 'verte/dist/verte.css';
+
 //import NotFound from './components/NotFound.vue';
 Vue.config.productionTip = false
 /*

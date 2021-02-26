@@ -19,12 +19,42 @@ html,body{
     //que el cutpanel si necesita acceder*/
 	z-index:1;
 }
+
+                    /*genéricos*/
+.inlineB{
+    display:inline-block;
+}
 .floatL{
     float:left;
 }
 .floatR{
     float:right;    
 }
+.m_auto{
+    margin:auto;
+}
+
+                /*dialogs*/
+/*dialogs*/
+.confirmDialog .md-dialog-container,.confirmDialog .md-dialog-container span{
+    background:linear-gradient(to bottom, rgba(99, 0, 228,.8) 0%, rgba(99,0,228,1), rgba(99, 0, 228,.8) 100%);
+    color:white ;
+}
+.confirmDialog .md-dialog-content{
+    color:white;
+}
+.confirmDialog .md-button-content{
+    color:white;
+}
+
+.confirmDialog{
+    height:auto;
+    z-index:106 !important;
+    position:absolute;
+    /*necesario auto en bottom para sobreescribir los estilos del md-dialog*/
+}
+
+
 .session-panel-dialog{
     background:rgba(0,0,0,.8) !important; 
     z-index:110 !important;
@@ -90,7 +120,7 @@ html,body{
 	
 }
 .main-img-resize{
-    box-shadow:  0px 0px 1px 10px rgba(0,0,0,0.2);
+    
     border-radius:10px;
 
 }
@@ -286,21 +316,7 @@ html,body{
 
                         /* collections   */
 
-.md-dialog.fullImage{
-    background-color:rgba(0,0,0,.7);
-    z-index:7;
 
-}
-.md-dialog.fullImage:first-child{
-    
-}
-
-.md-dialog.confirmEffect{
-    background:transparent;
-}
-.md-overlay{
-    background:transparent;
-}
 
 
                         /* fin collections   */
