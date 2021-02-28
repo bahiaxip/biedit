@@ -4,12 +4,12 @@
 		<div class="nav ">
 		<!--<md-toolbar class="md-accent" >-->
 			<div class="floatL"   >
-				<md-button class="md-accent md-fab" title="Sesión" @click="switchDialog()" >
+				<md-button class="accent md-fab" title="Sesión" @click="switchDialog()" >
 					<md-icon>person</md-icon>
 				</md-button>
 			</div>
 			<div class="floatR" >
-				<md-button class="md-accent md-fab" title="Sesión" @click="switchDialog()">
+				<md-button class="md-pink md-fab" title="Sesión" @click="switchDialog()">
 					<md-icon>person</md-icon>
 				</md-button>
 			</div>
@@ -39,13 +39,13 @@
 				</md-button>-->
 
 				<router-link :to="{name:'collections',params:{imageMain:image}}">
-					<md-button class="md-fab md-accent" title="Album"  >
+					<md-button class="md-fab primary" title="Album"  >
 						<md-icon>collections</md-icon>
 					</md-button>
 				</router-link>
 
 				<router-link :to="{name:'effect',params:{ima:image}}">
-					<md-button class="md-fab md-accent" title="Panel de ajustes" :disabled="mainImage">
+					<md-button class="md-fab primary" title="Panel de ajustes" :disabled="mainImage">
 						<md-icon>photo_filter</md-icon>
 					</md-button>
 				</router-link>
@@ -515,7 +515,7 @@ export default {
 			this.image.widthCut=sizesCut.width;
 			this.image.heightCut=sizesCut.height;
 			this.image.spaceColor=image.space_color;
-			//habilitar botones
+			//habilitar/deshabilitar botones
 			this.mainImage=false;
 			//callback sin definir
 			if(callback!=null)

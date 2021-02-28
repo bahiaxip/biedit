@@ -83,14 +83,14 @@
 					</md-tab>
 				</md-tabs>
 		</md-dialog>
-		<!-- ḿodal de confirmación de registro satisfactorio -->
+	<!-- ḿodal de confirmación de registro satisfactorio -->
 		<md-dialog-alert :md-active.sync="acceptDialog" :md-content="msge" md-confirm-text="Ok" @click="redirect()" :md-click-outside-to-close="false" style="z-index:110"/>
-		<!-- ḿodal de confirmación de registro fallido -->
+	<!-- ḿodal de confirmación de registro fallido -->
 		<md-dialog-alert class="dialog-alert-email" :md-active.sync="errorDialog" :md-content="msge" md-confirm-text="Ok" />
 
-		<!--efecto de carga (loading...) -->
-		<md-dialog style="text-align:center;margin:auto" class="dialog_spinner" :md-active.sync="displayLoading">
-			<div style="text-align:center:margin:auto;background-color:transparent !important">
+	<!--efecto de carga (loading...) -->
+		<md-dialog  class="dialog_spinner t_center m_auto" :md-active.sync="displayLoading">
+			<div class="t_center m_auto" style="background-color:transparent !important">
 			<md-progress-spinner class="md-accent"  md-mode='indeterminate'></md-progress-spinner>
 			</div>
 		</md-dialog>
@@ -99,12 +99,13 @@
 </template>
 <script>
 import {validationMixin } from 'vuelidate';
+import servicesMixin from '../mixins/servicesMixin';
 import {required,minLength,email} from 'vuelidate/lib/validators';
 import Global from '../Global.js';
 import axios from 'axios';
 export default {
 	name:'Session',
-	mixins:[validationMixin],
+	mixins:[validationMixin,servicesMixin],
 	props:["dialog","dialogLogout"],
 	data(){
 		return{
@@ -404,7 +405,7 @@ export default {
 				//detenemos el contador de sesión
 				this.clear();
 				//ocultamos el panel de diálogo
-				this.changeDialog(true);
+				this.changeDialog();
 				this.clearData();
 			}
 		},
@@ -444,16 +445,24 @@ export default {
 		},		
 //revisar en producción
 		redirect(){
-			//necesario para evitar error  "NavigationDuplicated: Avoided...", esto ocurre si se realiza un push() redirigiendo al mismo lugar donde se encuentra, si devuelve null es que se encuentra en la raíz
-			if(this.$route.name!=null){			
+			let session=this.testSession();
+			if(session != "success"){
+				//necesario para evitar error  "NavigationDuplicated: Avoided...", esto ocurre si se realiza un push() redirigiendo al mismo lugar donde se encuentra, si devuelve null es que se encuentra en la raíz
+				if(this.$route.name!=null){
+					console.log("fuera de raíz")
+					this.$router.push("/");
+				}
+				//volvemos a mostrar el dialogo de session para no acceder sin registrarse o loguearse
+				this.changeDialog(true)
+			}
 			
-				this.$router.push("/");
-			}			
+						
 		}
 	}
 }
 </script>
 <style>
+/*
 .dialog-alert-email .md-ripple{
 	color:white;
 	background-color:red;
@@ -468,4 +477,5 @@ export default {
 	background:transparent !important;
 	box-shadow:none;
 }
+*/
 </style>

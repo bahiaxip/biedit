@@ -3,7 +3,7 @@
 	<md-progress-spinner md-mode="indeterminate" v-if="displayLoading"></md-progress-spinner>
 	<div class="back-main-panel" :style="{width:ima.width+'px'}" :v-if="ima.width!=null" ref="backMainPanel">
 		
-		<div style="margin:auto;text-align:center;width:170px" >
+		<div class="button-nav-mainpanel" style="" >
 			<md-switch class="colorB " v-model="resizeSwitch"  v-if="showResize">
 			</md-switch>
 			<md-tooltip >Redimensionar</md-tooltip>
@@ -18,11 +18,11 @@
 
 		</div>
 		<!-- :style (doble condición) -->
-		<div style="margin:auto;text-align:center" v-if="resizeSwitch">
+		<div class="labels-mainpanel m_auto t_center" v-if="resizeSwitch">
 			<label>
 				<p class="floatL font_label" :style="ima.width<250 ? ima.width<170 ? 'font-size:10px;color:white;padding:4px' : 'font-size:12px;color:white;padding:7px' : 'font-size:15px;color:white;padding:7px'" >
 
-					<span v-if="ima.width>170" style="color:orange">w:</span>
+					<span v-if="ima.width>170" class="c_orange">w:</span>
 					{{ima.width}}px
 
 				</p>
@@ -32,7 +32,7 @@
 			<label>
 				<p class="floatR font_label" :style="ima.width<250 ? ima.width<170 ? 'font-size:10px;padding:4px':'font-size:12px;padding:7px' : 'font-size:15px;padding:7px'">
 
-				<span v-if="ima.width>170" style="color:orange">h:</span>
+				<span v-if="ima.width>170" class="c_orange">h:</span>
 				{{ima.height}}px
 
 			</p>
@@ -324,14 +324,14 @@ export default {
 }
 </script>
 <style>
-
+/*
 .colorB label{
-	color:black;
-	
+	color:orange;
 }
-
+*/
+/*
 .fade-enter-active{
-	transition:opacity 1s
+	transition:opacity 10s
 }
 .fade-leave-active{
 	opacity:1;
@@ -339,5 +339,6 @@ export default {
 .fade-enter, .fade-leave-to{
 	opacity:0;
 }
+*/
 
 </style>

@@ -13,7 +13,7 @@
 				Adios
 			</md-button>-->
 
-			<md-button class="md-icon-button md-accent md-raised" style="z-index:10;margin-top:5px" @click="cropImage()" v-if="ima.widthCut>100 && ima.heightCut >100">
+			<md-button class="md-icon-button md-accent md-raised crop-button" @click="cropImage()" v-if="ima.widthCut>100 && ima.heightCut >100">
 				<md-icon>camera</md-icon>						
 			</md-button>
 			
@@ -211,16 +211,7 @@ export default {
 	opacity:1s;
 }
 */
-/*imagen grande en md-dialog*/
-.fade-enter-active{
-	transition:opacity 2s
-}
-.fade-leave-active{
-	opacity:1;
-}
-.fade-enter, .fade-leave-to{
-	opacity:0;
-}
+
 
 .md-overlay{
 	

@@ -2,7 +2,7 @@
 	<div >		
 		<!--<div class="back-effect-panel" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >-->
 		<div class="" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >
-			<div style="margin:auto;text-align:center" >
+			<div class="m_auto t_center" >
 				<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="rotate('left')" title="Rotación Izquierda">
 					<md-icon class="">rotate_left</md-icon>
 				</md-button>
@@ -13,7 +13,7 @@
 					<md-icon class="">rotate_right</md-icon>
 				</md-button>
 
-				<div style="display:inline-flex;border:rgba(0,0,0,0.2) 2px solid;padding:3px 8px;border-radius:10px" >
+				<div class="btn_clear_check" style="" >
 					<md-button class="md-icon-button md-raised md-accent md-dense" @click="confirmChange('undoAll')">
 						<md-icon>clear</md-icon>
 						<md-tooltip>Deshacer todo</md-tooltip>
@@ -147,7 +147,7 @@
 				</transition>-->
 
 <transition name="fade">
-	<div class="md-layout md-gutter" style="margin-top:30px" v-if="imgTrans">		
+	<div class="md-layout md-gutter m_top30" v-if="imgTrans">		
 			<div class="md-layout-item md-large-size-15 md-medium-size-10 md-small-size-5" >
 			</div>
 
@@ -156,7 +156,7 @@
 					<canvas id="canvas" class=""  :style="{'margin':'auto','display':'flex'}" :width="imaEffect.width" :height="imaEffect.height" ref="canvas" v-if="!loadingImage"></canvas>
 					<div class="image_effect" :style="{'display':'block','backgroundImage':'url('+ima.name+')','width':imaEffect.width+'px','height':imaEffect.height+'px','position':'relative','background-size':'100%','background-repeat':'no-repeat','background-position':'center'}" ref="image_effect" v-if="!loadingImage">
 					</div>
-					<md-progress-spinner md-mode="indeterminate" style="margin:auto" v-else></md-progress-spinner>
+					<md-progress-spinner md-mode="indeterminate" class="m_auto" v-else></md-progress-spinner>
 					<!-- mantenemos la imagen para obtener las medidas, ya que el md-layout redimensiona el elemento img pero no el elemento div aunque tenga una imagen incrustada con url en los estilos CSS-->
 					<!-- ya no es necesario-->
 					<!--<img :src="ima.name" id="image" class="" ref="image" style="min-width:200px;opacity:0"/>-->
@@ -204,7 +204,7 @@
 							
 						</md-menu-content>
 					</md-menu>
-					<md-menu class=" md_menu_custom" md-align-trigger style="padding:auto">
+					<md-menu class=" md_menu_custom p_auto" md-align-trigger >
 					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger >
 						<md-icon class="">exposure</md-icon>
 						<md-tooltip md-direction="top">Formas</md-tooltip>
@@ -264,7 +264,7 @@
 						
 					</md-menu-content>
 				</md-menu>
-				<md-menu class="md_menu_custom" md-align-trigger style="padding:auto">
+				<md-menu class="md_menu_custom" style="padding:auto" md-align-trigger >
 					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger>
 						<md-icon class="">adjust</md-icon>
 						<md-tooltip md-direction="top">Efectos</md-tooltip>
@@ -408,36 +408,36 @@
 			-->
 		<!-- select -->
 				<div class="" style="margin-top:20px">
-					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showListImage('fussion')" :class="fussionActivated ? 'primary':'accent'" style="margin:0 6px">
+					<md-button class="md-icon-button  md-raised md-accent buttons_composite"  md-menu-trigger @click="showListImage('fussion')" :class="fussionActivated ? 'primary':'accent'">
 						<md-icon md-src="img/effect/layers-plus_white.svg"></md-icon>
 						<md-tooltip>Fusión</md-tooltip>
 					</md-button>
-					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showListImage('watermark')" :class="wmActivated ? 'primary':'accent'" style="margin:0 6px">
+					<md-button class="md-icon-button  md-raised md-accent buttons_composite"  md-menu-trigger @click="showListImage('watermark')" :class="wmActivated ? 'primary':'accent'">
 						<md-icon md-src="img/effect/watermark-white.svg"></md-icon>
 						<md-tooltip>Marca de Agua</md-tooltip>
 					</md-button>
-					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showListImage('create-watermark')" :class="createWmActivated ? 'primary':'accent'" style="margin:0 6px">
+					<md-button class="md-icon-button  md-raised md-accent buttons_composite"  md-menu-trigger @click="showListImage('create-watermark')" :class="createWmActivated ? 'primary':'accent'">
 						<md-icon md-src="img/effect/format-annotation-plus-white.svg"></md-icon>
 						<md-tooltip>Crear marca de agua</md-tooltip>
 					</md-button>							
 					
 				</div>
-					<div style="clear:left"></div>
+					<div class="clearL"></div>
 				<!-- cancel botón -->
-					<div style="margin-top:10px;" v-if="compListActive || wmInputActive||rangeTexturizeActive||rangeCompressActive||spaceColorActive || channelActive">
-						<md-button class="md-icon-button  md-raised md-accent md-dense"  md-menu-trigger @click="cancelAll()"  style="margin-top:5px">
+					<div class="m_top10" v-if="compListActive || wmInputActive||rangeTexturizeActive||rangeCompressActive||spaceColorActive || channelActive">
+						<md-button class="md-icon-button  md-raised md-accent md-dense m_top5"  md-menu-trigger @click="cancelAll()"  >
 							<md-icon >clear</md-icon>
 							<md-tooltip>Deshacer</md-tooltip>
 						</md-button>
 				<!-- check botón -->
-						<md-button class="md-icon-button  md-raised md-primary md-dense"  md-menu-trigger @click="confirmChange(typeAction)" title="Crear composición" style="margin-top:5px" v-if="compositeSelectedId || inputWm || rangeTexturize!=1 || rangeCompressActive || spaceColorSelected!=spaceColor || channelActive" >
+						<md-button class="md-icon-button  md-raised md-primary md-dense m_top5"  md-menu-trigger @click="confirmChange(typeAction)" title="Crear composición" v-if="compositeSelectedId || inputWm || rangeTexturize!=1 || rangeCompressActive || spaceColorSelected!=spaceColor || channelActive" >
 							<md-icon class="">check</md-icon>
 						</md-button>
 					</div>
-					<div style="clear:left"></div>						
+					<div class="clearL"></div>						
 			<!--composite -->
 			<!--position-->
-					<div style="margin-top:10px;" v-if="compPosListActive">
+					<div class="m_top10;" v-if="compPosListActive">
 						<md-list :md-expand-single="expandSingle">
 							<md-list-item md-expand :md-expanded.sync="expandCompPos">
 								<md-icon v-html="compPosSelectedHtml"></md-icon>
@@ -457,7 +457,7 @@
 										Sup. izquierda
 									</md-list-item>
 									<md-list-item @click="selectCompositePosition('topRight')">
-										<md-icon style="transform:scale(1,-1)">branding_watermark</md-icon>
+										<md-icon class="icon_rotate" >branding_watermark</md-icon>
 										Sup. derecha
 									</md-list-item>
 									<md-list-item @click="selectCompositePosition('bottomLeft')">
@@ -473,7 +473,7 @@
 						</md-list>
 					</div>
 			<!--image-->
-					<div style="margin-top:10px;" v-if="compListActive">
+					<div class="m_top10;" v-if="compListActive">
 						<md-list :md-expand-single="expandSingle">
 							<md-list-item md-expand :md-expanded.sync="expandCompositeList">
 								<span v-html="compositeSelectedHtml"></span>
@@ -491,7 +491,7 @@
 						</md-list>
 					</div>
 			<!-- input create watermark -->
-					<div style="margin-top:10px;" v-if="wmInputActive">
+					<div class="m_top10;" v-if="wmInputActive">
 						<md-field>
 							<label>Texto</label>
 							<md-input v-model="inputWm" maxlength="50"></md-input>
@@ -500,24 +500,24 @@
 						<div style="clear:left"></div>-->
 					</div>
 					<div v-if="wmInputActive" class="inputFontSize">
-						<md-chip class="md-primary" style="padding-top:2px">{{rangeWmFontSize}}</md-chip>
-						<div style="clear:left"></div>
-						<md-icon style="display:inline-block" md-src="img/effect/format-size.svg"></md-icon>
+						<md-chip class="md-primary p_top2">{{rangeWmFontSize}}</md-chip>
+						<div class="clearL"></div>
+						<md-icon class="d_in_block" md-src="img/effect/format-size.svg"></md-icon>
 						
 						<input type="range" v-model="rangeWmFontSize" name="range_fontsize" min="1" max="100" />
 						<md-tooltip md-direction="left">Tamaño de letra</md-tooltip>
 					</div>
-					<div style="margin-top:10px;" v-if="wmInputActive">
+					<div class="m_top10;" v-if="wmInputActive">
 
 						<md-list :md-expand-single="expandSingle" >
 							
 							<md-list-item md-expand :md-expanded.sync="expandFontFamily"  >
 
-								<md-icon md-src="img/effect/format-font.svg" style="display:inline-block"></md-icon>
+								<md-icon md-src="img/effect/format-font.svg" class="d_in_block"></md-icon>
 								
 								<span :style="{'font-family':fontFamilySelected}"> {{fontSelected}}</span>
 								
-								<md-list slot="md-expand" class="md-scrollbar"  style="max-height:200px;overflow:auto">
+								<md-list slot="md-expand expand_wmInput" class="md-scrollbar">
 
 									<md-list-item style="font-family:ubuntu" @click="setFontFamily('ubuntu')" >Ubuntu</md-list-item>
 									<md-list-item style="font-family:timesnewroman" @click="setFontFamily('timesnewroman')">Times New Roman</md-list-item>
@@ -539,12 +539,12 @@
 						</md-list>
 						
 					</div>
-					<div class="colorpicker" style="padding-top:10px;border-radius:5%">
-						<span v-if="wmInputActive" style="margin-left:15px;float:left;">
+					<div class="colorpicker" v-if="wmInputActive">
+						<span  class="floatL m_left15">
 							<md-icon style="">color_lens</md-icon>
 							
 						</span>
-						<div style="margin-top:10px;display:inline-block;margin:auto;" v-if="wmInputActive">
+						<div class="m_top10 d_in_block m_auto" >
 							<verte v-model="color" picker="square" model="rgb" menuPosition="top">
 							</verte>
 							
@@ -553,7 +553,7 @@
 					</div>
 
 				<!--espacio de color -->
-					<div style="margin-top:10px;" v-if="spaceColorActive">
+					<div class="m_top10" v-if="spaceColorActive">
 						<md-field style="">
 							<label for="space_color" v-if="spaceColorSelected==spaceColor">Espacio de Color actual</label>
 							<label for="space_color" v-else>Convertir a</label>
@@ -566,10 +566,10 @@
 							</md-select>
 						</md-field>
 						
-						<div style="clear:left"></div>								
+						<div class="clearL"></div>								
 					</div>
 				<!-- separar canales en escala de grises -->
-					<div style="margin-top:10px;" v-if="channelActive">
+					<div class="m_top10" v-if="channelActive">
 						<md-field style="">
 							<label for="channels">Canales</label>
 							<!--si el space color original es RGB o SRGB-->
@@ -600,31 +600,31 @@
 							</md-select>
 						</md-field>
 						
-						<div style="clear:left"></div>								
+						<div class="clearL"></div>								
 					</div>
 				<!-- range compression -->
-					<div style="margin-top:10px;display:block" v-if="rangeCompressActive">
+					<div class="m_top10 d_block" v-if="rangeCompressActive">
 
-						<label for="range_compress" title="Tipo de compresión"><span style="color:blue;font-weight:bold">{{rangeCompress}}</span></label>
+						<label for="range_compress" title="Tipo de compresión"><span class="range">{{rangeCompress}}</span></label>
 
-						<div style="clear:left"></div>
+						<div class="clearL"></div>
 						<!--detectar si es png o jpg para mostrar minimo y máximo distinto-->
 						<input name="range_compress" type="range" min="1" max="100" v-model="rangeCompress" v-if="this.ext=='jpg'"/>
 						<input name="range_compress" type="range" min="0" max="4" v-model="rangeCompress" v-if="this.ext=='png'"/>
 
-						<div style="clear:left"></div>
+						<div class="clearL"></div>
 						<!--<md-button class="md-icon-button md-raised md-dense md-primary"  md-menu-trigger @click="setCompress(rangeCompress)">
 							<md-icon class="">check_circle_outline</md-icon>
 							<md-tooltip>Comprimir imagen</md-tooltip>
 						</md-button>-->
 					</div>
-					<div style="margin-top:10px;display:block" v-if="rangeTexturizeActive">
+					<div class="m_top10 d_block" v-if="rangeTexturizeActive">
 
-						<label for="range_texturize" style="color:blue;font-weight:bold">{{'x'+rangeTexturize}}</label>
-						<div style="clear:left"></div>
+						<label for="range_texturize" class="range">{{'x'+rangeTexturize}}</label>
+						<div class="clearL"></div>
 						<input name="range_texturize" type="range" min="1" max="10" step="1" v-model="rangeTexturize" @change="texturize(rangeTexturize)"/>
 
-						<div style="clear:left"></div>
+						<div class="clearL"></div>
 
 						<!--<md-button class="md-icon-button md-raised md-dense md-accent"  md-menu-trigger @click="texturize(0)">
 							<md-icon class="">cancel</md-icon>
@@ -636,7 +636,7 @@
 							<md-tooltip>Aplicar texturización</md-tooltip>
 						</md-button>-->
 					</div>
-					<div style="clear:left"></div>
+					<div class="clearL"></div>
 					
 				</div>
 				
@@ -715,6 +715,12 @@
 				md-title = "Error al procesar la imagen"
 				:md-content = "msgeDialogAlert"
 				md-confirm-text="OK" />
+
+				<md-dialog-alert class="confirmDialog"
+				:md-active.sync="dialogNotChannelsActive"
+				md-title = "No disponible"
+				md-content = "La extracción de canales no se encuentra disponible para esta imagen"
+				md-confirm-text="OK" />
 			
 				
 		</div>
@@ -726,7 +732,7 @@
 			<img :src="url+'get-image/'+tmpImage.random_name" v-if="tmpImage" :width="ima.width" :height="ima.height"/>
 			<!-- colocar una transición o un interruptor para aparezca un poquito
 				después que la imagen -->
-			<div style="position:absolute;top:50%;left:50%;margin:auto;background-color:white;padding:20px;transform:translate(-50%,-50%)" v-if="tmpImage">
+			<div class="load_new_image" style="" v-if="tmpImage">
 				<p>¿Cargar la nueva imagen?</p>
 				<md-button style="" class="md-raised md-accent" @click="setTmpImage()">
 					OK
@@ -736,7 +742,7 @@
 				</md-button>				
 			</div>
 			
-			<div v-else style="text-align:center;"><!--aquí el md-spinner-->
+			<div v-else class="t_center;"><!--aquí el md-spinner-->
 				<md-progress-spinner class="md-accent" :md-diameter="100" md-mode="indeterminate" ></md-progress-spinner >
 			</div>
 			
@@ -771,9 +777,10 @@ export default {
 			dialogConfirmActive:false,
 			//dialog para errores
 			dialogErrorActive:false,
+			dialogNotChannelsActive:false,
 			//contenido de dialog para errores
 			//(actualizado durante los errores de los efectos: servicesMixin)
-			msgeDialogAlert:null,
+			msgeDialogAlert:null,			
 
 			//dialogConfirmActive2:false,
 			//textos modal dialog
@@ -1500,11 +1507,18 @@ export default {
 				this.compressActivated=true;
 				this.typeAction=action;
 			}else if(action=="separate_channel" && !this.channelActive){
+				//si el espacio de color es distinto se muestra un dialog
+				if(this.spaceColor != "RGB" && this.spaceColor !="SRGB" 
+					&& this.spaceColor != "CMYK"){
+					
+					this.dialogNotChannelsActive=true;
+					return;
+				}
 				this.cancelSelect();				
 				this.channelActivated=true;
 				this.channelActive=true;
 				this.typeAction=action;
-			}else if(action=="space_color" ){
+			}else if(action=="space_color" ){				
 				this.cancelSelect();
 				this.spaceColorActivated=true;
 				this.spaceColorActive=true;
@@ -1757,8 +1771,9 @@ export default {
 }
 </script>
 <style>
+/*
 .fade-enter-active{
-	transition:opacity 2s
+	transition:opacity 5s
 }
 .fade-leave-active{
 	opacity:1;
@@ -1766,149 +1781,11 @@ export default {
 .fade-enter, .fade-leave-to{
 	opacity:0;
 }
-
-
-.list-effects .md-list{
-	background-color:darkblue;	
-}
-.list-effects .md-list-item-content{
-	color:orange;
-	text-transform:uppercase;
-	cursor:pointer;
-}
-.list-effects .md-list-item-content:hover{
-	color:yellow;
-
-}
-
-.menu_filter {
-	box-shadow:none;
-	min-width:50px;
-	/*max-height:none;*/
-}
-.menu_filter .md-menu-content {
-	margin:auto !important;
-	text-align:center !important;
-}
-.menu_filter .md-list{
-	
-	/*background:rgba(0,0,0,.2) ;*/
-	cursor:pointer;
-	/*border-radius:30px;*/
-}
-.menu_filter .md-list-item .md-icon {	
-	margin:auto ;
-}
-.menu_effect .md-list-item .md-icon {
-	margin:auto !important;
-	text-align:center !important;
-}
-.byn .md-icon{
-	color:#000 !important;
-}
-.sepia .md-icon{
-	color:#9e5b40 !important;
-}
-
-/*spinner*/
-.md-progress-spinner{
-
-}
-
-.md-dialog.effect_dialog{
-	background-color:rgba(0,0,0,.5);
-
-
-	/*z-index:5;*/
-}
-
-.md-dialog.effect_dialog>:first-child {
-	background:transparent !important;
-	box-shadow:none;
-}
-
-.div_effect_image{
-	padding:0px !important;
-}
-.primary{
-	background-color:#448aff !important;
-}
-
-.accent{
-	background-color:#ff5252 !important;	
-}
-@font-face{
-	font-family:usuzi;
-	src:url(../assets/fonts/usuzi.ttf);
-}
-@font-face{
-	font-family:abduction;
-	src:url(../assets/fonts/abduction2002.ttf);
-}
-@font-face{
-	font-family:corporate;
-	src:url(../assets/fonts/corporateroundedextrabold.ttf);
-}
-@font-face{
-	font-family:designer;
-	src:url(../assets/fonts/designer-block.regular.ttf);
-}
-@font-face{
-	font-family:fontanero;
-	src:url(../assets/fonts/Fontanero-FFP.ttf);
-}
-@font-face{
-	font-family:futura;
-	src:url(../assets/fonts/FUTURAB.ttf);
-}
-@font-face{
-	font-family:glsnecb;
-	src:url(../assets/fonts/GLSNECB.TTF);
-}
-@font-face{
-	font-family:nikaia;
-	src:url(../assets/fonts/Nikaia_Medium.ttf);
-}
-@font-face{
-	font-family:timesnewroman;
-	src:url(../assets/fonts/timesbd.ttf);
-}
-@font-face{
-	font-family:ubuntu;
-	src:url(../assets/fonts/Ubuntu-Title.ttf);
-}
-@font-face{
-	font-family:yanone;
-	src:url(../assets/fonts/Yanone-Bold.otf);
-}
-@font-face{
-	font-family:zerogirl;
-	src:url(../assets/fonts/ZEROGIRL.TTF);
-}
-.verte button{
-	cursor:pointer;
-}
-input[type=range]{
-	cursor:pointer;
-}
-.colorpicker:hover{
-	background-color:rgba(0,0,0,0.12);
-}
-.inputFontSize:hover{
-	background-color:rgba(0,0,0,0.12);	
-}
+*/
 .md_menu_custom{
 	padding:0;
 }
 .md_menu_custom>.md-button{
 	margin:0 6px;
 }
-.md-tooltip{
-	font-size:11px;
-}
-/*
-Primary: #448aff => Blue A200
-Accent: #ff5252 => Red A200
-*/
-
 </style>

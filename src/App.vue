@@ -50,4 +50,6 @@ export default {
 }
 @import 'assets/css/style.css';
 @import 'assets/css/overwrite_material.css';
+
+
 </style>

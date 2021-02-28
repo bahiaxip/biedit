@@ -1,4 +1,4 @@
-					/* Collections */
+					/* Collections panel */
 
 /*dialogs*/
 .md-dialog.fullImage{
@@ -25,37 +25,6 @@
 	font-size:15px;
 }
 
-/*transitions vue */
-
-.fadeimg-enter-active{
-	transition:all 1s;
-	
-}
-.fadeimg-leave-active{
-	opacity:1;
-}
-.fadeimg-enter, .fadeimg-leave-to{
-	opacity:0;
-}
-.list-enter-active{
-	transition:transform 1s ease-out,opacity 1.5s linear;
-}
-
-.list-enter{
-	/*position:absolute;*/
-	transform:rotateY(360deg) scale(0);
-	opacity:0;
-}
-
-.list-leave-to,.list-leave-active{
-	/*opción con position:absolute para pasar de página*/;
-	position:absolute; /*añade suavidad entre componentes*/
-	opacity:1;
-}
-.list-move{
-	transition:transform 0.5s;
-}
-
 /*esta @media sirve para corregir el md-dialog-fullscreen por defecto, que 
 incorpora una media query que por debajo de 600px de ancho pasa del width 80% a 100%, sobreescribimos para que se mantenga en 80%*/
 @media screen and (max-width:600px) {
@@ -64,3 +33,98 @@ incorpora una media query que por debajo de 600px de ancho pasa del width 80% a 
 		height:auto;
 	}
 }
+
+						/*Cut panel*/
+.md-button.crop-button{
+    z-index:10;margin-top:5px
+}
+
+						/*Session panel*/
+
+.dialog-alert-email .md-ripple{
+	color:white;
+	background-color:red;
+}
+.md-dialog.dialog_spinner{
+	background-color:rgba(255,255,255);
+	margin-top:50px;
+	position:absolute;
+	z-index:5;
+}
+.dialog_spinner>:first-child {
+	background:transparent !important;
+	box-shadow:none;
+}
+					/*Effect panel*/
+
+.list-effects .md-list{
+	background-color:darkblue;	
+}
+.list-effects .md-list-item-content{
+	color:orange;
+	text-transform:uppercase;
+	cursor:pointer;
+}
+.list-effects .md-list-item-content:hover{
+	color:yellow;
+
+}
+/*menu filter, menu polygon, menu effects*/
+.menu_filter {
+	box-shadow:none !important;
+	min-width:50px !important;
+	/*max-height:none;*/
+}
+.menu_filter .md-menu-content {
+	margin:auto !important;
+	text-align:center !important;
+}
+.menu_filter .md-list{
+	
+	/*background:rgba(0,0,0,.2) ;*/
+	cursor:pointer;
+	/*border-radius:30px;*/
+}
+.menu_filter .md-list-item .md-icon {	
+	margin:auto !important;
+}
+.menu_effect .md-list-item .md-icon {
+	margin:auto !important;
+	text-align:center !important;
+}
+
+.byn .md-icon{
+	color:#000 !important;
+}
+.sepia .md-icon{
+	color:#9e5b40 !important;
+}
+
+/*spinner*/
+.md-progress-spinner{
+
+}
+/*dialog*/
+.md-dialog.effect_dialog{
+	background-color:rgba(0,0,0,.5);
+	/*z-index:5;*/
+}
+
+.md-dialog.effect_dialog>:first-child {
+	background:transparent !important;
+	box-shadow:none;
+}
+
+.md_menu_custom{
+	padding:0;
+}
+.md_menu_custom>.md-button{
+	margin:0 6px;
+}
+.md-tooltip{
+	font-size:11px;
+}
+
+
+
+

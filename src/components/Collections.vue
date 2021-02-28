@@ -370,18 +370,7 @@ export default {
 	box-shadow:none;
 	*/
 }
-.list-item{
-	width:17%;
-	min-width:250px;
-	display:inline-block;
-	margin:0 10px;
-	box-shadow:none;
-	opacity:1;
-}
 
-.pagination li{
-	display:inline-block;
-}
 /*válido si no añadimos los atributos md-solid o md-text-scrim, si añadimos los atributos es necesario el !important*/
 /*.back_collections .md-card-area{
 	background:rgba(0,0,0,1);
@@ -428,8 +417,6 @@ export default {
 	animation:none reverse;
 	/*animation:example 0s reverse;*/
 /*}*/
-
-
 /*
 @keyframes example{
 
@@ -449,14 +436,7 @@ export default {
 	}	
 }
 */
-/*esta @media sirve para corregir el md-dialog-fullscreen por defecto, que 
-incorpora una media query que por debajo de 600px de ancho pasa del width 80% a 100%, sobreescribimos para que se mantenga en 80%*/
-@media screen and (max-width:600px) {
-	.fullImage .md-dialog-fullscreen{
-		max-width:80%;
-		height:auto;
-	}
-}
+
 
 
 

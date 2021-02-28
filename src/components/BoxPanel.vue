@@ -212,12 +212,8 @@ export default {
 			window.addEventListener("touchend",this.inactiveMove);
 			//}
 		}
-
 		//fin movimiento Cuadrante
-
 		//redimensión del cuadrante
-
 	}
 }
-
 </script>

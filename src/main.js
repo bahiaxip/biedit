@@ -54,6 +54,14 @@ Vue.use(MdProgress);
 */
 Vue.use(Verte);
 Vue.use(VueMaterial);
+/*
+Vue.material.registerTheme({
+	default:{
+		primary:'cyan',
+		
+	}
+})
+*/
 Vue.use(VueRouter);
 
 const routes = [

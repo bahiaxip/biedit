@@ -10,7 +10,18 @@ html,body{
 	/*background-color:#ff5252;*/
     /*background:linear-gradient(to bottom, rgba(125, 38, 205,1) 10%, rgba(125,38,205,.8), rgba(125, 38, 205,1) 90%);*/
     width:100%;
-    background:linear-gradient(to bottom, rgba(99, 0, 228,.8) 0%, rgba(99,0,228,1), rgba(99, 0, 228,.8) 100%);
+    /*background:linear-gradient(to bottom, rgba(99, 0, 228,.8) 0%, rgba(99,0,228,1), rgba(99, 0, 228,.8) 100%);*/
+
+
+    background:linear-gradient(to bottom, rgba(217, 54, 144,1) 0%, rgba(217, 54, 144,.8), rgba(217, 54, 144,1) 100%);
+    /*background-color:#d93690;*/
+    
+    /*fondo negro*/
+    /*background:linear-gradient(to bottom, rgba(0, 0, 0,1) 0%, rgba(0, 0, 0,.6), rgba(0, 0, 0,1) 100%);*/
+
+
+    /*d93690*/
+    /*background:linear-gradient(to bottom, rgba(58, 58, 58,.8) 0%, rgba(58,58,58,1), rgba(58,58, 58,.8) 100%);*/
 	padding:0;
 	position:relative;
     /*mantenemos el z-index del componente header en 1 , ya que desde la opción
@@ -21,6 +32,22 @@ html,body{
 }
 
                     /*genéricos*/
+
+.primary{
+    /*background-color:#448aff !important;*/
+
+    /*background:linear-gradient(to bottom, rgba(0,0,0,.3) 0%, rgba(0,0,0,.8), rgba(0,0,0,.3) 100%) !important;*/ /*fondo negro transparente*/
+    background-color:#705ba1 !important; /* azulado*/
+    /*background-color:#3967ff !important;*/ /*azul*/
+    /*background-color:#8c51ac !important;  */ /*púrpura*/
+    /*background-color:#f89b00 !important;*/ /*calabaza*/
+}
+.accent{
+    /*background-color:#ff5252 !important;    */
+    /*background-color:#26ada7 !important;*/
+    background:linear-gradient(to bottom, rgba(38,173,167,.7) 0%, rgba(38,173,167,1), rgba(38,173,167,.7) 100%) !important;
+    /*#26ada7*/
+}
 .inlineB{
     display:inline-block;
 }
@@ -33,7 +60,43 @@ html,body{
 .m_auto{
     margin:auto;
 }
-
+.t_center{
+    text-align:center;
+}
+.c_orange{
+    color:orange;
+}
+.p_auto{
+    padding:auto;
+}
+.p_top2{
+    padding-top:2px;
+}
+.d_in_block{
+    display:inline-block;
+}
+.d_block{
+    display:block;
+}
+.m_top30{
+    margin-top:30px;
+}
+.m_top10{
+    margin-top:10px;
+}
+.m_top5{
+    margin-top:5px;
+}
+.m_left15{
+    margin-left:15px;
+}
+.clearL{
+    clear:left;
+}
+/*usado en watermark (Effect panel)*/
+.icon_rotate{
+    transform:scale(1,-1);
+}
                 /*dialogs*/
 /*dialogs*/
 .confirmDialog .md-dialog-container,.confirmDialog .md-dialog-container span{
@@ -84,14 +147,24 @@ html,body{
     color:white;
     font-family:"ManiaExtendedC",ManiaExtendedC;
 }
-
 .back-main-panel label p{    
     border-radius:10px;
     padding:7px;
     background-color:rgba(0,0,0,.8);
     font-size:18px;
 }
-
+.button-nav-mainpanel{
+    margin:auto;
+    text-align:center;
+    width:170px
+}
+/*revisar si es necesario*/
+/*
+.labels-mainpanel{
+    margin:auto;
+    text-align:center
+}
+*/
 .md-button.fab_button_head {
     
 }
@@ -144,6 +217,7 @@ html,body{
 
 						/* fin MAIN PANEL */
 						/* CUT PANEL */
+
 
 
                         /*caja y cuadrante*/
@@ -311,15 +385,199 @@ html,body{
 	
 }
 
+
+
 						/* fin CUT PANEL */
 
 
                         /* collections   */
 
+.list-item{
+    width:17%;
+    min-width:250px;
+    display:inline-block;
+    margin:0 10px;
+    box-shadow:none;
+    opacity:1;
+}
+
+.pagination li{
+    display:inline-block;
+}
+.pagination li .md-ripple{
+    padding-top:7px;
+    font-size:16px;
+}
+
+/*transitions vue */
 
 
+
+/* transition fade presente en Main panel, Cut panel, Effect panel*/
+
+.fade-enter-active{
+    transition:opacity 1s
+}
+.fade-leave-active{
+    opacity:1;
+}
+.fade-enter, .fade-leave-to{
+    opacity:0;
+}
+
+/* fin transition fade */
+
+/* transition fadeimg presente en Collections panel*/
+
+
+.fadeimg-enter-active{
+    transition:all 1s;
+    
+}
+.fadeimg-leave-active{
+    opacity:1;
+}
+.fadeimg-enter, .fadeimg-leave-to{
+    opacity:0;
+}
+
+/* fin transition fadeimg */
+
+/* transition-group list presente en Collections panel*/
+.list-enter-active{
+    transition:transform 1s ease-out,opacity 1.5s linear;
+}
+
+.list-enter{
+    /*position:absolute;*/
+    transform:rotateY(360deg) scale(0);
+    opacity:0;
+}
+
+.list-leave-to,.list-leave-active{
+    /*opción con position:absolute para pasar de página*/;
+    position:absolute; /*añade suavidad entre componentes*/
+    opacity:1;
+}
+.list-move{
+    transition:transform 0.5s;
+}
+/* fin transition list */
 
                         /* fin collections   */
+
+
+
+                        /* Effect panel     */
+.btn_clear_check{
+    display:inline-flex;
+    border:rgba(0,0,0,0.2) 2px solid;
+    padding:3px 8px;
+    border-radius:10px
+}
+
+
+.div_effect_image{
+    padding:0px !important;
+}
+
+/*sobreescribiendo componente colorpicker verte para cursor*/
+.verte button{
+    cursor:pointer;
+}
+input[type=range]{
+    cursor:pointer;
+}
+.colorpicker{
+    padding-top:10px;border-radius:5%
+}
+.colorpicker:hover{
+    background-color:rgba(0,0,0,0.12);
+}
+.inputFontSize:hover{
+    background-color:rgba(0,0,0,0.12);  
+}
+
+.range{
+    color:blue;font-weight:bold
+}
+
+.load_new_image{
+    
+    margin:auto;
+    background-color:white;
+    padding:20px;    
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+}
+
+/* para los 3 efectos fussion, watermark, create-watermark*/
+.buttons_composite{
+    margin:0px 6px;
+}
+
+/*
+Primary: #448aff => Blue A200
+Accent: #ff5252 => Red A200
+*/
+
+/*Effect - create-watermark*/
+.expand_wmInput{
+    max-height:200px;overflow:auto
+}
+
+/*fonts*/
+@font-face{
+    font-family:usuzi;
+    src:url(../fonts/usuzi.ttf);
+}
+@font-face{
+    font-family:abduction;
+    src:url(../fonts/abduction2002.ttf);
+}
+@font-face{
+    font-family:corporate;
+    src:url(../fonts/corporateroundedextrabold.ttf);
+}
+@font-face{
+    font-family:designer;
+    src:url(../fonts/designer-block.regular.ttf);
+}
+@font-face{
+    font-family:fontanero;
+    src:url(../fonts/Fontanero-FFP.ttf);
+}
+@font-face{
+    font-family:futura;
+    src:url(../fonts/FUTURAB.ttf);
+}
+@font-face{
+    font-family:glsnecb;
+    src:url(../fonts/GLSNECB.TTF);
+}
+@font-face{
+    font-family:nikaia;
+    src:url(../fonts/Nikaia_Medium.ttf);
+}
+@font-face{
+    font-family:timesnewroman;
+    src:url(../fonts/timesbd.ttf);
+}
+@font-face{
+    font-family:ubuntu;
+    src:url(../fonts/Ubuntu-Title.ttf);
+}
+@font-face{
+    font-family:yanone;
+    src:url(../fonts/Yanone-Bold.otf);
+}
+@font-face{
+    font-family:zerogirl;
+    src:url(../fonts/ZEROGIRL.TTF);
+}
+
+                        /* fin Effect panel */
     								/* handle resize */
 
 .handle-resize{
