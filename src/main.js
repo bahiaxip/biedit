@@ -20,12 +20,14 @@ import {MdButton,MdMenu,MdList,MdIcon,MdCard,MdField,MdDialog,
 */
 
 import 'vue-material/dist/vue-material.min.css'
-import 'vue-material/dist/theme/default.css'
+//anulamos el tema de vue material para que funcione el scss en headerComponent
+//import 'vue-material/dist/theme/default.css'
 import VueRouter from 'vue-router';
 import MainPanel from './components/MainPanel.vue';
 import CutPanel from './components/CutPanel.vue';
 import Collections from './components/Collections.vue';
 import Effect from './components/Effect.vue';
+import Home from './components/Home.vue';
 
 //color picker verte
 import Verte from 'verte';
@@ -65,7 +67,8 @@ Vue.material.registerTheme({
 Vue.use(VueRouter);
 
 const routes = [
-	//{path:"/",redirect:'/'},
+	{path:"/",redirect:'/home'},
+	{path:'/home',component:Home},
 	{path:'/main',redirect:'/'},
 	{path:'/main',component:MainPanel,name:'MainPanel',props:true},
 	{path:'/cutout',component:CutPanel,redirect:'/'},

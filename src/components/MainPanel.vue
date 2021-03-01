@@ -39,16 +39,29 @@
 			</label>
 		</div>
 		<transition name="fade">
-		<div id="div-main" class="div-main no-selectable" :style="{width:ima.width+'px',height:ima.height+'px'}" ref="divmain" v-if="imgTrans">
-			
-			<div class="main-panel">
-				<canvas id="canvas" class="no-selectable" :width="ima.width" :height="ima.height" ></canvas>
+			<div id="div-main" class="div-main no-selectable" :style="{width:ima.width+'px',height:ima.height+'px'}" ref="divmain" v-if="imgTrans">
+				
+				<div class="main-panel">
+					<canvas id="canvas" class="no-selectable" :width="ima.width" :height="ima.height" ></canvas>
 
-				<img :src="ima.name" id="image" class="main-img no-selectable" :width="ima.width" :height="ima.height" :class="{'main-img-resize':resizeSwitch}" :style="resizeSwitch ? ima.width<170 ? 'box-shadow:0px 0px 1px 7px rgba(0,0,0,0.2)':'box-shadow:0px 0px 1px 10px rgba(0,0,0,0.2)':'box-shadow:none'"/>						
+					<img :src="ima.name" id="image" class="main-img no-selectable" :width="ima.width" :height="ima.height" :class="{'main-img-resize':resizeSwitch}" :style="resizeSwitch ? ima.width<170 ? 'box-shadow:0px 0px 1px 7px rgba(0,0,0,0.2)':'box-shadow:0px 0px 1px 10px rgba(0,0,0,0.2)':'box-shadow:none'"/>						
+				</div>
+				<div id="handle-resize" @mousedown="initResize($event)" @touchstart="initResize($event)" class="handle-resize handle-right handle-bottom cursor-handle-resize" :style="ima.width<250 ? handleMin:handleStandar"  v-if="resizeSwitch" ></div>
 			</div>
-			<div id="handle-resize" @mousedown="initResize($event)" @touchstart="initResize($event)" class="handle-resize handle-right handle-bottom cursor-handle-resize" :style="ima.width<250 ? handleMin:handleStandar"  v-if="resizeSwitch" ></div>
-		</div>
 		</transition>
+		<md-dialog 
+		:md-active.sync="dialogCam">
+			<md-dialog-title>Cámara</md-dialog-title>
+			<md-button class="md-accent" style="color:black" @click="initCam()">
+				hola
+			</md-button>
+			<div class="video">
+				<video id="video" playsinline autoplay ref="video"></video>
+			</div>
+			<canvas id="canvas_cam" width="640" height="480" style="background-color:black;display:none" ref="canvas_cam"></canvas>
+		</md-dialog>
+
+
 		<md-dialog-confirm class="confirmDialog"
 		:md-active.sync="dialogResizeActive"
 		md-title = "¿Desea almacenar esta imagen en el álbum con las nuevas dimensiones?"
@@ -153,6 +166,19 @@ export default {
 				width:'30px',
 				height:'30px'
 			},
+			//camara
+			dialogCam:true,
+			videoCam:null,
+			canvasCam:null,
+			constraints:{
+				audio:true,
+				video:{
+					width:1280,
+					height:720
+				}
+			},
+
+
 
 		}
 	},
@@ -178,6 +204,9 @@ export default {
 			this.showResize=true;			
 		}
 		this.imgTrans=true;
+		this.videoCam=this.$refs.video;
+		console.log("videoCam: ",this.videoCam);
+		this.canvasCam=this.$refs.canvasCam;
 
 	},
 	/*
@@ -186,6 +215,29 @@ export default {
 	},
 	*/
 	methods:{
+		initCam(){
+			//existe el objeto mediaDevices.getUserMedia(parámetros (obligatorios))
+			if(navigator.mediaDevices.getUserMedia(this.constraints)){
+				
+				navigator.mediaDevices.getUserMedia(this.constraints).then(stream=> {
+					this.videoCam.srcObject=stream;
+				}).catch(error=> {
+					console.log(error.name+', '+error.message)
+				});
+				
+
+				console.log("existe")
+			}else{
+				console.log("no existe")
+			}
+			/*try{
+				let stream =  navigator.mediaDevices.getUserMedia(this.constraints);
+				console.log(stream);
+				this.videoCam.srcObject=stream;
+			}catch{
+				console.log("errror de stream: ");
+			}*/
+		},
 		initResize: function(e) {
 			this.resHandleX=e.clientX;
 			if(e.touches){

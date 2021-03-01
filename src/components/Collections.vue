@@ -4,7 +4,7 @@
 		<div v-if="images && images.length==0">
 			<p>El álbum está vacío</p>
 		</div>-->
-		<div v-if="images" >
+		<div v-if="images" class="">
 			<transition-group name="list" tag="md-card"  mode="out-in" >
 				<md-card v-for="image in images" :key="image.id" class="list-item" >
 					<!-- para evitar el error con la imagen bloqueada por CORS al añadir el atributo

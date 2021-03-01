@@ -507,7 +507,7 @@
 						<input type="range" v-model="rangeWmFontSize" name="range_fontsize" min="1" max="100" />
 						<md-tooltip md-direction="left">Tamaño de letra</md-tooltip>
 					</div>
-					<div class="m_top10;" v-if="wmInputActive">
+					<div class="m_top10" v-if="wmInputActive">
 
 						<md-list :md-expand-single="expandSingle" >
 							
@@ -517,7 +517,8 @@
 								
 								<span :style="{'font-family':fontFamilySelected}"> {{fontSelected}}</span>
 								
-								<md-list slot="md-expand expand_wmInput" class="md-scrollbar">
+								<md-list slot="md-expand" class="md-scrollbar expand_wmInput">
+									<md-list-item >Ubuntu</md-list-item>
 
 									<md-list-item style="font-family:ubuntu" @click="setFontFamily('ubuntu')" >Ubuntu</md-list-item>
 									<md-list-item style="font-family:timesnewroman" @click="setFontFamily('timesnewroman')">Times New Roman</md-list-item>
@@ -742,7 +743,7 @@
 				</md-button>				
 			</div>
 			
-			<div v-else class="t_center;"><!--aquí el md-spinner-->
+			<div v-else class="t_center m_auto;"><!--aquí el md-spinner-->
 				<md-progress-spinner class="md-accent" :md-diameter="100" md-mode="indeterminate" ></md-progress-spinner >
 			</div>
 			
@@ -1486,11 +1487,15 @@ export default {
 		//establece el font family actualizando la vista para el efecto 
 		//create-watermark (creación marca de agua)
 		setFontFamily(font){
+			console.log("hola,",font);
+			return;
+			/*
 			this.fontFamilySelected=font;
 			this.fontSelected=font[0].toUpperCase()+font.slice(1);
 			if(font=="timesnewroman")
 				this.fontSelected="Times New Roman";
 			this.expandFontFamily=false;
+			*/
 		},
 		
 		//mostrar range-texturize o range-compress o list-spacecolor o list-channels
@@ -1585,6 +1590,7 @@ export default {
 			//desactivamos y reiniciamos el efecto 
 			this.cancelAll();
 			this.dialogImage=false;
+			this.tmpImage=null;
 		},
 		//muestra modal con un mensaje de confirmación o de información, detectando
 		//si existen otras tareas pendientes 
@@ -1787,5 +1793,54 @@ export default {
 }
 .md_menu_custom>.md-button{
 	margin:0 6px;
+}
+/*fonts*/
+@font-face{
+    font-family:usuzi;
+    src:url(../assets/fonts/usuzi.ttf);
+}
+@font-face{
+    font-family:abduction;
+    src:url(../assets/fonts/abduction2002.ttf);
+}
+@font-face{
+    font-family:corporate;
+    src:url(../assets/fonts/corporateroundedextrabold.ttf);
+}
+@font-face{
+    font-family:designer;
+    src:url(../assets/fonts/designer-block.regular.ttf);
+}
+@font-face{
+    font-family:fontanero;
+    src:url(../assets/fonts/Fontanero-FFP.ttf);
+}
+@font-face{
+    font-family:futura;
+    src:url(../assets/fonts/FUTURAB.ttf);
+}
+@font-face{
+    font-family:glsnecb;
+    src:url(../assets/fonts/GLSNECB.TTF);
+}
+@font-face{
+    font-family:nikaia;
+    src:url(../assets/fonts/Nikaia_Medium.ttf);
+}
+@font-face{
+    font-family:timesnewroman;
+    src:url(../assets/fonts/timesbd.ttf);
+}
+@font-face{
+    font-family:ubuntu;
+    src:url(../assets/fonts/Ubuntu-Title.ttf);
+}
+@font-face{
+    font-family:yanone;
+    src:url(../assets/fonts/Yanone-Bold.otf);
+}
+@font-face{
+    font-family:zerogirl;
+    src:url(../assets/fonts/ZEROGIRL.TTF);
 }
 </style>

@@ -11,9 +11,9 @@ html,body{
     /*background:linear-gradient(to bottom, rgba(125, 38, 205,1) 10%, rgba(125,38,205,.8), rgba(125, 38, 205,1) 90%);*/
     width:100%;
     /*background:linear-gradient(to bottom, rgba(99, 0, 228,.8) 0%, rgba(99,0,228,1), rgba(99, 0, 228,.8) 100%);*/
+    background:linear-gradient(to bottom, rgba(160, 55, 157,.8) 0%, rgba(160,55,157,1), rgba(160, 55, 157,.8) 100%);
 
-
-    background:linear-gradient(to bottom, rgba(217, 54, 144,1) 0%, rgba(217, 54, 144,.8), rgba(217, 54, 144,1) 100%);
+    /*background:linear-gradient(to bottom, rgba(217, 54, 144,1) 0%, rgba(217, 54, 144,.8), rgba(217, 54, 144,1) 100%);*/
     /*background-color:#d93690;*/
     
     /*fondo negro*/
@@ -443,24 +443,25 @@ html,body{
 
 /* fin transition fadeimg */
 
+/*pasado a Collections (<style>), si se usa aquí necesario añadir !important*/
 /* transition-group list presente en Collections panel*/
 .list-enter-active{
-    transition:transform 1s ease-out,opacity 1.5s linear;
+    transition:transform 1s ease-out,opacity 1.5s linear !important;
 }
 
 .list-enter{
     /*position:absolute;*/
-    transform:rotateY(360deg) scale(0);
-    opacity:0;
+    transform:rotateY(360deg) scale(0) !important;
+    opacity:0 ;
 }
 
 .list-leave-to,.list-leave-active{
     /*opción con position:absolute para pasar de página*/;
-    position:absolute; /*añade suavidad entre componentes*/
-    opacity:1;
+    position:absolute !important; /*añade suavidad entre componentes y da un efecto distinto*/
+    opacity:1 ;
 }
 .list-move{
-    transition:transform 0.5s;
+    transition:transform 0.5s !important;
 }
 /* fin transition list */
 
@@ -578,6 +579,41 @@ Accent: #ff5252 => Red A200
 }
 
                         /* fin Effect panel */
+                        /* Home panel */
+
+.home_image{
+    
+    
+}
+.polaroid{
+    background:url("../../../public/img/home/fun.jpg");
+    width:300px;
+    height:200px;    
+    margin-top:100px;
+    margin-left:100px;
+    position:relative;
+    background-position:center;
+    background-size:100%;
+    background-repeat:no-repeat;
+}
+.radius{
+    background:url("../../../public/img/home/oso_polar.png");
+    width:300px;
+    height:200px;    
+    margin-top:100px;
+    margin-left:100px;
+    position:relative;
+    background-position:center;
+    background-size:100%;
+    background-repeat:no-repeat;
+}
+
+
+                        /* fin Home panel */
+
+
+
+
     								/* handle resize */
 
 .handle-resize{

@@ -1,15 +1,15 @@
 <template>
 	<div class="total" >
 		
-		<div class="nav ">
+		<div class="nav " style="background:#434540">
 		<!--<md-toolbar class="md-accent" >-->
 			<div class="floatL"   >
-				<md-button class="accent md-fab" title="Sesión" @click="switchDialog()" >
+				<md-button class="md-nuevo md-fab" title="Sesión" @click="switchDialog()" >
 					<md-icon>person</md-icon>
 				</md-button>
 			</div>
 			<div class="floatR" >
-				<md-button class="md-pink md-fab" title="Sesión" @click="switchDialog()">
+				<md-button class="accent md-fab" title="Sesión" @click="switchDialog()" >
 					<md-icon>person</md-icon>
 				</md-button>
 			</div>
@@ -39,13 +39,13 @@
 				</md-button>-->
 
 				<router-link :to="{name:'collections',params:{imageMain:image}}">
-					<md-button class="md-fab primary" title="Album"  >
+					<md-button class="md-fab md-accent" title="Album"  >
 						<md-icon>collections</md-icon>
 					</md-button>
 				</router-link>
 
 				<router-link :to="{name:'effect',params:{ima:image}}">
-					<md-button class="md-fab primary" title="Panel de ajustes" :disabled="mainImage">
+					<md-button class="md-fab md-accent" title="Panel de ajustes" :disabled="mainImage">
 						<md-icon>photo_filter</md-icon>
 					</md-button>
 				</router-link>
@@ -583,4 +583,19 @@ export default {
 	/*necesario auto en bottom para sobreescribir los estilos del md-dialog*/
 }
 
+</style>
+<style lang="scss" scope>
+@import "~vue-material/dist/theme/engine"; // Import the theme engine
+
+@include md-register-theme("default", (
+  
+  //primary:#26ada7,
+  primary: md-get-palette-color(green, A200), // The accent or secondary color
+  accent: md-get-palette-color(pink, A200), // The accent or secondary color
+  
+  //theme:dark //dark o light
+
+));
+
+@import "~vue-material/dist/theme/all"; // Apply the theme
 </style>
