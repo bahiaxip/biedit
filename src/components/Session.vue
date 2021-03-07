@@ -76,7 +76,7 @@
 								<label for="email">Email</label>
 								<md-input name="email" id="email" v-model="session.email" disabled="disabled" />								
 							</md-field>													
-							<md-button name="envio" class="md-primary md-raised" @click="changeDialog()" >Cancelar</md-button>
+							<md-button name="envio" class="accent md-raised" @click="changeDialog()" >Cancelar</md-button>
 							<md-button name="envio" type="submit" class="md-primary md-raised">Actualizar</md-button>
 						</div>
 					</form>
@@ -201,6 +201,12 @@ export default {
 			this.timer=this.time;
 		},false);
 	},
+
+	destroyed(){
+	//anulado
+		//no necesario, se puede prescindir en session y md-drawer de headerComponent
+		//this.$emit("btn","settings");
+	},
 	methods:{
 		//contador de sesión: se cierra la sesión al cabo de un tiempo determinado
 		//contador de sesión almacenado en la variable timerSessionData, una opción para 
@@ -281,6 +287,8 @@ export default {
 						sessionStorage.setItem("biedit_apitoken",res.data.data.api_token);
 						self.addAndActiveMsge("on",self.msges.onRegister);
 						self.changeDialog();
+						//establecemos botones disabled
+						this.$emit("setnav",true);
 						
 					}else{
 						if(res.data.message){
@@ -327,6 +335,8 @@ export default {
 						self.session.email=res.data.data.email;
 						this.changeDialog();						
 						this.timerSession();
+						//establecemos botones disabled
+						this.$emit("setnav",true);
 						
 					}else if(res.data.data){						
 						self.addAndActiveMsge("off",res.data.data);
@@ -395,6 +405,7 @@ export default {
 						sessionStorage.removeItem("biedit_apitoken");
 						//enviamos mensaje
 						self.addAndActiveMsge("on",self.msges.logout);
+						//establecemos botones disabled
 						this.$emit("setnav",true);
 
 

@@ -28,6 +28,7 @@ import CutPanel from './components/CutPanel.vue';
 import Collections from './components/Collections.vue';
 import Effect from './components/Effect.vue';
 import Home from './components/Home.vue';
+import Cam from './components/Cam.vue';
 
 //color picker verte
 import Verte from 'verte';
@@ -73,12 +74,36 @@ const routes = [
 	{path:'/main',component:MainPanel,name:'MainPanel',props:true},
 	{path:'/cutout',component:CutPanel,redirect:'/'},
 	{path:'/cutout',component:CutPanel,name:'cutout',props:true},
+	//sustituimos el panel CutPanel estandar por el siguiente con 
+	//el método beforeEnter que permite realizar una condición antes
+	//de enviar al componente
+	/*
+	{
+		path:'/cutout',
+		name:'cutout',
+		component:CutPanel,
+		props:true,
+		beforeEnter:(to,from,next) => {
+			if(to.params.ima.width<100 || to.params.ima.height<100){
+				console.log("llega a beforeEnter: ",Collections)
+				next()
+				//next({name:'cutout',params:to.params,props:true});
+			}else{
+				console.log("llega a beforeEnter else")
+				next();
+			}
+			//next();
+		},
+		
+	},
+	*/
 	/* permitimos mantener solo collections al reiniciar la página
 	{path:'/collections',component:CutPanel,redirect:'/'},
 	*/
 	{path:'/collections',component:Collections,name:'collections',props:true},
 	{path:'/effects',component:CutPanel,redirect:'/'},
-	{path:'/effects',component:Effect,name:'effect',props:true}
+	{path:'/effects',component:Effect,name:'effect',props:true},
+	{path:'/cam',component:Cam,name:'cam'},
 	//{path:'*',component:NotFound},
 	/*
 	{

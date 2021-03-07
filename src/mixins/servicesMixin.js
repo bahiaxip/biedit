@@ -154,7 +154,7 @@ export default {
 				
 			})		
 		},
-
+//falta despintar botón polygon y effect
 		//almacenar imagen con la forma geométrica seleccionada
 		setPolygon(name=null){
 			return new Promise((resolve,reject) => {
@@ -187,7 +187,9 @@ export default {
 					data.name=name;
 				console.log("lados: ",this.polygonProp);
 				//desactivamos el polígono mostrado en el canvas creado con JavaScript
-				this.deleteDrawCanvas();				
+				this.deleteDrawCanvas();
+				//despintamos botón
+				this.btnActive.polygon=false;				
 				this.dialogImage=true;
 				console.log("tmpImage: ",this.tmpImage);
 				axios.post(this.url+'polygon',data,headers).then(res=>{
@@ -202,6 +204,7 @@ export default {
 					}else{
 						reject(Error("Error en effect"));
 					}
+					
 					
 				}).catch(error=>{
 					this.msgeDialogAlert="Se generó un error al procesar el efecto de forma";
@@ -251,16 +254,20 @@ export default {
 					params:params
 				};
 				console.log("params: ",params);
+				//despintamos botón
+				this.btnActive.effect=false;
 				axios.post(this.url+'effect',data,headers).then(res=>{
-					//si es para el array de processAll() devolvemos							
-					console.log(res);
+					
 					if(res.data.message){
-						console.log(res.data.message)
+						this.msgeDialogAlert=res.data.message;
+						this.dialogErrorActive=true;
+						return;
 					}
 					if(res.data.image){
 						if(!this.effectMultiple){
 							this.dialogImage=true;
-							this.tmpImage=res.data.image;	
+							this.tmpImage=res.data.image;
+							//si es para el array de processAll() devolvemos con resolve()
 						}else{
 							resolve(res.data.image);
 						}
@@ -541,8 +548,8 @@ export default {
 				}
 				axios.post(this.url+"crop",data,headers).then(res => {
 					if(res.data.error){
-						this.msgeDialogTitle="Ocurrió un error";
-						this.msgeDialogContent=res.data.error;						
+						this.titleDialogAlert="Ocurrió un error";
+						this.msgeDialogAlert=res.data.error;						
 						this.dialogErrorActive=true;
 						return;		
 					}
@@ -554,8 +561,8 @@ export default {
 							cloneBoxSquare.style.top="-1000px";
 							setTimeout(function(){
 								//cloneBoxSquare.style.display="none";
-								self.msgeDialogTitle="Creado correctamente";
-								self.msgeDialogContent=res.data.message;
+								self.titleDialogAlert="Recorte aplicado correctamente";								
+								self.msgeDialogAlert=res.data.message;
 								self.dialogSuccessActive=true;
 							},1000);
 						},100);
@@ -610,7 +617,7 @@ export default {
 					this.titleDialogAlert="Imagen eliminada correctamente";
 					this.msgeDialogAlert=res.data.message;
 					this.dialogErrorActive=true;
-
+//al recargar collections sin entrar en ningun componente no funciona
 				//detectamos si la imagen a eliminar es la misma del panel principal y vaciamos							
 					if(this.imageMain && this.image.random_name==this.imageMain.src){
 						this.dropImage(this.imageMain);
@@ -792,5 +799,45 @@ export default {
 				this.dialogErrorActive=true;
 			})
 		},
+
+		uploadImageBase64(image){
+			
+			let session=this.testSession();
+			if(!session){				
+				return;
+			}
+			if(session.status=="error"){
+				this.msgeDialogAlert=session.message;
+				this.dialogErrorActive=true;
+				return;
+			}					
+			let api_token=sessionStorage.getItem("biedit_apitoken"),
+				email=sessionStorage.getItem("biedit_email"),
+				formdata3= new FormData();
+				formdata3.append("base64",image);
+				formdata3.append("email",email);
+			let headers={
+				headers:{
+					Authorization: 'Bearer '+api_token
+				}
+			};
+			this.imageCam=null			
+			axios.post(this.url+'images',formdata3,headers).then(res => {
+				console.log("llega bien: ",res)
+				if(res.data.message){
+					console.log(res.data.message)
+				}
+				if(res.data.image){
+					this.dialogImageCam=false;
+					this.dialogSuccessActive=true;	
+				}
+				
+			}).catch(error => {
+				this.titleDialogAlert="No se ha podido guardar la imagen";
+				this.msgeDialogAlert=error.response.data.message;
+				this.dialogErrorActive=true;
+			})
+
+		}
 	}
 }

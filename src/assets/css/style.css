@@ -30,23 +30,41 @@ html,body{
     //que el cutpanel si necesita acceder*/
 	z-index:1;
 }
+.total{
+    min-height:720px;
+}
+
 
                     /*genéricos*/
 
+.spinner{
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+}
 .primary{
     /*background-color:#448aff !important;*/
-
+    
+    background:linear-gradient(to bottom, rgba(255,0,120,.7) 0%, rgba(255,0,120,1), rgba(255,0,120,.7) 100%) !important;
     /*background:linear-gradient(to bottom, rgba(0,0,0,.3) 0%, rgba(0,0,0,.8), rgba(0,0,0,.3) 100%) !important;*/ /*fondo negro transparente*/
-    background-color:#705ba1 !important; /* azulado*/
+    /*background-color:#705ba1 !important;*/ /* azulado*/
     /*background-color:#3967ff !important;*/ /*azul*/
     /*background-color:#8c51ac !important;  */ /*púrpura*/
     /*background-color:#f89b00 !important;*/ /*calabaza*/
 }
 .accent{
+
     /*background-color:#ff5252 !important;    */
     /*background-color:#26ada7 !important;*/
+    /*background:linear-gradient(to bottom, rgba(38,173,167,.7) 0%, rgba(38,173,167,1), rgba(38,173,167,.7) 100%) !important;*/
     background:linear-gradient(to bottom, rgba(38,173,167,.7) 0%, rgba(38,173,167,1), rgba(38,173,167,.7) 100%) !important;
     /*#26ada7*/
+}
+.disabled{
+    background:transparent !important;
+}
+.b_orange{
+    background-color: orange !important;
 }
 .inlineB{
     display:inline-block;
@@ -65,6 +83,9 @@ html,body{
 }
 .c_orange{
     color:orange;
+}
+.c_white{
+    color:white !important;
 }
 .p_auto{
     padding:auto;
@@ -96,6 +117,10 @@ html,body{
 /*usado en watermark (Effect panel)*/
 .icon_rotate{
     transform:scale(1,-1);
+}
+.btn_selected:active{
+    
+    background:linear-gradient(to bottom, rgba(38,173,167,.7) 0%, rgba(38,173,167,1), rgba(38,173,167,.7) 100%) !important;
 }
                 /*dialogs*/
 /*dialogs*/
@@ -130,7 +155,7 @@ html,body{
 				/* MAIN PANEL */
 .back-main-panel{
     /*asignar en javascript el min-width*/
-	min-width:110px;
+	min-width:50px;
 	width:600px;
 	margin:auto;
 	display:block;
@@ -159,12 +184,12 @@ html,body{
     width:170px
 }
 /*revisar si es necesario*/
-/*
+
 .labels-mainpanel{
     margin:auto;
     text-align:center
 }
-*/
+
 .md-button.fab_button_head {
     
 }
@@ -241,6 +266,7 @@ html,body{
 #back-box-panel{
     background:transparent;    
     /*z-index:103;*/
+
 }
 .box-panel{
 	margin:auto;
@@ -255,6 +281,7 @@ html,body{
     -webkit-user-select:none;
     -moz-user-select:none;
     -ms-user-select:none;
+
 
     
 }
@@ -508,7 +535,7 @@ input[type=range]{
     margin:auto;
     background-color:white;
     padding:20px;    
-    position:absolute;
+    position:absolute !important;
     top:50%;left:50%;
     transform:translate(-50%,-50%);
 }
@@ -611,6 +638,18 @@ Accent: #ff5252 => Red A200
 
                         /* fin Home panel */
 
+
+                        /* Cam panel */
+.cam-panel{
+
+}
+
+
+.buttons-cam-panel{
+    margin:auto;
+}
+
+                        /* fin Cam panel */
 
 
 

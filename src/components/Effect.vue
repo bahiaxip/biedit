@@ -3,22 +3,22 @@
 		<!--<div class="back-effect-panel" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >-->
 		<div class="" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >
 			<div class="m_auto t_center" >
-				<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="rotate('left')" title="Rotación Izquierda">
+				<md-button class="md-icon-button  md-raised" :class="btnActive.rotateLeft ? 'accent' : 'md-accent'"  md-menu-trigger @click="rotate('left')" title="Rotación Izquierda">
 					<md-icon class="">rotate_left</md-icon>
 				</md-button>
-				<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="rotate('top_bottom')" title="Rotación Vertical">
+				<md-button class="md-icon-button  md-raised md-accent" :class="btnActive.rotateBottom ? 'accent' : 'md-accent'"  md-menu-trigger @click="rotate('top_bottom')" title="Rotación Vertical">
 					<md-icon class="">loop</md-icon>
 				</md-button>
-				<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="rotate('right')" title="Rotación Derecha">
+				<md-button class="md-icon-button  md-raised md-accent" :class="btnActive.rotateRight ? 'accent' : 'md-accent'" md-menu-trigger @click="rotate('right')" title="Rotación Derecha">
 					<md-icon class="">rotate_right</md-icon>
 				</md-button>
 
 				<div class="btn_clear_check" style="" >
-					<md-button class="md-icon-button md-raised md-accent md-dense" @click="confirmChange('undoAll')">
+					<md-button class="md-icon-button md-raised md-accent md-dense btn_selected" @click="confirmChange('undoAll')">
 						<md-icon>clear</md-icon>
 						<md-tooltip>Deshacer todo</md-tooltip>
 					</md-button>
-					<md-button class="md-icon-button md-raised md-accent md-dense" @click="confirmChange('processAll')">
+					<md-button class="md-icon-button md-raised md-accent md-dense btn_selected" @click="confirmChange('processAll')">
 						<md-icon>check</md-icon>
 						<md-tooltip>Aplicar cambios</md-tooltip>
 					</md-button>
@@ -29,12 +29,12 @@
 				</md-button>-->
 
 
-				<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="reflex('vertical')" title="Reflejo Vertical">
-					<md-icon class="">swap_vert</md-icon>
+				<md-button class="md-icon-button  md-raised " :class="btnActive.reflexVertical ? 'accent' : 'md-accent'" md-menu-trigger @click="reflex('vertical')" title="Reflejo Vertical">
+					<md-icon class="c_white">swap_vert</md-icon>
 				</md-button>
 
-				<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="reflex('horizontal')" title="Reflejo Horizontal">
-					<md-icon class="">swap_horiz</md-icon>
+				<md-button class="md-icon-button  md-raised " :class="btnActive.reflexHorizontal ? 'accent' : 'md-accent'"  md-menu-trigger @click="reflex('horizontal')" title="Reflejo Horizontal">
+					<md-icon class="c_white">swap_horiz</md-icon>
 				</md-button>
 				<!--<div style="margin:auto;text-align:center" >-->
 			</div>	
@@ -167,8 +167,8 @@
 
 				<div class="md-layout-item md-xlarge-size-50 md-medium-size-50 md-small-size-100" style="">
 					<md-menu class="md_menu_custom" md-align-trigger style="">
-						<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger >
-							<md-icon class="">settings_brightness</md-icon>
+						<md-button class="md-icon-button  md-raised" :class="btnActive.filter ? 'accent':'md-accent'"  md-menu-trigger @click="btnActive.filter=true;testGButton1('filter')">
+							<md-icon class="c_white">settings_brightness</md-icon>
 						</md-button>
 						<md-tooltip md-direction="top">Filtros</md-tooltip>
 						<md-menu-content class="menu_filter" :style="{'max-height':imaEffect.height+'px'}">
@@ -201,72 +201,73 @@
 								<md-icon class="">brightness_6</md-icon>
 								<md-tooltip md-direction="left">Contraste</md-tooltip>	
 							</md-menu-item>
+
 							
 						</md-menu-content>
 					</md-menu>
 					<md-menu class=" md_menu_custom p_auto" md-align-trigger >
-					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger >
-						<md-icon class="">exposure</md-icon>
-						<md-tooltip md-direction="top">Formas</md-tooltip>
-					</md-button>
-					<md-menu-content class="menu_filter" :style="{'max-height':imaEffect.height+'px'}">					
-						<md-menu-item @click="deleteDrawCanvas()">
-							<md-icon>clear</md-icon>
-							<md-tooltip md-direction="left">Deshacer</md-tooltip>	
-						</md-menu-item>
-						<md-menu-item @click="confirmChange('polygon')"   v-if="polygonActivated">
-							<md-icon>check</md-icon>
-							<md-tooltip md-direction="left">Aplicar recorte</md-tooltip>
-						</md-menu-item>
-						<md-menu-item @click="drawPolygon(polygon.square)">
-							<md-icon style="transform:rotate(45deg)" md-src="img/shapes/square.svg"></md-icon>
-							<md-tooltip md-direction="left">Cuadrado</md-tooltip>	
-						</md-menu-item>
-						<md-menu-item @click="drawPolygon(polygon.circle)">
-							<md-icon md-src="img/shapes/circle.svg"></md-icon>
-							<md-tooltip md-direction="left">Cículo</md-tooltip>
-						</md-menu-item>
-						<md-menu-item @click="drawPolygon(polygon.triangle)">
-							<md-icon md-src="img/shapes/triangle.svg"></md-icon>
-							<md-tooltip md-direction="left">Triángulo</md-tooltip>
-						</md-menu-item>
-						<md-menu-item @click="drawPolygon(polygon.star)">
-							<md-icon>star</md-icon>
-							<md-tooltip md-direction="left">Estrella</md-tooltip>
-						</md-menu-item>
-						<md-menu-item @click="drawPolygon(polygon.penta)">
-							<md-icon md-src="img/shapes/pentagon.svg"></md-icon>
-							<md-tooltip md-direction="left">Pentágono</md-tooltip>
-						</md-menu-item>
-						<md-menu-item @click="drawPolygon(polygon.hexa)">
-							<md-icon md-src="img/shapes/hexagon.svg"></md-icon>
-							<md-tooltip md-direction="left">Hexágono</md-tooltip>
-						</md-menu-item>
-						<md-menu-item @click="drawPolygon(polygon.hepta)">
-							<md-icon md-src="img/shapes/heptagon.svg"></md-icon>
-							<md-tooltip md-direction="left">Heptágono</md-tooltip>	
-						</md-menu-item>
-						<md-menu-item @click="drawPolygon(polygon.octa)">
-							<md-icon md-src="img/shapes/octagon.svg"></md-icon>
-							<md-tooltip md-direction="left">Octógono</md-tooltip>
-						</md-menu-item>
-						<!--
-						<md-menu-item>
-							<md-icon md-src="shapes/nonagon.png"></md-icon>	
-						</md-menu-item>
-					-->
-						<md-menu-item title="Nonágono" @click="drawPolygon(polygon.nona)">
-							<md-icon>
-								<img src="img/shapes/nonagon.png">
-							</md-icon>
-							<md-tooltip md-direction="left">Nonágono</md-tooltip>
-						</md-menu-item>
-						
-					</md-menu-content>
+						<md-button class="md-icon-button  md-raised " :class="btnActive.polygon ? 'accent':'md-accent'"  md-menu-trigger @click="btnActive.polygon=true;testGButton1('polygon')">
+							<md-icon class="">exposure</md-icon>
+							<md-tooltip md-direction="top">Formas</md-tooltip>
+						</md-button>
+						<md-menu-content class="menu_filter" :style="{'max-height':imaEffect.height+'px'}">					
+							<md-menu-item @click="btnActive.polygon=false;deleteDrawCanvas()">
+								<md-icon>clear</md-icon>
+								<md-tooltip md-direction="left">Deshacer</md-tooltip>	
+							</md-menu-item>
+							<md-menu-item @click="confirmChange('polygon')"   v-if="polygonActivated">
+								<md-icon>check</md-icon>
+								<md-tooltip md-direction="left">Aplicar recorte</md-tooltip>
+							</md-menu-item>
+							<md-menu-item @click="drawPolygon(polygon.square)">
+								<md-icon style="transform:rotate(45deg)" md-src="img/shapes/square.svg"></md-icon>
+								<md-tooltip md-direction="left">Cuadrado</md-tooltip>	
+							</md-menu-item>
+							<md-menu-item @click="drawPolygon(polygon.circle)">
+								<md-icon md-src="img/shapes/circle.svg"></md-icon>
+								<md-tooltip md-direction="left">Cículo</md-tooltip>
+							</md-menu-item>
+							<md-menu-item @click="drawPolygon(polygon.triangle)">
+								<md-icon md-src="img/shapes/triangle.svg"></md-icon>
+								<md-tooltip md-direction="left">Triángulo</md-tooltip>
+							</md-menu-item>
+							<md-menu-item @click="drawPolygon(polygon.star)">
+								<md-icon>star</md-icon>
+								<md-tooltip md-direction="left">Estrella</md-tooltip>
+							</md-menu-item>
+							<md-menu-item @click="drawPolygon(polygon.penta)">
+								<md-icon md-src="img/shapes/pentagon.svg"></md-icon>
+								<md-tooltip md-direction="left">Pentágono</md-tooltip>
+							</md-menu-item>
+							<md-menu-item @click="drawPolygon(polygon.hexa)">
+								<md-icon md-src="img/shapes/hexagon.svg"></md-icon>
+								<md-tooltip md-direction="left">Hexágono</md-tooltip>
+							</md-menu-item>
+							<md-menu-item @click="drawPolygon(polygon.hepta)">
+								<md-icon md-src="img/shapes/heptagon.svg"></md-icon>
+								<md-tooltip md-direction="left">Heptágono</md-tooltip>	
+							</md-menu-item>
+							<md-menu-item @click="drawPolygon(polygon.octa)">
+								<md-icon md-src="img/shapes/octagon.svg"></md-icon>
+								<md-tooltip md-direction="left">Octógono</md-tooltip>
+							</md-menu-item>
+							<!--
+							<md-menu-item>
+								<md-icon md-src="shapes/nonagon.png"></md-icon>	
+							</md-menu-item>
+						-->
+							<md-menu-item title="Nonágono" @click="drawPolygon(polygon.nona)">
+								<md-icon>
+									<img src="img/shapes/nonagon.png">
+								</md-icon>
+								<md-tooltip md-direction="left">Nonágono</md-tooltip>
+							</md-menu-item>
+							
+						</md-menu-content>
 				</md-menu>
 				<md-menu class="md_menu_custom" style="padding:auto" md-align-trigger >
-					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger>
-						<md-icon class="">adjust</md-icon>
+					<md-button class="md-icon-button  md-raised" :class="btnActive.effect ? 'accent': 'md-accent'"  md-menu-trigger @click="btnActive.effect=true;testGButton1('effect')">
+						<md-icon class="c_white">adjust</md-icon>
 						<md-tooltip md-direction="top">Efectos</md-tooltip>
 					</md-button>
 					<md-menu-content class="menu_filter" :style="{'max-height':imaEffect.height+'px'}">
@@ -407,16 +408,16 @@
 					<div style="clear:left"></div>
 			-->
 		<!-- select -->
-				<div class="" style="margin-top:20px">
-					<md-button class="md-icon-button  md-raised md-accent buttons_composite"  md-menu-trigger @click="showListImage('fussion')" :class="fussionActivated ? 'primary':'accent'">
+				<div class="md_menu_custom" style="margin-top:20px">
+					<md-button class="md-icon-button  md-raised buttons_composite "  md-menu-trigger @click="showListImage('fussion')" :class="fussionActivated ? 'accent':'md-accent'">
 						<md-icon md-src="img/effect/layers-plus_white.svg"></md-icon>
 						<md-tooltip>Fusión</md-tooltip>
 					</md-button>
-					<md-button class="md-icon-button  md-raised md-accent buttons_composite"  md-menu-trigger @click="showListImage('watermark')" :class="wmActivated ? 'primary':'accent'">
+					<md-button class="md-icon-button  md-raised md-accent buttons_composite "  md-menu-trigger @click="showListImage('watermark')" :class="wmActivated ? 'accent':'md-accent'">
 						<md-icon md-src="img/effect/watermark-white.svg"></md-icon>
 						<md-tooltip>Marca de Agua</md-tooltip>
 					</md-button>
-					<md-button class="md-icon-button  md-raised md-accent buttons_composite"  md-menu-trigger @click="showListImage('create-watermark')" :class="createWmActivated ? 'primary':'accent'">
+					<md-button class="md-icon-button  md-raised md-accent buttons_composite "  md-menu-trigger @click="showListImage('create-watermark')" :class="createWmActivated ? 'accent':'md-accent'">
 						<md-icon md-src="img/effect/format-annotation-plus-white.svg"></md-icon>
 						<md-tooltip>Crear marca de agua</md-tooltip>
 					</md-button>							
@@ -425,13 +426,13 @@
 					<div class="clearL"></div>
 				<!-- cancel botón -->
 					<div class="m_top10" v-if="compListActive || wmInputActive||rangeTexturizeActive||rangeCompressActive||spaceColorActive || channelActive">
-						<md-button class="md-icon-button  md-raised md-accent md-dense m_top5"  md-menu-trigger @click="cancelAll()"  >
-							<md-icon >clear</md-icon>
+						<md-button class="md-icon-button  md-raised accent md-dense m_top5"  md-menu-trigger @click="cancelAll()"  >
+							<md-icon class="c_white">clear</md-icon>
 							<md-tooltip>Deshacer</md-tooltip>
 						</md-button>
 				<!-- check botón -->
 						<md-button class="md-icon-button  md-raised md-primary md-dense m_top5"  md-menu-trigger @click="confirmChange(typeAction)" title="Crear composición" v-if="compositeSelectedId || inputWm || rangeTexturize!=1 || rangeCompressActive || spaceColorSelected!=spaceColor || channelActive" >
-							<md-icon class="">check</md-icon>
+							<md-icon class="c_white">check</md-icon>
 						</md-button>
 					</div>
 					<div class="clearL"></div>						
@@ -643,9 +644,9 @@
 				
 
 				<div class="md-layout-item md-xlarge-size-50 md-medium-size-50 md-small-size-100">
-						<md-speed-dial md-event="click" md-direction="bottom">
-							<md-speed-dial-target class="md-icon-button md-dense">
-								<md-icon class="md-morph-initial">settings</md-icon>
+						<md-speed-dial md-event="click" md-direction="bottom" ref="dial">
+							<md-speed-dial-target class="md-icon-button md-dense" :class="{'accent':dial}"  @click="hideDials('dial');testGButton1('dials')">
+								<md-icon class="md-morph-initial" >miscellaneous_services</md-icon>
 								<md-icon class="md-morph-final">edit</md-icon>
 							</md-speed-dial-target>
 
@@ -661,10 +662,10 @@
 								</md-button>
 							</md-speed-dial-content>
 						</md-speed-dial>
-						<md-speed-dial md-event="click" md-direction="bottom">
-							<md-speed-dial-target class="md-icon-button md-dense">
-								<md-icon class="md-morph-initial">add</md-icon>
-								<md-icon class="md-morph-final">edit</md-icon>
+						<md-speed-dial md-event="click" md-direction="bottom" ref="dial2">
+							<md-speed-dial-target class="md-icon-button md-dense " :class="{'accent':dial2}" @click="hideDials('dial2');testGButton1('dials')">
+								<md-icon class="md-morph-initial">workspaces</md-icon>
+								<md-icon class="md-morph-final" >edit</md-icon>
 							</md-speed-dial-target>
 
 							<md-speed-dial-content>
@@ -754,14 +755,18 @@
 import methodsMixin from '../mixins/methodsMixin';
 import servicesMixin from '../mixins/servicesMixin';
 import effectsMixin from '../mixins/effectsMixin';
+import buttonsMixin from '../mixins/effectsButtonsMixin';
 import Global from '../Global.js';
 //import axios from 'axios';
 export default {
 	name:'Effect',
 	props:['ima'],
-	mixins:[methodsMixin,servicesMixin,effectsMixin],
+	mixins:[methodsMixin,servicesMixin,effectsMixin, buttonsMixin],
 	data(){
-		return{	
+		return{
+			hola:true,
+			dial:null,
+			dial2:null,
 			//ruta global		
 			url:Global.url,
 			//dimensiones determinadas para panel effect (div,img,canvas...)
@@ -944,6 +949,24 @@ export default {
 			tasks2:["fussionActivated","wmActivated","createWmActivated","compressActivated","texturizeActivated","spaceColorActivated","channelActivated"],
 			//efecto de carga mientras carga la imagen
 			loadingImage:false,
+			btnActive:{
+				rotateLeft:false,
+				rotateRight:false,
+				rotateBottom:false,
+				reflexHorizontal:false,
+				reflexVertical:false,
+				filter:false,
+				polygon:false,
+				effect:false,
+				fussion:false,
+				watermark:false,
+				createWatermark:false,
+				compress:false,
+				texturize:false,
+				spaceColor:false,
+				channel:false
+			},
+
 
 		}
 	},
@@ -965,6 +988,14 @@ export default {
 	},
 
 	mounted(){
+		//nexttick hace un efecto similar al setTimeout, espera al callback(), de esa
+		//forma permite acceder desde el mounted a propiedades en $refs
+		this.$nextTick(() => {
+			this.dial=this.$refs.dial.MdSpeedDial.active;
+			this.dial2=this.$refs.dial2.MdSpeedDial.active;	
+		});
+		
+				
 		//this.loadingImage=true;
 		if(this.ima){
 			console.log("llega this.ima: ",this.ima);
@@ -1060,7 +1091,34 @@ export default {
 		window.removeEventListener("resize", this.updateSizeCanvas);
 	},
 	methods:{
-
+		//oculta uno de los speed-dial (incluido color del botón) según el parámetro 
+		//pasado o los 2 si no hay parámetro
+		hideDials(type_dial){
+			//color del botón
+				//se asignan los valores de dial y dial2 para cambiar el color del 
+				//botón con :class
+			this.dial=this.$refs.dial.MdSpeedDial.active			
+			this.dial2=this.$refs.dial2.MdSpeedDial.active;
+			//cerrar desplegable
+				//si se llama a hideDials (sin parámetro) desde otro botón distinto 
+				//se cierran y se despintan los 2
+			if(!type_dial){
+				this.$refs.dial.MdSpeedDial.active=false;
+				this.$refs.dial2.MdSpeedDial.active=false;
+				this.dial=false;
+				this.dial2=false;
+			}
+				//se comprueba el otro dial y si tiene el desplegable abierto 
+				//se cierra
+			if(type_dial=='dial' && this.dial2){
+				this.$refs.dial2.MdSpeedDial.active=false;
+				this.dial2=false;
+			}else if(type_dial=='dial2' && this.dial){				
+				this.$refs.dial.MdSpeedDial.active=false;
+				this.dial=false;
+			}
+		},
+		
 		setChannelSelected(){
 			if(this.spaceColor=="CMYK")
 				this.channelSelected="CYAN";
@@ -1094,7 +1152,7 @@ export default {
 		},
 		//filtramos los efectos que están activados en formato string pasando
 		//como parámetro el array del grupo 1 o del grupo 2
-		testActivatedTasks(tasksList){
+		testActivatedTasks(tasksList){			
 			let list=tasksList;
 			let listActivated=list.filter((effect,index)=>this[list[index]]);
 			if(listActivated.length<=0)
@@ -1135,7 +1193,7 @@ export default {
 				this.reflex();
 			}else{
 				//desactiva todos los efectos del segundo grupo
-				this.cancelSelect();
+				this.cancelAll();
 			}
 		},
 		//procesa los efectos seleccionados uno a uno utilizando el resultado del 
@@ -1295,8 +1353,8 @@ export default {
 		//desactiva el efecto activado del segundo grupo (solo puede haber uno), si 
 		//por algún error hubiera más de uno cancela todos los efectos del segundo 
 		//grupo (de uno en uno)
-		cancelAll(){
-			let listActivated=this.testActivatedTasks(this.tasks2);
+		cancelAll(){			
+			let listActivated=this.testActivatedTasks(this.tasks2);			
 
 			if(listActivated && listActivated.length==1){
 				let split=listActivated[0].split("A");
@@ -1416,8 +1474,6 @@ export default {
 		//desactiva el select de espacio de color
 			this.spaceColorActive=false;
 			this.spaceColorSelected=this.ima.spaceColor;
-			console.log("desde cancelSelect(): ",this.ima.spaceColor)
-
 		},
 		selectSpaceColor(){
 			console.log("spaceColor: ",this.spaceColor);
@@ -1434,11 +1490,13 @@ export default {
 		//muestra las opciones de selección de los efectos fusión, watermark y 
 		//create-watermark cancelando anteriores selecciones de algunos de los 3
 		showListImage(action){
+		//se comprueban los dials (desplegables) dial abierto	
+		this.hideDials();
 		//si hay desplegable visible...
 			if(this.compListActive || this.wmInputActive || this.rangeTexturizeActive || this.rangeCompressActive){				
 				if(action=="fussion"){
 					if(!this.fussionActivated){
-						this.cancelSelect();					
+						this.cancelAll();					
 						this.fussionActivated=true;
 						this.compListActive=true;
 						//pasar a null el archivo seleccionado si lo hubiera de otra 
@@ -1446,24 +1504,22 @@ export default {
 					}
 				}else if(action=="watermark"){
 					if(!this.wmActivated){
-						this.cancelSelect();
+						this.cancelAll();
 						this.wmActivated=true;
 						this.compPosListActive=true;
 						this.compListActive=true;
 						//pasar a null el archivo seleccionado si lo hubiera de otra 
 						//acción y así resetearlo (opcional)
 					}
-				}else if(action=="create-watermark"){
+				}else if(action=="create-watermark"){					
 					if(!this.createWmActivated){
-						this.cancelSelect()
-						//falta la vista del input para entrada de texto
-						this.wmInputActive=true;
-						//el resto de opciones
+						this.cancelAll()
+						this.createWmActivated=true;
+						this.wmInputActive=true;						
 					}
-				}
-				//algo falla aquí
+				}				
 				this.typeAction=action;
-		//si no hay desplegable visible ni input de texto (destinado a crear la marca de agua) se hace visible el que se haya seleccionado (fussion, watermark o create-watermark) 
+		//si no hay desplegable visible ni input de texto, (destinado a crear la marca de agua) se hace visible el que se haya seleccionado (fussion, watermark o create-watermark) 
 			}else{
 				if(action=="fussion"){
 					this.fussionActivated=true;
@@ -1481,33 +1537,35 @@ export default {
 				}
 				this.typeAction=action;
 			}
-
+			//pasamos 'all' para que no compruebe ni rotate ni reflex que no tienen
+			//desplegable y se activan automáticamente al pulsar
+			this.testGButton1('all');
 		},
 		
 		//establece el font family actualizando la vista para el efecto 
 		//create-watermark (creación marca de agua)
 		setFontFamily(font){
-			console.log("hola,",font);
-			return;
-			/*
+			
 			this.fontFamilySelected=font;
 			this.fontSelected=font[0].toUpperCase()+font.slice(1);
 			if(font=="timesnewroman")
 				this.fontSelected="Times New Roman";
 			this.expandFontFamily=false;
-			*/
+			
 		},
 		
 		//mostrar range-texturize o range-compress o list-spacecolor o list-channels
 		showInput(action){
+			//se comprueban los desplegables dials
+			this.hideDials();
 			
 			if(action=="texturize" && !this.rangeTexturizeActive){				
-				this.cancelSelect();
+				this.cancelAll();
 				this.rangeTexturizeActive=true;
 				this.texturizeActivated=true;
 				this.typeAction=action;					
 			}else if(action=="compress" && !this.rangeCompressActive){				
-				this.cancelSelect();
+				this.cancelAll();
 				this.rangeCompressActive=true;
 				this.compressActivated=true;
 				this.typeAction=action;
@@ -1519,12 +1577,12 @@ export default {
 					this.dialogNotChannelsActive=true;
 					return;
 				}
-				this.cancelSelect();				
+				this.cancelAll();				
 				this.channelActivated=true;
 				this.channelActive=true;
 				this.typeAction=action;
 			}else if(action=="space_color" ){				
-				this.cancelSelect();
+				this.cancelAll();
 				this.spaceColorActivated=true;
 				this.spaceColorActive=true;
 				this.typeAction=action;
@@ -1593,11 +1651,12 @@ export default {
 			this.tmpImage=null;
 		},
 		//muestra modal con un mensaje de confirmación o de información, detectando
-		//si existen otras tareas pendientes 
+		//si existen otras tareas pendientes (activadas) del grupo 1  
 		confirmChange(type_effect){
-			console.log("primero: ",this.typeAction);
-			//se asigna el tipo de efecto (filter,polygon,polaroid...), destinado
-			//al método setChange() que es llamado al pulsar OK en el modal de confirmación
+			
+			//se asigna el tipo de efecto (filter,polygon,polaroid...) a type para
+			//después desde el método setChange() (que es llamado al pulsar OK en el 
+			//modal de confirmación) llamara al efecto correspondiente
 			this.type=type_effect;
 			let list=this.testActivatedTasks(this.tasks);
 			//si no existen cambios pendientes y se ha pulsado el botón de deshacer todo
@@ -1608,7 +1667,8 @@ export default {
 				return;
 			}
 		
-
+			//(tareas posibles del grupo1: rotate o reflex, solo uno de los dos, 
+			//filter y polygon)
 			//En caso de que se use el método de actualización propio de filter o de 
 			//polygon (que se encuentran con el icono de check en el desplegable) se 
 			//comprueba que haya tareas pendientes del primer grupo que no sea la 
@@ -1680,7 +1740,7 @@ export default {
 		//método al dar OK en la confirmación de un efecto de filtro, o recorte de
 		// forma o efecto
 		setChange(){
-			
+			//this.desactiveBtnByType();
 			if(this.type){
 				switch(this.type){
 					case "filter":
@@ -1690,9 +1750,20 @@ export default {
 						this.setPolygon()
 						break;
 					case "undoAll":
+						//obtenemos la lista de botones pintados como activados
+						var list=this.testBtn('activated');
+						//si testBtn() devuelve algún elemento despintamos con desactiveBtn()
+						if(list)
+							this.desactiveBtn(list);
+						//llamamos al ḿétodo deshacer todo
 						this.undoAll()
 						break;
 					case "processAll":
+						//obtenemos la lista de botones pintados como activados
+						var list2=this.testBtn('activated');
+						//si testBtn() devuelve algún elemento despintamos con desactiveBtn()
+						if(list2)
+							this.desactiveBtn(list2);
 						this.processAll()
 						break;
 					case "texturize":
@@ -1715,7 +1786,7 @@ export default {
 					default:
 						this.setEffect(this.type)
 				}
-				console.log("desde setChange: ",this.type);
+				//console.log("desde setChange: ",this.type);
 				
 				//this.dialogImage=true;
 				//this.tmpImage=effect.data.image;
@@ -1724,7 +1795,9 @@ export default {
 		},
 		//deshace el filtro, necesario identificar desactivado
 		cancelChange(){
-			//console.log("cancelado");			
+			//desactivamos color de botón de efectos
+			if(this.btnActive.effect)
+				this.btnActive.effect=false;			
 		},
 		
 		
@@ -1794,6 +1867,7 @@ export default {
 .md_menu_custom>.md-button{
 	margin:0 6px;
 }
+
 /*fonts*/
 @font-face{
     font-family:usuzi;

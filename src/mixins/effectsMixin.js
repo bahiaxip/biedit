@@ -1,14 +1,22 @@
 export default {
+
 	//métodos para efectos con vista previa desde client-side
 	methods: {
 
+		
 		//rotación con transform de todo el div e intercambiando el width por el 
 		//height del div si la rotación es lateral, para que no se solape
 		rotate(side){
+			//this.testBtn();
 
-			//detectamos primero si existe algún efecto activado y si no ...
 			let d=this.$refs.image_effect.style;
 			let d2=this.$refs.div_effect_image.style;
+			//desactivamos color de botón activo en rotate
+			//this.desactiveBtnByType('rotate');
+
+			this.testGButton1();
+
+
 			//desactivar rotate (devolver a estado inicial)
 			if(side==0){
 				d2.transform="rotate(0deg)";
@@ -24,7 +32,7 @@ export default {
 			}
 			if(side=="left" || side=="right"){
 				if(side=="left"){					
-					if(d2.transform=="rotate(270deg)"){						
+					if(d2.transform=="rotate(270deg)"){
 						d2.transform="rotate(0deg)";
 						//establecemos ancho y alto al div padre
 						d2.width=this.imaEffect.width+"px";
@@ -32,8 +40,10 @@ export default {
 						//devolvemos el margin anterior
 						d.margin="auto";				
 						this.$refs.canvas.style.margin='auto';
-						
-					}else{						
+
+					}else{
+						//desactivamos color de botón activo en rotate
+						this.btnActive.rotateLeft=true;
 						d2.transform="rotate(270deg)";
 						//establecemos ancho y alto inverso al div padre
 						d2.width=this.imaEffect.height+"px";
@@ -41,12 +51,12 @@ export default {
 						
 						//obtenemos el margin de cada lado para centrar el canvas
 						let newMargin=this.getMarginToCenter(this.imaEffect.width,this.imaEffect.height);		
-						console.log(newMargin);
+						//console.log(newMargin);
 						d.margin=newMargin+"px auto";
 						this.$refs.canvas.style.margin=newMargin+'px auto';
 					}
 				}else if(side=="right"){
-					if(d2.transform=="rotate(90deg)"){
+					if(d2.transform=="rotate(90deg)"){						
 						d2.transform="rotate(0deg)";
 						//devolvemos el ancho y alto del div padre
 						d2.width=this.imaEffect.width+"px";
@@ -54,20 +64,26 @@ export default {
 						d.margin="auto";
 						//devolvemos el margin anterior						
 						this.$refs.canvas.style.margin='auto';
-					}else{						
+					}else{
+						this.btnActive.rotateRight=true;
 						d2.transform="rotate(90deg)";
 						//establecemos ancho y alto inverso al div padre
 						d2.width=this.imaEffect.height+"px";
 						d2.height=this.imaEffect.width+"px";						
 						//obtenemos el margin de cada lado para centrar el canvas
-						let newMargin=this.getMarginToCenter(this.imaEffect.width,this.imaEffect.height);		console.log(newMargin);
+						let newMargin=this.getMarginToCenter(this.imaEffect.width,this.imaEffect.height);
 						d.margin=newMargin+"px auto";				
 						this.$refs.canvas.style.margin=newMargin+'px auto';
 					}						
 				}
 			}else{
-				(d2.transform=="rotate(180deg)" || side==null) ? 
-					d2.transform="rotate(0deg)": d2.transform="rotate(180deg)";
+				if(d2.transform=="rotate(180deg)" || side==null){					
+					d2.transform="rotate(0deg)"
+				}else{
+					this.btnActive.rotateBottom=true;
+					d2.transform="rotate(180deg)";
+				} 
+					
 					//devolvemos margin y dimensiones anteriores
 				d.margin="auto";
 				d2.width=this.imaEffect.width+"px";
@@ -76,10 +92,11 @@ export default {
 			}
 			//activamos/desactivamos rotate, no es necesario comprobar null pk si es 
 			//null es que aun no se ha activado el identificador de rotate
-			if(d2.transform=="rotate(0deg)"){
+			if(d2.transform=="rotate(0deg)"){				
 				this.rotateActivated=false
 				this.rotateSide=null;
 			}else{
+				
 				this.rotateActivated=true;
 				this.rotateSide=side;
 			}			
@@ -144,11 +161,9 @@ export default {
 		},
 
 		//asignamos el filtro solo en pantalla
-		filter(prop){
+		filter(prop){			
 			//asignamos la existencia de una activación de filtro
 			this.filterActivated=true;
-			console.log("llega afiltro");
-			//let ima=document.getElementById('image');
 			let ima=this.$refs.image_effect;
 			this.filterProp=prop;    
 			switch (prop){
@@ -166,24 +181,27 @@ export default {
 				break;
 				case "none":
 					ima.style.filter=prop;
-					this.filterActivated=false;
+					this.filterActivated=false;					
 				break;
 				default:
 					ima.style.filter='none';
 					this.filterActivated=false;
 			}
+			//asignamos el color del botón siguiendo filterActivated
+			this.btnActive.filter=this.filterActivated;
 		},
 
 		drawPolygon(sides)
-		{  			
+		{  		
+
 			if(this.polygonActivated)
 				//elimina el dibujo canvas, por si existía uno anteriormente
 				this.deleteDrawCanvas();				
 						
 			this.polygonActivated=true;
-			
+			this.btnActive.polygon=this.polygonActivated;
 			this.polygonProp=sides;
-			console.log("drawPolygon: ",this.polygonActivated);
+			//console.log("drawPolygon: ",this.polygonActivated);
 			
 			var ratio;
 			//definimos el ratio en función del ancho o el alto más corto
@@ -245,8 +263,7 @@ export default {
 							const x=X+R*Math.cos(rad*i);
 							const y=Y+R*Math.sin(rad*i);
 							ctx.lineTo(x,y);
-						}
-						//console.log("estrella");
+						}						
 					}
 					else
 					{
@@ -296,7 +313,7 @@ export default {
 			}
 			else
 			{
-				console.log("No soporta canvas");return;
+				console.log("Not support canvas");return;
 			}
 		},
 
@@ -318,9 +335,12 @@ export default {
 		reflex(type){
 			//para evitar errores si el efecto rotación está activado se deshace
 			if(this.rotateActivated){
-				this.undoTask("rotate");				
+				this.undoTask("rotate");
+				this.desactiveBtnByType('rotate');				
 			}
-			
+			//revisamos el color de los botones  
+			this.testGButton1();			
+
 			let d=this.$refs.div_effect_image.style;
 			if(!type){
 				d.transform="scaleX(1)";
@@ -328,13 +348,23 @@ export default {
 				this.reflexActivated=false;
 			}
 			if(type=="vertical"){
-				(d.transform=="scaleY(-1)") ?
-					d.transform="scaleY(1)" : d.transform="scaleY(-1)";
+				if(d.transform=="scaleY(-1)"){
+					d.transform="scaleY(1)"
+				}else{
+					this.btnActive.reflexVertical=true;
+					d.transform="scaleY(-1)";
+				}
+					
 				d.width=this.imaEffect.width+"px";
 				d.height=this.imaEffect.height+"px";
 			}else if(type=="horizontal"){
-				(d.transform=="scaleX(-1)") ?
-					d.transform="scaleX(1)":d.transform="scaleX(-1)";
+				if(d.transform=="scaleX(-1)"){
+					d.transform="scaleX(1)";					
+				}else{
+					this.btnActive.reflexHorizontal=true;
+					d.transform="scaleX(-1)";
+				}
+
 			}
 			//actualizamos el identificador de reflex
 			if(d.transform=="scaleX(-1)" || d.transform=="scaleY(-1)"){

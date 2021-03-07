@@ -190,5 +190,49 @@ export default {
 				alert("Error document.defaultView (handleCSS method)");
 			}
 		},
+
+		//devolver error de acceso a cámara
+		testErrorCam(error){
+			let msge;
+			if(error.name== "NotFoundError" || error.name=="DevicesNotFoundError"){						
+				//no existe dispositivo o no tiene microfono: puede ser
+				//que la grabación esté desactivada aunque exista microfono
+				console.log("Dispositivo no encontrado");
+				msge="Dispositivo no encontrado";
+				
+			} else if(error.name == "NotReadableError" || error.name=="TrackStartError"){
+				//webcam or mic are already in use
+				console.log("Dispositivo ya en uso");
+				msge="Dispositivo ya en uso";
+			}else if(error.name == "OverconstrainedError" || error.name=="ConstraintNotSatisfiedError"){
+				//constraints can not satisfied by avb.devices
+				//los datos en media no son soportados por el hardware, e.g.
+				//alta resolución o alto ratio de frames,...
+				console.log("Parámetros en getUserMedia() no soportados ");
+				msge="Parámetros en getUserMedia() no soportados";
+			}else if(error.name == "NotAllowedError" || error.name == "PermissionDeniedError"){
+				//permission denied in browser
+				//el usuario deniega los permisos o el navegador tiene la opción
+				//de microfono o video desactivada por defecto
+				console.log("Permiso denegado por el navegador");
+				msge="Permiso denegado por el navegador";
+			}else if(error.name == "TypeError"){
+				//empty constraints object
+				//Los parámetros (constraints) están vacíos o asignados a false
+				console.log("Parámetros en getUserMedia() vacío");
+				msge="Permiso denegado por el navegador";
+			}else if(error.name=="AbortError"){
+				//en firefox mostrado cuando ya está en uso el dispositivo, e.g.
+				//en otro navegador
+				console.log("Error con el dispositivo o ya se encuentra en uso")
+				msge="Error con el dispositivo o ya se encuentra en uso";
+			}
+			else{					
+				//other errors
+				console.log("Error: ",error.name);
+				msge=error.name;
+			}
+			return msge;
+		},
 	}
 }

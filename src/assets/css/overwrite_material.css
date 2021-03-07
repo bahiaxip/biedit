@@ -73,6 +73,11 @@ incorpora una media query que por debajo de 600px de ancho pasa del width 80% a 
 .menu_filter {
 	box-shadow:none !important;
 	min-width:50px !important;
+	
+	/*por si se quiere ver el botón, pero no es seleccionable*/
+	/*padding-top:50px !important;*/
+	
+	/*max-height pasado al template*/
 	/*max-height:none;*/
 }
 .menu_filter .md-menu-content {

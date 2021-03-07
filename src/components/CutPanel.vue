@@ -1,9 +1,9 @@
 <template>
-	<div>
+	<div >
 		<div v-if="!ima.src">
 			<md-progress-spinner md-mode="indeterminate" v-if="displayLoading" style="position:absolute;top:50%;left:50%;"></md-progress-spinner>
 		</div>
-		<div v-else >
+		<div v-else style="position:relative !important;overflow:visible !important">
 			<audio id="crop-audio" src="audio/crop_audio.wav" preload="auto"></audio>
 			
 			<!--<md-button @click="toogle()" style="z-index:10">
@@ -19,7 +19,7 @@
 			
 			<p  v-else>Para disponer del cuadro de recorte es necesaria una imagen con un ancho y alto mínimo de 100 píxeles</p>
 			
-			<div class="back-box-panel" id="back-box-panel"  >
+			<div class="back-box-panel" id="back-box-panel"  style="position:absolute !important;overflow:visible !important">
 				<transition name="fade" >		
 				<!--<BoxPanel :ima="ima" v-if="ima.widthCut>100 && ima.heightCut>100"></BoxPanel>-->
 				<BoxPanel :ima="ima" v-if="onTransition"></BoxPanel>
@@ -44,16 +44,16 @@
 					<!--</transition>-->
 					<md-dialog-alert class="confirmDialog" id="confirmDialog" 
 					:md-active.sync="dialogErrorActive"
-					:md-title = "msgeDialogTitle"
-					:md-content = "msgeDialogContent"
+					:md-title = "titleDialogAlert"
+					:md-content = "msgeDialogAlert"
 					md-confirm-text="OK" />
 
 					
 		</div>
 		<md-dialog-alert class="confirmDialog"
 					:md-active.sync="dialogSuccessActive"
-					:md-title = "msgeDialogTitle"
-					:md-content = "msgeDialogContent"
+					:md-title = "titleDialogAlert"
+					:md-content = "msgeDialogAlert"
 					md-confirm-text="OK" 
 					/>
 	</div>
@@ -70,6 +70,26 @@ export default {
 	props:['ima'],
 	mixins:[servicesMixin],
 	//props:['ima','resized'],
+	
+
+	//beforeRouteEnter: antes de rutear al componente, es decir, cuando otro 
+	//componente enlaza la ruta de CutPanel, antes de todo ejecuta beforeRouteEnter,
+	//similar al beforeEnter desde main.js
+	/*
+	beforeRouteEnter(to,from,next){
+
+		console.log("beforeRouteEnter: ",from);
+		console.log("beforeRouteEnter: ",to);
+		next();
+		//callback después de enviar, para obtener this cuando esté disponible
+		/*
+		next(vm  => {
+			console.log(vm.ima);
+		})
+		//if(this.ima.width<100 || this.ima.height<100)
+			//return;
+	},
+	*/
 	created(){
 		/*
 		if(!this.ima.src){
@@ -79,6 +99,7 @@ export default {
 		*/
 	},
 	mounted(){
+		console.log("mounted en cutout")
 		//necesario actualizar medidas en redimensión (getWithAccording...)
 			//window.addEventListener(resize..)
 			//luego en destroy: window.removeEventListener(resize...)
@@ -87,7 +108,7 @@ export default {
 		//seleccionado desde el album mostramos mensaje
 		if(!this.ima.name){
 			//lanzar dialog con mensaje
-			this.msgeDialogTitle="La imagen principal aun no está disponible";
+			this.titleDialogAlert="La imagen principal aun no está disponible";
 			this.dialogSuccessActive=true;			
 			return;
 		}
@@ -125,6 +146,10 @@ export default {
 		//let hola=document.querySelector("#back-cut-panel");
 		
 	},
+	destroyed(){
+		//anulado
+		//this.$emit("btn","cut");
+	},
 	data(){
 		return {
 			url:Global.url,		
@@ -132,8 +157,8 @@ export default {
 			dialogBox:true,
 			dialogErrorActive:false,
 			dialogSuccessActive:false,
-			msgeDialogContent:null,
-			msgeDialogTitle:null,
+			msgeDialogAlert:null,
+			titleDialogAlert:null,
 			displayLoading:false,
 			onTransition:false
 		}
@@ -219,5 +244,7 @@ export default {
 #back-cut-panel{
 	/*overflow-y:scroll;*/
 }
-
+.md-button.crop-button{
+    z-index:10;margin-top:5px
+}
 </style>

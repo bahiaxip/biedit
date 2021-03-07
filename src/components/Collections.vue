@@ -119,7 +119,7 @@
 
 			<md-dialog-confirm class="confirmDialog"
 			:md-active.sync="dialogSuccessActive"
-			md-title = "Confirmación"
+			:md-title = "titleDialogConfirm"
 			:md-content = "msgeDialogConfirm"
 			md-confirm-text="OK" 
 			md-cancel-text="Cancelar"		
@@ -164,6 +164,7 @@ export default {
 			//dialogs
 			dialogErrorActive:false,
 			dialogSuccessActive:false,
+			titleDialogConfirm:null,
 			msgeDialogConfirm:null,
 			action:null,
 			msgeDialogAlert:null,
@@ -199,6 +200,8 @@ export default {
 		
 	},
 	mounted(){
+		//no es necesario el session ya que lo contiene el método getImages()
+
 		this.getImages();
 		if(!this.imageMain){
 			console.log("recargando página");
@@ -210,12 +213,11 @@ export default {
 	},
 	beforeDestroy(){
 		console.log("llega al beforeDestroy");
-		console.log(this);
 
 	},
 	destroyed(){
-		console.log("llega al destroyed0");
-		//this.showFullImage=false;
+		//anulado
+		//this.$emit("btn","collections");		
 	},
 	methods:{
 		/*
@@ -237,11 +239,13 @@ export default {
 		confirmAction(image,action){			
 			this.image=image;
 			if(action=="delete"){
-				this.msgeDialogConfirm="¿Seguro que desea eliminar la imagen?"
+				this.titleDialogConfirm="Eliminar imagen"
+				this.msgeDialogConfirm="¿Desea eliminar la imagen seleccionada?"
 				this.action=action
 			}
 			else if(action=="download"){
-				this.msgeDialogConfirm="¿Seguro que desea descargar la imagen?"
+				this.titleDialogConfirm="Descargar imagen"
+				this.msgeDialogConfirm="¿Desea descargar la imagen seleccionada?"
 				this.action=action
 			}
 			this.dialogSuccessActive=true;
@@ -259,7 +263,16 @@ export default {
 			if(this.imageMain && image.random_name==this.imageMain.src){
 				//console.log("es la misma imagen");
 				return;
-			}else{
+//pasar el valor de megas a global
+			}else if(image && image.size>10000000){
+				this.titleDialogAlert="Imagen muy grande";
+				this.msgeDialogAlert="La imagen es mayor a 2MB"
+				//this.dialogErrorActive=true;
+
+				console.log("wo");
+				//return;
+			}
+			else{
 				this.$emit("reload",image);
 				//console.log("no es la misma imagen y reload image: ",image);
 			}						

@@ -1,6 +1,6 @@
 <template>
 	<div>
-	<md-progress-spinner md-mode="indeterminate" v-if="displayLoading"></md-progress-spinner>
+	<md-progress-spinner md-mode="indeterminate" v-if="displayLoading"  class="load_new_image"></md-progress-spinner>
 	<div class="back-main-panel" :style="{width:ima.width+'px'}" :v-if="ima.width!=null" ref="backMainPanel">
 		
 		<div class="button-nav-mainpanel" style="" >
@@ -17,39 +17,42 @@
 			<md-button class="md-icon-button md-mini md-raised md-accent fab_button_standard floatR" title="Redimensión libre" v-if="resizeSwitch" @click="returnResizeMain()" :class="{'free_resize_activated':freeResize}"><md-icon>image_aspect_ratio</md-icon></md-button>
 
 		</div>
+		<div class="" style="min-width:170px">
 		<!-- :style (doble condición) -->
-		<div class="labels-mainpanel m_auto t_center" v-if="resizeSwitch">
-			<label>
-				<p class="floatL font_label" :style="ima.width<250 ? ima.width<170 ? 'font-size:10px;color:white;padding:4px' : 'font-size:12px;color:white;padding:7px' : 'font-size:15px;color:white;padding:7px'" >
+			<div class="labels-mainpanel" v-if="resizeSwitch">
+				<label>
+					<p class="floatL font_label" :style="ima.width<250 ? ima.width<170 ? 'font-size:10px;color:white;padding:4px' : 'font-size:12px;color:white;padding:7px' : 'font-size:15px;color:white;padding:7px'" >
 
-					<span v-if="ima.width>170" class="c_orange">w:</span>
-					{{ima.width}}px
+						<span v-if="ima.width>170" class="c_orange">w:</span>
+						{{ima.width}}px
+
+					</p>
+				</label>
+				<!--<md-button class="md-fab md-mini fab_button_standard" title="Guardar en album" @click="dialogResizeActive=true" v-if="ima.width>=220"><md-icon>photo_album</md-icon></md-button>
+				<md-button class="md-fab md-mini fab_button_standard" title="Descargar" v-if="ima.width>300"><md-icon>save_alt</md-icon></md-button>-->
+				<label>
+					<p class="floatR font_label" :style="ima.width<250 ? ima.width<170 ? 'font-size:10px;padding:4px':'font-size:12px;padding:7px' : 'font-size:15px;padding:7px'">
+
+					<span v-if="ima.width>170" class="c_orange">h:</span>
+					{{ima.height}}px
 
 				</p>
-			</label>
-			<!--<md-button class="md-fab md-mini fab_button_standard" title="Guardar en album" @click="dialogResizeActive=true" v-if="ima.width>=220"><md-icon>photo_album</md-icon></md-button>
-			<md-button class="md-fab md-mini fab_button_standard" title="Descargar" v-if="ima.width>300"><md-icon>save_alt</md-icon></md-button>-->
-			<label>
-				<p class="floatR font_label" :style="ima.width<250 ? ima.width<170 ? 'font-size:10px;padding:4px':'font-size:12px;padding:7px' : 'font-size:15px;padding:7px'">
-
-				<span v-if="ima.width>170" class="c_orange">h:</span>
-				{{ima.height}}px
-
-			</p>
-			</label>
-		</div>
-		<transition name="fade">
-			<div id="div-main" class="div-main no-selectable" :style="{width:ima.width+'px',height:ima.height+'px'}" ref="divmain" v-if="imgTrans">
-				
-				<div class="main-panel">
-					<canvas id="canvas" class="no-selectable" :width="ima.width" :height="ima.height" ></canvas>
-
-					<img :src="ima.name" id="image" class="main-img no-selectable" :width="ima.width" :height="ima.height" :class="{'main-img-resize':resizeSwitch}" :style="resizeSwitch ? ima.width<170 ? 'box-shadow:0px 0px 1px 7px rgba(0,0,0,0.2)':'box-shadow:0px 0px 1px 10px rgba(0,0,0,0.2)':'box-shadow:none'"/>						
-				</div>
-				<div id="handle-resize" @mousedown="initResize($event)" @touchstart="initResize($event)" class="handle-resize handle-right handle-bottom cursor-handle-resize" :style="ima.width<250 ? handleMin:handleStandar"  v-if="resizeSwitch" ></div>
+				</label>
 			</div>
-		</transition>
-		<md-dialog 
+			<transition name="fade">
+				<div id="div-main" class="div-main no-selectable" :style="{width:ima.width+'px',height:ima.height+'px'}" ref="divmain" v-if="imgTrans">
+					
+					<div class="main-panel">
+						<canvas id="canvas" class="no-selectable" :width="ima.width" :height="ima.height" ></canvas>
+
+						<img :src="ima.name" id="image" class="main-img no-selectable" :width="ima.width" :height="ima.height" :class="{'main-img-resize':resizeSwitch}" :style="resizeSwitch ? ima.width<170 ? 'box-shadow:0px 0px 1px 7px rgba(0,0,0,0.2)':'box-shadow:0px 0px 1px 10px rgba(0,0,0,0.2)':'box-shadow:none'"/>						
+					</div>
+					<div id="handle-resize" @mousedown="initResize($event)" @touchstart="initResize($event)" class="handle-resize handle-right handle-bottom cursor-handle-resize" :style="ima.width<250 ? handleMin:handleStandar"  v-if="resizeSwitch" ></div>
+				</div>
+			</transition>
+		</div>
+		<!--prueba camara-->
+		<!--<md-dialog 
 		:md-active.sync="dialogCam">
 			<md-dialog-title>Cámara</md-dialog-title>
 			<md-button class="md-accent" style="color:black" @click="initCam()">
@@ -59,12 +62,13 @@
 				<video id="video" playsinline autoplay ref="video"></video>
 			</div>
 			<canvas id="canvas_cam" width="640" height="480" style="background-color:black;display:none" ref="canvas_cam"></canvas>
-		</md-dialog>
+		</md-dialog>-->
 
 
 		<md-dialog-confirm class="confirmDialog"
 		:md-active.sync="dialogResizeActive"
-		md-title = "¿Desea almacenar esta imagen en el álbum con las nuevas dimensiones?"
+		md-title = "¿Aplicar redimensión?"
+		md-content = "¿Desea redimensionar la imagen con las dimensiones seleccionadas?"
 		md-confirm-text="OK"
 		md-cancel-text="Cancelar"
 		@md-cancel="cancelResize"
@@ -166,7 +170,8 @@ export default {
 				width:'30px',
 				height:'30px'
 			},
-			//camara
+			//prueba camara
+			/*
 			dialogCam:true,
 			videoCam:null,
 			canvasCam:null,
@@ -177,7 +182,7 @@ export default {
 					height:720
 				}
 			},
-
+			*/
 
 
 		}
@@ -204,10 +209,18 @@ export default {
 			this.showResize=true;			
 		}
 		this.imgTrans=true;
+		/*
+		//prueba camara
 		this.videoCam=this.$refs.video;
 		console.log("videoCam: ",this.videoCam);
 		this.canvasCam=this.$refs.canvasCam;
+		*/
 
+	},
+	destroyed(){
+		//anulado
+		//enviamos el tipo de componente el toggle de color de botón activo
+		//this.$emit("btn",'main');
 	},
 	/*
 	watch:{
@@ -215,6 +228,10 @@ export default {
 	},
 	*/
 	methods:{
+
+		// si queremos que se ejecute al iniciar la página añadir async al método (async initCam) 
+		//y asignar el dispositivo a una variable con await (let stream = await navigator.mediaDevices.getUserMedia(this.constraints))
+		/* //prueba camara
 		initCam(){
 			//existe el objeto mediaDevices.getUserMedia(parámetros (obligatorios))
 			if(navigator.mediaDevices.getUserMedia(this.constraints)){
@@ -237,7 +254,8 @@ export default {
 			}catch{
 				console.log("errror de stream: ");
 			}*/
-		},
+		//},
+
 		initResize: function(e) {
 			this.resHandleX=e.clientX;
 			if(e.touches){

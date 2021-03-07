@@ -1,20 +1,21 @@
 <template>
-	<div class="total" >
+	<div class="total" :class="{'page-container':parentMdDrawer}" >
 		
 		<div class="nav " style="background:#434540">
 		<!--<md-toolbar class="md-accent" >-->
 			<div class="floatL"   >
-				<md-button class="md-nuevo md-fab" title="Sesión" @click="switchDialog()" >
+				<md-button class="primary md-fab" title="Sesión" @click="switchDialog()" >
 					<md-icon>person</md-icon>
 				</md-button>
 			</div>
+			<!-- deshabilitamos el md-drawer pk genera conflicto con el componente cut-panel-->
 			<div class="floatR" >
-				<md-button class="accent md-fab" title="Sesión" @click="switchDialog()" >
-					<md-icon>person</md-icon>
+				<md-button class="primary md-fab "   title="Opciones" @click="showSidePanel=true" :disabled="!parentMdDrawer">
+					<md-icon class="c_white">settings</md-icon>
 				</md-button>
 			</div>
 			<div class="m_auto">
-				<md-button class="md-fab md-accent" title="Subir imagen" @click="selectUpImage()" >
+				<md-button class="md-fab primary " title="Subir imagen" @click="selectUpImage()" >
 					<md-icon>
 						add_photo_alternate
 					</md-icon>
@@ -22,16 +23,16 @@
 				<input type="file" name="images[]" id="archivo" class="archivo" @change="selectedFile($event)" >
 
 				<router-link :to="{name:'MainPanel',params:{ima:image}}">
-					<md-button class="md-fab md-accent" title="Panel principal" :disabled="mainImage" >
-						<md-icon>panorama</md-icon>										
+					<md-button class="md-fab primary" :class="{'disabled':mainImage}" title="Panel principal" :disabled="mainImage" >
+						<md-icon :class="{c_white:!mainImage}">panorama</md-icon>										
 					</md-button>
 				</router-link>
 				<!--<md-button class="md-fab md-accent" title="Opciones" @click="switchResize()" >
 					<md-icon>open_in_full</md-icon>
 				</md-button>-->
 
-				<md-button class="md-fab md-accent" title="Panel de recorte" @click="cutImage()" :disabled="mainImage" >
-					<md-icon>crop</md-icon>
+				<md-button class="md-fab primary" :class="{'disabled':mainImage}" title="Panel de recorte" @click="cutImage()" :disabled="mainImage" >
+					<md-icon :class="{c_white:!mainImage}">crop</md-icon>
 				</md-button>
 
 				<!--<md-button class="md-fab md-accent" title="Panel de recorte" @click="cropImage()" v-else>
@@ -39,23 +40,17 @@
 				</md-button>-->
 
 				<router-link :to="{name:'collections',params:{imageMain:image}}">
-					<md-button class="md-fab md-accent" title="Album"  >
-						<md-icon>collections</md-icon>
+					<md-button class="md-fab primary " title="Album" >
+						<md-icon class="c_white">collections</md-icon>
 					</md-button>
 				</router-link>
 
 				<router-link :to="{name:'effect',params:{ima:image}}">
-					<md-button class="md-fab md-accent" title="Panel de ajustes" :disabled="mainImage">
+					<md-button class="md-fab primary" :class="{'disabled':mainBigImage}" title="Panel de efectos" :disabled="mainBigImage">
 						<md-icon>photo_filter</md-icon>
 					</md-button>
 				</router-link>
-					
-
-				
 			</div>
-			
-			
-
 		</div>
 		<!--</md-toolbar>-->
 		<!-- el atributo key permite enviar la imagen al mainpanel -->
@@ -64,25 +59,71 @@
 		<!--<MainPanel :ima="image" :initial="imageInitial"></MainPanel>-->
 		<!--<CutPanel></CutPanel>-->
 		<!-- div modal -->
-	<div >
+	<!--<div >
 		
-	</div>
-	<Session :dialog="showDialog" :dialogLogout="showDialog2" @offdialog="changeDialog"></Session>
+	</div>-->
+		<Session :dialog="showDialog" :dialogLogout="showDialog2" @offdialog="changeDialog" @setnav="setNav"></Session>
 	<!--<keep-alive include="name" v-if="$route.name!='MainPanel'">
 		<router-view></router-view>
 	</keep-alive>-->
 <!-- posiblemente se puede anular, tan solo para el link a cutImage() -->
-	<md-dialog-alert class="confirmDialog" id="confirmDialog" 
-		:md-active.sync="dialogErrorActive"
-		:md-title = "msgeDialogTitle"
-		:md-content = "msgeDialogContent"
-		md-confirm-text="OK" />
+		<md-dialog-alert class="confirmDialog" id="confirmDialog" 
+			:md-active.sync="dialogErrorActive"
+			:md-title = "titleDialogAlert"
+			:md-content = "msgeDialogAlert"
+			md-confirm-text="OK" />
 
 		<md-dialog-alert class="confirmDialog"
 		:md-active.sync="dialogSuccessActive"
-		:md-title = "msgeDialogTitle"
-		:md-content = "msgeDialogContent"
+		:md-title = "titleDialogAlert"
+		:md-content = "msgeDialogAlert"
 		md-confirm-text="OK" />
+
+		<md-dialog class="acercade" :md-active.sync="dialogAcercade">
+			<md-dialog-title>Acerca de Biedit</md-dialog-title>
+			<md-tabs md-dynamics-height>
+				<md-tab md-label="Biedit">
+					<p>Biedit es una aplicación de edición de fotografía sencilla, rápida e intuitiva que permite organizar nuestras imágenes en un álbum individual y realizar numerosos efectos y ajustes.</p> 
+				</md-tab>
+				<md-tab md-label="Paneles de Biedit">
+					<p>Biedit se compone de varios paneles con distintas funcionalidades.</p>
+					<ul>
+						<li>
+							Panel principal: Permite redimensionar la imagen con la ayuda de un manejador y mostrarla en pantalla con las dimensiones deseadas.							
+						</li>
+						<li>
+							Panel de recorte: Permite recortar una región de la imagen con la ayuda de un cuadrante redimensionable deslizable
+						</li>
+						<li>
+							Panel de efectos: Permite realizar efectos a la imagen como filtros, formas poligonales, fusión entre dos imágenes...
+						</li>
+						<li>Álbum: Permite organizar las imágenes mediante un sistema de paginación y gestiones como eliminar o cargar la imagen para acceder al resto de paneles
+						</li>
+					</ul>
+
+				</md-tab>
+			</md-tabs>
+		</md-dialog>
+		<!-- ocultamos el md-drawer y desactivamos la clase page-container para evitar
+			el conflicto de md-drawer con el componente cut panel, esto se hace 
+			mediante la variable parentMdDrawer y el método watch-->
+		<!--queda por solucionar los otros dialog de camara y acerca de biedit -->
+		<div v-if="parentMdDrawer">
+			<md-drawer  :md-active.sync="showSidePanel" md-right >
+				<md-list>
+					<md-list-item @click="showSidePanel=false;dialogAcercade=true">
+						<span class="md-list-item-text">Acerca de Biedit</span>
+					</md-list-item>
+					<md-list-item @click="testCam()">
+						<span class="md-list-item-text">Cámara</span>
+						
+					</md-list-item>
+					<md-list-item @click="comprobar()">
+						<span class="md-list-item-text" >Ajustes de sonido</span>
+					</md-list-item>
+				</md-list>				
+			</md-drawer>
+		</div>
 	</div>
 </template>
 <script>
@@ -116,10 +157,15 @@ export default {
 			//con el modal dialog activado
 			if(this.$route.name=="cutout"){
 				document.querySelector(".nav").style.zIndex="6";
+				this.parentMdDrawer=false;
+				
+					
 			}else{
 				document.querySelector(".nav").style.zIndex="1";
+				this.parentMdDrawer=true;
 			}
-		}
+			
+		}	
 		
 	},
 	data(){
@@ -170,24 +216,53 @@ export default {
 			showDialog:false,
 			showDialog2:false,
 			timerParent:null,
-			
+
+			//dialog de ajustes (menú lateral derecho)
+			dialogAcercade:false,
 			//interruptor para dialog del panel principal en la redimensión
 			resizeSwitch:false,
 			//interruptor para dialog del panel  de de recorte
 			cutPanelSwitch:false,
 			dialogErrorActive:false,
 			dialogSuccessActive:false,
-			msgeDialogContent:null,
-			msgeDialogTitle:null,
+			msgeDialogAlert:null,
+			titleDialogAlert:null,
 			//interruptor para deshabilitar botones si no existe imagen principal
 			mainImage:false,
+			//interruptor para habilitar solo el botón de efectos, necesario para
+			//las imágenes enviadas desde collections mayores de 2MB.
+			mainBigImage:false,
 			//interruptor para deshabilitar botones si la imagen es demasiado grande
 			imgTooSize:false,
+			//md-drawer
+			showSidePanel:false,
+			//padre md-drawer
+			parentMdDrawer:true,
+			constraints:{
+				audio:true,
+				video:{
+					width:1280,
+					height:720
+				}
+			},
+			//anulado
+			/*
+			btnActive:{
+				cut:false,
+				main:false,
+				effects:false,
+				col:false,
+				up:false,
+				settings:false,
+			},
+			*/
+			
 
 		}
 	},
 	mounted:function(){
 		//test device type
+		//podría ser útil para la opción de facingMode en el componente Cam
 		if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
 			console.log("es dispositivo movil");	
 		}
@@ -206,15 +281,92 @@ export default {
 		//establecer máximo de redimensión  posible
 
 		//deshabilitar botones navegador que requieren imagen principal
-		if(!this.image.name){
+		if(!this.image.name){			
 			this.mainImage=true;
+			this.mainBigImage=true;			
 		}
 		let session=this.testSession();
 		if(session.status=="error")
 			this.switchDialog();
+		this.video=this.$refs.video;
+		
+		
 	},
 	
 	methods:{
+		//anulado
+		/*
+		btnInactive(btn){
+			switch (btn){
+				case 'main':
+					this.btnActive.main=false;
+					break;
+				case 'cut':
+					this.btnActive.cut=false;
+					break;
+				case 'collections':
+					this.btnActive.col=false;
+					break;
+				case 'effects':
+					this.btnActive.effects=false;
+			}
+		},
+		*/
+		comprobar(){
+			//no soportada por firefox
+			//comprobar permisos probado solo chrome
+			/*
+			navigator.permissions.query({name:'camera'}).then((permissionObj) => {
+				console.log(permissionObj.state);
+			}).catch((error) => {
+
+				console.log("error: ",error);
+			})
+			*/
+			//var mediaStreamTrack=
+		},
+		//comprobar cámara
+		testCam(){
+			let session=this.testSession();
+			if(!session){				
+				return;
+			}
+			console.log("pasa")
+			if(session.status=="error"){
+				this.msgeDialogAlert=session.message;
+				this.dialogErrorActive=true;
+				return;
+			}
+
+			let media=navigator.mediaDevices;
+			if(media && media.getUserMedia){				
+				media.getUserMedia(this.constraints).then(() => {
+					//window.stream=stream;
+					//this.video.srcObject=stream;					
+					//cerramos el drawer y enviamos a cam
+					this.showSidePanel=false;
+					if(this.$route.name != "cam")
+					//console.log("ruta_name: ",this.$route.name)
+						this.$router.push("/cam");
+					else
+						this.$forceUpdate();		
+				}).catch(error =>{
+					
+					
+					this.titleDialogAlert="No se ha podido establecer conexión con la cámara";
+					this.msgeDialogAlert=this.testErrorCam(error);
+					this.dialogErrorActive=true;	
+					
+					
+					//enviamos mensaje de no encontrar dispositivo conectado
+					//console.log("no existe dispositivo: ",error)
+				})
+
+			}else{
+				console.log("no es soportado por el navegador")
+			}
+			this.showSidePanel=false;
+		},
 		//evento de input file	
 		selectUpImage(){
 			let archivo=document.getElementById("archivo");			
@@ -321,19 +473,27 @@ export default {
 		//acceder al panel de recorte
 		cutImage(){
 			//comprobar si existe archivo	
-
+			console.log("todo");			
+			//anulado
+			//this.btnActive.cut=true;
 			if(!this.image.name){
-				this.msgeDialogContent="Para acceder al panel de recorte es necesario subir una imagen o añadir una imagen al panel principal";
-				this.msgeDialogTitle="No existe imagen";
+				this.msgeDialogAlert="Para acceder al panel de recorte es necesario subir una imagen o añadir una imagen al panel principal";
+				this.titleDialogAlert="No existe imagen";
 			//	this.dialogErrorActive=true;
 				
 			//	return;
 			}
-			if(this.$route.name=="cutout"){
+			if(this.$route.name=="cutout"){				
 				//ya se encuentra en cutout;
 				return;
 			}
-			//activamos interruptor para cambiar botón de recorte
+			if(this.image.width<100 ||  this.image.height<100){
+				this.msgeDialogAlert="El panel de recorte requiere una imagen con ancho y alto superiores a 100 píxeles";
+				this.titleDialogAlert="La imagen no es válida";
+				this.dialogErrorActive=true;
+				return;
+			}
+			
 			//this.cutPanelSwitch=true;
 			this.$router.push({
 				name:'cutout',
@@ -376,8 +536,8 @@ export default {
 				}
 				axios.post(this.url+"crop",data,headers).then(res => {
 					if(res.data.error){
-						this.msgeDialogTitle="Ocurrió un error";
-						this.msgeDialogContent=res.data.error;						
+						this.titleDialogAlert="Ocurrió un error";
+						this.msgeDialogAlert=res.data.error;						
 						this.dialogErrorActive=true;
 						return;		
 					}
@@ -389,8 +549,8 @@ export default {
 							cloneBoxSquare.style.top="-1000px";
 							setTimeout(function(){
 								cloneBoxSquare.style.display="none";
-								self.msgedialogTitle="Guardado con éxito"
-								self.msgeDialogContent=res.data.message;
+								self.titleDialogAlert="Guardado con éxito"
+								self.msgeDialogAlert=res.data.message;
 								self.dialogSuccessActive=true;
 							},1000);
 						},100);
@@ -506,8 +666,7 @@ export default {
 			this.image.src=image.random_name;			
 			let sizesMain=this.setSizeToMainPanel(image.width,image.height,this.minWidthHeight,this.widthDefault);			
 			this.image.width=sizesMain.width;
-			this.image.height=sizesMain.height;
-			console.log(sizesMain.width);
+			this.image.height=sizesMain.height;			
 			//this.imageMain.height=this.getNewHeight(this.imageMain.widthDefault,image.width,image.height);			
 			this.image.widthInitial=image.width;
 			this.image.heightInitial=image.height;
@@ -515,15 +674,25 @@ export default {
 			this.image.widthCut=sizesCut.width;
 			this.image.heightCut=sizesCut.height;
 			this.image.spaceColor=image.space_color;
+			
 			//habilitar/deshabilitar botones
 			this.mainImage=false;
+			this.mainBigImage=false;
+			//si la imagen es mayor a 2MB deshabilitamos todos menos el effect (el 
+			//collections nunca se deshabilita)
+			if(image.size>2000000)
+				this.mainImage=true
 			//callback sin definir
 			if(callback!=null)
 				callback();
 
 		},
+		//setNav cambia el estado disabled de los botones, necesario al eliminar
+		//la imagen del panel principal y el logout de sesion
 		setNav(state){
-			this.mainImage=state;			
+			console.log("no funciona setNav")
+			this.mainImage=state;
+			this.mainBigImage=state;		
 		},
 	//método de intercambio de botón que sirve el mismo botón (sustituyendo el icono) para acceder al panel de recorte y volver al panel principal
 	/*anulado, se ha pasado el botón al mismo componente de recorte*/
@@ -588,14 +757,42 @@ export default {
 @import "~vue-material/dist/theme/engine"; // Import the theme engine
 
 @include md-register-theme("default", (
-  
+  //options: 100,200,300,400,500,600,700,800,900,A100,A200,A400,A700
   //primary:#26ada7,
-  primary: md-get-palette-color(green, A200), // The accent or secondary color
-  accent: md-get-palette-color(pink, A200), // The accent or secondary color
+  //primary: md-get-palette-color(green, A400), // The accent or secondary color
+  primary: rgba(38,173,167,1),
+  accent: md-get-palette-color(pink, 600), // The accent or secondary color
   
   //theme:dark //dark o light
 
 ));
 
 @import "~vue-material/dist/theme/all"; // Apply the theme
+//necesario .page-container para md-drawer para ocultarlo
+
+
+.page-container{
+	min-height:300px;
+	overflow:hidden ;
+	position:relative;
+}
+
+.md-drawer {		
+	width:230px;
+	max-width:calc(100vw - 125px);
+	
+
+}
+.md-content{
+	padding:16px;
+}
+//solución al conflicto del componente CutPanel con md-drawer en HeaderComponent
+.solution_pagecontainer{
+	z-index:120 !important;
+	width:100%;height:100%;
+	position:absolute !important;
+	top:0;
+	
+}
+
 </style>
