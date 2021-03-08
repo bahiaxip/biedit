@@ -66,8 +66,14 @@
 </template>
 
 <script>
-	//se podría crear una captura de pantalla con html2Canvas o con JavaScript:
+	//- se podría crear una captura de pantalla con html2Canvas o con JavaScript:
 	//https://xpertdeveloper.com/webpage-screenshot-with-html5-js/
+	//aunque podría generar problemas de seguridad
+	//- pendiente crear plantilla de 10X15 cm. y repartir una imagen en 3,2cm. X 2,6cm.
+	// para fotos de carnet, para ello se debe recortar o redimensionar la captura
+	//y asegurarse que tiene 300dpi para poder imprimir la imagen tal como se muestra
+	//por pantalla y que no pierda resolución al imprimir, revisarr marcadores>imagick 
+	//donde hay ejemmplos con setImageResolution, setResolution, setUnits, etc...
 import servicesMixin from '../mixins/servicesMixin';
 import methodsMixin from '../mixins/methodsMixin';
 import axios from 'axios';
@@ -81,8 +87,8 @@ export default {
 			cam:false,
 			videoCam:null,
 			canvasCam:null,
-			canvasCamWidth:480,
-			canvasCamHeight:320,
+			canvasCamWidth:640,
+			canvasCamHeight:480,
 
 			//podría ir en global.js
 			constraints:{
@@ -310,9 +316,9 @@ export default {
 		capture(){
 			if(this.videoCam.srcObject){
 				console.log("llega a capture")
-				this.context.drawImage(this.videoCam,0,0,480,320);
+				this.context.drawImage(this.videoCam,0,0,640,480);
 				this.dialogImageCam=true;
-				this.imageCam=this.canvasCam.toDataURL("image/png");	
+				this.imageCam=this.canvasCam.toDataURL("image/jpg");	
 			}
 			
 			
@@ -359,14 +365,7 @@ export default {
 			axios.post(this.url+"images",formdata2,headers).then((res) => {
 				console.log(res)
 			});
-
 		}
-
-
-		
-		
-
-
 	}
 }
 </script>

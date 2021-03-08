@@ -1,17 +1,53 @@
 <template>
-	<div style="display:flex">
-		<div class="home_image polaroid">
-		</div>
-		<div class="radius">
-		</div>
+	<div style="background-color:gray;min-height:720px">
+	<!-- md-card
+	<div>
+		<md-card style="width:320px;margin:4px;display:inline-block;vertical-align: top;box-shadow:none">
+			<md-card-media>
+				<img src="img/home/redondear_oso_polar.png">
+			</md-card-media>
+		</md-card>
+	-->
+		<div class="md-layout md-gutter m_auto">
+			
+				<div class="md-layout-item">
+					<div class="image_home0" >
+					</div>
+				</div>
 
-		<div class="radius">
+				<div class="md-layout-item">
+					<div class="image_home1" >
+					</div>
+				</div>
+
+				<div class="md-layout-item" >
+					<div class="image_home2"></div>
+				</div>
+
+				<div class="md-layout-item">
+					<div class="image_home3"></div>
+				</div>
+				<div class="md-layout-item">
+					<div class="image_home4">
+					</div>
+				</div>
+				<div class="md-layout-item">
+					<div class="image_home5">
+					</div>
+				</div>
+				<div class="md-layout-item">
+					<div class="image_home6">
+					</div>
 		</div>
-		<div class="radius">
-		</div>
+		<div class="md-layout md-gutter">
+				
+				</div>
+			</div>
+		
+		
 
 
-		<div class="video">
+		<!--<div class="video">
 			<video id="video" playsinline autoplay></video>
 		</div>
 		<div class="controller">
@@ -19,6 +55,7 @@
 			<button id="snap2" @click="init()">Capture</button>
 		</div>
 		<canvas id="canvas" width="640" height="480"></canvas>
+	-->
 	</div>
 	
 </template>
@@ -43,11 +80,13 @@ export default {
 		}
 	},
 	mounted(){
+		/*
 		this.video=document.querySelector("#video");
 		this.canvas=document.querySelector("#canvas");
 		this.snap=document.querySelector("#snap");
 		this.errorMsge=document.querySelector("span#errorMsge");
 		this.context=this.canvas.getContext("2d");
+		*/
 		//this.mediaSource=new MediaSource();
 
 		//this.init();

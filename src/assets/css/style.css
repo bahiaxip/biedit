@@ -612,22 +612,83 @@ Accent: #ff5252 => Red A200
     
     
 }
-.polaroid{
-    background:url("../../../public/img/home/fun.jpg");
+.image_home0{
+    background:url("../../../public/img/home/forma_selfie.png");
+    min-width:200px;
     width:300px;
     height:200px;    
-    margin-top:100px;
+    margin-top:20px;
+    margin-left:100px;
+    
+    background-position:center;
+    background-size:100%;
+    background-repeat:no-repeat;
+}
+.image_home1{
+    background:url("../../../public/img/home/vineta_uva.jpg");
+    min-width:200px;
+    width:300px;
+    height:100px;    
+    margin-top:70px;
+    
+    
+    background-position:center;
+    background-size:100%;
+    background-repeat:no-repeat;
+}
+
+.image_home2{
+    min-width:200px;
+    background:url("../../../public/img/home/oleo_labrador.jpg");
+    width:500px;
+    height:200px;    
+    margin-top:30px;
+    
+    position:relative;
+    background-position:center;
+    background-size:100%;
+    background-repeat:no-repeat;
+}
+
+.image_home3{
+    background:url("../../../public/img/home/redondear_oso_polar.png");
+    width:300px;
+    height:200px;    
+    margin-top:30px;
+    
+    position:relative;
+    background-position:center;
+    background-size:100%;
+    background-repeat:no-repeat;
+    transform:scale(0.8) rotate(-20deg)
+}
+.image_home4{
+    background:url("../../../public/img/home/ensalada.png");
+    width:300px;
+    height:300px;    
+    margin-top:30px;
     margin-left:100px;
     position:relative;
     background-position:center;
     background-size:100%;
     background-repeat:no-repeat;
 }
-.radius{
-    background:url("../../../public/img/home/oso_polar.png");
+.image_home5{
+    background:url("../../../public/img/home/fun.jpg");
     width:300px;
-    height:200px;    
-    margin-top:100px;
+    height:300px;    
+    margin-top:30px;
+    margin-left:100px;
+    position:relative;
+    background-position:center;
+    background-size:100%;
+    background-repeat:no-repeat;
+}
+.image_home6{
+    background:url("../../../public/img/home/circulo_pareja_sepia.png");
+    width:300px;
+    height:300px;    
+    margin-top:30px;
     margin-left:100px;
     position:relative;
     background-position:center;
