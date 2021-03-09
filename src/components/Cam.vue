@@ -9,8 +9,8 @@
 
 			<div class="md-layout-item md-size-50">
 				<div class="buttons-cam-panel">
-					<md-button class="md-icon-button md-raised md-accent" @click="capture()">
-						<md-icon>camera</md-icon>
+					<md-button class="md-icon-button md-raised primary " @click="capture()">
+						<md-icon class="c_white">camera</md-icon>
 					</md-button>					
 				</div>
 					
@@ -39,13 +39,13 @@
 		md-content="La imagen ha sido guardada en el álbum"
 		md-confirm-text="OK" />
 
-		<md-dialog :md-active.sync="dialogImageCam" class="effect_dialog" >
-			<img :src="imageCam" v-if="imageCam" />
+		<md-dialog :md-active.sync="dialogImageCam" class="effect_dialog " >
+			<img :src="imageCam" v-if="imageCam" class="dis"/>
 			<!-- colocar una transición o un interruptor para aparezca un poquito
 				después que la imagen -->
-			<div class="load_new_image" style="" v-if="imageCam">
+			<div class="load_new_image " style="" v-if="imageCam" >
 				<p>Desea guardar la nueva imagen en el álbum?</p>
-				<md-button style="" class="md-raised md-accent" @click="loadImage()">
+				<md-button style="" class="" @click="loadImage()">
 					OK
 				</md-button>
 				<md-button @click="cancelLoadImage()">

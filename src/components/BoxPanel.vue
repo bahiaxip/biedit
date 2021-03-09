@@ -1,5 +1,5 @@
 <template>
-	<div class="box-panel effect" id="box-panel" :style="{width:ima.widthCut+'px',height:ima.heightCut+'px'}" >
+	<div class="box-panel effect" id="box-panel" :style="{width:ima.widthCut+'px',height:ima.heightCut+'px','margin-top':ima.boxPanelMargin}" >
 		<!--<div class="square-panel" id="square-panel" @mousedown="activeMove($event)"   @mouseup="inactiveMove($event)" @touchstart="activeMove($event)" @touchend="inactiveMove($event)">-->
 			<div class="square-panel" id="square-panel" @mousedown="activeMove($event)"   @touchstart="activeMove($event)" @touchend="inactiveMove($event)">
 			<div class="box-square" style="" id="box-square-main">
@@ -76,7 +76,9 @@ export default {
 			moveActive:false,
 			parent:null,
 			xInitial:null,
-			yInitial:null
+			yInitial:null,
+
+
 		}
 	},
 //revisar si existen decimales en las pruebas por si falta algún parseInt(), al modificar el ancho

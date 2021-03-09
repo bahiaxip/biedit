@@ -103,10 +103,10 @@
 			</transition-group>
 			<ul class="pagination" v-if="totalImages>10">
 				<li v-for="(n) in totalPages" :key="n" >
-					<md-button class="md-icon-button md-raised md-accent" v-if="n==actualPage" >
+					<md-button class="md-icon-button md-raised primary c_white" v-if="n==actualPage" >
 					{{n}}
 					</md-button>
-					<md-button class="md-icon-button md-raised md-primary" v-else @click="getImages(n)">
+					<md-button class="md-icon-button md-raised accent c_white" v-else @click="getImages(n)">
 					{{n}}
 					</md-button>
 				</li>

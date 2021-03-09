@@ -1,44 +1,72 @@
 <template>
-	<div>
+	<div >
 	<md-progress-spinner md-mode="indeterminate" v-if="displayLoading"  class="load_new_image"></md-progress-spinner>
 	<div class="back-main-panel" :style="{width:ima.width+'px'}" :v-if="ima.width!=null" ref="backMainPanel">
 		
-		<div class="button-nav-mainpanel" style="" >
-			<md-switch class="colorB " v-model="resizeSwitch"  v-if="showResize">
-			</md-switch>
-			<md-tooltip >Redimensionar</md-tooltip>
+		<div class="button-nav-mainpanel"   >
+			<!-- opción switch centrado con absolute-->
+			<!-- 
+			:style="ima.width<100 ? 'position:absolute;left:50%;transform:translate(-50%)':''"
+			-->
+			
 			<!--<md-tooltip v-else>No Redimensionar</md-tooltip>-->
-			<md-button class="md-icon-button md-mini md-raised md-accent fab_button_head floatL inlineB" title="Guardar en album" @click="dialogResizeActive=true" v-if="resizeSwitch"><md-icon>add_photo_alternate</md-icon></md-button>
+			<div :style="ima.width<170 ? 'display:block;margin:auto': 'display:inline-flex'">
+				<md-switch class="colorB " v-model="resizeSwitch"  v-if="showResize" >
+				</md-switch>
+				<md-tooltip >Redimensionar</md-tooltip>
+			</div>
+			<div style="display:inline">
+						
+				<div :style="ima.width<100 ? 'display:flex':'display:inline'">
+				<md-button class="md-icon-button md-mini md-raised primary fab_button_head floatL inlineB" title="Guardar en album" :class="ima.width<170 ? 'md-dense':''" @click="dialogResizeActive=true" v-if="resizeSwitch" :style="ima.width<100 ? 'margin:auto':'display:block'"><md-icon class="c_white">add_photo_alternate</md-icon></md-button>
 
-			<!--<md-button class="md-fab md-mini fab_button_standard floatR" title="Descargar" v-if="resizeSwitch" ><md-icon>save_alt</md-icon></md-button>-->
-			<!-- sustituimos md-switch por md-button para corregir ancho y alto -->
-			<!--<md-switch class="colorB " v-model="freeResize"  title="Redimensión libre" v-if="resizeSwitch">
-			</md-switch>-->
-			<md-button class="md-icon-button md-mini md-raised md-accent fab_button_standard floatR" title="Redimensión libre" v-if="resizeSwitch" @click="returnResizeMain()" :class="{'free_resize_activated':freeResize}"><md-icon>image_aspect_ratio</md-icon></md-button>
+				<!--<md-button class="md-fab md-mini fab_button_standard floatR" title="Descargar" v-if="resizeSwitch" ><md-icon>save_alt</md-icon></md-button>-->
+				<!-- sustituimos md-switch por md-button para corregir ancho y alto -->
+				<!--<md-switch class="colorB " v-model="freeResize"  title="Redimensión libre" v-if="resizeSwitch">
+				</md-switch>-->
+				<md-button class="md-icon-button md-mini md-raised primary fab_button_standard floatR" title="Redimensión libre" v-if="resizeSwitch" @click="returnResizeMain()" :class="[{'accent':freeResize},ima.width<170 ? 'md-dense':'']" :style="ima.width<100 ? 'display:none':'display:block'"><md-icon class="c_white">image_aspect_ratio</md-icon></md-button>
+				</div>
+			</div>
 
 		</div>
-		<div class="" style="min-width:170px">
-		<!-- :style (doble condición) -->
-			<div class="labels-mainpanel" v-if="resizeSwitch">
+		<div class="clearL"></div>
+		<div class="labels-mainpanel" v-if="resizeSwitch" style="">
 				<label>
-					<p class="floatL font_label" :style="ima.width<250 ? ima.width<170 ? 'font-size:10px;color:white;padding:4px' : 'font-size:12px;color:white;padding:7px' : 'font-size:15px;color:white;padding:7px'" >
+					<p class="floatL font_label" :style="
+						ima.width<250 ? 
+						ima.width<170 ?
+						ima.width<120 ?
+							'font-size:11px;color:black;padding:0px;background-color:white':
+							'font-size:11px;color:white;padding:4px' : 'font-size:12px;color:white;padding:7px' : 'font-size:15px;color:white;padding:7px'" >
 
-						<span v-if="ima.width>170" class="c_orange">w:</span>
-						{{ima.width}}px
+						<span v-if="ima.width>170" class="c_bnext">w:</span>
+						{{ima.width}}<span v-if="ima.width>120">px</span>
 
 					</p>
 				</label>
 				<!--<md-button class="md-fab md-mini fab_button_standard" title="Guardar en album" @click="dialogResizeActive=true" v-if="ima.width>=220"><md-icon>photo_album</md-icon></md-button>
 				<md-button class="md-fab md-mini fab_button_standard" title="Descargar" v-if="ima.width>300"><md-icon>save_alt</md-icon></md-button>-->
-				<label>
-					<p class="floatR font_label" :style="ima.width<250 ? ima.width<170 ? 'font-size:10px;padding:4px':'font-size:12px;padding:7px' : 'font-size:15px;padding:7px'">
 
-					<span v-if="ima.width>170" class="c_orange">h:</span>
-					{{ima.height}}px
+				<label>
+					<p class="floatR font_label" :style="
+						ima.width<250 ? 
+						ima.width<170 ? 
+						ima.width<120 ?
+							'font-size:11px;color:black;padding:0;background-color:white':
+							'font-size:11px;padding:4px':
+							'font-size:12px;padding:7px' : 
+							'font-size:15px;padding:7px'">
+
+					<span v-if="ima.width>170" class="c_bnext">h:</span>
+					{{ima.height}}<span v-if="ima.width>120">px</span>
+					
 
 				</p>
 				</label>
 			</div>
+		<div class="" >
+		<!-- :style (doble condición) -->
+			
 			<transition name="fade">
 				<div id="div-main" class="div-main no-selectable" :style="{width:ima.width+'px',height:ima.height+'px'}" ref="divmain" v-if="imgTrans">
 					
@@ -318,7 +346,7 @@ export default {
 			}else{
 				//console.log("e.clientY: ", e.clientY);
 				let widthDefault=this.ima.widthDefault;
-				this.ima.width=w;
+				this.ima.width=Math.round(w);
 				if(this.freeResize){
 					//pageXoffset y pageYOffset son alias de scrollX y scrollY,
 					//al igual que clientX son propiedades de solo lectura (read-only)
@@ -338,7 +366,7 @@ export default {
 					//divMain.style.height=h+"px";
 					//backMainPanel.style.height=(suma-backMainPanel.offsetTop)+"px";
 					
-					this.ima.height=h;
+					this.ima.height=Math.round(h);
 					//console.log("llega");
 
 				}else{

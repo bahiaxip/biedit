@@ -3,23 +3,23 @@
 		<!--<div class="back-effect-panel" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >-->
 		<div class="" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >
 			<div class="m_auto t_center" >
-				<md-button class="md-icon-button  md-raised" :class="btnActive.rotateLeft ? 'accent' : 'md-accent'"  md-menu-trigger @click="rotate('left')" title="Rotación Izquierda">
-					<md-icon class="">rotate_left</md-icon>
+				<md-button class="md-icon-button md-raised " :class="btnActive.rotateLeft ? 'accent' : 'primary'"  md-menu-trigger @click="rotate('left')" title="Rotación Izquierda">
+					<md-icon class="c_white">rotate_left</md-icon>
 				</md-button>
-				<md-button class="md-icon-button  md-raised md-accent" :class="btnActive.rotateBottom ? 'accent' : 'md-accent'"  md-menu-trigger @click="rotate('top_bottom')" title="Rotación Vertical">
-					<md-icon class="">loop</md-icon>
+				<md-button class="md-icon-button  md-raised " :class="btnActive.rotateBottom ? 'accent' : 'primary'"  md-menu-trigger @click="rotate('top_bottom')" title="Rotación Vertical">
+					<md-icon class="c_white">loop</md-icon>
 				</md-button>
-				<md-button class="md-icon-button  md-raised md-accent" :class="btnActive.rotateRight ? 'accent' : 'md-accent'" md-menu-trigger @click="rotate('right')" title="Rotación Derecha">
-					<md-icon class="">rotate_right</md-icon>
+				<md-button class="md-icon-button  md-raised" :class="btnActive.rotateRight ? 'accent' : 'primary'" md-menu-trigger @click="rotate('right')" title="Rotación Derecha">
+					<md-icon class="c_white">rotate_right</md-icon>
 				</md-button>
 
 				<div class="btn_clear_check" style="" >
-					<md-button class="md-icon-button md-raised md-accent md-dense btn_selected" @click="confirmChange('undoAll')">
-						<md-icon>clear</md-icon>
+					<md-button class="md-icon-button md-raised primary md-dense btn_selected" @click="confirmChange('undoAll')">
+						<md-icon class="c_white">clear</md-icon>
 						<md-tooltip>Deshacer todo</md-tooltip>
 					</md-button>
-					<md-button class="md-icon-button md-raised md-accent md-dense btn_selected" @click="confirmChange('processAll')">
-						<md-icon>check</md-icon>
+					<md-button class="md-icon-button md-raised primary md-dense btn_selected" @click="confirmChange('processAll')">
+						<md-icon class="c_white">check</md-icon>
 						<md-tooltip>Aplicar cambios</md-tooltip>
 					</md-button>
 				</div>
@@ -29,11 +29,11 @@
 				</md-button>-->
 
 
-				<md-button class="md-icon-button  md-raised " :class="btnActive.reflexVertical ? 'accent' : 'md-accent'" md-menu-trigger @click="reflex('vertical')" title="Reflejo Vertical">
+				<md-button class="md-icon-button  md-raised " :class="btnActive.reflexVertical ? 'accent' : 'primary'" md-menu-trigger @click="reflex('vertical')" title="Reflejo Vertical">
 					<md-icon class="c_white">swap_vert</md-icon>
 				</md-button>
 
-				<md-button class="md-icon-button  md-raised " :class="btnActive.reflexHorizontal ? 'accent' : 'md-accent'"  md-menu-trigger @click="reflex('horizontal')" title="Reflejo Horizontal">
+				<md-button class="md-icon-button  md-raised " :class="btnActive.reflexHorizontal ? 'accent' : 'primary'"  md-menu-trigger @click="reflex('horizontal')" title="Reflejo Horizontal">
 					<md-icon class="c_white">swap_horiz</md-icon>
 				</md-button>
 				<!--<div style="margin:auto;text-align:center" >-->
@@ -167,7 +167,7 @@
 
 				<div class="md-layout-item md-xlarge-size-50 md-medium-size-50 md-small-size-100" style="">
 					<md-menu class="md_menu_custom" md-align-trigger style="">
-						<md-button class="md-icon-button  md-raised" :class="btnActive.filter ? 'accent':'md-accent'"  md-menu-trigger @click="btnActive.filter=true;testGButton1('filter')">
+						<md-button class="md-icon-button  md-raised" :class="btnActive.filter ? 'accent':'primary'"  md-menu-trigger @click="btnActive.filter=true;testGButton1('filter')">
 							<md-icon class="c_white">settings_brightness</md-icon>
 						</md-button>
 						<md-tooltip md-direction="top">Filtros</md-tooltip>
@@ -206,8 +206,8 @@
 						</md-menu-content>
 					</md-menu>
 					<md-menu class=" md_menu_custom p_auto" md-align-trigger >
-						<md-button class="md-icon-button  md-raised " :class="btnActive.polygon ? 'accent':'md-accent'"  md-menu-trigger @click="btnActive.polygon=true;testGButton1('polygon')">
-							<md-icon class="">exposure</md-icon>
+						<md-button class="md-icon-button  md-raised " :class="btnActive.polygon ? 'accent':'primary'"  md-menu-trigger @click="btnActive.polygon=true;testGButton1('polygon')">
+							<md-icon class="c_white">exposure</md-icon>
 							<md-tooltip md-direction="top">Formas</md-tooltip>
 						</md-button>
 						<md-menu-content class="menu_filter" :style="{'max-height':imaEffect.height+'px'}">					
@@ -266,7 +266,7 @@
 						</md-menu-content>
 				</md-menu>
 				<md-menu class="md_menu_custom" style="padding:auto" md-align-trigger >
-					<md-button class="md-icon-button  md-raised" :class="btnActive.effect ? 'accent': 'md-accent'"  md-menu-trigger @click="btnActive.effect=true;testGButton1('effect')">
+					<md-button class="md-icon-button  md-raised" :class="btnActive.effect ? 'accent': 'primary'"  md-menu-trigger @click="btnActive.effect=true;testGButton1('effect')">
 						<md-icon class="c_white">adjust</md-icon>
 						<md-tooltip md-direction="top">Efectos</md-tooltip>
 					</md-button>
@@ -409,15 +409,15 @@
 			-->
 		<!-- select -->
 				<div class="md_menu_custom" style="margin-top:20px">
-					<md-button class="md-icon-button  md-raised buttons_composite "  md-menu-trigger @click="showListImage('fussion')" :class="fussionActivated ? 'accent':'md-accent'">
+					<md-button class="md-icon-button md-raised buttons_composite "  md-menu-trigger @click="showListImage('fussion')" :class="fussionActivated ? 'accent':'primary'">
 						<md-icon md-src="img/effect/layers-plus_white.svg"></md-icon>
 						<md-tooltip>Fusión</md-tooltip>
 					</md-button>
-					<md-button class="md-icon-button  md-raised md-accent buttons_composite "  md-menu-trigger @click="showListImage('watermark')" :class="wmActivated ? 'accent':'md-accent'">
+					<md-button class="md-icon-button  md-raised buttons_composite "  md-menu-trigger @click="showListImage('watermark')" :class="wmActivated ? 'accent':'primary'">
 						<md-icon md-src="img/effect/watermark-white.svg"></md-icon>
 						<md-tooltip>Marca de Agua</md-tooltip>
 					</md-button>
-					<md-button class="md-icon-button  md-raised md-accent buttons_composite "  md-menu-trigger @click="showListImage('create-watermark')" :class="createWmActivated ? 'accent':'md-accent'">
+					<md-button class="md-icon-button  md-raised  buttons_composite "  md-menu-trigger @click="showListImage('create-watermark')" :class="createWmActivated ? 'accent':'primary'">
 						<md-icon md-src="img/effect/format-annotation-plus-white.svg"></md-icon>
 						<md-tooltip>Crear marca de agua</md-tooltip>
 					</md-button>							
@@ -690,7 +690,7 @@
 	</div>	
 </transition>
 
-				<md-dialog-confirm class="confirmEffect"
+				<md-dialog-confirm class="confirmDialogEffect"
 				:md-active.sync="dialogConfirmActive"
 				:md-title = "dialog_selected"
 				md-confirm-text="OK"
@@ -706,19 +706,19 @@
 				@md-cancel="cancelChange"
 				@md-confirm="setChange" />-->
 	
-				<md-dialog-alert class="confirmDialog"
+				<md-dialog-alert class="confirmDialogEffect"
 				:md-active.sync="dialogInfoActive"
 				md-title = "Nada que actualizar"
 				md-content = "No se han detectado cambios"
 				md-confirm-text="OK" />
 	
-				<md-dialog-alert class="confirmDialog"
+				<md-dialog-alert class="confirmDialogEffect"
 				:md-active.sync="dialogErrorActive"
 				md-title = "Error al procesar la imagen"
 				:md-content = "msgeDialogAlert"
 				md-confirm-text="OK" />
 
-				<md-dialog-alert class="confirmDialog"
+				<md-dialog-alert class="confirmDialogEffect"
 				:md-active.sync="dialogNotChannelsActive"
 				md-title = "No disponible"
 				md-content = "La extracción de canales no se encuentra disponible para esta imagen"
@@ -988,6 +988,7 @@ export default {
 	},
 
 	mounted(){
+
 		//nexttick hace un efecto similar al setTimeout, espera al callback(), de esa
 		//forma permite acceder desde el mounted a propiedades en $refs
 		this.$nextTick(() => {

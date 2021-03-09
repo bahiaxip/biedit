@@ -4,26 +4,26 @@
 		<div class="nav " style="background:#434540">
 		<!--<md-toolbar class="md-accent" >-->
 			<div class="floatL"   >
-				<md-button class="primary md-fab" title="Sesión" @click="switchDialog()" >
-					<md-icon>person</md-icon>
+				<md-button class="primary_nav "  :class="[smallHeader ? 'md-icon-button' : 'md-fab',{'md-dense':denseHeader}]" title="Sesión" @click="switchDialog()" >
+					<md-icon class="c_white">person</md-icon>
 				</md-button>
 			</div>
 			<!-- deshabilitamos el md-drawer pk genera conflicto con el componente cut-panel-->
 			<div class="floatR" >
-				<md-button class="primary md-fab "   title="Opciones" @click="showSidePanel=true" :disabled="!parentMdDrawer">
+				<md-button class="primary_nav" :class="[smallHeader ? 'md-icon-button' : 'md-fab',{'md-dense':denseHeader}]"   title="Opciones" @click="showSidePanel=true" :disabled="!parentMdDrawer">
 					<md-icon class="c_white">settings</md-icon>
 				</md-button>
 			</div>
 			<div class="m_auto">
-				<md-button class="md-fab primary " title="Subir imagen" @click="selectUpImage()" >
-					<md-icon>
+				<md-button class="primary_nav" :class="[smallHeader ? 'md-icon-button' : 'md-fab',{'md-dense':denseHeader}]" title="Subir imagen" @click="selectUpImage()" >
+					<md-icon class="c_white">
 						add_photo_alternate
 					</md-icon>
 				</md-button>
 				<input type="file" name="images[]" id="archivo" class="archivo" @change="selectedFile($event)" >
 
 				<router-link :to="{name:'MainPanel',params:{ima:image}}">
-					<md-button class="md-fab primary" :class="{'disabled':mainImage}" title="Panel principal" :disabled="mainImage" >
+					<md-button class="primary_nav" :class="[{'disabled':mainImage},smallHeader ? 'md-icon-button':'md-fab',{'md-dense':denseHeader}]" title="Panel principal" :disabled="mainImage" >
 						<md-icon :class="{c_white:!mainImage}">panorama</md-icon>										
 					</md-button>
 				</router-link>
@@ -31,7 +31,7 @@
 					<md-icon>open_in_full</md-icon>
 				</md-button>-->
 
-				<md-button class="md-fab primary" :class="{'disabled':mainImage}" title="Panel de recorte" @click="cutImage()" :disabled="mainImage" >
+				<md-button class="primary_nav" :class="[{'disabled':mainImage}, smallHeader ? 'md-icon-button': 'md-fab',{'md-dense':denseHeader}]" title="Panel de recorte" @click="cutImage()" :disabled="mainImage" >
 					<md-icon :class="{c_white:!mainImage}">crop</md-icon>
 				</md-button>
 
@@ -40,14 +40,14 @@
 				</md-button>-->
 
 				<router-link :to="{name:'collections',params:{imageMain:image}}">
-					<md-button class="md-fab primary " title="Album" >
+					<md-button class="primary_nav" :class="[smallHeader ? 'md-icon-button': 'md-fab',{'md-dense':denseHeader}]"  title="Album" >
 						<md-icon class="c_white">collections</md-icon>
 					</md-button>
 				</router-link>
 
 				<router-link :to="{name:'effect',params:{ima:image}}">
-					<md-button class="md-fab primary" :class="{'disabled':mainBigImage}" title="Panel de efectos" :disabled="mainBigImage">
-						<md-icon>photo_filter</md-icon>
+					<md-button class="primary_nav" :class="[{'disabled':mainBigImage},smallHeader ? 'md-icon-button':'md-fab',{'md-dense':denseHeader}]" title="Panel de efectos" :disabled="mainBigImage">
+						<md-icon class="c_white">photo_filter</md-icon>
 					</md-button>
 				</router-link>
 			</div>
@@ -197,6 +197,11 @@ export default {
 				//medidas imagen original
 				widthInitial:null,
 				heightInitial:null,
+				//identificador de class para añadir margin-top cuando redimensiona el 
+				//navegador en BoxPanel
+				boxPanelMargin:'8px',
+					
+				
 			},
 			//medidas imagen original
 			/*imageInitial:{
@@ -245,6 +250,10 @@ export default {
 					height:720
 				}
 			},
+			//identificador para smallerHeader (botones de navegador más pequeños)
+			smallHeader:false,
+			//identificador para denseHeader (botones de navegador diminutos)
+			denseHeader:false,
 			//anulado
 			/*
 			btnActive:{
@@ -261,6 +270,9 @@ export default {
 		}
 	},
 	mounted:function(){
+		this.smallerHeader();
+		console.log("anchura: ",window.innerWidth);
+		window.addEventListener("resize",this.smallerHeader);
 		//test device type
 		//podría ser útil para la opción de facingMode en el componente Cam
 		if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
@@ -312,6 +324,42 @@ export default {
 			}
 		},
 		*/
+		smallerHeader(){
+
+			
+
+			if(window.innerWidth<380){
+				this.denseHeader=true;
+				this.smallHeader=true;
+				this.image.boxPanelMargin='44px';
+				
+			}
+			else if(window.innerWidth<520){
+				this.smallHeader=true;
+				this.denseHeader=false;
+				this.image.boxPanelMargin='36px';
+				
+			}else{
+				this.smallHeader=false;
+				this.denseHeader=false;
+				this.image.boxPanelMargin='8px';				
+				//actualizando panel de recorte
+				if(this.$route.name=="cutout"){
+
+
+					let size=this.getWidthAccordingWindow();
+					this.maxWidthDefault=size;
+					if(size<this.widthDefault)
+						this.widthDefault=size;
+					this.image.widthDefault=this.widthDefault;			
+				
+					let sizesCut=this.setSizeToCutPanel(this.image.width,this.image.height,this.minWidthHeight,this.maxWidthDefault,this.maxHeightDefault);
+					this.image.widthCut=sizesCut.width;
+					this.image.heightCut=sizesCut.height;
+				}
+			}
+
+		},
 		comprobar(){
 			//no soportada por firefox
 			//comprobar permisos probado solo chrome

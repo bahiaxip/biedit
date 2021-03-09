@@ -1,5 +1,6 @@
 html,body{
 	margin:0;height:100% !important;
+    min-width:320px !important;
 	/*min-width:540px !important;*/
 
 }
@@ -31,6 +32,7 @@ html,body{
 	z-index:1;
 }
 .total{
+    min-width:320px !important;
     min-height:720px;
 }
 
@@ -42,23 +44,54 @@ html,body{
     top:50%;left:50%;
     transform:translate(-50%,-50%);
 }
-.primary{
+/*primary para toolbar o nav (con fondo oscuro) */
+.primary_nav{
     /*background-color:#448aff !important;*/
-    
-    background:linear-gradient(to bottom, rgba(255,0,120,.7) 0%, rgba(255,0,120,1), rgba(255,0,120,.7) 100%) !important;
+    /*fucsia*/
+    /*background:linear-gradient(to bottom, rgba(255,0,120,.7) 0%, rgba(255,0,120,1), rgba(255,0,120,.7) 100%) !important;*/
+    /*bnext*/
+    background:linear-gradient(to bottom, rgba(255,30,85,.7) 0%, rgba(255,30,85,1), rgba(255,30,85,.7) 100%) !important;
     /*background:linear-gradient(to bottom, rgba(0,0,0,.3) 0%, rgba(0,0,0,.8), rgba(0,0,0,.3) 100%) !important;*/ /*fondo negro transparente*/
     /*background-color:#705ba1 !important;*/ /* azulado*/
     /*background-color:#3967ff !important;*/ /*azul*/
     /*background-color:#8c51ac !important;  */ /*púrpura*/
     /*background-color:#f89b00 !important;*/ /*calabaza*/
 }
+/*primary por defecto (con fondo blanco)*/
+.primary{
+    /*background:linear-gradient(to bottom, rgba(255,0,100,1) 0%, rgba(255,0,100,.7), rgba(255,0,100,1) 100%) !important;*/
+    /*color fucsia*/
+    /*
+    background:rgba(255,0,120,1) !important;
+    */
+    /*color bnext*/
+    /*background:rgba(255,30,85,1) !important;*/
+    /*otro bnext */
+    /*background:rgba(255,20,84,1) !important;*/
+    /*naranja*/
+    /*background:rgba(255,130,0,1) !important;*/
+    background-color:rgba(255,30,85,1) !important;
+    /*gris*/
+    /*background-color:rgba(80,80,80,8) !important;*/
+
+    
+}   
+.c_primary{
+    color:rgba(255,0,120,1) !important;
+}
 .accent{
 
     /*background-color:#ff5252 !important;    */
     /*background-color:#26ada7 !important;*/
     /*background:linear-gradient(to bottom, rgba(38,173,167,.7) 0%, rgba(38,173,167,1), rgba(38,173,167,.7) 100%) !important;*/
-    background:linear-gradient(to bottom, rgba(38,173,167,.7) 0%, rgba(38,173,167,1), rgba(38,173,167,.7) 100%) !important;
+    /*verde seleccionado*/
+    /*background:linear-gradient(to bottom, rgba(38,173,167,.7) 0%, rgba(38,173,167,1), rgba(38,173,167,.7) 100%) !important;*/
     /*#26ada7*/
+    
+    background:linear-gradient(to bottom, rgba(38,173,167,.7) 0%, rgba(38,173,167,1), rgba(38,173,167,.7) 100%) !important;
+}
+.c_bnext{
+    color:rgba(255,30,85,1) !important;
 }
 .disabled{
     background:transparent !important;
@@ -82,7 +115,7 @@ html,body{
     text-align:center;
 }
 .c_orange{
-    color:orange;
+    color:orange !important;
 }
 .c_white{
     color:white !important;
@@ -124,18 +157,46 @@ html,body{
 }
                 /*dialogs*/
 /*dialogs*/
-.confirmDialog .md-dialog-container,.confirmDialog .md-dialog-container span{
+.confirmDialog .md-dialog-container,.confirmDialog .md-dialog-title.confirmDialog .md-dialog-container span{
+    /*lila antiguo*/
+    /*
     background:linear-gradient(to bottom, rgba(99, 0, 228,.8) 0%, rgba(99,0,228,1), rgba(99, 0, 228,.8) 100%);
     color:white ;
-}
-.confirmDialog .md-dialog-content{
-    color:white;
-}
-.confirmDialog .md-button-content{
-    color:white;
+    */
+    /* primary algo claro para dialog*/
+    /*background:linear-gradient(to bottom, rgba(175, 0, 120,.8) 0%, rgba(175,0,120,.9), rgba(175, 0, 120,.8) 100%);*/
+    /* el dialog se compone de container, title y span para asignar el fondo o el color*/    
+    /*background:rgba(165, 0, 90,.9);*/
+    /*background-color:rgba(255,30,85,.9) !important;*/
+    
+    /*fucsia más oscuro*/
+    /*background:linear-gradient(to bottom, rgba(180, 10, 100,.7) 0%, rgba(180,10,100,.8), rgba(180, 10, 100,.7) 100%);*/
+    /*fondo negro*/
+    background:linear-gradient(to bottom, rgba(50, 50, 50,.8) 0%, rgba(50,50,50,.9), rgba(50, 50, 50,.8) 100%);
+    /*color:orange;*/
+    color:rgba(255,0,85,1) !important;
+    /*naranja*/
+    /*color:rgba(255,130,0,1);*/
 }
 
-.confirmDialog{
+.confirmDialog .md-dialog-content{
+    color:white ;
+}
+.confirmDialog .md-button-content{
+    color:white ;
+}
+.confirmDialogEffect .md-dialog-container,.confirmDialogEffect .md-dialog-title.confirmDialogEffect .md-dialog-container span{
+    background:linear-gradient(to bottom, rgba(40, 40, 40,.8) 0%, rgba(40,40,40,.9), rgba(40, 40, 40,.8) 100%);
+    color:rgba(255,0,85,1) ;
+}
+.confirmDialogEffect .md-dialog-content{
+    color:white ;
+}
+.confirmDialogEffect .md-button-content{
+    color:white ;
+}
+
+.confirmDialog, confirmDialogEffect{
     height:auto;
     z-index:106 !important;
     position:absolute;
@@ -181,7 +242,7 @@ html,body{
 .button-nav-mainpanel{
     margin:auto;
     text-align:center;
-    width:170px
+    
 }
 /*revisar si es necesario*/
 
@@ -228,7 +289,7 @@ html,body{
     
 
 }
-
+/*sustituido por accent en MainPanel en botón de redimensión libre*/
 .free_resize_activated{
     background-color:lightblue !important;
 }
@@ -268,6 +329,7 @@ html,body{
     /*z-index:103;*/
 
 }
+
 .box-panel{
 	margin:auto;
     margin-top:8px;
@@ -281,10 +343,11 @@ html,body{
     -webkit-user-select:none;
     -moz-user-select:none;
     -ms-user-select:none;
-
-
-    
 }
+.box-panel520{
+    margin-top:36px !important;
+}
+
 #square-panel{
     /*si se modifica el porcentaje revisar que en boxPanel y Square tengan el parseInt el width*/
 	width:30%;  
@@ -533,11 +596,30 @@ input[type=range]{
 .load_new_image{
     
     margin:auto;
-    background-color:white;
+
+    background:rgba(165, 0, 90,.9);
+    color:white;
+    font-size:16px;    
     padding:20px;    
     position:absolute !important;
     top:50%;left:50%;
     transform:translate(-50%,-50%);
+}
+.load_new_image .md-button{
+    color:white;
+}
+
+@media screen and (max-width:640px){
+    .effect_dialog img{
+        display:flex !important;
+        width:80%;
+        margin:auto;
+    }
+}
+@media screen and (max-width:500px){
+    .small_header{
+
+    }
 }
 
 /* para los 3 efectos fussion, watermark, create-watermark*/
