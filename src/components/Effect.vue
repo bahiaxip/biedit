@@ -3,13 +3,13 @@
 		<!--<div class="back-effect-panel" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >-->
 		<div class="" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >
 			<div class="m_auto t_center" >
-				<md-button class="md-icon-button md-raised " :class="btnActive.rotateLeft ? 'accent' : 'primary'"  md-menu-trigger @click="rotate('left')" title="Rotación Izquierda">
+				<md-button class="md-icon-button md-raised " :class="[btnActive.rotateLeft ? 'accent' : 'primary',ima.windowSize.width<520 ? 'md-dense':'']"  md-menu-trigger @click="rotate('left')" title="Rotación Izquierda">
 					<md-icon class="c_white">rotate_left</md-icon>
 				</md-button>
-				<md-button class="md-icon-button  md-raised " :class="btnActive.rotateBottom ? 'accent' : 'primary'"  md-menu-trigger @click="rotate('top_bottom')" title="Rotación Vertical">
+				<md-button class="md-icon-button  md-raised " :class="[btnActive.rotateBottom ? 'accent' : 'primary',ima.windowSize.width<520 ? 'md-dense':'']"  md-menu-trigger @click="rotate('top_bottom')" title="Rotación Vertical">
 					<md-icon class="c_white">loop</md-icon>
 				</md-button>
-				<md-button class="md-icon-button  md-raised" :class="btnActive.rotateRight ? 'accent' : 'primary'" md-menu-trigger @click="rotate('right')" title="Rotación Derecha">
+				<md-button class="md-icon-button  md-raised" :class="[btnActive.rotateRight ? 'accent' : 'primary',ima.windowSize.width<520 ? 'md-dense':'']" md-menu-trigger @click="rotate('right')" title="Rotación Derecha">
 					<md-icon class="c_white">rotate_right</md-icon>
 				</md-button>
 
@@ -29,11 +29,11 @@
 				</md-button>-->
 
 
-				<md-button class="md-icon-button  md-raised " :class="btnActive.reflexVertical ? 'accent' : 'primary'" md-menu-trigger @click="reflex('vertical')" title="Reflejo Vertical">
+				<md-button class="md-icon-button  md-raised " :class="[btnActive.reflexVertical ? 'accent' : 'primary',ima.windowSize.width<520 ? 'md-dense':'']" md-menu-trigger @click="reflex('vertical')" title="Reflejo Vertical">
 					<md-icon class="c_white">swap_vert</md-icon>
 				</md-button>
 
-				<md-button class="md-icon-button  md-raised " :class="btnActive.reflexHorizontal ? 'accent' : 'primary'"  md-menu-trigger @click="reflex('horizontal')" title="Reflejo Horizontal">
+				<md-button class="md-icon-button  md-raised " :class="[btnActive.reflexHorizontal ? 'accent' : 'primary',ima.windowSize.width<520 ? 'md-dense':'']"  md-menu-trigger @click="reflex('horizontal')" title="Reflejo Horizontal">
 					<md-icon class="c_white">swap_horiz</md-icon>
 				</md-button>
 				<!--<div style="margin:auto;text-align:center" >-->
@@ -167,7 +167,7 @@
 
 				<div class="md-layout-item md-xlarge-size-50 md-medium-size-50 md-small-size-100" style="">
 					<md-menu class="md_menu_custom" md-align-trigger style="">
-						<md-button class="md-icon-button  md-raised" :class="btnActive.filter ? 'accent':'primary'"  md-menu-trigger @click="btnActive.filter=true;testGButton1('filter')">
+						<md-button class="md-icon-button  md-raised" :class="[btnActive.filter ? 'accent':'primary',ima.windowSize.width<520 ? 'md-dense':'']"  md-menu-trigger @click="btnActive.filter=true;testGButton1('filter')">
 							<md-icon class="c_white">settings_brightness</md-icon>
 						</md-button>
 						<md-tooltip md-direction="top">Filtros</md-tooltip>
@@ -206,7 +206,7 @@
 						</md-menu-content>
 					</md-menu>
 					<md-menu class=" md_menu_custom p_auto" md-align-trigger >
-						<md-button class="md-icon-button  md-raised " :class="btnActive.polygon ? 'accent':'primary'"  md-menu-trigger @click="btnActive.polygon=true;testGButton1('polygon')">
+						<md-button class="md-icon-button  md-raised " :class="[btnActive.polygon ? 'accent':'primary',ima.windowSize.width<520 ? 'md-dense':'']"  md-menu-trigger @click="btnActive.polygon=true;testGButton1('polygon')">
 							<md-icon class="c_white">exposure</md-icon>
 							<md-tooltip md-direction="top">Formas</md-tooltip>
 						</md-button>
@@ -266,7 +266,7 @@
 						</md-menu-content>
 				</md-menu>
 				<md-menu class="md_menu_custom" style="padding:auto" md-align-trigger >
-					<md-button class="md-icon-button  md-raised" :class="btnActive.effect ? 'accent': 'primary'"  md-menu-trigger @click="btnActive.effect=true;testGButton1('effect')">
+					<md-button class="md-icon-button  md-raised" :class="[btnActive.effect ? 'accent': 'primary',ima.windowSize.width<520 ? 'md-dense':'']"  md-menu-trigger @click="btnActive.effect=true;testGButton1('effect')">
 						<md-icon class="c_white">adjust</md-icon>
 						<md-tooltip md-direction="top">Efectos</md-tooltip>
 					</md-button>
@@ -409,15 +409,15 @@
 			-->
 		<!-- select -->
 				<div class="md_menu_custom" style="margin-top:20px">
-					<md-button class="md-icon-button md-raised buttons_composite "  md-menu-trigger @click="showListImage('fussion')" :class="fussionActivated ? 'accent':'primary'">
+					<md-button class="md-icon-button md-raised buttons_composite"  md-menu-trigger @click="showListImage('fussion')" :class="[fussionActivated ? 'accent':'primary',ima.windowSize.width<520 ? 'md-dense':'']">
 						<md-icon md-src="img/effect/layers-plus_white.svg"></md-icon>
 						<md-tooltip>Fusión</md-tooltip>
 					</md-button>
-					<md-button class="md-icon-button  md-raised buttons_composite "  md-menu-trigger @click="showListImage('watermark')" :class="wmActivated ? 'accent':'primary'">
+					<md-button class="md-icon-button  md-raised buttons_composite "  md-menu-trigger @click="showListImage('watermark')" :class="[wmActivated ? 'accent':'primary',ima.windowSize.width<520 ? 'md-dense':'']">
 						<md-icon md-src="img/effect/watermark-white.svg"></md-icon>
 						<md-tooltip>Marca de Agua</md-tooltip>
 					</md-button>
-					<md-button class="md-icon-button  md-raised  buttons_composite "  md-menu-trigger @click="showListImage('create-watermark')" :class="createWmActivated ? 'accent':'primary'">
+					<md-button class="md-icon-button  md-raised  buttons_composite "  md-menu-trigger @click="showListImage('create-watermark')" :class="[createWmActivated ? 'accent':'primary',ima.windowSize.width<520 ? 'md-dense':'']">
 						<md-icon md-src="img/effect/format-annotation-plus-white.svg"></md-icon>
 						<md-tooltip>Crear marca de agua</md-tooltip>
 					</md-button>							
@@ -426,7 +426,7 @@
 					<div class="clearL"></div>
 				<!-- cancel botón -->
 					<div class="m_top10" v-if="compListActive || wmInputActive||rangeTexturizeActive||rangeCompressActive||spaceColorActive || channelActive">
-						<md-button class="md-icon-button  md-raised accent md-dense m_top5"  md-menu-trigger @click="cancelAll()"  >
+						<md-button class="md-icon-button  md-raised accent md-dense m_top5"  md-menu-trigger @click="cancelAll()" >
 							<md-icon class="c_white">clear</md-icon>
 							<md-tooltip>Deshacer</md-tooltip>
 						</md-button>
@@ -645,7 +645,7 @@
 
 				<div class="md-layout-item md-xlarge-size-50 md-medium-size-50 md-small-size-100">
 						<md-speed-dial md-event="click" md-direction="bottom" ref="dial">
-							<md-speed-dial-target class="md-icon-button md-dense" :class="{'accent':dial}"  @click="hideDials('dial');testGButton1('dials')">
+							<md-speed-dial-target class="md-icon-button md-dense primary" :class="{'accent':dial}"  @click="hideDials('dial');testGButton1('dials')">
 								<md-icon class="md-morph-initial" >miscellaneous_services</md-icon>
 								<md-icon class="md-morph-final">edit</md-icon>
 							</md-speed-dial-target>
@@ -663,7 +663,7 @@
 							</md-speed-dial-content>
 						</md-speed-dial>
 						<md-speed-dial md-event="click" md-direction="bottom" ref="dial2">
-							<md-speed-dial-target class="md-icon-button md-dense " :class="{'accent':dial2}" @click="hideDials('dial2');testGButton1('dials')">
+							<md-speed-dial-target class="md-icon-button md-dense primary" :class="{'accent':dial2}" @click="hideDials('dial2');testGButton1('dials')">
 								<md-icon class="md-morph-initial">workspaces</md-icon>
 								<md-icon class="md-morph-final" >edit</md-icon>
 							</md-speed-dial-target>
@@ -730,11 +730,12 @@
 		<!-- modal dialog de vista previa con imagen y solicitud de carga como imagen
 			principal-->
 
-		<md-dialog :md-active.sync="dialogImage" class="effect_dialog" >
+		<md-dialog :md-active.sync="dialogImage" class="effect_dialog" style="">
+			
 			<img :src="url+'get-image/'+tmpImage.random_name" v-if="tmpImage" :width="ima.width" :height="ima.height"/>
 			<!-- colocar una transición o un interruptor para aparezca un poquito
 				después que la imagen -->
-			<div class="load_new_image" style="" v-if="tmpImage">
+			<div class="load_new_image" style="z-index:999 !important;" v-if="tmpImage">
 				<p>¿Cargar la nueva imagen?</p>
 				<md-button style="" class="md-raised md-accent" @click="setTmpImage()">
 					OK

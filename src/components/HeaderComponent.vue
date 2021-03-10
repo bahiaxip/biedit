@@ -118,8 +118,11 @@
 						<span class="md-list-item-text">Cámara</span>
 						
 					</md-list-item>
-					<md-list-item @click="comprobar()">
+					<md-list-item @click="volumeActive=!volumeActive">
 						<span class="md-list-item-text" >Ajustes de sonido</span>
+					</md-list-item>
+					<md-list-item>
+						<input type="range" min="1" max="10" v-model="volume" v-if="volumeActive" @input="editVolume()"/>
 					</md-list-item>
 				</md-list>				
 			</md-drawer>
@@ -200,7 +203,7 @@ export default {
 				//identificador de class para añadir margin-top cuando redimensiona el 
 				//navegador en BoxPanel
 				boxPanelMargin:'8px',
-					
+				windowSize:{},
 				
 			},
 			//medidas imagen original
@@ -250,10 +253,14 @@ export default {
 					height:720
 				}
 			},
+			//volumen de la etiqueta audio usada en Cam y CutPanel, almacenada en sessionStorage
+			volume:null,
+			volumeActive:false,
 			//identificador para smallerHeader (botones de navegador más pequeños)
 			smallHeader:false,
 			//identificador para denseHeader (botones de navegador diminutos)
 			denseHeader:false,
+			
 			//anulado
 			/*
 			btnActive:{
@@ -270,17 +277,23 @@ export default {
 		}
 	},
 	mounted:function(){
+
 		this.smallerHeader();
-		console.log("anchura: ",window.innerWidth);
-		window.addEventListener("resize",this.smallerHeader);
+		this.$nextTick(function(){
+			window.addEventListener("resize",this.smallerHeader);	
+		})		
+		
 		//test device type
 		//podría ser útil para la opción de facingMode en el componente Cam
 		if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
 			console.log("es dispositivo movil");	
 		}
-		//asignamos el ancho máximo según el ancho del dispositivo
+		//asignamos el ancho máximo de la imagen según el ancho del dispositivo
 		let size=this.getWidthAccordingWindow();
+		this.image.windowSize={width:window.innerWidth,height:window.innerHeight};
+		console.log("windowSize: ",this.image.windowSize.width);		
 		this.maxWidthDefault=size;
+		
 		//el ancho asignado por defecto del panel principal: widthDefault (estblecido en 600.
 		//si el ancho asignado según la resolución del dispositivo es menor, 
 		//aprovechamos el maxWidthDefault destinado al panel de recorte y se asigna al widthDefault
@@ -301,8 +314,12 @@ export default {
 		if(session.status=="error")
 			this.switchDialog();
 		this.video=this.$refs.video;
+		this.volume=sessionStorage.getItem("biedit_audio");
 		
 		
+	},
+	updated(){
+
 	},
 	
 	methods:{
@@ -325,16 +342,19 @@ export default {
 		},
 		*/
 		smallerHeader(){
-
-			
-
-			if(window.innerWidth<380){
+			let wSize={
+				width:window.innerWidth,
+				height:window.innerHeight
+			}
+			console.log("wSize: ",wSize)
+			this.image.windowSize.width=wSize.width;
+			if(wSize.width<380){
 				this.denseHeader=true;
 				this.smallHeader=true;
 				this.image.boxPanelMargin='44px';
 				
 			}
-			else if(window.innerWidth<520){
+			else if(wSize.width<520){
 				this.smallHeader=true;
 				this.denseHeader=false;
 				this.image.boxPanelMargin='36px';
@@ -345,22 +365,64 @@ export default {
 				this.image.boxPanelMargin='8px';				
 				//actualizando panel de recorte
 				if(this.$route.name=="cutout"){
-
-
-					let size=this.getWidthAccordingWindow();
+							//devuelven lo mismo
+							//console.log(document.documentElement.clientWidth)
+							//console.log(window.innerWidth)
+				console.log("redimensionando...",this.$route.name);
+					//ancho correspondiente a la ventana del dispositivo
+				let size=this.getWidthAccordingWindow();
+				console.log("size: ",size);					
 					this.maxWidthDefault=size;
-					if(size<this.widthDefault)
-						this.widthDefault=size;
-					this.image.widthDefault=this.widthDefault;			
-				
-					let sizesCut=this.setSizeToCutPanel(this.image.width,this.image.height,this.minWidthHeight,this.maxWidthDefault,this.maxHeightDefault);
-					this.image.widthCut=sizesCut.width;
-					this.image.heightCut=sizesCut.height;
+					//if(size<this.widthDefault )
+						//this.widthDefault=size;
+
+					//this.image.widthDefault=this.widthDefault;
+					//console.log("maxWidthDefault: ",this.maxWidthDefault);
+					//console.log("widthCut: ",this.image.widthCut)
+					console.log(this.maxWidthDefault);
+					let sizesCut=this.setSizeToCutPanel(this.image.widthInitial,this.image.heightInitial,this.minWidthHeight,this.maxWidthDefault,this.maxHeightDefault);
+					console.log("sizesCut: ",sizesCut);
+					//console.log("widthCut: ",this.image.widthCut);
+					//console.log("heightCut: ",this.image.heightCut);
+					//es necesario comprobar ya que no da tiempo el innerwidth a 
+					//establecer los datos
+					if(sizesCut.width)
+						this.image.widthCut=sizesCut.width;
+					if(sizesCut.height)
+						this.image.heightCut=sizesCut.height;
+			//actualizamos ancho y alto del hijo de dialog(md-dialog-container que es 
+			//dinámico de vue material)
+					document.querySelector(".back-cut-panel").firstChild.style.minWidth=this.image.widthCut+"px";
+					document.querySelector(".back-cut-panel").firstChild.style.height=this.image.heightCut+"px";
+				}
+				else if(this.$route.name=="MainPanel"){
+					let size=this.getWidthAccordingWindow();
+					
+					console.log("window width: ",this.image.windowSize.width);
+					let sizeTmp;
+					if(size<this.widthDefault){
+						sizeTmp=size;
+					}else{
+						sizeTmp=this.widthDefault;
+					}
+					let sizesMain=this.setSizeToMainPanel(this.image.widthInitial,this.image.heightInitial,this.minWidthHeight,sizeTmp);			
+					this.image.width=sizesMain.width;
+					this.image.height=sizesMain.height;
 				}
 			}
+			//this.image.windowSize.width=wSize.width;
+			console.log(wSize.width);			
 
 		},
-		comprobar(){
+		//asignar nuevo volumen
+		editVolume(){
+			let volume;
+			if(this.volume==10)
+				volume=1;
+			else
+				volume=parseFloat("0."+this.volume);
+			sessionStorage.setItem("biedit_audio",volume)
+			console.log("audiovolume: ",volume)
 			//no soportada por firefox
 			//comprobar permisos probado solo chrome
 			/*
@@ -395,7 +457,7 @@ export default {
 					this.showSidePanel=false;
 					if(this.$route.name != "cam")
 					//console.log("ruta_name: ",this.$route.name)
-						this.$router.push("/cam");
+						this.$router.push({name:"cam"});
 					else
 						this.$forceUpdate();		
 				}).catch(error =>{
@@ -535,7 +597,8 @@ export default {
 				//ya se encuentra en cutout;
 				return;
 			}
-			if(this.image.width<100 ||  this.image.height<100){
+			//comprobamos si las dimensiones originales de la imagen son menores a 100
+			if(this.image.widthInitial<100 ||  this.image.heightInitial<100){
 				this.msgeDialogAlert="El panel de recorte requiere una imagen con ancho y alto superiores a 100 píxeles";
 				this.titleDialogAlert="La imagen no es válida";
 				this.dialogErrorActive=true;
@@ -742,6 +805,8 @@ export default {
 			this.mainImage=state;
 			this.mainBigImage=state;		
 		},
+
+
 	//método de intercambio de botón que sirve el mismo botón (sustituyendo el icono) para acceder al panel de recorte y volver al panel principal
 	/*anulado, se ha pasado el botón al mismo componente de recorte*/
 	/*
@@ -834,6 +899,7 @@ export default {
 .md-content{
 	padding:16px;
 }
+//no solucionado
 //solución al conflicto del componente CutPanel con md-drawer en HeaderComponent
 .solution_pagecontainer{
 	z-index:120 !important;

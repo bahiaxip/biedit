@@ -72,7 +72,7 @@ incorpora una media query que por debajo de 600px de ancho pasa del width 80% a 
 /*menu filter, menu polygon, menu effects*/
 .menu_filter {
 	box-shadow:none !important;
-	min-width:50px !important;
+	min-width:50px !important;	
 	
 	/*por si se quiere ver el botón, pero no es seleccionable*/
 	/*padding-top:50px !important;*/
@@ -118,6 +118,8 @@ incorpora una media query que por debajo de 600px de ancho pasa del width 80% a 
 .md-dialog.effect_dialog>:first-child {
 	background:transparent !important;
 	box-shadow:none;
+	/* posible solución a dialog-confirm que no se muestra completo*/
+	/*will-change:[none|transform|auto] !important;*/
 }
 
 .md_menu_custom{

@@ -1,10 +1,13 @@
 html,body{
 	margin:0;height:100% !important;
-    min-width:320px !important;
+    
 	/*min-width:540px !important;*/
-
+}
+.md-overlay{
+    display:table-cell !important;
 }
 .nav{
+    
     /*primary vue material*/
     /*background-color:#448aff;*/
     /*accent vue material*/
@@ -222,6 +225,7 @@ html,body{
 	display:block;
 	position:relative;
 	text-align:initial;
+    touch-action:none;
 }
 .back-effect-panel{
     margin:auto;    
@@ -597,7 +601,8 @@ input[type=range]{
     
     margin:auto;
 
-    background:rgba(165, 0, 90,.9);
+    /*background:rgba(165, 0, 90,.9);*/
+    background:rgba(40,40,40,.9);
     color:white;
     font-size:16px;    
     padding:20px;    
@@ -606,8 +611,12 @@ input[type=range]{
     transform:translate(-50%,-50%);
 }
 .load_new_image .md-button{
-    color:white;
+    color:white !important;
 }
+.load_new_image p{
+    font-size:16px;
+}
+
 
 @media screen and (max-width:640px){
     .effect_dialog img{

@@ -3,7 +3,9 @@
 		<div class="spinner">
 			<md-progress-spinner v-if="!cam" md-mode="indeterminate" ></md-progress-spinner>
 		</div>
+
 		<div class="m_auto md-layout m_top10">
+			<audio id="captureAudio" src="audio/crop_audio.wav" preload="auto" ref="captureAudio"></audio>
 			<div class="md-layout-item">
 			</div>
 
@@ -39,11 +41,12 @@
 		md-content="La imagen ha sido guardada en el álbum"
 		md-confirm-text="OK" />
 
-		<md-dialog :md-active.sync="dialogImageCam" class="effect_dialog " >
+		<md-dialog :md-active.sync="dialogImageCam" class="effect_dialog " >			
 			<img :src="imageCam" v-if="imageCam" class="dis"/>
 			<!-- colocar una transición o un interruptor para aparezca un poquito
 				después que la imagen -->
 			<div class="load_new_image " style="" v-if="imageCam" >
+				<h3 class="c_primary">Imagen capturada</h3>
 				<p>Desea guardar la nueva imagen en el álbum?</p>
 				<md-button style="" class="" @click="loadImage()">
 					OK
@@ -81,6 +84,7 @@ import Global from '../Global.js';
 export default {
 	name:'Cam',
 	mixins:[servicesMixin,methodsMixin],
+	props:['volume'],
 	data(){		
 		return{
 			url:Global.url,
@@ -315,6 +319,7 @@ export default {
 		//dibujar imagen en canvas
 		capture(){
 			if(this.videoCam.srcObject){
+				this.playSound();
 				console.log("llega a capture")
 				this.context.drawImage(this.videoCam,0,0,640,480);
 				this.dialogImageCam=true;
@@ -325,6 +330,12 @@ export default {
 
 			// Other browsers will fall back to image/png
 				//img.src = canvasCam.toDataURL("image/webp");
+		},
+		playSound(){
+			let audio=this.$refs.captureAudio;
+			//let audio= document.querySelector("#crop-audio");
+			audio.volume=sessionStorage.getItem("biedit_audio");
+			audio.play();
 		},
 		cancelLoadImage(){
 			

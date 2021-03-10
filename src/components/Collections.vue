@@ -200,6 +200,7 @@ export default {
 		
 	},
 	mounted(){
+		
 		//no es necesario el session ya que lo contiene el método getImages()
 
 		this.getImages();
@@ -264,7 +265,7 @@ export default {
 				//console.log("es la misma imagen");
 				return;
 //pasar el valor de megas a global
-			}else if(image && image.size>10000000){
+			}else if(image && image.size>3000000){
 				this.titleDialogAlert="Imagen muy grande";
 				this.msgeDialogAlert="La imagen es mayor a 2MB"
 				//this.dialogErrorActive=true;

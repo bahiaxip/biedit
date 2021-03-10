@@ -1,7 +1,7 @@
 <template>
 	<div >
 	<md-progress-spinner md-mode="indeterminate" v-if="displayLoading"  class="load_new_image"></md-progress-spinner>
-	<div class="back-main-panel" :style="{width:ima.width+'px'}" :v-if="ima.width!=null" ref="backMainPanel">
+	<div class="back-main-panel" :style="{width:ima.width+'px'}" :v-if="ima.width!=null" ref="backMainPanel" style="touch-action:none">
 		
 		<div class="button-nav-mainpanel"   >
 			<!-- opción switch centrado con absolute-->
@@ -18,13 +18,13 @@
 			<div style="display:inline">
 						
 				<div :style="ima.width<100 ? 'display:flex':'display:inline'">
-				<md-button class="md-icon-button md-mini md-raised primary fab_button_head floatL inlineB" title="Guardar en album" :class="ima.width<170 ? 'md-dense':''" @click="dialogResizeActive=true" v-if="resizeSwitch" :style="ima.width<100 ? 'margin:auto':'display:block'"><md-icon class="c_white">add_photo_alternate</md-icon></md-button>
+				<md-button class="md-icon-button md-mini md-raised primary fab_button_head floatL inlineB" title="Guardar en album" :class="ima.width<170||ima.windowSize.width<520 ? 'md-dense':''" @click="dialogResizeActive=true" v-if="resizeSwitch" :style="ima.width<100 ? 'margin:auto':'display:block'"><md-icon class="c_white">add_photo_alternate</md-icon></md-button>
 
 				<!--<md-button class="md-fab md-mini fab_button_standard floatR" title="Descargar" v-if="resizeSwitch" ><md-icon>save_alt</md-icon></md-button>-->
 				<!-- sustituimos md-switch por md-button para corregir ancho y alto -->
 				<!--<md-switch class="colorB " v-model="freeResize"  title="Redimensión libre" v-if="resizeSwitch">
 				</md-switch>-->
-				<md-button class="md-icon-button md-mini md-raised primary fab_button_standard floatR" title="Redimensión libre" v-if="resizeSwitch" @click="returnResizeMain()" :class="[{'accent':freeResize},ima.width<170 ? 'md-dense':'']" :style="ima.width<100 ? 'display:none':'display:block'"><md-icon class="c_white">image_aspect_ratio</md-icon></md-button>
+				<md-button class="md-icon-button md-mini md-raised primary fab_button_standard floatR" title="Redimensión libre" v-if="resizeSwitch" @click="returnResizeMain()" :class="[{'accent':freeResize},ima.width<170||ima.windowSize.width<520 ? 'md-dense':'']" :style="ima.width<100 ? 'display:none':'display:block'"><md-icon class="c_white">image_aspect_ratio</md-icon></md-button>
 				</div>
 			</div>
 
@@ -297,7 +297,7 @@ export default {
 		startResize:function(e) {			
 			let backMainPanel = document.querySelector(".back-main-panel");
 			let divMain;
-			let w;
+			let w;			
 			if(e.touches){
 				w=(e.touches[0].clientX-backMainPanel.offsetLeft);
 			}else{

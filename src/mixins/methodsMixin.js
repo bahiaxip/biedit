@@ -1,5 +1,6 @@
 export default {
 	methods:{
+		
 		getWidthAccordingWindow(){
 			//test device to set maxWidthDefault
 			//obtenemos un ancho máximo tomando como referencia el ancho del dispositivo y
@@ -171,6 +172,8 @@ export default {
 			sizes=this.getWidthMin(w,h,min);
 			if(!sizes){
 				sizes=this.getMaxResize(w,h,maxW,maxH);
+				console.log("w: ",w)
+				console.log("h: ",h)
 			}
 			return sizes;
 		},

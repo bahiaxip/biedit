@@ -4,7 +4,7 @@
 			<md-progress-spinner md-mode="indeterminate" v-if="displayLoading" style="position:absolute;top:50%;left:50%;"></md-progress-spinner>
 		</div>
 		<div v-else style="position:relative !important;overflow:visible !important">
-			<audio id="crop-audio" src="audio/crop_audio.wav" preload="auto"></audio>
+			<audio id="crop-audio" src="audio/crop_audio.wav" preload="auto" ref="audio"></audio>
 			
 			<!--<md-button @click="toogle()" style="z-index:10">
 				Hola
@@ -13,8 +13,8 @@
 				Adios
 			</md-button>-->
 
-			<md-button class="md-icon-button md-accent md-raised crop-button" @click="cropImage()" v-if="ima.widthCut>100 && ima.heightCut >100">
-				<md-icon>camera</md-icon>						
+			<md-button class="md-icon-button primary md-raised crop-button" @click="cropImage()" v-if="ima.widthCut>100 && ima.heightCut >100" :class="ima.windowSize.width<520 ? 'md-dense':''">
+				<md-icon class="c_white">camera</md-icon>						
 			</md-button>
 			
 			<p  v-else>Para disponer del cuadro de recorte es necesaria una imagen con un ancho y alto mínimo de 100 píxeles</p>
@@ -128,6 +128,9 @@ export default {
 				//asignamos el min-width y el height al hijo que crea el panel-dialog de vue material
 				document.querySelector(".back-cut-panel").firstChild.style.minWidth=this.ima.widthCut+"px";
 				document.querySelector(".back-cut-panel").firstChild.style.height=this.ima.heightCut+"px";
+
+				
+				
 			},100)
 		}
 		//establecemos el scroll arriba, sin el setTimeout no funciona, quizas
@@ -176,8 +179,9 @@ export default {
 		
 		//sonido de recorte
 		playSound(){
-			let audio= document.querySelector("#crop-audio");
-			audio.volume=0.1;
+			let audio=this.$refs.audio;
+			//let audio= document.querySelector("#crop-audio");
+			audio.volume=sessionStorage.getItem("biedit_audio");
 			audio.play();
 		},
 		//método de efecto en el recorte de imagen

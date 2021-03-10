@@ -330,6 +330,7 @@ export default {
 						sessionStorage.setItem("biedit_name",res.data.data.name);
 						sessionStorage.setItem("biedit_email",res.data.data.email);
 						sessionStorage.setItem("biedit_apitoken",res.data.data.api_token);
+						sessionStorage.setItem("biedit_audio",0.1);
 						//console.log("res.data.data1: ",res.data.data);
 						self.session.name=res.data.data.name;
 						self.session.email=res.data.data.email;

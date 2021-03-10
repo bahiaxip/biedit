@@ -8,6 +8,7 @@
 			</md-card-media>
 		</md-card>
 	-->
+	<!--
 		<div class="md-layout md-gutter m_auto">
 			
 				<div class="md-layout-item">
@@ -44,7 +45,7 @@
 				</div>
 			</div>
 		
-		
+	-->	
 
 
 		<!--<div class="video">
