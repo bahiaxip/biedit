@@ -18,8 +18,14 @@ import {MdButton,MdMenu,MdList,MdIcon,MdCard,MdField,MdDialog,
 	MdTabs,MdDialogAlert,MdToolbar,MdSpeedDial,MdLayout,MdDialogConfirm,
 	MdSwitch,MdAvatar,MdTooltip,MdProgress} from 'vue-material/dist/components'
 */
-
+//vue-material css
 import 'vue-material/dist/vue-material.min.css'
+
+
+//slider css
+import '@splidejs/splide/dist/css/themes/splide-default.min.css';
+
+
 //anulamos el tema de vue material para que funcione el scss en headerComponent
 //import 'vue-material/dist/theme/default.css'
 import VueRouter from 'vue-router';
@@ -33,6 +39,9 @@ import Cam from './components/Cam.vue';
 //color picker verte
 import Verte from 'verte';
 import 'verte/dist/verte.css';
+
+//slider
+import VueSplide from '@splidejs/vue-splide';
 
 //import NotFound from './components/NotFound.vue';
 Vue.config.productionTip = false
@@ -57,6 +66,8 @@ Vue.use(MdProgress);
 */
 Vue.use(Verte);
 Vue.use(VueMaterial);
+
+Vue.use(VueSplide);
 /*
 Vue.material.registerTheme({
 	default:{

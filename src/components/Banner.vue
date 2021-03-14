@@ -1,215 +1,45 @@
 <template>
-	<div style="/*background-color:gray;*/min-height:720px;">
-		<div class="md-layout">
-			<div class="md-layout-item md-xlarge-size-15 md-large-size-25 md-medium-hide md-small-hide">
-				<Banner></Banner>
-			<!--
-				<div class="banner_left" >
-					<div ref="div_banner1" class="div_banner" >
-						<p class="text_banner font_nikaia" ref="text_banner1" >{{textBanner1}}</p>
-					</div>
-					<div ref="div_banner2"  class="div_banner">
-						<p class="text_banner font_zerogirl" ref="text_banner2">{{textBanner2}}</p>
-					</div>
-					<div ref="div_banner3" class="div_banner">
-						<p class="text_banner" ref="text_banner3">{{textBanner3}}</p>
-					</div>
-				</div>
-			-->
-			</div>
-
-			<div class="md-layout-item md-xlarge-size-70 md-large-50 md-medium-size-100">
-				<splide :options="primaryOptions" ref="primary" style="background-color:rgba(0,0,0,.6);" class="splide_custom m_auto"  >
-					<splide-slide >
-						<div class="m_top30" >
-							<img src="img/home/chicago.jpg" style="" />
-							
-						</div>
-						<div class="text_description"><p>Efecto de forma</p></div>
-					</splide-slide>
-
-					<splide-slide >
-						<div class="m_top30">
-							<img src="img/home/vineta_uva.jpg" />
-						</div>
-						<div class="text_description"><p>Efecto de forma</p></div>
-					</splide-slide>
-
-					<splide-slide >
-						<div class="m_top30">
-							<img src="img/home/oleo_labrador.jpg" />
-						</div>
-						<div class="text_description"><p>Efecto de forma</p></div>
-					</splide-slide>
-
-					<splide-slide >
-						<div class="m_top30">
-							<img src="img/home/redondear_oso_polar.png" />
-						</div>
-						<div class="text_description"><p>Efecto de forma</p></div>
-					</splide-slide>
-
-					<splide-slide >
-						<div class="m_top30">
-							<img src="img/home/ensalada.png" />
-						</div>
-						<div class="text_description"><p>Efecto de forma</p></div>
-					</splide-slide>
-
-					<splide-slide >
-						<div class="m_top30">
-							<img src="img/home/circulo_pareja_sepia.png" />
-						</div>
-						<div class="text_description"><p>Efecto de forma</p></div>
-					</splide-slide>
-				</splide>
-				<splide :options="secondaryOptions" ref="secondary" class="splide_custom m_auto">
-					<splide-slide style="cursor:pointer">
-						<img src="img/home/chicago.jpg" />
-					</splide-slide>
-
-					<splide-slide>
-						<img src="img/home/vineta_uva.jpg" />
-					</splide-slide>
-
-					<splide-slide>
-						<img src="img/home/oleo_labrador.jpg" />
-					</splide-slide>
-
-					<splide-slide>
-						<img src="img/home/redondear_oso_polar.png" />
-					</splide-slide>
-
-					<splide-slide>
-						<img src="img/home/ensalada.png" />
-					</splide-slide>
-
-					<splide-slide>
-						<img src="img/home/circulo_pareja_sepia.png" />
-					</splide-slide>
-				</splide>
-			</div>
-			<div class="md-layout md-xlarge-size-15 md-large-size-25  md-medium-hide">
-				<!--<div style="width:100%;margin:10px auto;border-radius:20px;background-color:rgba(0,0,0,.8);color:white;min-height:600px;padding:20px">
-
-					<p style="font-size:17px;color:orange;font-family:nikaia;line-height:50px;letter-spacing: 1px ">Organiza tus imágenes</p>
-					<p style="font-size:17px;color:orange;font-family:zerogirl;line-height:50px;letter-spacing: 1px ">Cambia las dimensiones de tu imagen</p>
-					<p style="font-size:17px;color:orange;font-family:zerogirl;line-height:50px;letter-spacing: 1px " >Cambia las dimensiones de tu imagen</p>
-				</div>-->
-			</div>
+	<div class="bh_banner"  :class="bahiaBanner.orientation=='vertical' ? 'bh_banner_vertical':'bh_banner_horizontal'">
+		<div ref="div_banner1" class="div_banner"  >
+			<img src="img/home/chicago.jpg"  width="150"/>
+			<!--<p class="text_banner text1" ref="text_banner1" >{{text_banner.textBanner1}}</p>-->
 		</div>
-		<Banner></Banner>
-
-
-	<!-- md-card
-	<div>
-		<md-card style="width:320px;margin:4px;display:inline-block;vertical-align: top;box-shadow:none">
-			<md-card-media>
-				<img src="img/home/redondear_oso_polar.png">
-			</md-card-media>
-		</md-card>
-	-->
-	<!--
-		<div class="md-layout md-gutter m_auto">
-			
-				<div class="md-layout-item">
-					<div class="image_home0" >
-					</div>
-				</div>
-
-				<div class="md-layout-item">
-					<div class="image_home1" >
-					</div>
-				</div>
-
-				<div class="md-layout-item" >
-					<div class="image_home2"></div>
-				</div>
-
-				<div class="md-layout-item">
-					<div class="image_home3"></div>
-				</div>
-				<div class="md-layout-item">
-					<div class="image_home4">
-					</div>
-				</div>
-				<div class="md-layout-item">
-					<div class="image_home5">
-					</div>
-				</div>
-				<div class="md-layout-item">
-					<div class="image_home6">
-					</div>
+		<div ref="div_banner2"  class="div_banner">
+			<p class="text_banner font_zerogirl" ref="text_banner2">{{text_banner.textBanner2}}</p>
 		</div>
-		<div class="md-layout md-gutter">
-				
-				</div>
-			</div>
-		
-	-->	
+		<div ref="div_banner3" class="div_banner">
 
-
-		<!--<div class="video">
-			<video id="video" playsinline autoplay></video>
+			<p class="text_banner" ref="text_banner3">{{text_banner.textBanner3}}</p>
 		</div>
-		<div class="controller">
-			<button id="snap" @click="clic()">Capture</button>
-			<button id="snap2" @click="init()">Capture</button>
-		</div>
-		<canvas id="canvas" width="640" height="480"></canvas>
-	-->
 	</div>
-	
 </template>
 <script>
-import Banner from './Banner.vue';
 export default {
-	name:'Home',
-	components:{Banner},
-	data (){
+	name: 'Banner',
+	data(){
+	//- Se pueden cambiar las frases (text1,text2,text3) y añadir las necesarias, 
+	//- Se puede cambiar el orden de la transición de los elementos en la propiedad
+		//order y se puede asignar un efecto de los 5 (width,positionLeft,positionTop,
+		//scale, scaleRotate) y de forma independiente opacity.
+	//- Los estilos pueden ser fijos o con porcentajes y el font-size se puede 
+		//asignar en los estilos de cada elemento <p> o establecer uno por defecto
+		//en la propiedad fontSizeDefault (25px).
+	//- Se puede asignar la orientación del banner: horizontal o vertical en la 
+		//propiedad orientation.
+
 		return {
-			video:null,
-			canvas:null,
-			snap:null,
-			errorMsge:null,
-			constraints:{
-				audio:true,
-				video:{
-					width:1280,height:720
-				}
-			},
-			context:null,
-			mediaSource:null,
-
-		//opciones slider vue
-			primaryOptions: {
-				type      : 'loop',
-				width     : 800,
-				pagination: false,
-			},
-			secondaryOptions: {
-				type        : 'slide',
-				rewind      : true,
-				width       : 800,
-				gap         : '1rem',
-				pagination  : false,
-				fixedWidth  : 110,
-				fixedHeight : 70,
-				cover       : true,
-				focus       : 'center',
-				isNavigation: true,
-			},
-
-
-		//banner
-		/*
+			//se pueden añadir textos  y automáticamente se incluyen
 			text_banner:{
-				//leer el texto y el que tenga más caracteres asignar ese div o
+			//se asigna el primer texto de cada uno en el template además de aquí
+				//se podría comprobar la longitud de caracteres y así asignar el texto 
+				//con más caracteres primero, pero si se introduce un font-size mayor
+				//no funcionaría				
 				//primero poner el que tenga más caracteres
 				text1:[
 					"Regístrate con tu correo",
 					"Sube tus imágenes...",
-					"...descárgalas donde quieras",					
+					"...descárgalas donde quieras",
+
 				],
 				text2:[
 					"Cambia las dimensiones de tu imagen",
@@ -220,11 +50,36 @@ export default {
 					"Comprime tu imagen",
 					"Crea tu propia marca de agua"
 				],
+				//font-size por defecto si no existe estilo asignado al elemento <p>
+				fontSizeDefault:"25px",
+				fontSizeInitial:null,
+
+				//texto seleccionado de cada uno de los 3 elementos
+				textBanner1:null,
+				textBanner2:null,
+				textBanner3:null,
+				//índices banner (cada animación lleva su lista de textos independiente)
+				textIndex1:0,
+				textIndex2:0,
+				textIndex3:0,
+				//referencia del DOM de cada elemento de texto (<p>)
+				banner1Ref:null,
+				banner2Ref:null,
+				banner3Ref:null,
 				
 			},
-			// configuración de banner
+			image_banner:{
+				image1:[
+					"img/home/chicago.jpg",
+					"img/home/oleo_labrador.jpg",
+
+				]
+			},
+			// configuración de banner (se pueden modificar)
+
 			bahiaBanner:{
 				orientation:"vertical",
+				//orientation:"horizontal",
 		//configuración de cada una de las 5 animaciones
 		//En cada animación se pueden cambiar cualquiera de los 3 posibles
 				order:{
@@ -234,38 +89,38 @@ export default {
 				//ellas, en cambio en la forma básica un elemento siempre tendrá el
 				//mismo tipo, es decir, si el elemento 1 tiene animación left, en
 				//todas los cambios realizará la transición left.
-					0:[1],
+					0:[1,2],
 					//0:[{state:true,type:},{},{}]
-					1:[1],
+					1:[1,2],
 					2:[1,3],
 					3:[1,2],
 					4:[1,2,3]
 				},
-				//font-size por defecto si no existe estilo asignado al elemento <p>
-				fontSizeDefault:"25px",
-				fontSizeInitial:null,
+				listOrder:null,
+				counter:0,
+				
 
 			},
 			//configuración de cada elemento del banner (1, 2 y 3)
+			
 			banner1:{
 				//por si queremos más adelante hacer un banner solo de 2 o de 1 
 				//podemos establecer la propiedad state y así comprobar
 
 				//state:true,
 				//opacity de momento fijo siempre
-				opacity:false,
+				opacity:true,
 				trans:{
 					//el width es para el ancho, sin embargo, en este ejemplo,
 					//al ser un elemento de texto (<p>) hacemos uso de font-size
 					//para realizar la transición
-					width:true,
+					width:false,
 					positionLeft:false,
 					positionTop:false,
 					scale:false,
 					scaleRotate:false,
 				},
-
-				
+				type:null,
 			},
 			banner2:{
 				opacity:true,
@@ -276,7 +131,7 @@ export default {
 					scale:false,
 					scaleRotate:false,
 				},
-				
+				type:null,
 			},
 			banner3:{
 				opacity:true,
@@ -287,20 +142,12 @@ export default {
 					scale:false,
 					scaleRotate:true,
 				},
-				
+				type:null,
 			},
-			//texto seleccionado de cada uno de los 3 elementos
-			textBanner1:null,
-			textBanner2:null,
-			textBanner3:null,
-			//índices banner (cada animación lleva su lista de textos independiente)
-			textIndex1:0,
-			textIndex2:0,
-			textIndex3:0,
-			//referencia del DOM de cada elemento de texto (<p>)
-			banner1Ref:null,
-			banner2Ref:null,
-			banner3Ref:null,
+			//variable creada para realizar el clearInterval en el destroyed()
+			interval:null,
+			
+			
 			//identificador de inicio de componente para no añadir un tiempo 
 			//fijo en el primer setTimeout(), la primera transición no se realiza. 
 			//Para ello se da un tiempo al setTimeout() la primera vez más 
@@ -308,50 +155,52 @@ export default {
 	//anulado, en suspenso
 			//bannerRepeated:false,			
 			//banner2:null
-		*/
 		}
-		
 	},
 	mounted(){
-
-	//slider vue
-		this.$refs.primary.sync( this.$refs.secondary.splide );
-	
-	/*
-	//banner
-		//asignamos elementos (en este caso elementos de texto (<p>))
-		this.banner1Ref=this.$refs.text_banner1;
-		this.banner2Ref=this.$refs.text_banner2;
-		this.banner3Ref=this.$refs.text_banner3;
-		//this.banner3Ref.style.left="0px";
-		//se asignan estilos necesarios para las evitar errores en las transiciones
-		this.testTransBanner();
-		//asignando el primer texto de cada uno.
-		this.textBanner1=this.text_banner.text1[this.textIndex1];
-		this.textBanner2=this.text_banner.text2[this.textIndex2];
-		this.textBanner3=this.text_banner.text3[this.textIndex3];
+		
+		//comprobación de imagen <img> o texto <p>
+		let divBanners=[
+			this.$refs.div_banner1,
+			this.$refs.div_banner2,
+			this.$refs.div_banner3
+		];
+		for(let i=1;i<divBanners.length;i++){
+			if(div.getElementsByTagName('img').length>0)
+				console.log("existe imagen")
+			else if(div.getElementsByTagName('p').length>0)
+				console.log("existe p ");
+		}
 			
+		
+
+		
+		
+		//banner
+		//asignamos elementos (en este caso elementos de texto (<p>))
+		this.text_banner.banner1Ref=this.$refs.text_banner1;
+		this.text_banner.banner2Ref=this.$refs.text_banner2;
+		this.text_banner.banner3Ref=this.$refs.text_banner3;
+		
+		//se asignan estilos iniciales necesarios para evitar errores en las transiciones
+		this.testTransBanner();
+		//asignando el texto inicial de cada uno de los elementos.
+		this.text_banner.textBanner1=this.text_banner.text1[this.text_banner.textIndex1];
+		this.text_banner.textBanner2=this.text_banner.text2[this.text_banner.textIndex2];
+		this.text_banner.textBanner3=this.text_banner.text3[this.text_banner.textIndex3];
+		//iniciar animación
 		this.interval_animationbanner();
-		/*
-		this.video=document.querySelector("#video");
-		this.canvas=document.querySelector("#canvas");
-		this.snap=document.querySelector("#snap");
-		this.errorMsge=document.querySelector("span#errorMsge");
-		this.context=this.canvas.getContext("2d");
-		*/
-		//this.mediaSource=new MediaSource();
-
-		//this.init();
-
+	},
+	destroyed(){
+		//detenemos setInterval()
+		clearInterval(this.interval);
 	},
 	methods:{
-	/*
+
 		//asignando estilos para preparar elementos para evitar errores en la primera transición 
 		//comprobando transición de banners para asignar estilos iniciales
 		testTransBanner(){
-
-			this.initStylesFirstTime(this.banner1Ref,this.banner1);
-
+			this.initStylesFirstTime(this.text_banner.banner1Ref,this.banner1);
 		},
 		initStylesFirstTime(bannerRef,bannerConf){
 			if(bannerConf.trans.positionLeft)
@@ -363,15 +212,16 @@ export default {
 				//banner.style.top="0px";
 				if(bannerRef.style.fontSize){
 
-					this.bahiaBanner.fontSizeInitial=bannerRef.style.fontSize;					
+					this.text_banner.fontSizeInitial=bannerRef.style.fontSize;					
 				}else{
-					this.bahiaBanner.fontSize=this.bahiaBanner.fontSizeDefault;
+					this.bahiaBanner.fontSize=this.text_banner.fontSizeDefault;
 				}
 			}
 			//asignamos 0px para que tome efectos la transición la primera vez
 			else if(bannerConf.trans.positionTop)
 				bannerRef.style.top="0px";
 		},
+
 		interval_animationbanner(){
 			//asignamos la cantidad de elementos a mostrar de cada uno de los 3.
 			let amountTexts1=this.text_banner.text1.length,
@@ -384,23 +234,26 @@ export default {
 			}
 
 
+
 	//para obtener la cantidad de propiedades de un objeto: Object.keys()
 			//array de propiedades de un objeto (Object.keys()) 
 			//Nota: countPropsOrder es un array de las propiedades del objeto y no 
 			//de los valores, es útil para resetear el counter y volver a la primera
 			//animación
-			let countPropsOrder=Object.keys(this.bahiaBanner.order);			
-			if(countPropsOrder.length<=0)
+			//let countPropsOrder=Object.keys(this.bahiaBanner.order);
+			this.bahiaBanner.listOrder=Object.keys(this.bahiaBanner.order);
+			if(this.bahiaBanner.listOrder.length<=0)
 				return;
+
 			//contador de interval para comprobar el tipo de animación que corresponde
 			//la animación 1, la 2...
-			let counter=0;
+			//let counter=0;
 //establecer el clearInterval en el destroy método
-			setInterval(()=>{
+			this.interval=setInterval(()=>{
 				//si el counter ha llegado a la última animación reseteamos para que
 				//comience otra vez por la primera
-				if(counter==countPropsOrder.length)	{
-					counter=0;
+				if(this.bahiaBanner.counter==this.bahiaBanner.listOrder.length)	{
+					this.bahiaBanner.counter=0;
 				}
 				//Obtenemos propiedad de bahiaBanner.order que coincida con counter
 				//de esa forma si el counter es 0 le corresponde la animación 0, si
@@ -410,7 +263,7 @@ export default {
 				//Aviso:tanto las propiedades como sus valores son enteros.
 				//matchElement es la propiedad del objeto bahiaBanner.order que 
 				//coincide con counter (0|1|2|3|4)
-				let matchElement=countPropsOrder.find(element=> element==counter);
+				let matchElement=this.bahiaBanner.listOrder.find(element=> element==this.bahiaBanner.counter);
 				//list es la lista de los divs que deben realizar transición, pero solo
 				//de la animación que coincide con counter
 				let list=this.bahiaBanner.order[matchElement];
@@ -463,7 +316,6 @@ export default {
 			//identificar la primera vez comprobamos con bannerRepeated
 				let time=100;
 				let time2=700;
-	*/
 				/*
 				if(!this.bannerRepeated){
 					time=1000;
@@ -471,7 +323,7 @@ export default {
 					this.bannerRepeated=true;
 				}
 				*/
-	/*				
+					
 				setTimeout(()=> {
 					//comienzo de animación (opacity, top, rotate,...)
 					this.hideAnimation(list);
@@ -483,9 +335,11 @@ export default {
 				},time2)
 
 				//aumentamos counter
-				counter++;
+				this.bahiaBanner.counter++;
 				
 			},4000)
+
+			
 		},
 		//ocultamos con alguna de las animaciones el elemento actual
 
@@ -494,24 +348,22 @@ export default {
 		//animaciones
 				if(list.indexOf(1)!=-1){
 					this.initAnimation('1','hide');
-	*/
 					/*
 					if(this.banner1.opacity)
-					this.banner1Ref.style.opacity="0";
+					this.text_banner.banner1Ref.style.opacity="0";
 					if(this.banner1.trans.width)					
-						this.banner1Ref.style.width="0";
+						this.text_banner.banner1Ref.style.width="0";
 					else if(this.banner1.trans.positionTop)
 						//comprobar medida de altura y sustituir
-						this.banner1Ref.style.top="-150px";
+						this.text_banner.banner1Ref.style.top="-150px";
 					else if(this.banner1.trans.positionLeft)
 						//comprobar medida de anchura y sustituir				
-						this.banner1Ref.style.left="-300px";
+						this.text_banner.banner1Ref.style.left="-300px";
 					else if(this.banner1.trans.scale)
-						this.banner1Ref.style.transform="scale(0)";
+						this.text_banner.banner1Ref.style.transform="scale(0)";
 					else if(this.banner1.trans.scaleRotate)
-						this.banner1Ref.style.transform="scale(0) rotate(360deg)";
+						this.text_banner.banner1Ref.style.transform="scale(0) rotate(360deg)";
 					*/
-	/*
 				}
 				
 				if(list.indexOf(2)!=-1){
@@ -534,54 +386,54 @@ export default {
 				//objeto de banner que contiene las opciones(animaciones activadas)
 				banner=this.banner1;
 				//elemento banner (<p>)
-				bannerRef=this.banner1Ref;
-				//this.banner1Ref.style.left="0px";
-				//console.log("style left: ",this.banner1Ref.style.left);			
+				bannerRef=this.text_banner.banner1Ref;
+				//this.text_banner.banner1Ref.style.left="0px";
+				//console.log("style left: ",this.text_banner.banner1Ref.style.left);			
 				//lista de textos (string) posibles 
 				textString=this.text_banner.text1;
 				if(type=="show"){
 					//si es la primera vez pasamos uno
-					if(this.textIndex1==0)
-						this.textIndex1=1;
+					if(this.text_banner.textIndex1==0)
+						this.text_banner.textIndex1=1;
 					//si ha llegado al último reseteamos al primero
-					else if(textString.length==this.textIndex1)
-						this.textIndex1=0;
+					else if(textString.length==this.text_banner.textIndex1)
+						this.text_banner.textIndex1=0;
 					
-					this.textBanner1=textString[this.textIndex1];
-					this.textIndex1=this.textIndex1+1;
+					this.text_banner.textBanner1=textString[this.text_banner.textIndex1];
+					this.text_banner.textIndex1=this.text_banner.textIndex1+1;
 
 				//texto asignado
-				//this.textBanner1
+				//this.text_banner.textBanner1
 				//contador que permite al llegar al último volver al primer texto
-				//this.textIndex1;
+				//this.text_banner.textIndex1;
 				}
 			}
 			
 			if(number==2){				
 				banner=this.banner2;				
-				bannerRef=this.banner2Ref;				
+				bannerRef=this.text_banner.banner2Ref;				
 				textString=this.text_banner.text2;
 				if(type=="show"){
-					if(this.textIndex2==0)
-						this.textIndex2=1;
-					else if(textString.length==this.textIndex2)
-						this.textIndex2=0;
-					this.textBanner2=textString[this.textIndex2];
-					this.textIndex2=this.textIndex2+1;
+					if(this.text_banner.textIndex2==0)
+						this.text_banner.textIndex2=1;
+					else if(textString.length==this.text_banner.textIndex2)
+						this.text_banner.textIndex2=0;
+					this.text_banner.textBanner2=textString[this.text_banner.textIndex2];
+					this.text_banner.textIndex2=this.text_banner.textIndex2+1;
 				}
 			}
 			
 			if(number==3){				
 				banner=this.banner3;				
-				bannerRef=this.banner3Ref;				
+				bannerRef=this.text_banner.banner3Ref;				
 				textString=this.text_banner.text3;
 				if(type=="show"){
-					if(this.textIndex3==0)
-						this.textIndex3=1;
-					else if(textString.length==this.textIndex3)
-						this.textIndex3=0;
-					this.textBanner3=textString[this.textIndex3];
-					this.textIndex3=this.textIndex3+1;
+					if(this.text_banner.textIndex3==0)
+						this.text_banner.textIndex3=1;
+					else if(textString.length==this.text_banner.textIndex3)
+						this.text_banner.textIndex3=0;
+					this.text_banner.textBanner3=textString[this.text_banner.textIndex3];
+					this.text_banner.textIndex3=this.text_banner.textIndex3+1;
 				}
 			}
 			
@@ -613,30 +465,29 @@ export default {
 				console.log("llega a show")
 			//se comprueba el largo de elementos para regresar al primero
 			//al llegar al último
-	*/
 				/*
-				if(this.text_banner.text1.length==this.textIndex1){
+				if(this.text_banner.text1.length==this.text_banner.textIndex1){
 					//console.log("length: ",this.text_banner.text1.length);
-					this.textIndex1=0;
+					this.text_banner.textIndex1=0;
 				}
 				*/
 				//si el último aumento es igual al total de textos reseteamos a 0
 				/*
-				if(textString.length==this.textIndex1){
+				if(textString.length==this.text_banner.textIndex1){
 					//console.log("length: ",this.text_banner.text1.length);
-					this.textIndex1=0;
+					this.text_banner.textIndex1=0;
 				}
 				*/
 			//asignamos el siguiente elemento
 				/*
-				this.textBanner1=this.text_banner.text1[this.textIndex1];
-				this.textIndex1=this.textIndex1+1;
+				this.text_banner.textBanner1=this.text_banner.text1[this.text_banner.textIndex1];
+				this.text_banner.textIndex1=this.text_banner.textIndex1+1;
 				*/
 				/*
-				this.textBanner1=textString[this.textIndex1];
-				this.textIndex1=this.textIndex1+1;
+				this.text_banner.textBanner1=textString[this.text_banner.textIndex1];
+				this.text_banner.textIndex1=this.text_banner.textIndex1+1;
 				*/
-	/*
+
 			//animaciones
 				//opacity aparte del resto o no ? 
 				if(banner.opacity)
@@ -648,7 +499,7 @@ export default {
 
 				if(banner.trans.width){
 					console.log(bannerRef.style.fontSize);
-					bannerRef.style.fontSize=this.bahiaBanner.fontSizeInitial;
+					bannerRef.style.fontSize=this.text_banner.fontSizeInitial;
 					//bannerRef.style.width="100%";
 				}
 				else if(banner.trans.positionTop)
@@ -672,34 +523,32 @@ export default {
 		showAnimation(list){
 			if(list.indexOf(1)!=-1){
 				this.initAnimation('1','show');
-	*/
 		/*
 			//si ha llegado al último elemento vuelve al primero
-				if(this.text_banner.text1.length==this.textIndex1){
+				if(this.text_banner.text1.length==this.text_banner.textIndex1){
 					console.log("length: ",this.text_banner.text1.length);
-					this.textIndex1=0;
+					this.text_banner.textIndex1=0;
 				}
 		//asignamos el siguiente elemento
-				this.textBanner1=this.text_banner.text1[this.textIndex1];
-				this.textIndex1=this.textIndex1+1;
+				this.text_banner.textBanner1=this.text_banner.text1[this.text_banner.textIndex1];
+				this.text_banner.textIndex1=this.text_banner.textIndex1+1;
 		//animaciones
 				//opacity aparte del resto
 				if(this.banner1.opacity)
-					this.banner1Ref.style.opacity="1";
+					this.text_banner.banner1Ref.style.opacity="1";
 				
 				//opciones width,positionleft,positionTop,
 				if(this.banner1.trans.width)
-					this.banner1Ref.style.width="100%";
+					this.text_banner.banner1Ref.style.width="100%";
 				else if(this.banner1.trans.positionTop)
-					this.banner1Ref.style.top="0px";
+					this.text_banner.banner1Ref.style.top="0px";
 				else if(this.banner1.trans.positionLeft)
-					this.banner1Ref.style.left="0px";
+					this.text_banner.banner1Ref.style.left="0px";
 				else if(this.banner1.trans.scale)
-					this.banner1Ref.style.transform="scale(1)";
+					this.text_banner.banner1Ref.style.transform="scale(1)";
 				else if(this.banner1.trans.scaleRotate)
-					this.banner1Ref.style.transform="scale(1) rotate(0deg)"
+					this.text_banner.banner1Ref.style.transform="scale(1) rotate(0deg)"
 		*/
-	/*
 			}
 			
 			if(list.indexOf(2)!=-1){
@@ -713,56 +562,9 @@ export default {
 		//},100)
 			
 		},
-	*/
-		/*
-		async init(){
-			let stream =await navigator.mediaDevices.getUserMedia(this.constraints);
-
-			this.handleSuccess(stream);
-
-		},
-		*/
-
-//opción 1 acceso a cámara
-		async init(){
-			let stream =await navigator.mediaDevices.getUserMedia(this.constraints);
-			console.log(stream);
-			this.setCam(stream);
-			//this.(stream);
-		},
-		
-		setCam(stream){
-			try{
-				this.video.srcObject=stream;
-				
-			}catch(error){
-				this.video.src=URL.createObjectURL(stream)	
-				console.log("No disponible srcObject");
-			}
-			//window.stream=stream;
-			
-		},
-		/* promesa con then */
-		
-	//opción 2 acceso a cámara
-	/*
-		init(){
-			if(navigator.mediaDevices.getUserMedia){
-				navigator.mediaDevices.getUserMedia(this.constraints)
-				.then((stream)=>{
-					this.video.srcObject=stream;
-				}).catch(function(error){
-					console.log(error);
-				})
-			}
-		},
-	*/	
-		
-		clic(){
-			this.context.drawImage(this.video,0,0,640,480);
-		}
-
-
 	}
 }
 </script>
+<style>
+@import '../assets/css/bh_banner.css';
+</style>

@@ -1,0 +1,71 @@
+.bh_banner{
+    width:80%;
+    /*width:300px;*/
+    margin:10px auto;
+    border-radius:20px;
+    background-color:rgba(0,0,0,.8);
+    color:white;
+    padding:10px;
+    position:relative;
+    z-index:100;
+       
+}
+.bh_banner_vertical{
+    width:200px;
+    min-height:500px;    
+}
+.bh_banner_horizontal{
+    max-width:700px;
+    height:130px;
+}
+
+.div_banner{
+    width:180px;
+    min-height:110px;    
+    /*inline-block: necesario para que durante la transición con font-size no permita 
+    la alteración de posición del contenido. Con flex es variable y se va agrandando o
+    encogiendo según el div lo requiera*/
+    display:inline-block;
+    /*display:inline-flex;*/
+
+    overflow:hidden;
+    /*width:250px;*/
+}
+.bh_banner_horizontal .div_banner{
+    
+    height:100px;
+    
+}
+.bh_banner_vertical .div_banner{
+    
+}
+
+.bh_banner_horizontal .text_banner{
+    line-height:30px;
+   
+    margin: 10px auto;
+}
+.bh_banner_vertical .text_banner{
+    line-height:40px;
+
+}
+
+.text_banner{
+    font-size:25px;
+    color:orange;    
+    
+    letter-spacing: 1px;
+    position:relative;
+    
+    /*transition:opacity 0.3s linear, width 1s linear, top 0.5s linear;*/
+    transition:all 0.6s linear;
+    
+}
+
+.bh_banner p{
+    /*transition:all 3s linear;*/
+}
+.text1{
+    font-family:nikaia;
+    font-size:18px;
+}
