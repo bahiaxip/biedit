@@ -1,5 +1,5 @@
 .bh_banner{
-    width:80%;
+    /*width:80%;*/
     /*width:300px;*/
     margin:10px auto;
     border-radius:20px;
@@ -7,38 +7,51 @@
     color:white;
     padding:10px;
     position:relative;
-    z-index:100;
-       
+    z-index:10;
+
 }
 .bh_banner_vertical{
     width:200px;
-    min-height:500px;    
+    min-height:550px;    
 }
 .bh_banner_horizontal{
-    max-width:700px;
+    width:700px;
     height:130px;
 }
 
 .div_banner{
-    width:180px;
-    min-height:110px;    
-    /*inline-block: necesario para que durante la transición con font-size no permita 
-    la alteración de posición del contenido. Con flex es variable y se va agrandando o
-    encogiendo según el div lo requiera*/
-    display:inline-block;
-    /*display:inline-flex;*/
-
+    min-width:180px;
+    min-height:180px;
+    
     overflow:hidden;
     /*width:250px;*/
 }
 .bh_banner_horizontal .div_banner{
-    
+
+    display:inline-block;
     height:100px;
     
 }
 .bh_banner_vertical .div_banner{
+    /*align-items permite centrar verticalmente el texto en el div*/
+    align-items:center !important;
+    /*en un primer momento inline-block, finalmente inline-flex:
+    inline-block no permite la alteración del div mientras inline-flex es variable y se 
+    va agrandando o encogiendo según la imagen dentro del div (en el caso de imágenes).
+    Para solucionar esto se añade vertical-align:middle y se asigna a todos los divs 
+    el inline-flex (tanto para textos como para imágenes) en lugar de tener que asignar
+    dinámicamente desde setType() inline-block para unos y inline-flex para otros*/
+
+    /* el vertical-align:middle es necesario para que las imágenes no agranden o encojan el
+    banner al cambiar de una a otra*/
+    vertical-align: middle;
+    /*probando que en la opción vertical no se agranda ni se encoge con inline-flex,
+    probar con horizontal*/
+    display:inline-flex;    
+    /*display:inline-block;*/
     
 }
+
 
 .bh_banner_horizontal .text_banner{
     line-height:30px;
@@ -61,10 +74,17 @@
     transition:all 0.6s linear;
     
 }
+.img_banner{    
+    margin:auto;
+    position:relative;
+    transition:all 0.6s linear;
+}
 
 .bh_banner p{
     /*transition:all 3s linear;*/
 }
+
+
 .text1{
     font-family:nikaia;
     font-size:18px;

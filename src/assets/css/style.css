@@ -123,6 +123,9 @@ html,body{
 .c_white{
     color:white !important;
 }
+.c_pointer{
+    cursor:pointer;
+}
 .p_auto{
     padding:auto;
 }

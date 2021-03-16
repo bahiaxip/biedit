@@ -64,41 +64,41 @@
 					</splide-slide>
 				</splide>
 				<splide :options="secondaryOptions" ref="secondary" class="splide_custom m_auto">
-					<splide-slide style="cursor:pointer">
+					<splide-slide class="c_pointer">
 						<img src="img/home/chicago.jpg" />
 					</splide-slide>
 
-					<splide-slide>
+					<splide-slide class="c_pointer">
 						<img src="img/home/vineta_uva.jpg" />
 					</splide-slide>
 
-					<splide-slide>
+					<splide-slide class="c_pointer">
 						<img src="img/home/oleo_labrador.jpg" />
 					</splide-slide>
 
-					<splide-slide>
+					<splide-slide class="c_pointer">
 						<img src="img/home/redondear_oso_polar.png" />
 					</splide-slide>
 
-					<splide-slide>
+					<splide-slide class="c_pointer">
 						<img src="img/home/ensalada.png" />
 					</splide-slide>
 
-					<splide-slide>
+					<splide-slide class="c_pointer">
 						<img src="img/home/circulo_pareja_sepia.png" />
 					</splide-slide>
 				</splide>
 			</div>
 			<div class="md-layout md-xlarge-size-15 md-large-size-25  md-medium-hide">
-				<!--<div style="width:100%;margin:10px auto;border-radius:20px;background-color:rgba(0,0,0,.8);color:white;min-height:600px;padding:20px">
+				<div style="width:100%;margin:10px auto;border-radius:20px;background-color:rgba(0,0,0,.8);color:white;min-height:600px;padding:20px">
 
-					<p style="font-size:17px;color:orange;font-family:nikaia;line-height:50px;letter-spacing: 1px ">Organiza tus imágenes</p>
+					<!--<p style="font-size:17px;color:orange;font-family:nikaia;line-height:50px;letter-spacing: 1px ">Organiza tus imágenes</p>
 					<p style="font-size:17px;color:orange;font-family:zerogirl;line-height:50px;letter-spacing: 1px ">Cambia las dimensiones de tu imagen</p>
-					<p style="font-size:17px;color:orange;font-family:zerogirl;line-height:50px;letter-spacing: 1px " >Cambia las dimensiones de tu imagen</p>
-				</div>-->
+					<p style="font-size:17px;color:orange;font-family:zerogirl;line-height:50px;letter-spacing: 1px " >Cambia las dimensiones de tu imagen</p>-->
+				</div>
 			</div>
 		</div>
-		<Banner></Banner>
+		<!--<Banner></Banner>-->
 
 
 	<!-- md-card
