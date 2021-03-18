@@ -2,7 +2,7 @@
 	<div style="/*background-color:gray;*/min-height:720px;">
 		<div class="md-layout">
 			<div class="md-layout-item md-xlarge-size-15 md-large-size-25 md-medium-hide md-small-hide">
-				<Banner></Banner>
+				<Banner :nameMain="'bann'"></Banner>
 			<!--
 				<div class="banner_left" >
 					<div ref="div_banner1" class="div_banner" >

@@ -7,23 +7,24 @@
 			aumentar el height del banner y el div_banner correspondiente
 		-->
 
-		<div ref="div_banner1" class="div_banner"  >
-			<!--<img :src="bannerSelected1" width="150" ref="refBanner1" class="img_banner"/>-->
-			<p class="text_banner text1" ref="refBanner1" >{{bannerSelected1}}</p>
+		<div :ref="bhBanner.parentsDivsString[0]" class="div_banner"  >
+			<img :src="tmpBanner[1].selected" width="150" :ref="bhBanner.refsString[0]" class="img_banner" v-if="!banner[1].modeText"/>
+			<p class="text_banner text1" :ref="bhBanner.refsString[0]" v-else >{{tmpBanner[1].selected}}</p>
 		</div>
-		<div ref="div_banner2"  class="div_banner">
-			<!--<img :src="bannerSelected2" width="150" ref="refBanner2" class="img_banner"/>-->
-			<p class="text_banner font_zerogirl" ref="refBanner2">{{bannerSelected2}}</p>
+		<div :ref="bhBanner.parentsDivsString[1]"  class="div_banner">
+			<img :src="tmpBanner[2].selected" width="150" :ref="bhBanner.refsString[1]" class="img_banner" v-if="!banner[2].modeText"/>
+			<p class="text_banner font_zerogirl" :ref="bhBanner.refsString[1]" v-else>{{tmpBanner[2].selected}}</p>
 		</div>
-		<div ref="div_banner3" class="div_banner">
-			<img :src="bannerSelected3" width="150"  ref="refBanner3" class="img_banner"/>
-			<!--<p class="text_banner" ref="refBanner3">{{bannerSelected3}}</p>-->
+		<div :ref="bhBanner.parentsDivsString[2]" class="div_banner">
+			<img :src="tmpBanner[3].selected" width="150"  :ref="bhBanner.refsString[2]" class="img_banner" v-if="!banner[3].modeText"/>
+			<p class="text_banner" :ref="bhBanner.refsString[2]" v-else>{{tmpBanner[3].selected}}</p>
 		</div>
 	</div>
 </template>
 <script>
 export default {
 	name: 'Banner',
+	props:['nameMain'],
 	data(){
 	//- Se pueden cambiar las frases (text1,text2,text3) y añadir las necesarias, 
 	//- Se puede cambiar el orden de la transición de los elementos en la propiedad
@@ -36,6 +37,7 @@ export default {
 		//propiedad orientation.
 
 		return {
+		/*
 			parentsDivsString:[
 					'div_banner1',
 					'div_banner2',
@@ -67,7 +69,7 @@ export default {
 				//font-size por defecto si no existe estilo asignado al elemento <p>
 				fontSizeDefault:"25px",
 				fontSizeInitial:null,
-
+		*/
 				/*
 				//texto seleccionado de cada uno de los 3 elementos
 				bannerSelected1:null,
@@ -75,7 +77,7 @@ export default {
 				bannerSelected3:null,
 				*/
 				
-				
+		/*	
 			},
 			
 				
@@ -96,20 +98,47 @@ export default {
 					"img/home/fashion.JPG"
 				],
 
-				/*
-				banner1Ref:null,
-				banner2Ref:null,
-				banner3Ref:null,
-				*/
+				
 			},
+		*/
+		//anulado, directo en created()
 			// configuración de banner (se pueden modificar)
-//pasar aquí imagesBanner y textsBanner
+			//ran1:Math.floor(Math.random()*10000000)+1,
+			//ran2:Math.floor(Math.random()*10000000)+1,
+			//ran3:Math.floor(Math.random()*10000000)+1,
 			bhBanner:{
+				//strings por defecto
+	//los divs y los ref deben ser dinámicos
+	//podríamos llevarnos los datos que son aleatorios al objeto ref
+				parentsDivsString:[
+					'div_banner1',
+					'div_banner2',
+					'div_banner3'
+				],
+				refsString:[
+					'nodeRef1',
+					'nodeRef2',
+					'nodeRef3'
+				],
+
+		//refObject,optionsObject y tmpObject da igual el nombre tan solo que sea distinto si se requiere otro banner
+				//ref
+				refObject:'ref1',
+				//banner
+				optionsObject: 'confBanner1',
+				//éste (bhBanner) anulado sustituido por variable name
+				//confObject: 'banner2',
+				//tmpBanner
+				tmpObject: 'tmpBanner1',
+
 				orientation:"vertical",
 				fontSizeDefault:"20px",
 				//orientation:"horizontal",
 		//configuración de cada una de las 5 animaciones
 		//En cada animación se pueden cambiar cualquiera de los 3 posibles
+
+//Se debería comprobar 1 a 1, es decir, si solo se ha asignado el 1 que se actualice
+//solo el 1, etc,...
 				order:{
 		//animación	|| elemento que cambia 
 				//esto es forma básica, se podría comprobar si existe objeto en 
@@ -141,7 +170,6 @@ export default {
 						"img/home/circulo_pareja_sepia.png",
 						"img/home/fashion.JPG"
 					]
-
 				],
 				textsBanner:[
 					//texts element 1
@@ -162,14 +190,16 @@ export default {
 						"Crea tu propia marca de agua"
 					]
 				],
-				listOrder:null,
-				counter:0,
-				
 
+				//listOrder:null,
+				//counter:0,
 			},
 	//configuración de cada elemento del banner (1, 2 y 3)
 			//se podría haber hecho un array de objetos, pero para especificar mejor
 			//(elemento 1, elemento 2 y elemento 3) se crean propiedades de tipo entero
+//Se debería comprobar 1 a 1, es decir, si solo se ha asignado el 1 que se actualice
+//solo el 1, si solo se ha actualizado el 1 del opacity solo ese, si se ha actualizado
+//alguno de los demás se actualiza a ése, además comprobar si es true o false.
 			banner:{
 			//opciones del primer elemento del banner (1/3)
 				1:{
@@ -179,6 +209,7 @@ export default {
 					//state:true,
 					//opacity de momento fijo siempre
 					opacity:false,
+					//solo una, si existe más de una solo la primera
 					trans:{
 						//el width es para el ancho, sin embargo, en este ejemplo,
 						//al ser un elemento de texto (<p>) hacemos uso de font-size
@@ -191,59 +222,83 @@ export default {
 					},
 					type:null,
 					fontSize:null,
-
+					modeText:true,
 				},
 			//opciones del segundo elemento del banner  (2/3)
 				2:{
 					opacity:false,
+					//solo una, si existe más de una solo la primera
 					trans:{
-						width:true,
+						width:false,
 						positionLeft:false,
-						positionTop:false,
+						positionTop:true,
 						scale:false,
 						scaleRotate:false,
 					},
 					type:null,
 					fontSize:null,
+					modeText:false,
 				},
 			//opciones del tercer elemento del banner (3/3)
 				3:{
 					opacity:true,
+					//solo una, si existe más de una solo la primera
 					trans:{
 						width:false,
-						positionLeft:true,
+						positionLeft:false,
 						positionTop:false,
-						scale:false,
+						scale:true,
 						scaleRotate:false,
 					},
 					type:null,
 					fontSize:null,
+					modeText:true,
 				}
 			},
+		/*
 			//índices banner (cada animación lleva su lista de textos independiente)
 			bannerIndex1:0,
 			bannerIndex2:0,
 			bannerIndex3:0,
-
+		
 			//referencia del DOM de cada elemento de texto (<p>)
 			banner1Ref:null,
 			banner2Ref:null,
 			banner3Ref:null,
 
-			//imagen o texto seleccionado para mostrar
-			
+			//imagen o texto seleccionado para mostrar			
 			bannerSelected1:null,
 			bannerSelected2:null,
 			bannerSelected3:null,
+		*/
 			//se puede poner nombre distinto al objeto, pero debe cambiarse tb en el template
 			tmpBanner:{
-				
+				1:{
+					type:null,
+					selected:null,
+					index:0,
+					list:null,
+				},
+				2:{
+					type:null,
+					selected:null,
+					index:0,
+					list:null,
+				},
+				3:{
+					type:null,
+					selected:null,
+					index:0,
+					list:null,
+				},
+				/*
 				selected1:null,
 				selected2:null,
 				selected3:null,
 				index1:0,
 				index2:0,
 				index3:0,
+				*/
 //pasar aquí el listOrder y el counter del objeto bhBanner
 				listOrder:null,
 				counter:0,
@@ -257,19 +312,47 @@ export default {
 			*/
 			ref:{
 				//ref de los div padres en un array, después se asignarán dinámicamente 
+				/*
 				parentsDivsString:[
 					'div_banner1',
 					'div_banner2',
 					'div_banner3'
 				],
-				
-				banner1Ref:null,
-				banner2Ref:null,
-				banner3Ref:null,	
+
+				divParent:{
+					1:null,
+					2:null,
+					3:null,
+				},
+				bannerRef:{
+					1:null,
+					2:null,
+					3:null,	
+				},
+				*/
+				divParentRef:{
+					1:null,
+					2:null,
+					3:null,
+				},
+
+				nodeRef:{
+					1:null,
+					2:null,
+					3:null,	
+				},
+
+				//banner1Ref:null,
+				//banner2Ref:null,
+				//banner3Ref:null,	
 				
 			//interval pasarlo aquí
 				interval:null,
 			},
+			//variable destinada a cambiar el nombre del objeto bhBanner
+			//por si queremos varios banners en el mismo componente
+			name:null,
+			//tt:null,
 
 			
 			/*
@@ -316,7 +399,7 @@ export default {
 			},
 			*/
 			//variable creada para realizar el clearInterval en el destroyed()
-			interval:null,
+			//interval:null,
 
 
 			//dataText:null,
@@ -331,8 +414,53 @@ export default {
 			//banner2:null
 		}
 	},
-	mounted(){
+	created(){
+		//si se ha asignado un nuevo nombre pasamos divs a aleatorios
+		//tenemos que crear los aleatorios aquí, antes del mounted()
+		if(this.nameMain){
 
+			/*
+			this.bhBanner.parentsDivsString.forEach((nameDiv,index)=> {
+				this.bhBanner.parentsDivsString[index]=(Math.floor(Math.random()*1000000)+1).toString();
+			})
+			*/
+			//mejor for para asignar los 2 a la vez
+			for(let i=0;i<this.bhBanner.parentsDivsString.length;i++){
+				this.bhBanner.parentsDivsString[i]=(Math.floor(Math.random()*1000000)+1).toString();
+				this.bhBanner.refsString[i]=(Math.floor(Math.random()*1000000)+1).toString();
+			}
+			
+		}
+
+	},
+	mounted(){		
+//comprobar de otra forma si existe img o p
+		let main;
+		//si existe parámetro name se asigna el nuevo (sirve para 2 banner en el mismo lugar)
+		//si existe main existe la posibilidad de un segundo banner por tanto pasamos
+		//los datos de ref a un código aleatorio antes de pasarlo al objeto con otro nombre
+		if(this.nameMain){			
+			
+			console.log(this.bhBanner);
+			main=this.nameMain;
+		}
+		else
+			main="mainBanner";
+			//this.name=this.bhBanner;
+		//bhBanner String
+		this[main]=this.bhBanner;
+		//ref String
+		let refString=this[main].refObject;		
+		this[refString]=this.ref;
+
+		//banner String
+		let bannerString=this[main].optionsObject;		
+		this[bannerString]=this.banner;
+		
+		//tmpBanner String
+		let tmpString=this[main].tmpObject;
+		this[tmpString]=this.tmpBanner;
+		
 	//método antiguo, anterior a setType()
 	/* 
 		//asignamos los divs padres dinámicamente mediante $refs.
@@ -408,19 +536,34 @@ export default {
 			this.bannerSelected3=this.text_banner.text3[this.bannerIndex3];
 		}
 		*/
-
+		//no confundir propiedad del objeto main con los 3 otros objetos, mirar
+		//los corchetes del método setRefs:
+		//main.refObject -> otro objeto
+		//main.tmpObject -> otro objeto
+		//main.optionsObject -> otro objeto
+		
+		this.setRefs(this[refString],this[main],this[tmpString],this[bannerString]);
+		
 		//Establece si el elemento es de tipo img o text
-		this.setType(this.ref.parentsDivsString);
+		//this.setType(this.ref.parentsDivsString);
+		//this.setType2(this.ref.divParent);
 	//setListByType() permite generar la lista de imágenes o textos (que van cambiando)
 	//de cada uno de los elementos y asigna el texto o imagen inicial de cada uno de 
 	//ellos.
 
-		this.setListByType(this.banner,this.tmpBanner);
-	//Establece las referencias de cada elemento que puede ser de tipo <img> o <p>
-		this.setRef(this.ref);
+		//this.setListByType(this.banner,this.tmpBanner);
+		if(this.ref){
+			console.log("después de setRefs: ",this.tmpBanner)
+			//return;
+		}
+		console.log("nombre de bhBanner: ",this['bann'])
+	//Establece las referencias de cada elemento (3) que puede ser de tipo <img> o <p>
+		//this.setRef(this.ref);
+		
 	//Comprueba la configuración de cada uno y si es necesario se asignan estilos 
 	//iniciales. (para evitar errores en las transiciones la primera vez)
-		this.testTransBanner(this.ref);
+		//this.testTransBanner(this.ref);
+		
 		//asignando el texto inicial o imagen inicial de cada uno de los elementos.
 
 		/*
@@ -428,18 +571,68 @@ export default {
 		this.bannerSelected2=this.text_banner.text2[this.bannerIndex2];
 		this.bannerSelected3=this.text_banner.text3[this.bannerIndex3];
 		*/
-		//iniciar animación
-		this.interval_animationbanner();
+
+		console.log(this);
+		//iniciar animación		
+		this.interval_animationbanner(this[tmpString],this[main],this[refString],this[bannerString]);
 	},
 	destroyed(){
 		//detenemos setInterval()
-		clearInterval(this.ref.interval);
+		clearInterval(this[this.bhBanner.refObject].interval);
 	},
 	methods:{
+	
+		setSizeByOrientation(divParent,orientation){
+			if(orientation=="horizontal"){
+					divParent.style.width=divParent.clientWidth+"px";
+				//con height	
+			}else if(orientation=="vertical"){					
+					divParent.style.height=divParent.clientHeight+"px";
+					//divBanner2.style.height=divBanner2.clientHeight+"px";
+					//divBanner3.style.height=divBanner3.clientHeight+"px";	
+					
+				}
+		},
+	
+	//aquí se puede establecer los refs y aprovechar el mismo for para establecer el 
+	//tipo (img o  text)
+		//setDataAndStyles
+		setRefs(refObject,main,tmp,banner){			
+			for(let i=0;i<main.parentsDivsString.length;i++){
+				//establecemos referencias de div padres y elementos con los strings
+				//del objeto bhBanner
+				
+				refObject.divParentRef[i+1]=this.$refs[main.parentsDivsString[i]];
+
+				refObject.nodeRef[i+1]=this.$refs[main.refsString[i]];
+				//establecemos mediante el div padre el tipo (imagen o texto)
+				//y establecemos la lista de imágenes o textos de cada uno de los
+				//elementos
+
+				this.setTypeAndList(refObject.divParentRef[i+1],i+1,tmp,main);
+				
+				//asignamos texto inicial o imagen inicial
+				//this.tmpBanner[(i+1)].selected=this.tmpBanner[(i+1)].list[this.tmpBanner[(i+1)].index];
+				tmp[(i+1)].selected=tmp[(i+1)].list[tmp[(i+1)].index];
+				
+				//establecemos estilos iniciales en caso de ser necesario (según 
+				//la opción de transición seleccionada)
+				this.initStylesFirstTime(refObject.nodeRef[i+1],banner[i+1],main);
+				
+				//establecemos width o height con px para que se quede fijo y no se 
+				//pueda agrandar o encoger el banner al cambiar de elemento
+				this.setSizeByOrientation(refObject.divParentRef[i+1],this.bhBanner.orientation);
+				
+			}
+			console.log("empieza el setRefs");			
+			console.log(this.ref.nodeRef)
+		},
+	/*
 		setRef(ref){
-			ref.banner1Ref=this.$refs.refBanner1;
-			ref.banner2Ref=this.$refs.refBanner2;
-			ref.banner3Ref=this.$refs.refBanner3;
+			//ref.banner1Ref=this.$refs.refBanner1;
+			ref.bannerRef[1]=this.$refs.refBanner1;
+			ref.bannerRef[2]=this.$refs.refBanner2;
+			ref.bannerRef[3]=this.$refs.refBanner3;
 		},
 		//comprueba el tipo de elemento (img o text) mediante los divs padres y los establece en la propiedad type del objeto banner de cada elemento
 		setType(parentsDivs){
@@ -451,13 +644,13 @@ export default {
 			for(let i=0;i<divBanners.length;i++){
 				if(divBanners[i].getElementsByTagName('img').length==1 &&
 					divBanners[i].getElementsByTagName('p').length==0){
-					this.banner[i+1].type="img";
+					this.tmpBanner[i+1].type="img";
 					//asignamos el estilo display inline-flex si es imagen
 					//divBanners[i].style.display="inline-block";
 				}
 				else if(divBanners[i].getElementsByTagName('p').length==1 &&
 						divBanners[i].getElementsByTagName('img').length==0)
-					this.banner[i+1].type="text";
+					this.tmpBanner[i+1].type="text";
 				else{
 					console.log("Se requiere un elemento <p> o <img> (solo uno)",divBanners[i]);
 					return;
@@ -465,6 +658,62 @@ export default {
 
 			}
 		},
+	*/
+	//para convertirlo a librería se utiliza la variable banner[X].modeText 
+	//y no sería necesaria esta comprobación de type, tan solo sería necesario
+	//comprobar si modeText es true o false y asignar el list de images o texts,
+	// sin necesidad de comprobar si solo hay uno de los 2, ya que el img o p siempre 
+	//va haber solo 1 de los 2,
+		//Comprueba si un div contiene un elemento img (solo uno) o un elemento p 
+		//(solo uno) y los asigna al objeto tmpBanner[X] (propiedad type).
+		//Tb asigna a la propiedad list la lista de rutas de imágenes o textos de 
+		//cada elemento
+		setTypeAndList(divParent,num,tmp,main){			
+			if(divParent.getElementsByTagName('img').length==1 &&
+					divParent.getElementsByTagName('p').length==0){
+				//establecemos el tipo
+				//this.tmpBanner[num].type="img";
+				tmp[num].type="img";
+				//establecemos la lista de elementos a cambiar
+				//this.tmpBanner[num].list=this.bhBanner.imagesBanner[num-1];
+				tmp[num].list=main.imagesBanner[num-1];
+			}
+			else if(divParent.getElementsByTagName('p').length==1 &&
+					divParent.getElementsByTagName('img').length==0){
+				//establecemos el tipo
+				//this.tmpBanner[num].type="text";
+				tmp[num].type="text";
+				//establecemos la lista de elementos a cambiar
+				//this.tmpBanner[num].list=this.bhBanner.textsBanner[num-1];
+				tmp[num].list=main.textsBanner[num-1];
+			}else{
+				console.log("Se requiere un elemento <p> o <img> (solo uno)",divParent);
+				return;
+			}
+
+		},
+	/*
+		setType2(divParent){
+			for(let i=0;i<divParent.length;i++){
+				if(divParent[i+1].getElementsByTagName('img').length==1 &&
+					divParent[i+1].getElementsByTagName('p').length==0){
+					this.tmpBanner[i+1].type="img";
+					//asignamos el estilo display inline-flex si es imagen
+					//divBanners[i].style.display="inline-block";
+				}
+				else if(divParent[i+1].getElementsByTagName('p').length==1 &&
+						divParent[i+1].getElementsByTagName('img').length==0)
+					this.tmpBanner[i+1].type="text";
+				else{
+					console.log("Se requiere un elemento <p> o <img> (solo uno)",divParent[i+1]);
+					return;
+				}
+			}
+			console.log("desde setType2: ",this.ref.divParent)
+
+		},
+
+
 		//comprueba y establece la lista de strings del texto o la imagen.
 		//Es necesario haber comprobado y asignado el type ('img' o 'text') anteriormente
 		setListByType(banner,tmpbanner){
@@ -476,22 +725,25 @@ export default {
 			//las rutas de imágenes que irán cambiando del primer elemento, si el 
 			//segundo es de textos en la segunda propiedad se asignan todos los textos
 			//que irán cambiando del segundo elemento, etc...
-			let listProps=Object.keys(banner);
-			for(let i=0;i<listProps.length;i++){
-				if(banner[listProps[i]].type=="img"){
-					//selected["banner"+i]="listText.image_banner.image1[0]";
-					tmpbanner["banner"+i]=this.bhBanner.imagesBanner[i];					
-				}else if(banner[listProps[i]].type=="text"){
-					tmpbanner["banner"+i]=this.bhBanner.textsBanner[i];					
+			let listProps=Object.keys(tmpbanner);
+			//debemos restar las 2 últimas propiedades del array para que las ignore
+			//(listOrder y counter)
+
+			for(let i=0;i<(listProps.length-2);i++){
+				if(tmpbanner[listProps[i]].type=="img"){					
+					tmpbanner[i+1].list=this.bhBanner.imagesBanner[i];	
+				}else if(tmpbanner[listProps[i]].type=="text"){
+					tmpbanner[i+1].list=this.bhBanner.textsBanner[i];
 				}
 				//asignamos el texto o imagen inicial de cada uno de los elementos
-				tmpbanner["selected"+(i+1)]=tmpbanner["banner"+i][tmpbanner["index"+(i+1)]];
+				tmpbanner[(i+1)].selected=tmpbanner[(i+1)].list[tmpbanner[(i+1)].index];
 			}
+
 			if(this.tmpBanner){
 				console.log(this.tmpBanner);
 				//return;
 			}
-
+	*/
 			
 			/*
 			if(this.banner[1].type=="img"){
@@ -512,15 +764,22 @@ export default {
 				this.bannerSelected3=this.text_banner.text3[this.bannerIndex3];
 			}
 			*/
+	/*
 		},
+	*/
+
+	/*
 		//asignando estilos para preparar elementos para evitar errores en la primera transición 
 		//comprobando transición de banners para asignar estilos iniciales
 		testTransBanner(ref){
-			this.initStylesFirstTime(ref.banner1Ref,this.banner[1]);
-			this.initStylesFirstTime(ref.banner2Ref,this.banner[2]);
-			this.initStylesFirstTime(ref.banner3Ref,this.banner[3]);
+			this.initStylesFirstTime(ref.bannerRef[1],this.banner[1]);
+			//this.initStylesFirstTime(ref.banner1Ref,this.banner[1]);
+			this.initStylesFirstTime(ref.bannerRef[2],this.banner[2]);
+			this.initStylesFirstTime(ref.bannerRef[3],this.banner[3]);
 		},
-		initStylesFirstTime(bannerRef,bannerConf){
+	*/
+		initStylesFirstTime(bannerRef,bannerConf,main){
+			//console.log("bannerRef: ",bannerRef);
 			if(bannerConf.trans.positionLeft)
 				//asignamos 0px para que tome efectos la transición la primera vez
 				bannerRef.style.left="0px";
@@ -531,14 +790,23 @@ export default {
 				else
 
 					bannerRef.style.width="100%";
-				//si el bannerRef tiene asignado algún font-size se asigna ese
+			//si el bannerRef tiene asignado algún font-size  ya sea en HTML o en
+			//CSS se asigna ese, si por alguna razón o error no encuentra ningún 
+			//font-size se asigna uno establecido por defecto
+				let fontSizeCSS=window.getComputedStyle(bannerRef,null).getPropertyValue("font-size");					
+					//si existen estilos en HTML o JavaScript se asignan esos
 				if(bannerRef.style.fontSize){
-					bannerConf.fontSize=bannerRef.style.fontSize;
+					bannerConf.fontSize=bannerRef.style.fontSize;					
 					//this.text_banner.fontSizeInitial=bannerRef.style.fontSize;	
 				//si el bannerRef no tiene ningún estilo font-size asignado se
-				//establece uno por defecto						
+				//establece uno por defecto
+					//si existen estilos en CSS se asignan esos
+				}else if(fontSizeCSS){
+					bannerConf.fontSize=parseFloat(fontSizeCSS)+"px";
+					//si no existen estilos font-size se asigna el establecido
+					//en fontSizeDefault
 				}else{
-					bannerConf.fontSize=this.bhBanner.fontSizeDefault;
+					bannerConf.fontSize=main.fontSizeDefault;
 					//this.bhBanner.fontSize=this.text_banner.fontSizeDefault;
 				}
 			}
@@ -547,7 +815,8 @@ export default {
 				bannerRef.style.top="0px";
 		},
 
-		interval_animationbanner(){
+		interval_animationbanner(tmp,main,ref,bannerConf){
+			
 	//comprobación anulada, basada en asignar el número de cambios de cada elemento 
 	//del banner, anulada al incluir la opción de imágenes en el banner 
 	/*
@@ -561,49 +830,13 @@ export default {
 				console.log("faltan elementos de alguno");
 				return;
 			}
-	*/
-
-
-	//para obtener la cantidad de propiedades de un objeto: Object.keys()
-			//array de propiedades de un objeto (Object.keys()) 
-			//Nota: countPropsOrder es un array de las propiedades del objeto y no 
-			//de los valores, es útil para resetear el counter y volver a la primera
-			//animación
-			//let countPropsOrder=Object.keys(this.bhBanner.order);
-			this.bhBanner.listOrder=Object.keys(this.bhBanner.order);
-			if(this.bhBanner.listOrder.length<=0)
-				return;
-
-			//contador de interval para comprobar el tipo de animación que corresponde
-			//la animación 1, la 2...
-			//let counter=0;
-//establecer el clearInterval en el destroy método
-			this.ref.interval=setInterval(()=>{
-				//si el counter ha llegado a la última animación reseteamos para que
-				//comience otra vez por la primera
-				if(this.bhBanner.counter==this.bhBanner.listOrder.length)	{
-					this.bhBanner.counter=0;
-				}
-				//Obtenemos propiedad de bhBanner.order que coincida con counter
-				//de esa forma si el counter es 0 le corresponde la animación 0, si
-				//el counter es 1, la animación 1, hasta las 5 animaciones posibles,
-				//y vuelve a empezar por 0.
-				//Cada animación puede configurarse a 1, a 2 o a los 3 divs.
-				//Aviso:tanto las propiedades como sus valores son enteros.
-				//matchElement es la propiedad del objeto bhBanner.order que 
-				//coincide con counter (0|1|2|3|4)
-				let matchElement=this.bhBanner.listOrder.find(element=> element==this.bhBanner.counter);
-				//list es la lista de los divs que deben realizar transición, pero solo
-				//de la animación que coincide con counter
-				let list=this.bhBanner.order[matchElement];
-				console.log("lista: ",list);				
-				if(!matchElement){					
-					return;
-				}
-				//asignamos los divs padres(que contienen cada elemento)
+	*/	
+	//asignamos los divs padres(que contienen cada elemento)
+				/*
 				let divBanner1=this.$refs.div_banner1,
 					divBanner2=this.$refs.div_banner2,
 					divBanner3=this.$refs.div_banner3;
+				*/
 
 				
 			//comprobamos la orientación de banner para asignar un ancho o alto fijos,
@@ -620,21 +853,65 @@ export default {
 	//cual es el elemento que más grande y asignar esa medida, con texto se podría 
 	//comprobar la cantidad de caracteres.
 				//con width
-//pendiente comprobar si se puede asignar esta medida fuera del interval, ya que solo
-//recoge el ancho o alto del elemento (texto) inicial.
+			//(cambiado) pendiente comprobar si se puede asignar esta medida fuera del interval, ya que solo
+			//recoge el ancho o alto del elemento (texto o imagen) inicial.
+		/*
+			console.log("entrando en clientWidth o clientHeight");
 				if(this.bhBanner.orientation=="horizontal"){
 					divBanner1.style.width=divBanner1.clientWidth+"px";
 					divBanner2.style.width=divBanner2.clientWidth+"px";
 					divBanner3.style.width=divBanner3.clientWidth+"px";
 				//con height	
 				}else if(this.bhBanner.orientation=="vertical"){
-					divBanner1.style.height=divBanner1.clientHeight+"px";
-					divBanner2.style.height=divBanner2.clientHeight+"px";
-					divBanner3.style.height=divBanner3.clientHeight+"px";	
+					console.log("clientHieght: ",divBanner1.clientHeight+"px");
+					//divBanner1.style.height=divBanner1.clientHeight+"px";
+					//divBanner2.style.height=divBanner2.clientHeight+"px";
+					//divBanner3.style.height=divBanner3.clientHeight+"px";	
+					//console.log("clientHeight: ",this.ref.parentsDivsString['div_banner1'].style.clientHeight+"px");
 				}
 				
 				else 
 					console.log("no hay orientación asignada");
+		*/
+
+
+	//para obtener la cantidad de propiedades de un objeto: Object.keys()
+			//array de propiedades de un objeto (Object.keys()) 
+			//Nota: countPropsOrder es un array de las propiedades del objeto y no 
+			//de los valores, es útil para resetear el counter y volver a la primera
+			//animación
+			//let countPropsOrder=Object.keys(this.bhBanner.order);
+			tmp.listOrder=Object.keys(main.order);
+			if(tmp.listOrder.length<=0)
+				return;
+
+			//contador de interval para comprobar el tipo de animación que corresponde
+			//la animación 1, la 2...
+			//let counter=0;
+//sustituir por objeto ref 
+			ref.interval=setInterval(()=>{
+				//si el counter ha llegado a la última animación reseteamos para que
+				//comience otra vez por la primera
+				if(tmp.counter==tmp.listOrder.length)	{
+					tmp.counter=0;
+				}
+				//Obtenemos propiedad de bhBanner.order que coincida con counter
+				//de esa forma si el counter es 0 le corresponde la animación 0, si
+				//el counter es 1, la animación 1, hasta las 5 animaciones posibles,
+				//y vuelve a empezar por 0.
+				//Cada animación puede configurarse a 1, a 2 o a los 3 divs.
+				//Aviso:tanto las propiedades como sus valores son enteros.
+				//matchElement es la propiedad del objeto bhBanner.order que 
+				//coincide con counter (0|1|2|3|4)
+				let matchElement=tmp.listOrder.find(element=> element==tmp.counter);
+				//list es la lista de los elementos que deben realizar transición, 
+				//pero solo de la animación que coincide con counter
+				let list=main.order[matchElement];
+				console.log("lista: ",list);				
+				if(!matchElement){					
+					return;
+				}
+				
 	//por revisar si es necesario, el problema es con la transición left o top
 	//que realiza la primera transición pk es necesario establecer left o top 
 	//en los estilos.
@@ -655,28 +932,29 @@ export default {
 					
 				setTimeout(()=> {
 					//comienzo de animación (opacity, top, rotate,...)
-					this.hideAnimation(list);
+					this.hideAnimation(list,tmp,bannerConf,ref);
 				},time)
 
 				setTimeout(()=> {
 					//final de animación (opacity,top,rotate...)
-					this.showAnimation(list);
+					this.showAnimation(list,tmp,bannerConf,ref);
 				},time2)
 
 				//aumentamos counter
-				this.bhBanner.counter++;
+				//this.bhBanner.counter++;
+				tmp.counter++;
 				
 			},4000)
 
 			
 		},
 		//ocultamos con alguna de las animaciones el elemento actual
-
-		hideAnimation(list){
+			//list es el array actual de configuración (de los 5 posibles)
+		hideAnimation(list,tmp,bannerConf,ref){
 
 		//animaciones
 				if(list.indexOf(1)!=-1){
-					this.initAnimation('1','hide');
+					this.initAnimation('1','hide',tmp,bannerConf,ref);
 					/*
 					if(this.banner[1].opacity)
 					this.ref.banner1Ref.style.opacity="0";
@@ -696,21 +974,43 @@ export default {
 				}
 				
 				if(list.indexOf(2)!=-1){
-					this.initAnimation('2','hide');
+					this.initAnimation('2','hide',tmp,bannerConf,ref);
 				}
 				if(list.indexOf(3)!=-1){
-					this.initAnimation('3','hide');
+					this.initAnimation('3','hide',tmp,bannerConf,ref);
 				}
+				
 				
 				
 			
 		},
-		initAnimation(number,type){
-			console.log("desde initAnimation: ",number);
+		initAnimation(num,type,tmp,bannerConf,ref){
+			//console.log("desde initAnimation: ",number);
 			let banner,bannerRef,list;
+			if(num==1 || num==2 || num==3){
 
+				//objeto de banner que contiene las opciones(animaciones activadas)
+				banner=bannerConf[num];
+				//elemento banner (<p> o <img>) 
+				bannerRef=ref.nodeRef[num];
+				console.log("initAnimation: ",ref);
+				//bannerRef=this.ref.banner1Ref;
+				list=tmp[num].list;
+				if(type=="show"){
+				//si es la primera vez modificamos el index a uno para poder 
+				//cambiar al segundo, ya que, el primero ya se ha asignado al inicio.
+					if(tmp[num].index==0)
+						tmp[num].index=1;
+					//si ha llegado al último reseteamos al primero
+					else if(list.length==tmp[num].index)
+						tmp[num].index=0;
+				//seleccionamos el siguiente de la lista y sumamos uno al index
+					tmp[num].selected=list[tmp[num].index];
+					tmp[num].index=tmp[num].index+1;
+				}
+			}
 
-			
+			/*
 			if(number==1){
 				//objeto de banner que contiene las opciones(animaciones activadas)
 				banner=this.banner[1];
@@ -719,6 +1019,7 @@ export default {
 				//lista de rutas (src) posibles ( en caso de imágen)
 				if(this.banner[1].type=="img")
 					list=this.image_banner.image1;
+
 				else if(this.banner[1].type=="text")				
 				//lista de textos (string) posibles  (en caso de texto)
 					list=this.text_banner.text1;
@@ -740,7 +1041,8 @@ export default {
 				//this.bannerIndex1;
 				}
 			}
-			
+			*/
+		/*
 			if(number==2){				
 				banner=this.banner[2];				
 				bannerRef=this.ref.banner2Ref;				
@@ -778,10 +1080,11 @@ export default {
 					this.bannerIndex3=this.bannerIndex3+1;
 				}
 			}
-			
+		*/
 
 		//ocultar
 			if(type=="hide"){
+
 				//al ser un elemento <p> no es posible con width, es
 				//necesario fontSize
 				if(banner.trans.width){
@@ -803,11 +1106,13 @@ export default {
 					bannerRef.style.transform="scale(0)";
 				else if(banner.trans.scaleRotate)
 					bannerRef.style.transform="scale(0) rotate(360deg)";
+
 				if(banner.opacity)
 					bannerRef.style.opacity="0";
+
 		//mostrar
 			}else if(type=="show"){
-				console.log("llega a show")
+				console.log("en show let banner: ",banner);
 			//se comprueba el largo de elementos para regresar al primero
 			//al llegar al último
 				/*
@@ -847,6 +1152,7 @@ export default {
 						if(bannerRef.getAttribute("width")){
 							//si el usuario asigna valor al atributo width de elemento
 							//img el width se asigna el width del atributo
+				//aplicar parseInt()
 							bannerRef.style.width=bannerRef.getAttribute('width')+'px'
 						}
 						else{
@@ -854,7 +1160,9 @@ export default {
 							bannerRef.style.width="100%";
 						}
 					else
-						bannerRef.style.fontSize=this.text_banner.fontSizeInitial;
+						console.log("nada");
+						//bannerRef.style.fontSize=this.text_banner.fontSizeInitial;
+						bannerRef.style.fontSize=banner.fontSize;
 					//bannerRef.style.width="100%";
 				}
 				else if(banner.trans.positionTop)
@@ -875,9 +1183,10 @@ export default {
 		},
 		//asignamos el siguiente elemento y volvemos a mostrar con alguna de las 
 		//animaciones
-		showAnimation(list){
+			//list es el array actual de configuración (de los 5 posibles)			
+		showAnimation(list,tmp,bannerConf,ref){
 			if(list.indexOf(1)!=-1){
-				this.initAnimation('1','show');
+				this.initAnimation('1','show',tmp,bannerConf,ref);
 		/*
 			//si ha llegado al último elemento vuelve al primero
 				if(this.text_banner.text1.length==this.bannerIndex1){
@@ -907,10 +1216,10 @@ export default {
 			}
 			
 			if(list.indexOf(2)!=-1){
-				this.initAnimation('2','show');
+				this.initAnimation('2','show',tmp,bannerConf,ref);
 			}
 			if(list.indexOf(3)!=-1){
-				this.initAnimation('3','show');
+				this.initAnimation('3','show',tmp,bannerConf,ref);
 			}
 			
 			
