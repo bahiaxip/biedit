@@ -123,6 +123,9 @@ html,body{
 .c_white{
     color:white !important;
 }
+.c_pointer{
+    cursor:pointer;
+}
 .p_auto{
     padding:auto;
 }
@@ -699,18 +702,62 @@ Accent: #ff5252 => Red A200
                         /* fin Effect panel */
                         /* Home panel */
 
+/*splide*/
+.splide_custom{
+    /*para resoluciones mayores  con @media por ejemplo*/
+    /*
+    min-width:1280px;
+    */
+}
+@media screen and (min-width:1440px){
+    .splide_custom{
+        min-width:1000px;
+    }
+}
+@media screen and (min-width:1920px){
+    .splide_custom{
+        min-width:1280px;
+    }
+}
+
+.text_description{
+    margin:2.5%;
+    display:block;
+    border-radius:10px;
+    background-color:rgba(40,40,40,.9);
+    color:white;
+    width:95%;
+    padding:5px 0;
+    position:absolute;bottom:2%;
+    text-align:center;
+}
+.text_description p{
+    font-size:15px;
+}
+
+
+
+.font_zerogirl{
+    font-family:zerogirl;
+}
+.font_nikaia{
+    font-family:nikaia;   
+}
+
 .home_image{
     
     
 }
+/* pasado a img */
+/*
 .image_home0{
     background:url("../../../public/img/home/forma_selfie.png");
+    
     min-width:200px;
     width:300px;
     height:200px;    
     margin-top:20px;
     margin-left:100px;
-    
     background-position:center;
     background-size:100%;
     background-repeat:no-repeat;
@@ -786,6 +833,7 @@ Accent: #ff5252 => Red A200
     background-size:100%;
     background-repeat:no-repeat;
 }
+*/
 
 
                         /* fin Home panel */

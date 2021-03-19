@@ -341,6 +341,8 @@ export default {
 			}
 		},
 		*/
+//comprobar this.$route.name y solo actuar en componentes necesarios, chrome da muchos
+//tirones y se ralentiza al generar los cálculos en firefox no da errores
 		smallerHeader(){
 			let wSize={
 				width:window.innerWidth,
