@@ -2,7 +2,8 @@
 	<div style="/*background-color:gray;*/min-height:720px;">
 		<div class="md-layout">
 			<div class="md-layout-item md-xlarge-size-15 md-large-size-25 md-medium-hide md-small-hide">
-				<Banner :nameMain="'bann'"></Banner>
+				<Banner :nameMain="'bann'" :options="optionsBhBanner"></Banner>
+				<Banner :options="optionsBhBanner2"></Banner>
 			<!--
 				<div class="banner_left" >
 					<div ref="div_banner1" class="div_banner" >
@@ -168,6 +169,142 @@ export default {
 	components:{Banner},
 	data (){
 		return {
+			optionsBhBanner:{
+				orientation:"horizontal",
+				images:[
+					//images element 1
+					[
+
+						"img/home/vineta_uva.jpg",
+						"img/home/forma_selfie.png",
+					],
+					//images element 2
+					[
+						"img/home/pareja.jpg",
+						"img/home/road-5724397_640.jpg"
+					],
+					//images element 3
+					[
+						"img/home/fun.jpg",
+						"img/home/circulo_pareja_sepia.png",
+						"img/home/fashion.JPG"
+					]
+				],
+				texts:[
+					[
+						"Sube tus imágenes...",
+						"...descárgalas donde quieras",
+					],
+					[
+						"Sube tus imágenes...",
+						"...descárgalas donde quieras",
+					],
+					[
+						"Regístrate con tu correo",
+						"Sube tus imágenes...",
+						"...descárgalas donde quieras",
+					],
+				],
+				effects:{
+					1:{
+						opacity:true,
+						//scale
+						width:false,
+						//scale
+						height:false,
+						//solo texto
+						fontSize:false,
+						scaleRotate:false,
+						scale:false,
+						positionLeft:true,
+						modeText:false
+
+					},
+					2:{
+						opacity:true,
+						scaleRotate:true,
+					},
+					3:{
+						modeText:true
+						
+					}
+				},
+				order:{
+					0:[2,3],
+					1:["2",3],
+					2:[3]
+				}
+				
+
+			},
+			optionsBhBanner2:{
+				orientation:"vertical",
+				images:[
+					//images element 1
+					[
+
+						"img/home/vineta_uva.jpg",
+						"img/home/forma_selfie.png",
+					],
+					//images element 2
+					[
+						"img/home/pareja.jpg",
+						"img/home/road-5724397_640.jpg"
+					],
+					//images element 3
+					[
+						"img/home/fun.jpg",
+						"img/home/circulo_pareja_sepia.png",
+						"img/home/fashion.JPG"
+					]
+				],
+				texts:[
+					[
+						"Sube tus imágenes...",
+						"...descárgalas donde quieras",
+					],
+					[
+						"Sube tus imágenes...",
+						"...descárgalas donde quieras",
+					],
+					[
+						"Regístrate con tu correo",
+						"Sube tus imágenes...",
+						"...descárgalas donde quieras",
+					],
+				],
+				effects:{
+					1:{
+						opacity:true,
+						//scale
+						width:false,
+						//scale
+						height:false,
+						//solo texto
+						fontSize:false,
+						scaleRotate:false,
+						scale:false,
+						positionLeft:true,
+						modeText:true
+
+					},
+					2:{
+						opacity:true,
+						scaleRotate:true,
+					},
+					3:{
+						modeText:true
+						
+					}
+				},
+				order:{
+					0:[1,2],
+					1:[1,"2",3],
+					2:[3]
+				}
+				
+
+			},
 			video:null,
 			canvas:null,
 			snap:null,
@@ -315,7 +452,7 @@ export default {
 	mounted(){
 
 	//slider vue
-		this.$refs.primary.sync( this.$refs.secondary.splide );
+		this.$refs.primary.sync(this.$refs.secondary.splide);
 	
 	/*
 	//banner

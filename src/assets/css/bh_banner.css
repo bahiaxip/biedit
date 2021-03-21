@@ -15,24 +15,30 @@
     min-height:550px;    
 }
 .bh_banner_horizontal{
-    width:700px;
+    min-width:700px;    
+    /*width:700px;*/
     height:130px;
+    display:inline-block;
 }
 
 .div_banner{
     min-width:180px;
-    min-height:180px;
+    
     
     overflow:hidden;
     /*width:250px;*/
 }
 .bh_banner_horizontal .div_banner{
-
+    /*min-height:120px;*/
     display:inline-block;
     height:100px;
+    align-items:center !important;
+    vertical-align: middle;
+    display:inline-flex;
     
 }
 .bh_banner_vertical .div_banner{
+    min-height:180px;
     /*align-items permite centrar verticalmente el texto en el div*/
     align-items:center !important;
     /*en un primer momento inline-block, finalmente inline-flex:
