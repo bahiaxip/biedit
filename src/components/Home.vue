@@ -2,21 +2,8 @@
 	<div style="/*background-color:gray;*/min-height:720px;">
 		<div class="md-layout">
 			<div class="md-layout-item md-xlarge-size-15 md-large-size-25 md-medium-hide md-small-hide">
-				<Banner :nameMain="'bann'" :options="optionsBhBanner"></Banner>
-				<Banner :options="optionsBhBanner2"></Banner>
-			<!--
-				<div class="banner_left" >
-					<div ref="div_banner1" class="div_banner" >
-						<p class="text_banner font_nikaia" ref="text_banner1" >{{textBanner1}}</p>
-					</div>
-					<div ref="div_banner2"  class="div_banner">
-						<p class="text_banner font_zerogirl" ref="text_banner2">{{textBanner2}}</p>
-					</div>
-					<div ref="div_banner3" class="div_banner">
-						<p class="text_banner" ref="text_banner3">{{textBanner3}}</p>
-					</div>
-				</div>
-			-->
+				<Banner :options="optionsBhBanner"></Banner>
+				<Banner :options="optionsBhBanner2"></Banner>			
 			</div>
 
 			<div class="md-layout-item md-xlarge-size-70 md-large-50 md-medium-size-100">
@@ -170,7 +157,8 @@ export default {
 	data (){
 		return {
 			optionsBhBanner:{
-				orientation:"horizontal",
+				orientation:"vertical",
+				size:"min",
 				images:[
 					//images element 1
 					[
@@ -192,12 +180,12 @@ export default {
 				],
 				texts:[
 					[
-						"Sube tus imágenes...",
-						"...descárgalas donde quieras",
+						//"Sube tus imágenes...",
+						//"...descárgalas donde quieras",
 					],
 					[
-						"Sube tus imágenes...",
-						"...descárgalas donde quieras",
+						//"Sube tus imágenes...",
+						//"...descárgalas donde quieras",
 					],
 					[
 						"Regístrate con tu correo",
@@ -207,6 +195,8 @@ export default {
 				],
 				effects:{
 					1:{
+
+					//transitions
 						opacity:true,
 						//scale
 						width:false,
@@ -217,28 +207,58 @@ export default {
 						scaleRotate:false,
 						scale:false,
 						positionLeft:true,
-						modeText:false
+					//set mode text
+						modeText:false,
+					//set width image HTML
+						//solo imágenes
+						widthHTML:null
 
 					},
 					2:{
 						opacity:true,
 						scaleRotate:true,
+						widthHTML:null
+
 					},
 					3:{
-						modeText:true
+						modeText:true,
+						widthHTML:150
 						
 					}
 				},
+			//ejemplo de array personalizado en order
+			/*
+				0:[
+					{
+						node:2,
+						effect:"width",					
+					},
+					{
+						node:1,
+						effect:positionLeft,						
+					},
+					{
+
+					}
+				],
+			*/
 				order:{
 					0:[2,3],
-					1:["2",3],
-					2:[3]
+					1:[1],
+					2:[2],
+					3:[3],
+					4:[1,2,3],
+					5:[3],
+					6:[1,2]
+					//1:["2",3],
+					//2:[3]
 				}
 				
 
 			},
 			optionsBhBanner2:{
-				orientation:"vertical",
+				orientation:"horizontal",
+				size:"min",
 				images:[
 					//images element 1
 					[
@@ -275,6 +295,7 @@ export default {
 				],
 				effects:{
 					1:{
+
 						opacity:true,
 						//scale
 						width:false,
@@ -285,12 +306,14 @@ export default {
 						scaleRotate:false,
 						scale:false,
 						positionLeft:true,
-						modeText:true
+						modeText:false,
+						widthHTML:150
 
 					},
 					2:{
 						opacity:true,
 						scaleRotate:true,
+						widthHTML:null
 					},
 					3:{
 						modeText:true

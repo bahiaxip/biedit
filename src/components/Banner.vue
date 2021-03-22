@@ -1,5 +1,9 @@
 <template>
-	<div class="bh_banner"  :class="bhBannerConf.orientation=='vertical' ? 'bh_banner_vertical':'bh_banner_horizontal'">
+	<div class="bh_banner"  :class="[
+			main[mainString.confString].orientation=='vertical' ? 'bh_banner_vertical':'bh_banner_horizontal'
+			,
+				main[mainString.confString].size=='min' ? 'min':'medium'
+			]">
 		<!-- solo puede haber un elemento img o p en cada div.
 			-<img>: Si asignamos el atributo width, éste se mantiene, si no, se asignará el 100% del banner, si no se muestra la altura completa, probar
 			con un width más pequeño.
@@ -7,24 +11,24 @@
 			aumentar el height del banner y el div_banner correspondiente
 		-->
 
-		<div :ref="main[mainString.refString].parentsDivsString[0]" class="div_banner"  >
-			<img :src="main[mainString.tmpString][1].selected" :width="main[mainString.bannerString][1].widthHTML" :ref="main[mainString.refString].refsString[0]" class="img_banner" v-if="!main[mainString.bannerString][1].modeText"/>
+		<div :ref="main[mainString.refString].parentsDivsString[0]" class="div_banner" :class="main[mainString.confString].size=='min' ? 'min':'medium'" >
+			<img :src="main[mainString.tmpString][1].selected" :width="main[mainString.bannerString][1].widthHTML"  :ref="main[mainString.refString].refsString[0]" class="img_banner" v-if="!main[mainString.bannerString][1].modeText"/>
 			<p class="text_banner text1" :ref="main[mainString.refString].refsString[0]" v-else >{{main[mainString.tmpString][1].selected}}</p>
 		</div>
-		<div :ref="refBhBanner.parentsDivsString[1]"  class="div_banner">
-			<img :src="tmpBhBanner[2].selected" :width="bhBannerOptions[2].widthHTML" :ref="refBhBanner.refsString[1]" class="img_banner" v-if="!bhBannerOptions[2].modeText"/>
-			<p class="text_banner font_zerogirl" :ref="refBhBanner.refsString[1]" v-else>{{tmpBhBanner[2].selected}}</p>
+		<div :ref="main[mainString.refString].parentsDivsString[1]"  class="div_banner" :class="main[mainString.confString].size=='min' ? 'min':'medium'">
+			<img :src="main[mainString.tmpString][2].selected" :width="main[mainString.bannerString][2].widthHTML" :ref="main[mainString.refString].refsString[1]" class="img_banner" v-if="!main[mainString.bannerString][2].modeText"/>
+			<p class="text_banner font_zerogirl" :ref="main[mainString.refString].refsString[1]" v-else>{{main[mainString.tmpString][2].selected}}</p>
 		</div>
-		<div :ref="refBhBanner.parentsDivsString[2]" class="div_banner">
-			<img :src="tmpBhBanner[3].selected" :width="bhBannerOptions[3].widthHTML"  :ref="refBhBanner.refsString[2]" class="img_banner" v-if="!bhBannerOptions[3].modeText"/>
-			<p class="text_banner" :ref="refBhBanner.refsString[2]" v-else>{{tmpBhBanner[3].selected}}</p>
+		<div :ref="main[mainString.refString].parentsDivsString[2]" class="div_banner" :class="main[mainString.confString].size=='min' ? 'min':'medium'">
+			<img :src="main[mainString.tmpString][3].selected" :width="main[mainString.bannerString][3].widthHTML"  :ref="main[mainString.refString].refsString[2]" class="img_banner" v-if="!main[mainString.bannerString][3].modeText"/>
+			<p class="text_banner" :ref="main[mainString.refString].refsString[2]" v-else>{{main[mainString.tmpString][3].selected}}</p>
 		</div>
 	</div>
 </template>
 <script>
 export default {
 	name: 'Banner',
-	props:['nameMain','options'],
+	props:['options'],
 	data(){
 	//- Se pueden cambiar las frases (text1,text2,text3) y añadir las necesarias, 
 	//- Se puede cambiar el orden de la transición de los elementos en la propiedad
@@ -53,6 +57,7 @@ export default {
 				modeText:false,
 				orientation:"horizontal",
 				fontSizeDefault:"20px",
+				size:null,
 				
 //o más animaciones ->		//configuración de cada una de las 5 animaciones
 		//En cada animación se pueden cambiar cualquiera de los 3 posibles
@@ -144,10 +149,10 @@ export default {
 						scaleRotate:false,
 			//height,
 					},
-					type:null,
+					//type:null,
 					fontSize:null,
 					modeText:false,
-					widthHTML:150,
+					widthHTML:null,
 				},
 			//opciones del segundo elemento del banner  (2/3)
 				2:{
@@ -163,10 +168,10 @@ export default {
 						scale:false,
 						scaleRotate:false,
 					},
-					type:null,
+					//type:null,
 					fontSize:null,
 					modeText:false,
-					widthHTML:120,
+					widthHTML:null,
 				},
 			//opciones del tercer elemento del banner (3/3)
 				3:{
@@ -182,7 +187,7 @@ export default {
 						scale:false,
 						scaleRotate:false,
 					},
-					type:null,
+					//type:null,
 					fontSize:null,
 					modeText:false,
 					widthHTML:null,
@@ -210,10 +215,12 @@ export default {
 				},
 				listOrder:null,
 				counter:0,
+				//atención, al añadir algún parámetro puede variar el largo de un loop
 			},
-
+			//strings y objetos asociados a los atributos ref de html en Vue
+			//interval, quizás pasar a otro objeto
 			refBhBanner:{
-				//ref de los div padres en un array, después se asignarán dinámicamente 				
+								
 				parentsDivsString:[
 					'div_banner1',
 					'div_banner2',
@@ -250,6 +257,7 @@ export default {
 			//interval, necesario para limpiarlo en el destroyed, podría estar ubicado
 			//tb en el objeto tmpBhBanner
 				interval:null,
+				sizeClass:false,
 			},			
 			
 			//objeto main que contiene los 4 objetos principales
@@ -299,14 +307,11 @@ export default {
 	
 		this.setRefs(this.main[this.mainString.refString],this.main[this.mainString.confString],this.main[this.mainString.tmpString],this.main[this.mainString.bannerString]);
 	
-	this.interval_animationbanner(this.main[this.mainString.tmpString],this.main[this.mainString.confString],this.main[this.mainString.refString],this.main[this.mainString.bannerString]);
+		this.interval_animationbanner(this.main[this.mainString.tmpString],this.main[this.mainString.confString],this.main[this.mainString.refString],this.main[this.mainString.bannerString]);
 	},
 	destroyed(){		
 		//detenemos setInterval()
-			
 		clearInterval(this.main[this.mainString.refString].interval);
-		
-		
 	},
 	methods:{
 		//comprueba y establece la propiedad asignada en options como true 
@@ -373,8 +378,10 @@ export default {
 
 		setOrderAnimations(options,conf){
 			//se podría asignar el largo con Object.keys() y así asignar los que se deseen
+			console.log("desde setOrderAnimations: ",Object.keys(options.order).length)
 			if(options.order){
-				for(let i=0;i<5;i++){
+				let order={};
+				for(let i=0;i<Object.keys(options.order).length;i++){
 					//comprobamos si cada array tiene como máximo 3 elementos
 					if(options.order[i] && options.order[i].length>0 && options.order[i].length<4){
 				//comprobamos si es 1,2 o 3, tanto en entero como en string
@@ -388,10 +395,15 @@ export default {
 						}
 							
 						//si  los elementos pasan el condicional y el every(), se 
-						//asigna el nuevo orden de animaciones						
-						conf.order[i]=options.order[i];
+						//asigna el nuevo orden de animaciones
+						order[i]=options.order[i];						
+						//conf.order[i]=options.order[i];
 					}
-				}				
+				}
+				//si existe al menos un array de configuración en options se asigna
+				//el nuevo objeto order
+				if(Object.keys(order).length>0)
+					conf.order=order;		
 			}
 		},
 		testOrientationAndNodes(options,conf,banner){
@@ -407,20 +419,26 @@ export default {
 					//asignamos la orientación asignada en options
 					conf.orientation=options.orientation	
 				}
-			}	
+			}
+			if(options.size && options.size==="medium" ||
+				options.size && options.size==="min"){
+				conf.size=options.size;
+				console.log("conf: ",conf)
+
+			}
 			
 		//comprobando y asignando imágenes o textos
 			if(options.images.length>0  || options.texts.length>0){
 				
 				if(options.effects){
-					let opConf=options.effects;
+					let opEffects=options.effects;
 					
 					//loop para propiedades de tipo entero (1|2|3)
 					for(let i=1;i<4;i++){
 						//si el modeText es true se revisan textos
-						if(opConf[i]){
+						if(opEffects[i]){
 							//textos
-							if(opConf[i].modeText){
+							if(opEffects[i].modeText){
 								banner[i].modeText=true;
 							console.log("wowo options.text: ",options.texts[i] )							
 								if(options.texts && options.texts[i-1].length>0){
@@ -445,6 +463,8 @@ export default {
 										console.log("options.texts debe ser un array de tipo cadena");
 									}
 									console.log("desde options.images",testArray)
+									if(opEffects[i].widthHTML)
+										banner[i].widthHTML=opEffects[i].widthHTML;
 									conf.imagesBanner[i-1]=options.images[i-1];
 								}
 							}
@@ -537,36 +557,45 @@ export default {
 	//aquí se puede establecer los refs y aprovechar el mismo for para establecer el 
 	//tipo (img o  text)
 		//setDataAndStyles
-		setRefs(refObject,main,tmp,banner){			
+		setRefs(refObject,conf,tmp,banner){			
 			for(let i=0;i<refObject.parentsDivsString.length;i++){
+				const num=i+1;
 				//establecemos referencias de div padres y elementos con los strings
 				//del objeto bhBannerConf o aleatorio automáticamente si se detectan
 				//datos de un objeto options en el padre
 				
-				refObject.divParentRef[i+1]=this.$refs[refObject.parentsDivsString[i]];
+				refObject.divParentRef[num]=this.$refs[refObject.parentsDivsString[i]];
 
-				refObject.nodeRef[i+1]=this.$refs[refObject.refsString[i]];
+				refObject.nodeRef[num]=this.$refs[refObject.refsString[i]];
 				//establecemos mediante el div padre el tipo (imagen o texto)
 				//y establecemos la lista de imágenes o textos de cada uno de los
 				//elementos
-
-				this.setTypeAndList(refObject.divParentRef[i+1],i+1,tmp,main);
+				this.setListByType(tmp,num,conf,banner);
+				//this.setTypeAndList(refObject.divParentRef[i+1],i+1,tmp,conf);
 				
 				//asignamos texto inicial o imagen inicial
 				//this.tmpBhBanner[(i+1)].selected=this.tmpBhBanner[(i+1)].list[this.tmpBhBanner[(i+1)].index];
-				tmp[(i+1)].selected=tmp[(i+1)].list[tmp[(i+1)].index];
+				tmp[num].selected=tmp[num].list[tmp[num].index];
 				
 				//establecemos estilos iniciales en caso de ser necesario (según 
 				//la opción de transición seleccionada)
-				this.initStylesFirstTime(refObject.nodeRef[i+1],banner[i+1],main);
+				this.initStylesFirstTime(refObject.nodeRef[num],banner[num],conf);
 				
 				//establecemos width o height con px para que se quede fijo y no se 
 				//pueda agrandar o encoger el banner al cambiar de elemento
-				this.setSizeByOrientation(refObject.divParentRef[i+1],this.bhBannerConf.orientation);
+				//this.setSizeByOrientation(refObject.divParentRef[num],this.bhBannerConf.orientation);
+				this.setSizeByOrientation(refObject.divParentRef[num],conf.orientation);
 				
 			}			
 		},
-	
+		setListByType(tmp,num,conf,banner){
+			if(banner[num].modeText===true)
+				tmp[num].list=conf.textsBanner[num-1]
+			else
+				tmp[num].list=conf.imagesBanner[num-1]			
+		},
+
+
 	//para convertirlo a librería se utiliza la variable banner[X].modeText 
 	//y no sería necesaria esta comprobación de type, tan solo sería necesario
 	//comprobar si modeText es true o false y asignar el list de images o texts,
@@ -577,6 +606,8 @@ export default {
 		//uno) o un elemento p (solo uno) y los asigna al objeto tmpBhBanner[X] 
 		//(propiedad type). Tb asigna a la propiedad list la lista de rutas de 
 		//imágenes o textos de cada elemento
+//anulado, sustituido por setListByType()
+	/*
 		setTypeAndList(divParent,num,tmp,main){	
 
 			if(divParent.getElementsByTagName('img').length==1 &&
@@ -603,14 +634,18 @@ export default {
 			}
 
 		},
+	*/
 	
-		initStylesFirstTime(bannerRef,bannerConf,main){
+		initStylesFirstTime(bannerRef,effects,conf){
 			//console.log("bannerRef: ",bannerRef);
-			if(bannerConf.trans.positionLeft)
+			if(conf.size){
+				//
+			}
+			if(effects.trans.positionLeft)
 				//asignamos 0px para que tome efectos la transición la primera vez
 				bannerRef.style.left="0px";
 			//al ser un elemento de texto (<p>) usamos font-size en lugar de width
-			else if(bannerConf.trans.width){
+			else if(effects.trans.width){
 				if(bannerRef.width)
 					//console.log("height: ",bannerRef.parentNode.clientHeight);
 					//bannerRef.style.height=bannerRef.parentNode.clientHeight+"px";
@@ -625,21 +660,21 @@ export default {
 				let fontSizeCSS=window.getComputedStyle(bannerRef,null).getPropertyValue("font-size");					
 					//si existen estilos en HTML o JavaScript se asignan esos
 				if(bannerRef.style.fontSize){
-					bannerConf.fontSize=bannerRef.style.fontSize;					
+					effects.fontSize=bannerRef.style.fontSize;					
 					//this.text_banner.fontSizeInitial=bannerRef.style.fontSize;	
 				//si el bannerRef no tiene ningún estilo font-size asignado se
 				//establece uno por defecto
 					//si existen estilos en CSS se asignan esos
 				}else if(fontSizeCSS){
-					bannerConf.fontSize=parseFloat(fontSizeCSS)+"px";
+					effects.fontSize=parseFloat(fontSizeCSS)+"px";
 					//si no existen estilos font-size se asigna el establecido
 					//en fontSizeDefault
 				}else{
-					bannerConf.fontSize=main.fontSizeDefault;
+					effects.fontSize=conf.fontSizeDefault;
 					//this.bhBannerConf.fontSize=this.text_banner.fontSizeDefault;
 				}
 			}
-			else if(bannerConf.trans.height){					
+			else if(effects.trans.height){					
 				console.log("BANNERREF: ",this.tmpBhBanner[1].selected);
 				//let newImage=new Image();
 				//newImage.src=this.tmpBhBanner[1].selected;
@@ -650,7 +685,7 @@ export default {
 				//bannerRef.style.height=bannerRef.parentNode.clientHeight+"px";
 			}
 			//asignamos 0px para que tome efectos la transición la primera vez
-			else if(bannerConf.trans.positionTop)
+			else if(effects.trans.positionTop)
 				bannerRef.style.top="0px";
 		},
 
