@@ -56,7 +56,12 @@ export default {
 				//global modeText
 				modeText:false,
 				orientation:"horizontal",
-				fontSizeDefault:"20px",
+				//si no se ha asignado el font-size ni en CSS, ni con javascript,
+				//ni con la propiedad fontSizeStyle individual, como última opción
+				//comprueba el fontsizeDefault
+			//se podría sustituir el fontSizeDefault según si el size es min o medium
+			//por un size más pequeño o más grande
+				fontSizeDefault:"16px",
 				size:null,
 				
 //o más animaciones ->		//configuración de cada una de las 5 animaciones
@@ -145,12 +150,12 @@ export default {
 						fontSize:false,
 						positionLeft:false,
 						positionTop:false,
-						scale:false,
+						//scale:false,
 						scaleRotate:false,
 			//height,
 					},
 					//type:null,
-					fontSize:null,
+					fontSizeStyle:null,
 					modeText:false,
 					widthHTML:null,
 				},
@@ -165,11 +170,11 @@ export default {
 						fontSize:false,
 						positionLeft:false,
 						positionTop:true,
-						scale:false,
+						//scale:false,
 						scaleRotate:false,
 					},
 					//type:null,
-					fontSize:null,
+					fontSizeStyle:null,
 					modeText:false,
 					widthHTML:null,
 				},
@@ -184,11 +189,11 @@ export default {
 						fontSize:false,
 						positionLeft:false,
 						positionTop:false,
-						scale:false,
+						//scale:false,
 						scaleRotate:false,
 					},
 					//type:null,
-					fontSize:null,
+					fontSizeStyle:null,
 					modeText:false,
 					widthHTML:null,
 				}
@@ -200,18 +205,21 @@ export default {
 					selected:null,
 					index:0,
 					list:null,
+					fontSize:null,
 				},
 				2:{
 					type:null,
 					selected:null,
 					index:0,
 					list:null,
+					fontSize:null,
 				},
 				3:{
 					type:null,
 					selected:null,
 					index:0,
 					list:null,
+					fontSize:null,
 				},
 				listOrder:null,
 				counter:0,
@@ -256,8 +264,7 @@ export default {
 				
 			//interval, necesario para limpiarlo en el destroyed, podría estar ubicado
 			//tb en el objeto tmpBhBanner
-				interval:null,
-				sizeClass:false,
+				interval:null,				
 			},			
 			
 			//objeto main que contiene los 4 objetos principales
@@ -296,11 +303,11 @@ export default {
 		if(this.options){
 
 			this.testOrientationAndNodes(this.options,this.main[main.confString],this.main[main.bannerString]);
-			console.log("el confString: ",this.main[main.confString]);
+			//console.log("el confString: ",this.main[main.confString]);
 			this.setOrderAnimations(this.options,this.main[main.confString]);
 			this.setEffects(this.options,this.main[main.bannerString]);
 		}
-		console.log("este es: ",this.main[this.mainString.bannerString][1].modeText);
+		//console.log("este es: ",this.main[this.mainString.bannerString][1].modeText);
 	},
 	mounted(){
 
@@ -319,8 +326,9 @@ export default {
 		//duplicado)
 		testAndSetEffect(option,effects){
 			let effectsList=["width","height","positionLeft","positionTop","scaleRotate"];
+//revisar si añadir el push o configurarla en initStylesFirstTime
 			if(option.modeText)
-				effectsList.push("fontSize");
+				effectsList.push("fontSize");			
 			
 			for(let i=0;i<effectsList.length;i++){
 
@@ -332,7 +340,8 @@ export default {
 					effectsList.forEach((typeString) => {
 						effects.trans[typeString]=false;
 					})				
-				//si aparece un
+				//si aparece alguno de los efectos a true detenemos el bucle e 
+				//ignoramos el resto
 				if(effectSelected===true){
 					effects.trans[effectsList[i]]=true;
 					break;
@@ -378,7 +387,7 @@ export default {
 
 		setOrderAnimations(options,conf){
 			//se podría asignar el largo con Object.keys() y así asignar los que se deseen
-			console.log("desde setOrderAnimations: ",Object.keys(options.order).length)
+			//console.log("desde setOrderAnimations: ",Object.keys(options.order).length)
 			if(options.order){
 				let order={};
 				for(let i=0;i<Object.keys(options.order).length;i++){
@@ -406,6 +415,10 @@ export default {
 					conf.order=order;		
 			}
 		},
+		//se actualiza la configuración de orientación, medida, font-size y se 
+		//actualiza la configuración de textos o imágenes de todos los elementos. 
+		//Esta actualización se basa en los datos pasados en options desde el 
+		//componente padre
 		testOrientationAndNodes(options,conf,banner){
 		//si la configuración incorpora orientation se asigna la nueva configuración
 			if(options.orientation){
@@ -414,18 +427,27 @@ export default {
 				if(options.orientation !=="vertical" && options.orientation !=="horizontal"){
 					console.log("Error options.orientation: Solamente puede ser horizontal o vertical");
 					return;
-				}
-				if(conf){
-					//asignamos la orientación asignada en options
-					conf.orientation=options.orientation	
-				}
+				}				
+				//asignamos la orientación asignada en options
+				conf.orientation=options.orientation	
+				
 			}
+			//si incorpora medida se actualiza
 			if(options.size && options.size==="medium" ||
 				options.size && options.size==="min"){
 				conf.size=options.size;
-				console.log("conf: ",conf)
-
+				//console.log("conf: ",conf)
 			}
+			//si se ha asignado un fontSizeDefault (global 
+			//para todos los elementos) se actualiza
+			if(options.fontSizeDefault){
+				let font=options.fontSizeDefault;
+				if(typeof(options.fontSizeDefault)=="number")
+					font=font+"px";
+				
+				conf.fontSizeDefault=font;				
+			}
+				
 			
 		//comprobando y asignando imágenes o textos
 			if(options.images.length>0  || options.texts.length>0){
@@ -433,25 +455,38 @@ export default {
 				if(options.effects){
 					let opEffects=options.effects;
 					
-					//loop para propiedades de tipo entero (1|2|3)
+					//loop para actualizar las propiedades pasadas en options de cada 
+					//uno de los 3 elementos (que se encuentran clasificiados con 
+					//propiedades de tipo entero (1|2|3))
 					for(let i=1;i<4;i++){
 						//si el modeText es true se revisan textos
 						if(opEffects[i]){
 							//textos
 							if(opEffects[i].modeText){
 								banner[i].modeText=true;
-							console.log("wowo options.text: ",options.texts[i] )							
+							//console.log("wowo options.text: ",options.texts[i] )							
 								if(options.texts && options.texts[i-1].length>0){
 									
 									let testArray=this.testStringArray(options.texts[i-1]);
 									if(!testArray){
 										console.log("options.texts debe ser un array de tipo cadena");
 									}
-									console.log("desde options.text: ",testArray);
+							//si existe en options fontSizeStyle (individual para
+							//cada elemento), se actualiza
+					//se podría guardar en tmp en lugar de banner
+									if(options.effects[i].fontSizeStyle){
+										let font=options.effects[i].fontSizeStyle;
+										//comprobamos si es entero se añaden los px
+										if(typeof(font)==="number"){	
+											font=font+"px";
+										}										
+										banner[i].fontSizeStyle=font;
+									}									
+									//se asignan textos del elemento
 									conf.textsBanner[i-1]=options.texts[i-1];
 								}else{
 									console.log("el modo texto está activado pero no se han asignado los textos")
-								}
+								}								
 							//imágenes
 							}else{
 
@@ -462,7 +497,7 @@ export default {
 									if(!testArray){
 										console.log("options.texts debe ser un array de tipo cadena");
 									}
-									console.log("desde options.images",testArray)
+									//console.log("desde options.images",testArray)
 									if(opEffects[i].widthHTML)
 										banner[i].widthHTML=opEffects[i].widthHTML;
 									conf.imagesBanner[i-1]=options.images[i-1];
@@ -530,10 +565,11 @@ export default {
 			bannerTrans.height=false;
 			bannerTrans.positionLeft=false;
 			bannerTrans.positionTop=false;
-			bannerTrans.scale=false;
+			//bannerTrans.scale=false;
 			bannerTrans.scaleRotate=false;
 		},
-		//devuelve boolean para asignar las opciones a
+		//devuelve boolean identificando si el efecto se ha incluido en options
+		//tanto si es true como si es false, si no se ha incluido devuelve undefined
 		setTransFromOptions(transType){
 			if(transType && transType===true)
 				return true;
@@ -579,7 +615,8 @@ export default {
 				
 				//establecemos estilos iniciales en caso de ser necesario (según 
 				//la opción de transición seleccionada)
-				this.initStylesFirstTime(refObject.nodeRef[num],banner[num],conf);
+				this.initStylesFirstTime(refObject.nodeRef[num],banner[num],conf,tmp[num]);
+				console.log("pasa por initStyleFirstTime()")
 				
 				//establecemos width o height con px para que se quede fijo y no se 
 				//pueda agrandar o encoger el banner al cambiar de elemento
@@ -636,11 +673,42 @@ export default {
 		},
 	*/
 	
-		initStylesFirstTime(bannerRef,effects,conf){
-			//console.log("bannerRef: ",bannerRef);
+		initStylesFirstTime(bannerRef,effects,conf,tmp){
+			
+			
 			if(conf.size){
 				//
 			}
+
+		//independientemente de si existe el efecto font-size o cualquier efecto 
+		//se asigna un font-size por defecto.
+		//orden de prioridad de asignación de font-size:
+		//	fontSizeStyle>style>CSS>fontSizeDefault>fontSizeDefaultOriginal
+		//fontSizeStyle: variable individual de cada elemento (options)
+		//style: estilos asignados en html
+		//CSS: estilos asignados en css
+		//fontSizeDefault: variable global para todos los elementos (options)
+		//fontSizeDefaultOriginal: variable igual a fontSizeDefault, asignada por
+		//defecto y asignada como último recurso en caso de que ninguna otra opción 
+		//sea válida.
+		console.log("desde initStyle: ",effects.fontSizeStyle)
+			let tmpFont;
+			let fontSizeCSS=window.getComputedStyle(bannerRef,null).getPropertyValue("font-size");
+			if(effects.fontSizeStyle)
+				tmpFont=effects.fontSizeStyle			
+			else if(bannerRef.style.fontSize)				
+				tmpFont=bannerRef.style.fontSize				
+			else if(fontSizeCSS)
+				tmpFont=fontSizeCSS						
+			else				
+				tmpFont=conf.fontSizeDefault
+	//asignamos variable temporal con el fontsize después de las anteriores 
+	//comprobaciones		
+			//almacenamos el font del texto en una temporal, necesaria en 
+			//showAnimation() para el efecto fontSize
+			tmp.fontSize=tmpFont;
+			bannerRef.style.fontSize=tmpFont;
+			
 			if(effects.trans.positionLeft)
 				//asignamos 0px para que tome efectos la transición la primera vez
 				bannerRef.style.left="0px";
@@ -654,39 +722,39 @@ export default {
 				else
 
 					bannerRef.style.width="100%";
+			}else if(effects.trans.fontSize){
+				if(effects.modeText){
 			//si el bannerRef tiene asignado algún font-size  ya sea en HTML o en
 			//CSS se asigna ese, si por alguna razón o error no encuentra ningún 
 			//font-size se asigna uno establecido por defecto
-				let fontSizeCSS=window.getComputedStyle(bannerRef,null).getPropertyValue("font-size");					
-					//si existen estilos en HTML o JavaScript se asignan esos
-				if(bannerRef.style.fontSize){
-					effects.fontSize=bannerRef.style.fontSize;					
+			//si existen estilos en HTML o JavaScript se asignan esos
+					
+					
+					//actualizamos el font del texto
+					bannerRef.style.fontSize=tmpFont;
+					console.log("font final: ", tmpFont)
+					//effects.fontSize=bannerRef.style.fontSize;					
 					//this.text_banner.fontSizeInitial=bannerRef.style.fontSize;	
 				//si el bannerRef no tiene ningún estilo font-size asignado se
 				//establece uno por defecto
 					//si existen estilos en CSS se asignan esos
-				}else if(fontSizeCSS){
-					effects.fontSize=parseFloat(fontSizeCSS)+"px";
-					//si no existen estilos font-size se asigna el establecido
-					//en fontSizeDefault
 				}else{
-					effects.fontSize=conf.fontSizeDefault;
-					//this.bhBannerConf.fontSize=this.text_banner.fontSizeDefault;
+					console.log(effects)
+					console.log("Para el efecto fontSize es necesario activar la opción modeText");
 				}
+
+
+				
 			}
 			else if(effects.trans.height){					
-				console.log("BANNERREF: ",this.tmpBhBanner[1].selected);
-				//let newImage=new Image();
-				//newImage.src=this.tmpBhBanner[1].selected;
-//calcular el alto para efecto height pero debe ser cada vez 
-				//console.log(bannerRef.clientWidth)
-				//console.log(newImage.height)
-
+				//console.log("BANNERREF: ",this.tmpBhBanner[1].selected);				
 				//bannerRef.style.height=bannerRef.parentNode.clientHeight+"px";
 			}
 			//asignamos 0px para que tome efectos la transición la primera vez
 			else if(effects.trans.positionTop)
 				bannerRef.style.top="0px";
+
+			//console.log("bannerRef: ",conf);
 		},
 
 		interval_animationbanner(tmp,main,ref,bannerConf){
@@ -724,7 +792,7 @@ export default {
 				//list es la lista de los elementos que deben realizar transición, 
 				//pero solo de la animación que coincide con counter
 				let list=main.order[matchElement];
-				//console.log("lista: ",list);				
+				
 				if(!matchElement){					
 					return;
 				}
@@ -768,25 +836,19 @@ export default {
 		//ocultamos con alguna de las animaciones el elemento actual
 			//list es el array actual de configuración (de los 5 posibles)
 		hideAnimation(list,tmp,bannerConf,ref){
-
-		//animaciones
+		//ocultar animación 
 			if(list.indexOf(1)!=-1){
 				this.initAnimation('1','hide',tmp,bannerConf,ref);
-			}
-			
+			}			
 			if(list.indexOf(2)!=-1){
 				this.initAnimation('2','hide',tmp,bannerConf,ref);
 			}
 			if(list.indexOf(3)!=-1){
 				this.initAnimation('3','hide',tmp,bannerConf,ref);
 			}
-				
-				
-				
-			
 		},
 		initAnimation(num,type,tmp,bannerConf,ref){
-			//console.log("desde initAnimation: ",number);
+			
 			let banner,bannerRef,list;
 			if(num==1 || num==2 || num==3){
 
@@ -813,18 +875,19 @@ export default {
 
 		//ocultar
 			if(type=="hide"){
+			//opacity idenpendiente del resto
+				if(banner.opacity)
+					bannerRef.style.opacity="0";				
 			//aunque se puede hacer con width, con height más complicado si no
-			//se tiene asignado el height, lo pasamos a transform:scale(1,0) y scale(0,1)
+			//se tiene asignado el height, lo pasamos a transform:scale(1,0) y 
+			//scale(0,1), ya no es necesario identificar si es texto o imagen,
+			//ya que el scale funciona en texto, y para el texto añadimos otro 
+			//efecto (fontSize)
 				//al ser un elemento <p> no es posible con width, es
 				//necesario fontSize
-				if(banner.trans.width){
-					//antiguo
-					////if(banner.type=="img")
-					//if(banner.modeText!==true)
-						//bannerRef.style.transform="scale(0,1)";
-					//else					
-						bannerRef.style.fontSize="0px";
-				}
+				if(banner.trans.width)					
+					bannerRef.style.transform="scale(0,1)";
+				
 	//no conviene el height, es necesario obtener objeto Image() y calcular el nuevo height y en algunas imágenes tarda más de la cuenta y devuelve Nan
 				
 				else if(banner.trans.height){
@@ -840,20 +903,27 @@ export default {
 					*/
 					bannerRef.style.transform="scale(1,0)";
 				}else if(banner.trans.positionTop)
-					//comprobar medida de altura y sustituir
+					//comprobar medida de altura y sustituir (min o medium)
 					bannerRef.style.top="-150px";
 				else if(banner.trans.positionLeft){
-					//comprobar medida de anchura y sustituir				
+					//comprobar medida de anchura y sustituir (min o medium)
 					bannerRef.style.left="-300px";					
 				}
 					
-				else if(banner.trans.scale)
-					bannerRef.style.transform="scale(0)";
+				//else if(banner.trans.scale)
+				//	bannerRef.style.transform="scale(0)";
+
 				else if(banner.trans.scaleRotate)
 					bannerRef.style.transform="scale(0) rotate(360deg)";
+				else if(banner.trans.fontSize){
+					if(banner.modeText)
+						bannerRef.style.fontSize="0";
+					else
+						console.log("Para el efecto fontSize es necesario incluir modeText");
 
-				if(banner.opacity)
-					bannerRef.style.opacity="0";
+				}
+
+
 
 		//mostrar
 			}else if(type=="show"){
@@ -893,6 +963,7 @@ export default {
 				//bannerRef.style.width="100%";
 
 				if(banner.trans.width){
+					bannerRef.style.transform="scale(1,1)";
 					//antiguo
 					//if(banner.type=="img")
 					//if(banner.modeText!==true)
@@ -909,22 +980,28 @@ export default {
 						//	bannerRef.style.width="100%";
 						//}
 					//else
-						console.log("nada");
+						//console.log("nada");
 						//bannerRef.style.fontSize=this.text_banner.fontSizeInitial;
-						bannerRef.style.fontSize=banner.fontSize;
+						//bannerRef.style.fontSize=banner.fontSize;
 					//bannerRef.style.width="100%";
 				}
 				else if(banner.trans.height){					
-					bannerRef.style.transform="scale(1)";
+					bannerRef.style.transform="scale(1,1)";
 				}
 				else if(banner.trans.positionTop)
 					bannerRef.style.top="0px";
 				else if(banner.trans.positionLeft)
 					bannerRef.style.left="0px";
-				else if(banner.trans.scale)
-					bannerRef.style.transform="scale(1)";
+				//else if(banner.trans.scale)
+					//bannerRef.style.transform="scale(1)";
 				else if(banner.trans.scaleRotate)
 					bannerRef.style.transform="scale(1) rotate(0deg)"
+				else if(banner.trans.fontSize){
+					if(banner.modeText){
+						bannerRef.style.fontSize=tmp[num].fontSize
+					}
+						
+				}
 			}
 			banner=null,
 			bannerRef=null,
@@ -935,12 +1012,12 @@ export default {
 		},
 		//asignamos el siguiente elemento y volvemos a mostrar con alguna de las 
 		//animaciones
-			//list es el array actual de configuración (de los 5 posibles)			
+			//list es el array actual de configuración 			
 		showAnimation(list,tmp,bannerConf,ref){
+			//mostrar animación 
 			if(list.indexOf(1)!=-1){
 				this.initAnimation('1','show',tmp,bannerConf,ref);		
-			}
-			
+			}			
 			if(list.indexOf(2)!=-1){
 				this.initAnimation('2','show',tmp,bannerConf,ref);
 			}
