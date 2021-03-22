@@ -8,37 +8,66 @@
     padding:10px;
     position:relative;
     z-index:10;
+    text-align:center;
+    box-sizing:border-box;
 
 }
 .bh_banner_vertical{
+
+}
+.bh_banner_vertical.medium{
     width:200px;
     min-height:550px;    
+
+}
+.bh_banner_vertical.min{
+    width:150px;
+    min-height:500px;
+
 }
 .bh_banner_horizontal{
-    min-width:700px;    
-    /*width:700px;*/
-    height:130px;
     display:inline-block;
 }
-
+.bh_banner_horizontal.medium{
+    min-width:800px;    
+    /*width:700px;*/
+    height:150px;
+    
+}
+.bh_banner_horizontal.min{
+    min-width:650px;
+    height:120px;    
+}
 .div_banner{
-    min-width:180px;
-    
-    
     overflow:hidden;
     /*width:250px;*/
 }
 .bh_banner_horizontal .div_banner{
+    
     /*min-height:120px;*/
-    display:inline-block;
-    height:100px;
+    /*display:inline-block;*/
+    
     align-items:center !important;
     vertical-align: middle;
     display:inline-flex;
-    
+    margin:auto 10px;
+}
+.bh_banner_horizontal .div_banner.medium{    
+    min-width:230px;
+    height:130px;
+}
+.bh_banner_horizontal .div_banner.min{
+    min-width:150px;
+    height:100px;
+}
+.bh_banner_vertical .div_banner.medium{
+    min-height:180px;
+}
+.bh_banner_vertical .div_banner.min{
+    min-height:130px;
 }
 .bh_banner_vertical .div_banner{
-    min-height:180px;
+    
     /*align-items permite centrar verticalmente el texto en el div*/
     align-items:center !important;
     /*en un primer momento inline-block, finalmente inline-flex:
@@ -61,7 +90,7 @@
 
 .bh_banner_horizontal .text_banner{
     line-height:30px;
-   
+    
     margin: 10px auto;
 }
 .bh_banner_vertical .text_banner{
@@ -70,7 +99,7 @@
 }
 
 .text_banner{
-    font-size:25px;
+    /*font-size:25px;*/
     color:white;    
     
     letter-spacing: 1px;
@@ -80,7 +109,8 @@
     transition:all 0.6s linear;
     
 }
-.img_banner{    
+.img_banner{
+    max-height:100%;        
     margin:auto;
     position:relative;
     transition:all 0.6s linear;
