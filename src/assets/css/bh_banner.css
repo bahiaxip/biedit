@@ -101,7 +101,7 @@
 .text_banner{
     /*font-size:25px;*/
     color:white;    
-    
+    font-size:null;
     letter-spacing: 1px;
     position:relative;
     

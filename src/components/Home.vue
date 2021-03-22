@@ -159,6 +159,7 @@ export default {
 			optionsBhBanner:{
 				orientation:"vertical",
 				size:"min",
+				fontSizeDefault:"22px",
 				images:[
 					//images element 1
 					[
@@ -259,6 +260,7 @@ export default {
 			optionsBhBanner2:{
 				orientation:"horizontal",
 				size:"min",
+				fontSizeDefault:"22px",
 				images:[
 					//images element 1
 					[
@@ -302,22 +304,30 @@ export default {
 						//scale
 						height:false,
 						//solo texto
-						fontSize:false,
-						scaleRotate:false,
-						scale:false,
-						positionLeft:true,
-						modeText:false,
-						widthHTML:150
-
+						fontSize:true,
+						scaleRotate:true,
+						scale:true,
+						positionLeft:false,
+						modeText:true,
+						
+					//solo imágenes
+						widthHTML:null,
+					//solo textos
+						fontSizeStyle:"12px",
 					},
 					2:{
 						opacity:true,
+						fontSize:true,
 						scaleRotate:true,
-						widthHTML:null
+						widthHTML:150,
+						
 					},
 					3:{
-						modeText:true
-						
+						opacity:false,
+						modeText:true,
+						positionLeft:false,
+						scaleRotate:true,					
+						fontSizeStyle:"20px"
 					}
 				},
 				order:{
