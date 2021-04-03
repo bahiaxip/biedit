@@ -450,59 +450,62 @@ export default {
 				
 			
 		//comprobando y asignando imágenes o textos
-			if(options.images.length>0  || options.texts.length>0){
-				
+			if(options.images && options.images.length>0  || options.texts && options.texts.length>0){
+
+				let opEffects;
 				if(options.effects){
-					let opEffects=options.effects;
-					
+					opEffects=options.effects;
+				}
+
 					//loop para actualizar las propiedades pasadas en options de cada 
 					//uno de los 3 elementos (que se encuentran clasificiados con 
 					//propiedades de tipo entero (1|2|3))
-					for(let i=1;i<4;i++){
-						//si el modeText es true se revisan textos
-						if(opEffects[i]){
-							//textos
-							if(opEffects[i].modeText){
-								banner[i].modeText=true;
-							//console.log("wowo options.text: ",options.texts[i] )							
-								if(options.texts && options.texts[i-1].length>0){
-									
-									let testArray=this.testStringArray(options.texts[i-1]);
-									if(!testArray){
-										console.log("options.texts debe ser un array de tipo cadena");
-									}
-							//si existe en options fontSizeStyle (individual para
-							//cada elemento), se actualiza
-					//se podría guardar en tmp en lugar de banner
-									if(options.effects[i].fontSizeStyle){
-										let font=options.effects[i].fontSizeStyle;
-										//comprobamos si es entero se añaden los px
-										if(typeof(font)==="number"){	
-											font=font+"px";
-										}										
-										banner[i].fontSizeStyle=font;
-									}									
-									//se asignan textos del elemento
-									conf.textsBanner[i-1]=options.texts[i-1];
-								}else{
-									console.log("el modo texto está activado pero no se han asignado los textos")
-								}								
-							//imágenes
-							}else{
+				for(let i=1;i<4;i++){
 
-								if(options.images[i-1].length>0){
-
-									let testArray=this.testStringArray(options.images[i-1]);
-									
-									if(!testArray){
-										console.log("options.texts debe ser un array de tipo cadena");
-									}
-									//console.log("desde options.images",testArray)
-									if(opEffects[i].widthHTML)
-										banner[i].widthHTML=opEffects[i].widthHTML;
-									conf.imagesBanner[i-1]=options.images[i-1];
-								}
+					//si el modeText es true se revisan textos
+					if(opEffects && opEffects[i] && opEffects[i].modeText){							
+						//textos							
+						banner[i].modeText=true;
+						
+						if(options.texts && options.texts[i-1] && options.texts[i-1].length>0){
+							
+							let testArray=this.testStringArray(options.texts[i-1]);
+							if(!testArray){
+								console.log("options.texts debe ser un array de tipo cadena");
 							}
+					//si existe en options fontSizeStyle (individual para
+					//cada elemento), se actualiza
+				//(se podría guardar en tmp en lugar de banner)
+							if(options.effects[i].fontSizeStyle){
+								let font=options.effects[i].fontSizeStyle;
+								//comprobamos si es entero: se añade los caracteres px
+								if(typeof(font)==="number"){	
+									font=font+"px";
+								}										
+								banner[i].fontSizeStyle=font;
+							}									
+								//se asignan textos del elemento
+								conf.textsBanner[i-1]=options.texts[i-1];
+						}else{
+							console.log("el modo texto está activado pero no se han detectado textos")
+						}								
+						//imágenes
+					}else{
+						console.log("options: ",options.images[i-1])
+						if(options.images && options.images[i-1] && options.images[i-1].length>0){
+
+							let testArray=this.testStringArray(options.images[i-1]);
+							
+							if(!testArray){
+								console.log("options.texts debe ser un array de tipo cadena");
+							}
+							//console.log("desde options.images",testArray)
+							if(opEffects && opEffects[i] && opEffects[i].widthHTML)
+								banner[i].widthHTML=opEffects[i].widthHTML;
+							conf.imagesBanner[i-1]=options.images[i-1];
+						}else{
+
+							console.log("no se han detectado imágenes, se establecen la imágenes de prueba")
 						}
 					}
 				}
@@ -862,7 +865,9 @@ export default {
 				if(type=="show"){
 				//si es la primera vez modificamos el index a uno para poder 
 				//cambiar al segundo, ya que, el primero ya se ha asignado al inicio.
-					if(tmp[num].index==0)
+				//añadimos la condición list.length por si la lista solo tiene una 
+				//imagen o si es texto tiene solo un texto
+					if(tmp[num].index==0 && list.length>1)
 						tmp[num].index=1;
 					//si ha llegado al último reseteamos al primero
 					else if(list.length==tmp[num].index)

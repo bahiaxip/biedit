@@ -1,5 +1,5 @@
 <template>
-	<div >		
+	<div v-if="ima && ima.width">		
 		<!--<div class="back-effect-panel" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >-->
 		<div class="" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >
 			<div class="m_auto t_center" >
@@ -763,6 +763,13 @@ export default {
 	name:'Effect',
 	props:['ima'],
 	mixins:[methodsMixin,servicesMixin,effectsMixin, buttonsMixin],
+	/*
+	watch:{
+		'$route'(){
+			console.log("desde EFFECT")
+		}
+	},
+	*/
 	data(){
 		return{
 			hola:true,
@@ -971,6 +978,7 @@ export default {
 
 		}
 	},
+
 	computed:{
 		/*
 		selectedSpaceColor(){
@@ -987,16 +995,24 @@ export default {
 			)
 		}
 	},
+	created(){
+		console.log(this.imgTrans)		
+		console.log("desde created(): ",this.ima);
+		
+	},
+
 
 	mounted(){
 
 		//nexttick hace un efecto similar al setTimeout, espera al callback(), de esa
 		//forma permite acceder desde el mounted a propiedades en $refs
+		console.log("this.$refs2: ",this.$refs)
 		this.$nextTick(() => {
+			console.log("this.$refs3: ",this.$refs)
 			this.dial=this.$refs.dial.MdSpeedDial.active;
 			this.dial2=this.$refs.dial2.MdSpeedDial.active;	
 		});
-		
+		console.log(this.imgTrans)		
 				
 		//this.loadingImage=true;
 		if(this.ima){
@@ -1079,8 +1095,7 @@ export default {
 		}
 		//comprobamos si la imagen es png o jpg para mostrar el input range
 		//de la función compress con el rango de valores correspondiente.
-		this.updateExtAndReset();
-		
+		this.updateExtAndReset();		
 	},
 	
 		

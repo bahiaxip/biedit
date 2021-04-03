@@ -71,7 +71,7 @@ export default {
 			});
 			
 		},
-
+		//método de reflejo de imagen (componente EffectPanel)
 		setReflex(type){			
 			let session=this.testSession();
 			if(!session){				
@@ -579,8 +579,12 @@ export default {
 			}
 		},
 	
-//Collections component (pasa el image por variable)
-		deleteImage(){
+		//Collections component eliminar una sola imagen 
+		//pasa el objeto image que se ha seleccionado para eliminar y se pasa el objeto
+		//el image del componente principal si es que existe
+		deleteImage(imagetmp,imagetmpmain){
+			console.log("desde deleteImage: ",imagetmp)
+			console.log("desde deleteImage: ",imagetmpmain)
 			this.dialogSuccessActive=false;
 			let session=this.testSession();
 			if(!session){				
@@ -600,7 +604,7 @@ export default {
 					Authorization: 'Bearer '+api_token
 				}
 			};
-			axios.post(this.url+'image/'+this.image.id,{dato:this.actualPage},headers).then(res => {				
+			axios.post(this.url+'image/'+imagetmp.id,{dato:this.actualPage},headers).then(res => {				
 				//manejo de errores en api
 				if(res.data.error){
 					this.titleDialogAlert="No se ha podido eliminar la imagen";
@@ -616,13 +620,21 @@ export default {
 				}else{
 					this.titleDialogAlert="Imagen eliminada correctamente";
 					this.msgeDialogAlert=res.data.message;
-					this.dialogErrorActive=true;
-//al recargar collections sin entrar en ningun componente no funciona
-				//detectamos si la imagen a eliminar es la misma del panel principal y vaciamos							
-					if(this.imageMain && this.image.random_name==this.imageMain.src){
-						this.dropImage(this.imageMain);
-						this.$emit("setnav",true);
-					}
+					this.dialogErrorActive=true;					
+
+				//anulamos si existe imageMain, ya que al recargar página en collections,
+				//no existiría imageMain y es necesario comprobar si la imagen a eliminar se ha
+				//enviado al panel principal, para eso usamos imagetmpmain, si es así, vaciamos
+					if(imagetmpmain && imagetmpmain.random_name==imagetmp.random_name 
+						|| this.imageMain && this.imageMain.src==imagetmp.random_name){
+					
+						console.log("la misma imgawen")
+						if(this.imageMain){
+							console.log("desde deleteImage borrando: ",this.imageMain)
+							this.dropImage(this.imageMain);
+						}
+							this.$emit("setnav",true);	
+					}					
 				//llamamos al método getImages() para volver a ordenar la 
 				//lista de imágenes, si se llama desde la paginación se pasa
 				//el número de página							
@@ -633,7 +645,9 @@ export default {
 						this.getImages();	
 					}							
 				}				
-				this.image=null;
+				this.imagetmp=null;
+				if(this.imageMain)
+					console.log("final de eliminar imagen: ",this.imageMain)
 			}).catch(error=> {				
 				this.titleDialogAlert="No se ha podido eliminar la imagen";
 				this.msgeDialogAlert=error.response.data.error;

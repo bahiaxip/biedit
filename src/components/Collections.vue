@@ -148,13 +148,33 @@ export default {
 		return{	
 			//para que funcione el efecto transition no puede ser null		
 			images:[],
+			//utilizamos imageTmp  e image para imágenes temporales en confirmAction() y 
+			//deleteImage()
+//imageTmp por revisar si es necesaria
 			imageTmp:{
 				name:null,
 				width:null,
 				height:null,
 				src:null
 			},
+	//imagetmp no se puede fusionar con image (a continuación) ya que si enviamos una
+	//imagen al panel principal y acto seguido (sin acceder a algún otro componente)
+	//eliminamos alguna de las otras imágenes perderíamos los datos. 
+			//imagen temporal por si se recarga la página, ya que al recargar en collections imageMain es null hasta que no se accede a algún componente, 
+			//por tanto al enviar una imagen con sendToMainPanel() no se puede 
+			//comprobar si existe imagen en panel principal con imageMain
+			imagetmp:null,
+			//imagen similar a imagetmp que comprueba si ya existe la misma imagen 
+			//en el panel principal, esto ya se realiza con la prop imageMain, pero
+			//al recargar la página en Collections imageMain es todavía null, por tanto
+			//comprobamos las 2 para evitar errores
+//quizás se puede prescindir de imageMain para la comprobación de la misma imagen en 
+//panel principal			
 			image:null,
+			//image temporal de imageMain para el método sendToMainPanel() por si no 
+			//existe todavía imageMain (al recargar la página desde collections y no
+			//haber accedido a ningún otro componente)
+			imagetmpmain:null,
 			//url:"http://localhost/biedit_backend/public/api/",
 			url:"http://localhost/biedit_backend/api/",
 			//datos para creación de paginación (Laravel)
@@ -205,21 +225,30 @@ export default {
 
 		this.getImages();
 		if(!this.imageMain){
+			console.log("existe imagen en el panel: ",this.$refs);
 			console.log("recargando página");
 		}else if(this.imageMain && this.imageMain.src== null){
 			console.log("no hay nada en el panel principal");
 		}else{
-			console.log("existe imagen en el panel");
+			//podríamos asignar imagetmpmain
+			console.log("existe imagen en el panel: ",this.imageMain);
+
+
 		}
 	},
+	/*
+	beforeUpdate(){
+		//console.log("beforeUpdate")
+	},
 	beforeDestroy(){
-		console.log("llega al beforeDestroy");
+		//console.log("llega al beforeDestroy");
 
 	},
-	destroyed(){
+	destroyed(){		
 		//anulado
 		//this.$emit("btn","collections");		
 	},
+	*/
 	methods:{
 		/*
 		onMenu(e){
@@ -230,52 +259,82 @@ export default {
 		*/
 		setAction(action){
 			if(action=="delete")
-				this.deleteImage()
+				this.deleteImage(this.imagetmp,this.imagetmpmain)
 			else if(action=='download')
-				this.downloadFile(this.image)
+				this.downloadFile(this.imagetmp)
 			this.action=null;
 
 		},		
 
-		confirmAction(image,action){			
-			this.image=image;
+		confirmAction(image,action){
+			//console.log(this.imageMain)			
+		//asingamos objeto image con la imagen seleccionada (para borrar o descargar)
+//alomejor deberíamos cambiar el this.image a this.imagetmp o algo similar ya que la 
+//imagen del panel principal ya se le ha asignado this.image y si rechazamos el 
+//confirmAction se cambiaría por la seleccionada, todo esto pasa pk al recargar la 
+//página imageMain es null y necesitamos this.image para almacenarla en lugar de 
+//imageMain, ya que al ser una prop es necesario modificarla desde el padre
+			//this.image=image;
+			this.imagetmp=image;
 			if(action=="delete"){
 				this.titleDialogConfirm="Eliminar imagen"
 				this.msgeDialogConfirm="¿Desea eliminar la imagen seleccionada?"
-				this.action=action
+				this.action=action				
 			}
 			else if(action=="download"){
 				this.titleDialogConfirm="Descargar imagen"
 				this.msgeDialogConfirm="¿Desea descargar la imagen seleccionada?"
 				this.action=action
-			}
+			}			
 			this.dialogSuccessActive=true;
 		},
 		
 		//pasamos a null todas las propiedades de un objeto
 		dropImage(image){
+			console.log("llega a dropImage: ",image)
 			for(let key in image){
+				
+				
 				//es necesario mantener el widthDefault
-				if(key!="widthDefault")
+				if(key != "widthDefault"){
+					console.log("key antes: ",image[key])
 					image[key]=null;
+					console.log("key después: ",image[key])
+				}
 			}
+			console.log("pasado el for: ",image);		
 		},
 		sendToMainPanel(image){
-			if(this.imageMain && image.random_name==this.imageMain.src){
-				//console.log("es la misma imagen");
+			console.log(this.imageMain)
+			//si la imagen seleccionada ya se encuentra en el panel principal detenemos
+			if(this.imagetmpmain && this.imagetmpmain.random_name==image.random_name
+				|| this.imageMain && this.imageMain.src==image.random_name){
+				console.log("es la misma imagen: ");
+				return;
+			}
+			/*
+			//si la imagen seleccionada ya se encuentra en el panel principal detenemos
+			if(this.imageMain && image.random_name==this.imageMain.src || this.image && image.random_name==this.image.random_name){
+				console.log("es la misma imagen: ");
 				return;
 //pasar el valor de megas a global
-			}else if(image && image.size>3000000){
+			//si la imagen es mayor al máximo establecido enviamos mensaje
+			}
+			*/
+			else if(image && image.size>3000000){
 				this.titleDialogAlert="Imagen muy grande";
 				this.msgeDialogAlert="La imagen es mayor a 2MB"
-				//this.dialogErrorActive=true;
-
-				console.log("wo");
-				//return;
 			}
 			else{
+				
+				//si la imagen pasa las condiciones anteriores actualizamos el objeto
+				//image del padre (HeaderComponent) que a su vez actualiza la prop
+				//imageMain
 				this.$emit("reload",image);
-				//console.log("no es la misma imagen y reload image: ",image);
+			//por si se ha recargado la página y no existe imageMain asignamos imagetmpmain
+					//this.image=image
+				this.imagetmpmain=image;
+				console.log("no es la misma imagen y reload image: ",image);
 			}						
 		},
 		getNewHeight(newWidth,width,height){

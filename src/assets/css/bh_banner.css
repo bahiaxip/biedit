@@ -22,7 +22,7 @@
 }
 .bh_banner_vertical.min{
     width:150px;
-    min-height:500px;
+    min-height:450px;
 
 }
 .bh_banner_horizontal{
@@ -35,7 +35,7 @@
     
 }
 .bh_banner_horizontal.min{
-    min-width:650px;
+    min-width:550px;
     height:120px;    
 }
 .div_banner{
@@ -110,6 +110,7 @@
     
 }
 .img_banner{
+    max-width:100%;
     max-height:100%;        
     margin:auto;
     position:relative;

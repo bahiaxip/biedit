@@ -164,10 +164,11 @@ export default {
 				
 					
 			}else{
+				console.log(this)
 				document.querySelector(".nav").style.zIndex="1";
 				this.parentMdDrawer=true;
 			}
-			
+			console.log("pasa el watch")
 		}	
 		
 	},
@@ -342,7 +343,7 @@ export default {
 		},
 		*/
 //comprobar this.$route.name y solo actuar en componentes necesarios, chrome da muchos
-//tirones y se ralentiza al generar los cálculos en firefox no da errores
+//tirones y se ralentiza al generar los cálculos, en firefox no da errores
 		smallerHeader(){
 			let wSize={
 				width:window.innerWidth,
@@ -751,6 +752,9 @@ export default {
 				this.showDialog=true;
 			}
 		},
+		//recargamos el objeto image con los datos pasados por parámetro teniendo en 
+		//cuenta que el objeto image se pasa como prop a otros componentes hijos y de
+		//esta forma actualizamos desde esos hijos con $emit()
 		reloadImage(image,callback=null){
 		//establecemos medidas comprobando el dispositivo
 			
@@ -795,6 +799,11 @@ export default {
 			//collections nunca se deshabilita)
 			if(image.size>2000000)
 				this.mainImage=true
+			//establecemos windowSize para panel effect
+			if(image.windowSize)
+				this.image.windowSize=image.windowSize;
+			else
+				this.image.windowSize={width:window.innerWidth,height:window.innerHeight};
 			//callback sin definir
 			if(callback!=null)
 				callback();
@@ -803,7 +812,7 @@ export default {
 		//setNav cambia el estado disabled de los botones, necesario al eliminar
 		//la imagen del panel principal y el logout de sesion
 		setNav(state){
-			console.log("no funciona setNav")
+			console.log("funciona setNav")
 			this.mainImage=state;
 			this.mainBigImage=state;		
 		},

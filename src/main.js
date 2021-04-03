@@ -112,7 +112,7 @@ const routes = [
 	{path:'/collections',component:CutPanel,redirect:'/'},
 	*/
 	{path:'/collections',component:Collections,name:'collections',props:true},
-	{path:'/effects',component:CutPanel,redirect:'/'},
+	{path:'/effects',component:Effect,redirect:'/'},
 	{path:'/effects',component:Effect,name:'effect',props:true},
 	{path:'/cam',component:Cam,name:'cam',props:true},
 	//{path:'*',component:NotFound},

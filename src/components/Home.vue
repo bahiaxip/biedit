@@ -3,7 +3,7 @@
 		<div class="md-layout">
 			<div class="md-layout-item md-xlarge-size-15 md-large-size-25 md-medium-hide md-small-hide">
 				<Banner :options="optionsBhBanner"></Banner>
-				<Banner :options="optionsBhBanner2"></Banner>			
+				<!--<Banner :options="optionsBhBanner2"></Banner>-->
 			</div>
 
 			<div class="md-layout-item md-xlarge-size-70 md-large-50 md-medium-size-100">
@@ -78,8 +78,10 @@
 				</splide>
 			</div>
 			<div class="md-layout md-xlarge-size-15 md-large-size-25  md-medium-hide">
-				<div style="width:100%;margin:10px auto;border-radius:20px;background-color:rgba(0,0,0,.8);color:white;min-height:600px;padding:20px">
-
+				<div style="width:100%;margin:10px auto;border-radius:20px;background-color:rgba(0,0,0,.8);color:white;min-height:600px;padding:20px" >
+					<video width="200" height="100"  autoplay muted loop>
+						<source src="video/video_cut_biedit.mkv" type="video/mp4">
+					</video>
 					<!--<p style="font-size:17px;color:orange;font-family:nikaia;line-height:50px;letter-spacing: 1px ">Organiza tus imágenes</p>
 					<p style="font-size:17px;color:orange;font-family:zerogirl;line-height:50px;letter-spacing: 1px ">Cambia las dimensiones de tu imagen</p>
 					<p style="font-size:17px;color:orange;font-family:zerogirl;line-height:50px;letter-spacing: 1px " >Cambia las dimensiones de tu imagen</p>-->
@@ -158,7 +160,7 @@ export default {
 		return {
 			optionsBhBanner:{
 				orientation:"vertical",
-				size:"min",
+				size:"medium",
 				fontSizeDefault:"22px",
 				images:[
 					//images element 1
