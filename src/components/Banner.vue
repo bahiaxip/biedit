@@ -12,16 +12,39 @@
 		-->
 
 		<div :ref="main[mainString.refString].parentsDivsString[0]" class="div_banner" :class="main[mainString.confString].size=='min' ? 'min':'medium'" >
-			<img :src="main[mainString.tmpString][1].selected" :width="main[mainString.bannerString][1].widthHTML"  :ref="main[mainString.refString].refsString[0]" class="img_banner" v-if="!main[mainString.bannerString][1].modeText"/>
-			<p class="text_banner text1" :ref="main[mainString.refString].refsString[0]" v-else >{{main[mainString.tmpString][1].selected}}</p>
+			<p class="text_banner text1" :ref="main[mainString.refString].refsString[0]" v-if="main[mainString.bannerString][1].modeText" >{{main[mainString.tmpString][1].selected}}</p>
+			
+			<video width="200" height="100" :ref="main[mainString.refString].refsString[0]" v-else-if="main[mainString.bannerString][1].modeVideo" class="img_banner"  autoplay muted>				
+				<source :src="main[mainString.tmpString][1].selected" >
+			</video>
+
+			<img :src="main[mainString.tmpString][1].selected" :width="main[mainString.bannerString][1].widthHTML"  :ref="main[mainString.refString].refsString[0]" class="img_banner" v-else/>
+						
+			
 		</div>
 		<div :ref="main[mainString.refString].parentsDivsString[1]"  class="div_banner" :class="main[mainString.confString].size=='min' ? 'min':'medium'">
-			<img :src="main[mainString.tmpString][2].selected" :width="main[mainString.bannerString][2].widthHTML" :ref="main[mainString.refString].refsString[1]" class="img_banner" v-if="!main[mainString.bannerString][2].modeText"/>
-			<p class="text_banner font_zerogirl" :ref="main[mainString.refString].refsString[1]" v-else>{{main[mainString.tmpString][2].selected}}</p>
+			<p class="text_banner font_zerogirl" :ref="main[mainString.refString].refsString[1]" v-if="main[mainString.bannerString][2].modeText">{{main[mainString.tmpString][2].selected}}</p>
+
+			<video width="200" height="100" :ref="main[mainString.refString].refsString[1]"  autoplay muted v-else-if="main[mainString.bannerString][2].modeVideo" class="img_banner">
+				<source :src="main[mainString.tmpString][2].selected" >
+			</video>
+
+			<img :src="main[mainString.tmpString][2].selected" :width="main[mainString.bannerString][2].widthHTML" :ref="main[mainString.refString].refsString[1]" class="img_banner" v-else />
+			<!--<video width="200" height="100"  autoplay muted loop v-else-if="main[mainString.bannerString][2].modeText=='video'">
+				<source :src="main[mainString.tmpString][2].selected" type="video/mp4">
+			</video>-->
+			
+
 		</div>
 		<div :ref="main[mainString.refString].parentsDivsString[2]" class="div_banner" :class="main[mainString.confString].size=='min' ? 'min':'medium'">
-			<img :src="main[mainString.tmpString][3].selected" :width="main[mainString.bannerString][3].widthHTML"  :ref="main[mainString.refString].refsString[2]" class="img_banner" v-if="!main[mainString.bannerString][3].modeText"/>
-			<p class="text_banner" :ref="main[mainString.refString].refsString[2]" v-else>{{main[mainString.tmpString][3].selected}}</p>
+			<p class="text_banner" :ref="main[mainString.refString].refsString[2]" v-if="main[mainString.bannerString][3].modeText">{{main[mainString.tmpString][3].selected}}</p>
+			
+			<video width="200" height="100" :ref="main[mainString.refString].refsString[2]"  autoplay muted v-else-if="main[mainString.bannerString][3].modeVideo">
+				<source :src="main[mainString.tmpString][2].selected" type="video/mp4">
+			</video>
+
+			<img :src="main[mainString.tmpString][3].selected" :width="main[mainString.bannerString][3].widthHTML"  :ref="main[mainString.refString].refsString[2]" class="img_banner" v-else/>
+			
 		</div>
 	</div>
 </template>
@@ -54,7 +77,7 @@ export default {
 				
 //por revisarr
 				//global modeText
-				modeText:false,
+				//modeText:false,
 				orientation:"horizontal",
 				//si no se ha asignado el font-size ni en CSS, ni con javascript,
 				//ni con la propiedad fontSizeStyle individual, como última opción
@@ -63,6 +86,7 @@ export default {
 			//por un size más pequeño o más grande
 				fontSizeDefault:"16px",
 				size:null,
+				time:4000,
 				
 //o más animaciones ->		//configuración de cada una de las 5 animaciones
 		//En cada animación se pueden cambiar cualquiera de los 3 posibles
@@ -120,6 +144,16 @@ export default {
 						"Crea tu propia marca de agua"
 					]
 				],
+				videosBanner:[
+					[
+						"video/video_cut_biedit.mkv"
+					],
+					[
+					],
+					[
+
+					]
+				]
 			},
 	//configuración de cada elemento del banner (1, 2 y 3)
 			//se podría haber hecho un array de objetos, pero para especificar mejor
@@ -151,12 +185,13 @@ export default {
 						positionLeft:false,
 						positionTop:false,
 						//scale:false,
-						scaleRotate:false,
+						scaleRotate:false,						
 			//height,
 					},
 					//type:null,
 					fontSizeStyle:null,
 					modeText:false,
+					modeVideo:false,
 					widthHTML:null,
 				},
 			//opciones del segundo elemento del banner  (2/3)
@@ -176,6 +211,7 @@ export default {
 					//type:null,
 					fontSizeStyle:null,
 					modeText:false,
+					modeVideo:false,
 					widthHTML:null,
 				},
 			//opciones del tercer elemento del banner (3/3)
@@ -195,6 +231,7 @@ export default {
 					//type:null,
 					fontSizeStyle:null,
 					modeText:false,
+					modeVideo:false,
 					widthHTML:null,
 				}
 			},		
@@ -265,7 +302,8 @@ export default {
 			//interval, necesario para limpiarlo en el destroyed, podría estar ubicado
 			//tb en el objeto tmpBhBanner
 				interval:null,				
-			},			
+			},
+			video:null,		
 			
 			//objeto main que contiene los 4 objetos principales
 			main:null,
@@ -273,7 +311,9 @@ export default {
 			//referenciados mediante 4 propiedades:
 			//confString,bannerString,refString, tmpString
 			mainString:null,
+			focus:true
 		}
+
 	},
 	created(){
 		//si se han asignado opciones pasamos los ref de los los divs y los elementos 
@@ -310,7 +350,31 @@ export default {
 		//console.log("este es: ",this.main[this.mainString.bannerString][1].modeText);
 	},
 	mounted(){
+		window.addEventListener("focus",()=> {
+			console.log("foco antes: ",this.focus)
+			this.focus=true;
+			console.log("foco después: ",this.focus)
+		})
+		window.addEventListener("blur",()=> {
+			this.focus=false
+		})
+		/*
+		if(this.main[this.mainString.bannerString][1].modeText=='video'){
+			this.video=this.$refs[this.main[this.mainString.refString].refsString[0]];
+			console.log(this.video)
+			let playPromise=this.video.play();
+			if(playPromise !== undefined){
+				playPromise.then(() =>  {
+					console.log("dentro video")
+				}).catch(error => {
+					console.log("error  promise: ",error)
+				})
+			}	
+		}
+		*/
 
+		
+		//this.boton.addEventListener("click",this.startPlay);
 	
 		this.setRefs(this.main[this.mainString.refString],this.main[this.mainString.confString],this.main[this.mainString.tmpString],this.main[this.mainString.bannerString]);
 	
@@ -320,7 +384,7 @@ export default {
 		//detenemos setInterval()
 		clearInterval(this.main[this.mainString.refString].interval);
 	},
-	methods:{
+	methods:{		
 		//comprueba y establece la propiedad asignada en options como true 
 		//(sobreescribiendo) las opciones por defecto del objeto (ya sea original o 
 		//duplicado)
@@ -447,10 +511,14 @@ export default {
 				
 				conf.fontSizeDefault=font;				
 			}
+			//tiempo entre animación mostrar y ocultar de nuevo
+			if(options.time){
+				conf.time=options.time;
+			}
 				
 			
 		//comprobando y asignando imágenes o textos
-			if(options.images && options.images.length>0  || options.texts && options.texts.length>0){
+			if(options.images && options.images.length>0  || options.texts && options.texts.length>0  ||  options.videos && options.videos.length>0){
 
 				let opEffects;
 				if(options.effects){
@@ -464,10 +532,9 @@ export default {
 
 					//si el modeText es true se revisan textos
 					if(opEffects && opEffects[i] && opEffects[i].modeText){							
-						//textos							
-						banner[i].modeText=true;
-						
+						//textos
 						if(options.texts && options.texts[i-1] && options.texts[i-1].length>0){
+							banner[i].modeText=true;
 							
 							let testArray=this.testStringArray(options.texts[i-1]);
 							if(!testArray){
@@ -489,6 +556,15 @@ export default {
 						}else{
 							console.log("el modo texto está activado pero no se han detectado textos")
 						}								
+					
+					}else if(opEffects && opEffects[i] && opEffects[i].modeVideo){
+						if(options.videos && options.videos[i-1] && options.videos[i-1].length>0){
+
+								banner[i].modeVideo=true;								
+								conf.videosBanner[i-1]=options.videos[i-1];
+								console.log("el video: ",conf.videosBanner[i-1])
+							}
+
 						//imágenes
 					}else{
 						console.log("options: ",options.images[i-1])
@@ -520,7 +596,7 @@ export default {
 			return result;
 		},
 
-		//establecemos objetos 4 con (casi) todos los datos, excepto 3 variables 
+		//establecemos los objetos principales 4 con (casi) todos los datos, excepto 3 variables 
 		//sueltas por  revisar
 		setDataMain(options){			
 			let confString,refString,bannerString,tmpString;
@@ -617,7 +693,8 @@ export default {
 				tmp[num].selected=tmp[num].list[tmp[num].index];
 				
 				//establecemos estilos iniciales en caso de ser necesario (según 
-				//la opción de transición seleccionada)
+				//la opción de transición seleccionada)				
+				
 				this.initStylesFirstTime(refObject.nodeRef[num],banner[num],conf,tmp[num]);
 				console.log("pasa por initStyleFirstTime()")
 				
@@ -631,8 +708,10 @@ export default {
 		setListByType(tmp,num,conf,banner){
 			if(banner[num].modeText===true)
 				tmp[num].list=conf.textsBanner[num-1]
+			else if(banner[num].modeVideo === true)
+				tmp[num].list=conf.videosBanner[num-1]
 			else
-				tmp[num].list=conf.imagesBanner[num-1]			
+				tmp[num].list=conf.imagesBanner[num-1]		
 		},
 
 
@@ -677,7 +756,20 @@ export default {
 	*/
 	
 		initStylesFirstTime(bannerRef,effects,conf,tmp){
-			
+			//si existe video
+			if(effects.modeVideo==true){
+				console.log("desde initStyles wow: ",bannerRef)
+				console.log(tmp)
+				let playPromise=bannerRef.play();
+
+				if(playPromise !== undefined){
+					playPromise.then(() =>  {
+						console.log("dentro video")
+					}).catch(error => {
+						console.log("error  promise: ",error)
+					})
+				}	
+			}
 			
 			if(conf.size){
 				//
@@ -696,6 +788,7 @@ export default {
 		//sea válida.
 		console.log("desde initStyle: ",effects.fontSizeStyle)
 			let tmpFont;
+			console.log("bannerRef: ",bannerRef)
 			let fontSizeCSS=window.getComputedStyle(bannerRef,null).getPropertyValue("font-size");
 			if(effects.fontSizeStyle)
 				tmpFont=effects.fontSizeStyle			
@@ -832,7 +925,7 @@ export default {
 				//this.bhBannerConf.counter++;
 				tmp.counter++;
 				
-			},4000)
+			},main.time)
 
 			
 		},
@@ -880,6 +973,7 @@ export default {
 
 		//ocultar
 			if(type=="hide"){
+				
 			//opacity idenpendiente del resto
 				if(banner.opacity)
 					bannerRef.style.opacity="0";				
@@ -927,6 +1021,12 @@ export default {
 						console.log("Para el efecto fontSize es necesario incluir modeText");
 
 				}
+				
+				if(bannerConf[num].modeVideo==true)
+					ref.nodeRef[num].pause();
+				//resetear el src no permite la transición 
+					//ref.nodeRef[num].src="";					
+				
 
 
 
@@ -960,6 +1060,23 @@ export default {
 
 			//animaciones
 				//opacity aparte del resto o no ? 
+//revisar				
+				if(bannerConf[num].modeVideo==true){
+					console.log("foco: ",this.focus)
+					//console.log("ref: ",ref.nodeRef[num])
+					//console.log(tmp)
+					ref.nodeRef[num].src=tmp[num].selected
+					//al abandonar la pestaña del navegador genera error en play(), para
+					//solucionarlo comprobamos el focus del navegador  creando 2 
+					//listeners en mounted 
+					if(this.focus)
+						ref.nodeRef[num].play()
+
+					//this.video.src=this.main[this.mainString.tmpString][1].selected;
+					//this.video.play();
+					
+				}
+					
 				if(banner.opacity)
 					bannerRef.style.opacity="1";
 				

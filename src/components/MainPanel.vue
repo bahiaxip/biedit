@@ -3,7 +3,7 @@
 	<md-progress-spinner md-mode="indeterminate" v-if="displayLoading"  class="load_new_image"></md-progress-spinner>
 	<div class="back-main-panel" :style="{width:ima.width+'px'}" :v-if="ima.width!=null" ref="backMainPanel" style="touch-action:none">
 		
-		<div class="button-nav-mainpanel"   >
+		<div class="button-nav-mainpanel" >
 			<!-- opción switch centrado con absolute-->
 			<!-- 
 			:style="ima.width<100 ? 'position:absolute;left:50%;transform:translate(-50%)':''"
@@ -229,6 +229,7 @@ export default {
 		*/
 	},
 	mounted(){
+		console.log("desde mainpanel: ",this.ima)
 		//por revisar si es necesario o cambiar condicional
 		if(!this.ima.name){
 			this.displayLoading=true;

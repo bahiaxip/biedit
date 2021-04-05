@@ -18,7 +18,7 @@ export default {
 			if(!sessionStorage.getItem("biedit_apitoken") || !sessionStorage.getItem("biedit_email") || !sessionStorage.getItem("biedit_name"))
 				return {
 					status:"error",
-					message:"El usuario no está autenticado"
+					message:"El usuario no está autenticado"					
 				}
 			
 			return {
@@ -28,6 +28,12 @@ export default {
 				name:sessionStorage.getItem("biedit_name"),
 				message:"El usuario está autenticado correctamente"
 			}
+		},
+		//comprueba si el mensaje del dialog es usuario no autenticado y en 
+		//consecuencia se va a home
+		testMessage(msge){
+			if(msge=="El usuario no está autenticado")
+				this.$router.push("/")
 		},
 
 //Effect Panel	

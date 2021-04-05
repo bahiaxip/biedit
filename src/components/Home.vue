@@ -1,12 +1,12 @@
 <template>
 	<div style="/*background-color:gray;*/min-height:720px;">
-		<div class="md-layout">
-			<div class="md-layout-item md-xlarge-size-15 md-large-size-25 md-medium-hide md-small-hide">
+		<div class="md-layout">			
+			<div class="banner1 md-xlarge-size-15 md-large-size-25 md-medium-hide md-small-hide">
 				<Banner :options="optionsBhBanner"></Banner>
 				<!--<Banner :options="optionsBhBanner2"></Banner>-->
 			</div>
 
-			<div class="md-layout-item md-xlarge-size-70 md-large-50 md-medium-size-100">
+			<div class="md-layout-item md-xlarge-size-70 md-large-50 md-medium-size-100 m_auto">
 				<splide :options="primaryOptions" ref="primary" style="background-color:rgba(0,0,0,.6);" class="splide_custom m_auto"  >
 					<splide-slide >
 						<div class="m_top30" >
@@ -20,35 +20,35 @@
 						<div class="m_top30">
 							<img src="img/home/vineta_uva.jpg" />
 						</div>
-						<div class="text_description"><p>Efecto de forma</p></div>
+						<div class="text_description"><p>Efecto Viñeta</p></div>
 					</splide-slide>
 
 					<splide-slide >
 						<div class="m_top30">
 							<img src="img/home/oleo_labrador.jpg" />
 						</div>
-						<div class="text_description"><p>Efecto de forma</p></div>
+						<div class="text_description"><p>Efecto Óleo</p></div>
 					</splide-slide>
 
 					<splide-slide >
 						<div class="m_top30">
 							<img src="img/home/redondear_oso_polar.png" />
 						</div>
-						<div class="text_description"><p>Efecto de forma</p></div>
+						<div class="text_description"><p>Redondear esquinas</p></div>
 					</splide-slide>
 
 					<splide-slide >
 						<div class="m_top30">
 							<img src="img/home/ensalada.png" />
 						</div>
-						<div class="text_description"><p>Efecto de forma</p></div>
+						<div class="text_description"><p>Marca de agua</p></div>
 					</splide-slide>
 
 					<splide-slide >
 						<div class="m_top30">
 							<img src="img/home/circulo_pareja_sepia.png" />
 						</div>
-						<div class="text_description"><p>Efecto de forma</p></div>
+						<div class="text_description"><p>Forma circular</p></div>
 					</splide-slide>
 				</splide>
 				<splide :options="secondaryOptions" ref="secondary" class="splide_custom m_auto">
@@ -77,15 +77,20 @@
 					</splide-slide>
 				</splide>
 			</div>
-			<div class="md-layout md-xlarge-size-15 md-large-size-25  md-medium-hide">
+			<div class="banner2 md-xlarge-size-15 md-large-size-25  md-medium-hide">
+				<Banner :options="optionsBhBanner2"></Banner>
+				<!--
 				<div style="width:100%;margin:10px auto;border-radius:20px;background-color:rgba(0,0,0,.8);color:white;min-height:600px;padding:20px" >
 					<video width="200" height="100"  autoplay muted loop>
 						<source src="video/video_cut_biedit.mkv" type="video/mp4">
 					</video>
+				-->
 					<!--<p style="font-size:17px;color:orange;font-family:nikaia;line-height:50px;letter-spacing: 1px ">Organiza tus imágenes</p>
 					<p style="font-size:17px;color:orange;font-family:zerogirl;line-height:50px;letter-spacing: 1px ">Cambia las dimensiones de tu imagen</p>
 					<p style="font-size:17px;color:orange;font-family:zerogirl;line-height:50px;letter-spacing: 1px " >Cambia las dimensiones de tu imagen</p>-->
+				<!--
 				</div>
+				-->
 			</div>
 		</div>
 		<!--<Banner></Banner>-->
@@ -183,17 +188,17 @@ export default {
 				],
 				texts:[
 					[
-						//"Sube tus imágenes...",
-						//"...descárgalas donde quieras",
+						"Regístrate",
+						"sube tus imágenes...",
+						"...descárgalas donde quieras",						
 					],
 					[
 						//"Sube tus imágenes...",
 						//"...descárgalas donde quieras",
 					],
 					[
-						"Regístrate con tu correo",
-						"Sube tus imágenes...",
-						"...descárgalas donde quieras",
+						"BIEDIT",
+						"bahiaxip.com"					
 					],
 				],
 				effects:{
@@ -209,9 +214,9 @@ export default {
 						fontSize:false,
 						scaleRotate:false,
 						scale:false,
-						positionLeft:true,
+						positionLeft:false,
 					//set mode text
-						modeText:false,
+						modeText:"true",
 					//set width image HTML
 						//solo imágenes
 						widthHTML:null
@@ -219,13 +224,14 @@ export default {
 					},
 					2:{
 						opacity:true,
-						scaleRotate:true,
+						positionLeft:true,
 						widthHTML:null
 
 					},
-					3:{
+					3:{						
 						modeText:true,
-						widthHTML:150
+						widthHTML:150,
+						scaleRotate:true
 						
 					}
 				},
@@ -246,23 +252,20 @@ export default {
 				],
 			*/
 				order:{
-					0:[2,3],
+					0:[1],
 					1:[1],
-					2:[2],
-					3:[3],
-					4:[1,2,3],
-					5:[3],
-					6:[1,2]
-					//1:["2",3],
-					//2:[3]
+					2:[1,2],
+					3:[1,2,3]
+					
 				}
 				
 
 			},
 			optionsBhBanner2:{
-				orientation:"horizontal",
-				size:"min",
+				orientation:"vertical",
+				size:"medium",
 				fontSizeDefault:"22px",
+				time:4000,
 				images:[
 					//images element 1
 					[
@@ -284,18 +287,31 @@ export default {
 				],
 				texts:[
 					[
-						"Sube tus imágenes...",
-						"...descárgalas donde quieras",
+						"Recorta tu imagen",
+						"con solo un clic",
+						"Dale a tus fotos un toque personal",
+						"desde el panel de efectos"
 					],
 					[
 						"Sube tus imágenes...",
 						"...descárgalas donde quieras",
 					],
 					[
-						"Regístrate con tu correo",
-						"Sube tus imágenes...",
-						"...descárgalas donde quieras",
+						"Crea tu propia marca de agua",
+						"Realiza fusiones con tus imágenes preferidas",
+						"Genera una nueva textura"						
 					],
+				],
+				videos:[
+					[
+						"video/video_cut_biedit.mkv"
+					],
+					[
+						"video/video_cut_biedit.mkv",
+						"video/filtro_byn.mkv"
+					],
+					[
+					]
 				],
 				effects:{
 					1:{
@@ -306,22 +322,27 @@ export default {
 						//scale
 						height:false,
 						//solo texto
-						fontSize:true,
-						scaleRotate:true,
-						scale:true,
-						positionLeft:false,
+						fontSize:false,
+						scaleRotate:false,
+						scale:false,
+						positionTop:true,
 						modeText:true,
+						modeVideo:false,
 						
 					//solo imágenes
 						widthHTML:null,
 					//solo textos
-						fontSizeStyle:"12px",
+						fontSizeStyle:"20px",
 					},
 					2:{
 						opacity:true,
-						fontSize:true,
-						scaleRotate:true,
+						width:false,
+						height:false,
+						fontSize:false,
+						
+						positionLeft:true,
 						widthHTML:150,
+						modeVideo:true,
 						
 					},
 					3:{
@@ -333,12 +354,11 @@ export default {
 					}
 				},
 				order:{
-					0:[1,2],
-					1:[1,"2",3],
-					2:[3]
+					0:[1,3],
+					1:[1,2,3],
+					2:[1,3],
+					3:[1,2,3],
 				}
-				
-
 			},
 			video:null,
 			canvas:null,
@@ -516,7 +536,7 @@ export default {
 		//this.init();
 
 	},
-	methods:{
+	methods:{		
 	/*
 		//asignando estilos para preparar elementos para evitar errores en la primera transición 
 		//comprobando transición de banners para asignar estilos iniciales
@@ -938,3 +958,8 @@ export default {
 	}
 }
 </script>
+<style>
+.banner2 .bh_banner{
+	
+}
+</style>

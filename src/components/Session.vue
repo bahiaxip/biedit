@@ -21,7 +21,7 @@
 								<span class="md-error" v-if="!$v.login.password.required">La contraseña es requerida</span>
 								<span class="md-error" v-if="!$v.login.password.minLength">La contraseña debe contener al menos 8 caracteres</span>
 							</md-field>							
-							<md-button name="envio" class="md-primary md-raised" @click="changeDialog()" disabled>Cancelar</md-button>
+							<md-button name="envio" class="md-primary md-raised" @click="changeDialog()" >Cancelar</md-button>
 							<md-button name="envio" type="submit" class="md-primary md-raised">Enviar</md-button>
 						</div>
 					</form>
@@ -338,6 +338,9 @@ export default {
 						this.timerSession();
 						//establecemos botones disabled
 						this.$emit("setnav",true);
+						if(this.$route.name=="collections"){
+							this.$router.push("/")
+						}
 						
 					}else if(res.data.data){						
 						self.addAndActiveMsge("off",res.data.data);
@@ -408,8 +411,6 @@ export default {
 						self.addAndActiveMsge("on",self.msges.logout);
 						//establecemos botones disabled
 						this.$emit("setnav",true);
-
-
 					}else{
 						self.addAndActiveMsge("off","No se ha podido cerrar la sesión");
 					}
@@ -424,13 +425,18 @@ export default {
 		//limpiar datos
 		clearData(){
 			let resizedImg=this.$parent.resizedImg;
-			let image=this.$parent.image;			
+			let image=this.$parent.image;
+			console.log("desde session el padre: ",resizedImg)		
+			console.log("desde session el padre: ",image)		
 			for(let d in resizedImg){
 				resizedImg[d]=null;
 			}
 			for(let d in image){
-				image[d]=null;
+			//para evitar errores al cerrar sesión mantenemos el sub-objeto windowSize
+				if(d!=="windowSize")
+					image[d]=null;
 			}
+			console.log(this.image)
 		},
 		changeDialog(state=null){
 			console.log("llega a changeDialog ",state);

@@ -40,14 +40,14 @@
 				</md-button>-->
 
 				<router-link :to="{name:'collections',params:{imageMain:image}}">
-					<md-button class="primary_nav" :class="[smallHeader ? 'md-icon-button': 'md-fab',{'md-dense':denseHeader}]"  title="Album" >
-						<md-icon class="c_white">collections</md-icon>
+					<md-button class="primary_nav" :class="[{'disabled':sessionState},smallHeader ? 'md-icon-button': 'md-fab',{'md-dense':denseHeader}]"  title="Album" :disabled="sessionState">
+						<md-icon :class="{c_white:!sessionState}">collections</md-icon>
 					</md-button>
 				</router-link>
 
 				<router-link :to="{name:'effect',params:{ima:image}}">
 					<md-button class="primary_nav" :class="[{'disabled':mainBigImage},smallHeader ? 'md-icon-button':'md-fab',{'md-dense':denseHeader}]" title="Panel de efectos" :disabled="mainBigImage">
-						<md-icon class="c_white">photo_filter</md-icon>
+						<md-icon :class="{c_white:!mainImage}">photo_filter</md-icon>
 					</md-button>
 				</router-link>
 			</div>
@@ -71,7 +71,8 @@
 			:md-active.sync="dialogErrorActive"
 			:md-title = "titleDialogAlert"
 			:md-content = "msgeDialogAlert"
-			md-confirm-text="OK" />
+			md-confirm-text="OK" @click="testMessage(msgeDialogAlert)" 
+			:md-click-outside-to-close="dialogSwitch"/>
 
 		<md-dialog-alert class="confirmDialog"
 		:md-active.sync="dialogSuccessActive"
@@ -108,17 +109,17 @@
 			el conflicto de md-drawer con el componente cut panel, esto se hace 
 			mediante la variable parentMdDrawer y el método watch-->
 		<!--queda por solucionar los otros dialog de camara y acerca de biedit -->
-		<div v-if="parentMdDrawer">
-			<md-drawer  :md-active.sync="showSidePanel" md-right >
+		<div v-if="parentMdDrawer" >
+			<md-drawer  :md-active.sync="showSidePanel" md-right style="z-index:10">
 				<md-list>
 					<md-list-item @click="showSidePanel=false;dialogAcercade=true">
 						<span class="md-list-item-text">Acerca de Biedit</span>
 					</md-list-item>
-					<md-list-item @click="testCam()">
+					<md-list-item @click="testCam()" v-if="!sessionState">
 						<span class="md-list-item-text">Cámara</span>
 						
 					</md-list-item>
-					<md-list-item @click="volumeActive=!volumeActive">
+					<md-list-item @click="volumeActive=!volumeActive" v-if="!sessionState">
 						<span class="md-list-item-text" >Ajustes de sonido</span>
 					</md-list-item>
 					<md-list-item>
@@ -238,6 +239,8 @@ export default {
 			titleDialogAlert:null,
 			//interruptor para deshabilitar botones si no existe imagen principal
 			mainImage:false,
+			//interruptor para deshabilitar botones si no existe sesion
+			sessionState:null,
 			//interruptor para habilitar solo el botón de efectos, necesario para
 			//las imágenes enviadas desde collections mayores de 2MB.
 			mainBigImage:false,
@@ -261,7 +264,8 @@ export default {
 			smallHeader:false,
 			//identificador para denseHeader (botones de navegador diminutos)
 			denseHeader:false,
-			
+			//bloqueo de modal-dialog para no poder cerrar hasta que no se pulsa OK
+			dialogSwitch:false,
 			//anulado
 			/*
 			btnActive:{
@@ -292,6 +296,7 @@ export default {
 		//asignamos el ancho máximo de la imagen según el ancho del dispositivo
 		let size=this.getWidthAccordingWindow();
 		this.image.windowSize={width:window.innerWidth,height:window.innerHeight};
+		console.log(this.image)
 		console.log("windowSize: ",this.image.windowSize.width);		
 		this.maxWidthDefault=size;
 		
@@ -313,7 +318,8 @@ export default {
 		}
 		let session=this.testSession();
 		if(session.status=="error")
-			this.switchDialog();
+			this.sessionState=true;
+			//this.switchDialog();
 		this.video=this.$refs.video;
 		this.volume=sessionStorage.getItem("biedit_audio");
 		
@@ -324,6 +330,7 @@ export default {
 	},
 	
 	methods:{
+		
 		//anulado
 		/*
 		btnInactive(btn){
@@ -351,22 +358,27 @@ export default {
 			}
 			console.log("wSize: ",wSize)
 			this.image.windowSize.width=wSize.width;
+			
 			if(wSize.width<380){
 				this.denseHeader=true;
 				this.smallHeader=true;
 				this.image.boxPanelMargin='44px';
 				
 			}
+			
 			else if(wSize.width<520){
 				this.smallHeader=true;
 				this.denseHeader=false;
 				this.image.boxPanelMargin='36px';
 				
-			}else{
+			}
+			else{
+
 				this.smallHeader=false;
 				this.denseHeader=false;
 				this.image.boxPanelMargin='8px';				
 				//actualizando panel de recorte
+				
 				if(this.$route.name=="cutout"){
 							//devuelven lo mismo
 							//console.log(document.documentElement.clientWidth)
@@ -412,10 +424,11 @@ export default {
 					this.image.width=sizesMain.width;
 					this.image.height=sizesMain.height;
 				}
+				
 			}
 			//this.image.windowSize.width=wSize.width;
 			console.log(wSize.width);			
-
+			
 		},
 		//asignar nuevo volumen
 		editVolume(){
@@ -795,6 +808,7 @@ export default {
 			//habilitar/deshabilitar botones
 			this.mainImage=false;
 			this.mainBigImage=false;
+			this.sessionState=false;
 			//si la imagen es mayor a 2MB deshabilitamos todos menos el effect (el 
 			//collections nunca se deshabilita)
 			if(image.size>2000000)
@@ -812,8 +826,14 @@ export default {
 		//setNav cambia el estado disabled de los botones, necesario al eliminar
 		//la imagen del panel principal y el logout de sesion
 		setNav(state){
-			console.log("funciona setNav")
+			console.log("funciona setNav: ",state)
 			this.mainImage=state;
+			let session=this.testSession();
+			if(session.status=="error")
+				this.sessionState=true;
+			else
+				this.sessionState=false;
+			console.log(this.sessionState)
 			this.mainBigImage=state;		
 		},
 

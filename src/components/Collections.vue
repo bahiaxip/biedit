@@ -111,11 +111,13 @@
 					</md-button>
 				</li>
 			</ul>
+			<!--el método testMessage sirve para el dialog del headerComponent y para este de collections-->
 			<md-dialog-alert class="confirmDialog" id="confirmDialog" 
 			:md-active.sync="dialogErrorActive"
 			:md-title = "titleDialogAlert"
 			:md-content = "msgeDialogAlert"
-			md-confirm-text="OK" />
+			md-confirm-text="OK" @click="testMessage(msgeDialogAlert)"
+			:md-click-outside-to-close="dialogSwitch"/>
 
 			<md-dialog-confirm class="confirmDialog"
 			:md-active.sync="dialogSuccessActive"
@@ -160,9 +162,9 @@ export default {
 	//imagetmp no se puede fusionar con image (a continuación) ya que si enviamos una
 	//imagen al panel principal y acto seguido (sin acceder a algún otro componente)
 	//eliminamos alguna de las otras imágenes perderíamos los datos. 
-			//imagen temporal por si se recarga la página, ya que al recargar en collections imageMain es null hasta que no se accede a algún componente, 
-			//por tanto al enviar una imagen con sendToMainPanel() no se puede 
-			//comprobar si existe imagen en panel principal con imageMain
+			//imagen temporal por si se recarga la página, ya que al recargar en collections la props imageMain es null hasta que no se accede a algún 
+			//componente, por tanto al enviar una imagen con sendToMainPanel() no se 
+			//puede comprobar si existe imagen en panel principal con imageMain
 			imagetmp:null,
 			//imagen similar a imagetmp que comprueba si ya existe la misma imagen 
 			//en el panel principal, esto ya se realiza con la prop imageMain, pero
@@ -222,7 +224,6 @@ export default {
 	mounted(){
 		
 		//no es necesario el session ya que lo contiene el método getImages()
-
 		this.getImages();
 		if(!this.imageMain){
 			console.log("existe imagen en el panel: ",this.$refs);
@@ -250,6 +251,7 @@ export default {
 	},
 	*/
 	methods:{
+		
 		/*
 		onMenu(e){
 			console.log(e.target.parentElement.parentElement);

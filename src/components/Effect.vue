@@ -995,9 +995,7 @@ export default {
 			)
 		}
 	},
-	created(){
-		console.log(this.imgTrans)		
-		console.log("desde created(): ",this.ima);
+	created(){		
 		
 	},
 

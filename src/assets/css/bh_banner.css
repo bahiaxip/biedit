@@ -17,7 +17,8 @@
 }
 .bh_banner_vertical.medium{
     width:200px;
-    min-height:550px;    
+    min-height:550px;
+    height:450px;    
 
 }
 .bh_banner_vertical.min{
