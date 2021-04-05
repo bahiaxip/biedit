@@ -1,6 +1,5 @@
 <template>
 	<div v-if="ima && ima.width">		
-		<!--<div class="back-effect-panel" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >-->
 		<div class="" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >
 			<div class="m_auto t_center" >
 				<md-button class="md-icon-button md-raised " :class="[btnActive.rotateLeft ? 'accent' : 'primary',ima.windowSize.width<520 ? 'md-dense':'']"  md-menu-trigger @click="rotate('left')" title="Rotación Izquierda">
@@ -23,11 +22,6 @@
 						<md-tooltip>Aplicar cambios</md-tooltip>
 					</md-button>
 				</div>
-		
-				<!--<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="setHeightCanvas()">
-					<md-icon class="">adjust</md-icon>
-				</md-button>-->
-
 
 				<md-button class="md-icon-button  md-raised " :class="[btnActive.reflexVertical ? 'accent' : 'primary',ima.windowSize.width<520 ? 'md-dense':'']" md-menu-trigger @click="reflex('vertical')" title="Reflejo Vertical">
 					<md-icon class="c_white">swap_vert</md-icon>
@@ -35,116 +29,8 @@
 
 				<md-button class="md-icon-button  md-raised " :class="[btnActive.reflexHorizontal ? 'accent' : 'primary',ima.windowSize.width<520 ? 'md-dense':'']"  md-menu-trigger @click="reflex('horizontal')" title="Reflejo Horizontal">
 					<md-icon class="c_white">swap_horiz</md-icon>
-				</md-button>
-				<!--<div style="margin:auto;text-align:center" >-->
-			</div>	
-					
-					
-					<!--
-					<md-button class="md-icon-button floatL md-raised md-accent" @click="filtro('image','sepia')">
-						<md-icon class="sepia">exposure</md-icon>
-					</md-button>
-					<md-button class="md-icon-button floatR md-raised md-accent" @click="filtro('image','brillo')">
-						<md-icon class="brillo">brightness_5</md-icon>
-					</md-button>
-					<md-button class="md-icon-button floatR md-raised md-accent" @click="filtro('image','contraste')">
-						<md-icon class="contraste">brightness_6</md-icon>
-					</md-button>
-				-->			
-					<!--<md-menu md-align-trigger>
-						<md-button md-menu-trigger class="md-raised md-accent">
-							Efectos
-						</md-button>
-						<md-menu-content class="list-effects">
-							<md-menu-item>Polaroid</md-menu-item>
-							<md-menu-item>Vertical</md-menu-item>
-							<md-menu-item>Horizontal</md-menu-item>
-							<md-menu-item>Viñeta</md-menu-item>
-							<md-menu-item>Remolino</md-menu-item>
-							<md-menu-item>Oleo</md-menu-item>
-							<md-menu-item>Redondear</md-menu-item>
-							<md-menu-item>Onda</md-menu-item>
-						</md-menu-content>
-					</md-menu>-->
-
-
-
-					<!--
-					<md-switch class="colorB" v-model="resizeSwitch" title="Mostrar interfaz">
-					</md-switch>
-					-->
-					
-				<!--</div>
-				<div style="margin:auto;text-align:center" v-if="resizeSwitch">
-					
-				</div>-->
-		<!-- transition muy parecido al panel principal
-				<transition name="fade" >
-					<div id="div-main" class="div-main no-selectable" :style="{width:ima.width+'px',height:ima.height+'px'}" ref="divmain" v-if="imgTrans">
-						<div class="main-panel">
-							<canvas id="canvas" class="no-selectable" :width="ima.width" :height="ima.height" ></canvas>
-
-							<img :src="ima.name" id="image" class="main-img no-selectable" :width="ima.width" :height="ima.height" :class="{'main-img-resize':resizeSwitch}" ref="image" style="position:relative"/>						
-						</div>					
-					</div>
-				</transition>
-		-->
-				
-
-				<!--<transition name="fade">
-					
-						<div id="" class="" style="width:100%;margin:20px auto;height:100%;display:flex"  v-if="imgTrans">				<div style="width:60%;margin:auto">
-								<canvas id="canvas" class=""  :style="{'margin':'auto'}" :width="imaEffect.width" :height="imaEffect.height" ref="canvas"></canvas>
-
-								<img :src="ima.name" id="image" class="" ref="image" style="width:100%;height:100%;max-width:600px"/>
-							</div>
-							<div class="sidebar" style="margin:10px auto;width:40%;border:black 1px solid;padding:10px;display:flex">
-								<div style="width:100%">
-								
-									<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger >
-										<md-icon class="">adjust</md-icon>
-									</md-button>
-								</div>
-								<div style="width:100%">
-									<md-speed-dial md-event="click" md-direction="bottom">
-										<md-speed-dial-target class="md-icon-button">
-											<md-icon class="md-morph-initial">add</md-icon>
-											<md-icon class="md-morph-final">edit</md-icon>
-										</md-speed-dial-target>
-
-										<md-speed-dial-content>
-											<md-button class="md-icon-button">
-												<md-icon>note</md-icon>
-											</md-button>
-
-											<md-button class="md-icon-button">
-												<md-icon>event</md-icon>
-											</md-button>
-										</md-speed-dial-content>
-									</md-speed-dial>
-									<md-speed-dial md-event="click" md-direction="bottom">
-										<md-speed-dial-target class="md-icon-button">
-											<md-icon class="md-morph-initial">add</md-icon>
-											<md-icon class="md-morph-final">edit</md-icon>
-										</md-speed-dial-target>
-
-										<md-speed-dial-content>
-											<md-button class="md-icon-button">
-												<md-icon>note</md-icon>
-											</md-button>
-
-											<md-button class="md-icon-button">
-												<md-icon>event</md-icon>
-											</md-button>
-										</md-speed-dial-content>
-									</md-speed-dial>
-								</div>
-							</div>
-							
-						</div>
-						
-					
-				</transition>-->
+				</md-button>				
+			</div>
 
 <transition name="fade">
 	<div class="md-layout md-gutter m_top30" v-if="imgTrans">		
@@ -157,10 +43,6 @@
 					<div class="image_effect" :style="{'display':'block','backgroundImage':'url('+ima.name+')','width':imaEffect.width+'px','height':imaEffect.height+'px','position':'relative','background-size':'100%','background-repeat':'no-repeat','background-position':'center'}" ref="image_effect" v-if="!loadingImage">
 					</div>
 					<md-progress-spinner md-mode="indeterminate" class="m_auto" v-else></md-progress-spinner>
-					<!-- mantenemos la imagen para obtener las medidas, ya que el md-layout redimensiona el elemento img pero no el elemento div aunque tenga una imagen incrustada con url en los estilos CSS-->
-					<!-- ya no es necesario-->
-					<!--<img :src="ima.name" id="image" class="" ref="image" style="min-width:200px;opacity:0"/>-->
-					
 			</div>
 		<!--botones de sidebar -->
 			<div class="md-layout-item md-layout md-gutter md-medium-size-40 md-small-size-50" >
@@ -215,47 +97,52 @@
 								<md-icon>clear</md-icon>
 								<md-tooltip md-direction="left">Deshacer</md-tooltip>	
 							</md-menu-item>
+
 							<md-menu-item @click="confirmChange('polygon')"   v-if="polygonActivated">
 								<md-icon>check</md-icon>
 								<md-tooltip md-direction="left">Aplicar recorte</md-tooltip>
 							</md-menu-item>
+
 							<md-menu-item @click="drawPolygon(polygon.square)">
 								<md-icon style="transform:rotate(45deg)" md-src="img/shapes/square.svg"></md-icon>
-								<md-tooltip md-direction="left">Cuadrado</md-tooltip>	
+								<md-tooltip md-direction="left">Cuadrado</md-tooltip>
 							</md-menu-item>
+
 							<md-menu-item @click="drawPolygon(polygon.circle)">
 								<md-icon md-src="img/shapes/circle.svg"></md-icon>
 								<md-tooltip md-direction="left">Cículo</md-tooltip>
 							</md-menu-item>
+
 							<md-menu-item @click="drawPolygon(polygon.triangle)">
 								<md-icon md-src="img/shapes/triangle.svg"></md-icon>
 								<md-tooltip md-direction="left">Triángulo</md-tooltip>
 							</md-menu-item>
+
 							<md-menu-item @click="drawPolygon(polygon.star)">
 								<md-icon>star</md-icon>
 								<md-tooltip md-direction="left">Estrella</md-tooltip>
 							</md-menu-item>
+
 							<md-menu-item @click="drawPolygon(polygon.penta)">
 								<md-icon md-src="img/shapes/pentagon.svg"></md-icon>
 								<md-tooltip md-direction="left">Pentágono</md-tooltip>
 							</md-menu-item>
+
 							<md-menu-item @click="drawPolygon(polygon.hexa)">
 								<md-icon md-src="img/shapes/hexagon.svg"></md-icon>
 								<md-tooltip md-direction="left">Hexágono</md-tooltip>
 							</md-menu-item>
+
 							<md-menu-item @click="drawPolygon(polygon.hepta)">
 								<md-icon md-src="img/shapes/heptagon.svg"></md-icon>
 								<md-tooltip md-direction="left">Heptágono</md-tooltip>	
 							</md-menu-item>
+
 							<md-menu-item @click="drawPolygon(polygon.octa)">
 								<md-icon md-src="img/shapes/octagon.svg"></md-icon>
 								<md-tooltip md-direction="left">Octógono</md-tooltip>
 							</md-menu-item>
-							<!--
-							<md-menu-item>
-								<md-icon md-src="shapes/nonagon.png"></md-icon>	
-							</md-menu-item>
-						-->
+							
 							<md-menu-item title="Nonágono" @click="drawPolygon(polygon.nona)">
 								<md-icon>
 									<img src="img/shapes/nonagon.png">
@@ -271,41 +158,22 @@
 						<md-tooltip md-direction="top">Efectos</md-tooltip>
 					</md-button>
 					<md-menu-content class="menu_filter" :style="{'max-height':imaEffect.height+'px'}">
-					<!--
-						<md-menu-item>
-							<md-icon></md-icon>
-						</md-menu-item>
-						<md-menu-item>
-							<md-icon>Vignete</md-icon>
-						</md-menu-item>
-						<md-menu-item>Horizontal</md-menu-item>
-						<md-menu-item>Viñeta</md-menu-item>
-						<md-menu-item>Remolino</md-menu-item>
-						<md-menu-item>Oleo</md-menu-item>
-						<md-menu-item>Redondear</md-menu-item>
-						<md-menu-item>Onda</md-menu-item>
-					-->
+
 						<md-menu-item title="Polaroid" @click="confirmChange('polaroid')">
 							<md-icon md-src="img/effect/polaroid.svg"></md-icon>
 							<md-tooltip md-direction="left">Polaroid</md-tooltip>
 						</md-menu-item>
-					<!--
-						<md-menu-item title="Reflejo Vertical" @click="setEffect('vertical')">
-							<md-icon md-src="img/effect/vertical.svg"></md-icon>
-						</md-menu-item>
-
-						<md-menu-item title="Reflejo Horizontal" @click="setEffect('horizontal')">
-							<md-icon>swap_horiz</md-icon>
-						</md-menu-item>
-					-->
+					
 						<md-menu-item title="Viñeta" @click="confirmChange('vignette')">
 							<md-icon>vignette</md-icon>
 							<md-tooltip md-direction="left">Viñeta</md-tooltip>
 						</md-menu-item>
+
 						<md-menu-item title="Remolino" @click="confirmChange('remolino')">
 							<md-icon md-src="img/effect/fan.svg"></md-icon>
 							<md-tooltip md-direction="left">Remolino</md-tooltip>	
 						</md-menu-item>
+
 						<md-menu-item title="Onda" @click="confirmChange('onda')">
 							<md-icon>waves</md-icon>
 							<md-tooltip md-direction="left">Onda</md-tooltip>	
@@ -314,99 +182,18 @@
 							<md-icon md-src="img/effect/postage-stamp.svg"></md-icon>
 							<md-tooltip md-direction="left">Oleo</md-tooltip>	
 						</md-menu-item>
+
 						<md-menu-item title="Redondear" @click="confirmChange('esquinas')">
 							<md-icon>supervised_user_circle</md-icon>
 							<md-tooltip md-direction="left">Redondear</md-tooltip>	
 						</md-menu-item>
+
 						<md-menu-item title="Gaussiano" @click="confirmChange('gaussiano')">
 							<md-icon >grain</md-icon>
 							<md-tooltip md-direction="left">Gaussiano</md-tooltip>	
 						</md-menu-item>
 					</md-menu-content>
 				</md-menu>
-						<!--<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="reflex('vertical')">
-							<md-icon class="">swap_vert</md-icon>
-						</md-button>
-						<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="reflex('horizontal')">
-							<md-icon class="">swap_horiz</md-icon>
-						</md-button>
-						<div style="clear:left"></div>-->
-												
-					<!--<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showRangeCompress()" >
-						<md-icon md-src="img/effect/zip-box.svg" ></md-icon>
-
-						<md-tooltip md-direction="top">Compresión</md-tooltip>
-					</md-button>
-					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger @click="showRangeTexturize()" >
-						<md-icon class="">texture</md-icon>
-						<md-tooltip md-direction="top">Texturizar</md-tooltip>
-					</md-button>
-
-					<md-button class="md-icon-button  md-raised md-accent"  md-menu-trigger  @click="showSpaceColor()">
-						<md-icon md-src="img/effect/monitor-eye.svg"></md-icon>
-						<md-tooltip md-direction="top">Espacio de color</md-tooltip>
-					</md-button>-->
-		<!--espacio de color -->
-					<!--<div style="margin-top:10px;" v-if="spaceColorActive">
-						<md-field style="">
-							<label for="spaceColor">Espacio de Color</label>
-							<md-select  v-model="spaceColorSelected" name="spaceColor" id="spaceColor" @input="selectSpaceColor()">
-								<md-option v-for="spacecolor in spacecolors" :key="spacecolor" :value="spacecolor">{{spacecolor}}
-									
-								</md-option>
-								
-								
-							</md-select>
-						</md-field>
-						
-						<div style="clear:left"></div>								
-					</div>-->
-		<!-- range compression -->
-			<!--
-					<div style="margin-top:10px;display:block" v-if="rangeCompressActive">
-
-						<label for="range_compress" title="Tipo de compresión"><span style="color:blue;font-weight:bold">{{rangeCompress}}</span></label>
-
-						<div style="clear:left"></div>
-			-->
-						<!--detectar si es png o jpg para mostrar minimo y máximo distinto-->
-			<!--
-						<input name="range_compress" type="range" min="1" max="100" v-model="rangeCompress" v-if="this.ext=='jpg'"/>
-						<input name="range_compress" type="range" min="0" max="4" v-model="rangeCompress" v-if="this.ext=='png'"/>
-
-						<div style="clear:left"></div>
-			-->
-						<!--<md-button class="md-icon-button md-raised md-dense md-accent"  md-menu-trigger @click="compress(0)">
-							<md-icon class="">cancel</md-icon>
-						</md-button>-->
-			<!--
-						<md-button class="md-icon-button md-raised md-dense md-primary"  md-menu-trigger @click="setCompress(rangeCompress)">
-							<md-icon class="">check_circle_outline</md-icon>
-							<md-tooltip>Comprimir imagen</md-tooltip>
-						</md-button>
-					</div>
-			-->
-		<!-- range texturize -->
-			<!--		<div style="margin-top:10px;display:block" v-if="rangeTexturizeActive">
-
-						<label for="range_texturize" style="color:blue;font-weight:bold">{{'x'+rangeTexturize}}</label>
-						<div style="clear:left"></div>
-						<input name="range_texturize" type="range" min="1" max="10" step="1" v-model="rangeTexturize" @change="texturize(rangeTexturize)"/>
-
-						<div style="clear:left"></div>
-
-						<md-button class="md-icon-button md-raised md-dense md-accent"  md-menu-trigger @click="texturize(0)">
-							<md-icon class="">cancel</md-icon>
-							<md-tooltip>Deshacer</md-tooltip>
-						</md-button>
-
-						<md-button class="md-icon-button md-raised md-dense md-primary"  md-menu-trigger @click="texturize(rangeTexturize)">
-							<md-icon class="">check_circle_outline</md-icon>
-							<md-tooltip>Aplicar texturización</md-tooltip>
-						</md-button>
-					</div>
-					<div style="clear:left"></div>
-			-->
 		<!-- select -->
 				<div class="md_menu_custom" style="margin-top:20px">
 					<md-button class="md-icon-button md-raised buttons_composite"  md-menu-trigger @click="showListImage('fussion')" :class="[fussionActivated ? 'accent':'primary',ima.windowSize.width<520 ? 'md-dense':'']">
@@ -444,9 +231,6 @@
 								<md-icon v-html="compPosSelectedHtml"></md-icon>
 								{{compPosStr}}
 								<md-tooltip md-direction="right">Posición {{compPosStr}}</md-tooltip>
-							<!--<md-icon :md-src="'img/effect/'+compositePositionIconSelected.center+'.svg'">
-								
-							</md-icon>-->
 							
 								<md-list slot="md-expand" >
 									<md-list-item @click="selectCompositePosition('center')">
@@ -496,10 +280,9 @@
 						<md-field>
 							<label>Texto</label>
 							<md-input v-model="inputWm" maxlength="50"></md-input>
-						</md-field>
-						<!--<label for="range_fontsize" style="font-family:usuzi">Tamaño de fuente</label>
-						<div style="clear:left"></div>-->
+						</md-field>						
 					</div>
+
 					<div v-if="wmInputActive" class="inputFontSize">
 						<md-chip class="md-primary p_top2">{{rangeWmFontSize}}</md-chip>
 						<div class="clearL"></div>
@@ -508,6 +291,7 @@
 						<input type="range" v-model="rangeWmFontSize" name="range_fontsize" min="1" max="100" />
 						<md-tooltip md-direction="left">Tamaño de letra</md-tooltip>
 					</div>
+
 					<div class="m_top10" v-if="wmInputActive">
 
 						<md-list :md-expand-single="expandSingle" >
@@ -615,10 +399,7 @@
 						<input name="range_compress" type="range" min="0" max="4" v-model="rangeCompress" v-if="this.ext=='png'"/>
 
 						<div class="clearL"></div>
-						<!--<md-button class="md-icon-button md-raised md-dense md-primary"  md-menu-trigger @click="setCompress(rangeCompress)">
-							<md-icon class="">check_circle_outline</md-icon>
-							<md-tooltip>Comprimir imagen</md-tooltip>
-						</md-button>-->
+
 					</div>
 					<div class="m_top10 d_block" v-if="rangeTexturizeActive">
 
@@ -627,21 +408,10 @@
 						<input name="range_texturize" type="range" min="1" max="10" step="1" v-model="rangeTexturize" @change="texturize(rangeTexturize)"/>
 
 						<div class="clearL"></div>
-
-						<!--<md-button class="md-icon-button md-raised md-dense md-accent"  md-menu-trigger @click="texturize(0)">
-							<md-icon class="">cancel</md-icon>
-							<md-tooltip>Deshacer</md-tooltip>
-						</md-button>-->
-
-						<!--<md-button class="md-icon-button md-raised md-dense md-primary"  md-menu-trigger @click="texturize(rangeTexturize)">
-							<md-icon class="">check_circle_outline</md-icon>
-							<md-tooltip>Aplicar texturización</md-tooltip>
-						</md-button>-->
+						
 					</div>
 					<div class="clearL"></div>
-					
 				</div>
-				
 
 				<div class="md-layout-item md-xlarge-size-50 md-medium-size-50 md-small-size-100">
 						<md-speed-dial md-event="click" md-direction="bottom" ref="dial">
@@ -690,39 +460,33 @@
 	</div>	
 </transition>
 
-				<md-dialog-confirm class="confirmDialogEffect"
-				:md-active.sync="dialogConfirmActive"
-				:md-title = "dialog_selected"
-				md-confirm-text="OK"
-				md-cancel-text="Cancelar"
-				@md-cancel="cancelChange"
-				@md-confirm="setChange" />
+			<md-dialog-confirm class="confirmDialogEffect"
+			:md-active.sync="dialogConfirmActive"
+			:md-title = "dialog_selected"
+			md-confirm-text="OK"
+			md-cancel-text="Cancelar"
+			@md-cancel="cancelChange"
+			@md-confirm="setChange" />
 
-				<!--<md-dialog-confirm class="confirmEffect"
-				:md-active.sync="dialogConfirmActive2"
-				:md-title = "'Se han detectado otros cambios sin aplicar. ¿Continuar?'"
-				md-confirm-text="OK"
-				md-cancel-text="Cancelar"
-				@md-cancel="cancelChange"
-				@md-confirm="setChange" />-->
-	
-				<md-dialog-alert class="confirmDialogEffect"
-				:md-active.sync="dialogInfoActive"
-				md-title = "Nada que actualizar"
-				md-content = "No se han detectado cambios"
-				md-confirm-text="OK" />
-	
-				<md-dialog-alert class="confirmDialogEffect"
-				:md-active.sync="dialogErrorActive"
-				md-title = "Error al procesar la imagen"
-				:md-content = "msgeDialogAlert"
-				md-confirm-text="OK" />
+			
 
-				<md-dialog-alert class="confirmDialogEffect"
-				:md-active.sync="dialogNotChannelsActive"
-				md-title = "No disponible"
-				md-content = "La extracción de canales no se encuentra disponible para esta imagen"
-				md-confirm-text="OK" />
+			<md-dialog-alert class="confirmDialogEffect"
+			:md-active.sync="dialogInfoActive"
+			md-title = "Nada que actualizar"
+			md-content = "No se han detectado cambios"
+			md-confirm-text="OK" />
+
+			<md-dialog-alert class="confirmDialogEffect"
+			:md-active.sync="dialogErrorActive"
+			md-title = "Error al procesar la imagen"
+			:md-content = "msgeDialogAlert"
+			md-confirm-text="OK" />
+
+			<md-dialog-alert class="confirmDialogEffect"
+			:md-active.sync="dialogNotChannelsActive"
+			md-title = "No disponible"
+			md-content = "La extracción de canales no se encuentra disponible para esta imagen"
+			md-confirm-text="OK" />
 			
 				
 		</div>
@@ -758,18 +522,12 @@ import servicesMixin from '../mixins/servicesMixin';
 import effectsMixin from '../mixins/effectsMixin';
 import buttonsMixin from '../mixins/effectsButtonsMixin';
 import Global from '../Global.js';
-//import axios from 'axios';
+
 export default {
 	name:'Effect',
 	props:['ima'],
 	mixins:[methodsMixin,servicesMixin,effectsMixin, buttonsMixin],
-	/*
-	watch:{
-		'$route'(){
-			console.log("desde EFFECT")
-		}
-	},
-	*/
+	
 	data(){
 		return{
 			hola:true,
@@ -974,19 +732,9 @@ export default {
 				spaceColor:false,
 				channel:false
 			},
-
-
 		}
 	},
-
-	computed:{
-		/*
-		selectedSpaceColor(){
-			console.log(this.spaceColorSelected);
-			return this.spaceColor =="rgb" ? "":this.spaceColor;
-			
-		},
-		*/
+	computed:{	
 		//filtra el array de imágenes y devuelve todas menos la imagen principal
 		//destinado al desplegable de imágenes para fussion y watermark 
 		filteredImages(){			
@@ -995,109 +743,38 @@ export default {
 			)
 		}
 	},
-	created(){		
-		
-	},
-
 
 	mounted(){
 
 		//nexttick hace un efecto similar al setTimeout, espera al callback(), de esa
-		//forma permite acceder desde el mounted a propiedades en $refs
-		console.log("this.$refs2: ",this.$refs)
+		//forma permite acceder desde el mounted a propiedades en $refs		
 		this.$nextTick(() => {
 			console.log("this.$refs3: ",this.$refs)
 			this.dial=this.$refs.dial.MdSpeedDial.active;
 			this.dial2=this.$refs.dial2.MdSpeedDial.active;	
-		});
-		console.log(this.imgTrans)		
-				
-		//this.loadingImage=true;
-		if(this.ima){
-			console.log("llega this.ima: ",this.ima);
+		});	
+		
+		if(this.ima){			
 			window.addEventListener("resize", this.updateSizeCanvas);
 		}
 
 		//error al establecer width, height y problemas con
 		if(this.ima && this.ima.width){
-			this.getTotalImages();
-			console.log("llega this.ima y this.ima.width");	
-			console.log("mounted: ",this.ima);
-			//activación de efecto transición
-		//al utilizar un método raro: updateSizeCanvas() para obtener las medidas, no
-		// se muestra el efecto de transición			
-				this.imgTrans=true;
-			//acualizando spaceColor para desplegables spacecolor y channels
-				//asignamos el colorspace (el colorspace no es nativo de image, se crea
-				//en el método reloadImage() para el origen en Collections y la carga de 
-				//imagen al procesar efectos, tb en uploadImageServer() para el origen en 
-				//la subida de imagen)
-				this.spaceColor=this.ima.spaceColor;
-				this.spaceColorSelected=this.ima.spaceColor;
-				
-				//comprobamos spaceColor para asignar una opción por defecto en el select
-				//de separate_channel, ya que si es RGB o SRGB el desplegable de canales  
-				//es distinto que el de CMYK
-				//falta por crear el GRAY y realizar esta comprobación si se carga la 
-				//nueva imagen en el mismo effect, quizás sea mejor sacarlo a un método
-				this.setChannelSelected();
-				console.log("spacecolor: ",this.ima);
-
-				
-				//this.updateSizeCanvas();
-				//actualizamos canvas y el div con setTimeout, ya que estamos 
-				//recuperando el width y el height del template una vez obtenido por 
-				//la redimensión del md-layout y no se puede obtener hasta que no se 
-				//carga la vista, por ello se encierra en un setTimeout
-			
-
-
-
-			/*
+			this.getTotalImages();						
 			this.imgTrans=true;
-		//acualizando spaceColor para desplegables spacecolor y channels
-			//asignamos el colorspace (el colorspace no es nativo de image, se crea
-			//en el método reloadImage() para el origen en Collections y la carga de 
-			//imagen al procesar efectos, tb en uploadImageServer() para el origen en 
-			//la subida de imagen)
+			
 			this.spaceColor=this.ima.spaceColor;
 			this.spaceColorSelected=this.ima.spaceColor;
-			
-			//comprobamos spaceColor para asignar una opción por defecto en el select
-			//de separate_channel, ya que si es RGB o SRGB el desplegable de canales  
-			//es distinto que el de CMYK
-			//falta por crear el GRAY y realizar esta comprobación si se carga la 
-			//nueva imagen en el mismo effect, quizás sea mejor sacarlo a un método
-			this.setChannelSelected();
-			console.log("spacecolor: ",this.ima);
-			
-			//actualizamos canvas y el div con setTimeout, ya que estamos 
-			//recuperando el width y el height del template una vez obtenido por 
-			//la redimensión del md-layout y no se puede obtener hasta que no se 
-			//carga la vista, por ello se encierra en un setTimeout
-			
-
-			*/
+			this.setChannelSelected();			
 			setTimeout(() => {
 				this.updateSizeCanvas();				
-				//this.imgTrans=false;	
 			},100)
-			setTimeout(()=> {
-
-				//this.imgTrans=true;
-			},1000)
-
 		}else{
 			//mostrar dialog
 			console.log("no hay width")
-		}
-		//comprobamos si la imagen es png o jpg para mostrar el input range
-		//de la función compress con el rango de valores correspondiente.
+		}		
 		this.updateExtAndReset();		
 	},
-	
-		
-	
 	destroyed(){
 		//detectamos si existe un filtro seleccionado antes de salir
 		if(this.filterActivated){
@@ -1161,8 +838,7 @@ export default {
 					this.rangeCompress=80;
 				}
 				this.ext=ext;
-				this.rangeCompressAssigned=this.rangeCompress;
-				//console.log("llega a updateExtAndReset");
+				this.rangeCompressAssigned=this.rangeCompress;				
 			}			
 		},
 		//filtramos los efectos que están activados en formato string pasando
@@ -1177,7 +853,6 @@ export default {
 		//desactiva todas las tareas del primer grupo y cancela el efecto activo del
 		//segundo grupo
 		undoAll(){
-
 			//comprueba si no existe ningún efecto activado de ninguno de los 2 grupos
 			if(!this.testActivatedTasks(this.tasks) && !this.testActivatedTasks(this.tasks2))
 				return
@@ -1225,38 +900,16 @@ export default {
 			let listAll=this.testActivatedTasks(this.tasks);
 			let imgTmp=[]; 
 			this.effectMultiple=true;
-			//usamos el for loop en lugar del foreach para que funcione la promesa con
-			//async (async processAll()) y await (await this.processTask(data))
-				//listAll.forEach( async (data)=> {
-			//para obtener el key(index) para imgTmp cambiamos de for...of a for 
-			//sencillo for (let data of listAll){
-			for(var i=0;i<listAll.length;i++){
-				//con await espera a resolver la promesa para devolver el resultado,
-				//de esa manera permite disponer de los datos devueltos para manejarlos
-				//antes de seguir el recorrido del for
 
-				//si existe más de un efecto la variable imgTmp se utiliza para enviar
-				//la imagen del resultado del server (con efectos realizados) y no la 
-				//inicial (sin efectos). Se compone de un modal con una solicitud de 
-				//de confirmación para cargar la imagen en el componente actual y con 
-				//vista previa de la nueva imagen
+			for(var i=0;i<listAll.length;i++){			
 				let result;
 				if(imgTmp.length>0){
 					result=await this.processTask(listAll[i],imgTmp[i-1]);	
 				}else{
 					result=await this.processTask(listAll[i]);	
 				}
-				
-				/*
-				.then((data)=>{
-					console.log("después del processTask: ",data)
-					imgTmp.push(data);
-				});
-				*/
-				
 				imgTmp.push(result);
 			}
-			
 
 			//elemento final (se eliminan las imágenes creadas en cada efecto menos la
 			//última)
@@ -1274,69 +927,42 @@ export default {
 				final=imgTmp[0];
 			}
 			this.dialogImage=true;
-			this.tmpImage=final;
-			console.log("final: ",final);
-			console.log("IMGTMP: ",imgTmp);
+			this.tmpImage=final;			
 			this.effectMultiple=false;
 			this.undoAll();
 			//aquí resultado final y asignación de última imagen 
-
-		},
+		},		
 		
-		//switch case que devuelve una promesa y que permite desde el loop for del método
-		//processAll() (y con la ayuda de async y await) esperar a que se resuelva la //promesa para continuar el for, y así, poder disponer de los datos devueltos
-		//en el siguiente case dentro del mismo loop for, para ello utilizamos el parámetro imgTmp
 		processTask(data, imgTmp=null){
 			return new Promise((resolve)=>{
 				let split=data.split("A");
 				var name="";
 				switch(split[0]){
 					case "rotate":
-						
-				//al ser el rotate y el reflex el primer efecto (ya que uno desactiva 
-				//el otro y, por tanto, no se pueden realizar los dos a la vez) del 
-				//array no es necesario añadir el condicional de imgTmp, pero por si 
-				//se añaden más efectos lo incluimos
-
+				
 						var params={ angle:this.rotateSide }
 						if(imgTmp)
-							params.name=imgTmp.random_name;
-							//params.src=imgTmp.src;
-						console.log("params :",params);
-						//imgTmp.push(this.setEffect('rotate',params));
+							params.name=imgTmp.random_name;						
 						resolve(this.setEffect('rotate',params));
-						//var datus=await this.setEffect('rotate',params);
-						//console.log("res desde processTask: ",datus);
-						
-						//console.log(datus);
-
-						console.log("this.rotateSide: ",this.rotateSide);
-						//llamar método rotate con los lados asignados	
-						
 						break;
 					case "reflex":
 						if(imgTmp)
 							name=imgTmp.random_name
 						resolve(this.setEffect(this.typeReflex,name));
-						console.log("this.typeReflex: ",this.typeReflex);
 						break;
 					case "filter":						
 							//pasamos solo el random_name del objeto imagen
 							if(imgTmp)
 								name=imgTmp.random_name;
-							console.log("this.filterProp: ",this.filterProp);
 							resolve(this.setFilter(name));
-						
 						break;
 					case "polygon":						
 						if(imgTmp)
 							name=imgTmp.random_name
 						resolve(this.setPolygon(name));
 						name=null
-						//console.log("this.polygonProp: ",this.polygonProp);
 				}
 				name=null;
-			
 			})
 		},
 		
@@ -1359,30 +985,22 @@ export default {
 			//asignamos valores para mostrar en el desplegable
 			this.compPosSelectedHtml=this.compPosIconSelected[position];
 			this.compPosStr=this.compPosStrOptions[position];
-			this.compPos=position;
-			console.log("position desde selectCompositePosition: ",position);
-
-			//this.compPosSelected=true;
+			this.compPos=position;			
 			this.expandCompPos=false;
 		},
 		//desactiva el efecto activado del segundo grupo (solo puede haber uno), si 
 		//por algún error hubiera más de uno cancela todos los efectos del segundo 
 		//grupo (de uno en uno)
 		cancelAll(){			
-			let listActivated=this.testActivatedTasks(this.tasks2);			
-
+			let listActivated=this.testActivatedTasks(this.tasks2);
 			if(listActivated && listActivated.length==1){
-				let split=listActivated[0].split("A");
-				console.log("cancelar todo: ",split[0]);
+				let split=listActivated[0].split("A");				
 				this.cancelTask(split[0])
 			}else if(listActivated){
 				this.tasks2.forEach((task)=> {
-					let split=task.split("A");
-					//console.log(split[0])
+					let split=task.split("A");					
 					this.cancelTask(split[0]);
-				})
-				//método anterior que desactiva todo a la vez
-				//this.cancelSelect();
+				})				
 			}
 		},
 
@@ -1402,8 +1020,7 @@ export default {
 					this.compositeSelectedHtml="Seleccionar";
 					this.compositeSelectedId=null;					
 					//desactiva desplegable de posición (watermark)
-					this.compPosListActive=false;
-					//this.compPosSelected=false;
+					this.compPosListActive=false;					
 					//establecida la opción de centrado, por defecto
 					this.compPosStr=this.compPosStrOptions.center;
 					this.compPosSelectedHtml=this.compPosIconSelected.center;
@@ -1442,20 +1059,14 @@ export default {
 					this.channelActivated=false;
 					break;
 			}
-		},
-	//anulado (sutituido por cancelAll() y cancelTask())
-		//Cancela las selecciones iniciadas del efecto fusión, watermark y create-watermark
-		//En lugar de desactivar todo directamente se podría comprobar cual
-		//está activado, sobre todo en el segundo grupo, ya que solo puede haber uno activado
+		},	
 		cancelSelect(){
 		//reinicia la acción seleccionada (fussion|watermark|create-watermark)	
 			this.typeAction=null;
-
 		//desactiva desplegable que sirve para fussion y watermark
 			this.compositeSelectedHtml="Seleccionar";
 			this.compositeSelectedId=null;
-			this.compListActive=false;
-		
+			this.compListActive=false;		
 		//desactiva desplegable de posición (watermark)
 			this.compPosListActive=false;
 			//this.compPosSelected=false;
@@ -1490,23 +1101,9 @@ export default {
 			this.spaceColorActive=false;
 			this.spaceColorSelected=this.ima.spaceColor;
 		},
-		selectSpaceColor(){
-			console.log("spaceColor: ",this.spaceColor);
-			console.log("channelSelected: ",this.channelSelected)
-			console.log("spaceColorSelected: ",this.spaceColorSelected);
-		},
-		selectChannel(){
-			console.log("spaceColor: ",this.spaceColor);
-			console.log("channelSelected: ",this.channelSelected)
-			console.log("spaceColorSelected: ",this.spaceColorSelected);
-			
-
-		},
-		//muestra las opciones de selección de los efectos fusión, watermark y 
-		//create-watermark cancelando anteriores selecciones de algunos de los 3
-		showListImage(action){
-		//se comprueban los dials (desplegables) dial abierto	
-		this.hideDials();
+		
+		showListImage(action){		
+			this.hideDials();
 		//si hay desplegable visible...
 			if(this.compListActive || this.wmInputActive || this.rangeTexturizeActive || this.rangeCompressActive){				
 				if(action=="fussion"){
@@ -1602,8 +1199,6 @@ export default {
 				this.spaceColorActive=true;
 				this.typeAction=action;
 			}
-			
-			console.log("llega: ",this.spaceColor)
 		},
 		
 	//anulado, sustituido por session()
@@ -1622,45 +1217,19 @@ export default {
 		//ha cargado la vista y el md-layout ha asignado automáticamente una medida 
 		//al elemento img. Es una forma de obtener los px de un div que se ha establecido
 		//en porcentaje
-		updateSizeCanvas(){
-			console.log("desde updateSizeCanvas: ",this.ima);
+		updateSizeCanvas(){			
 			this.deleteDrawCanvas();
-			
-			//let width=this.$refs.div_effect_image.clientWidth;
 			let prop=this.handleCSS(this.$refs.div_effect_image);
 			let width=prop[0];
-			//console.log("solo refs: ",this.$refs.div_effect_image);
-			//se podría asignar el tamaño real si es más pequeño que el resultado
-			//que asigna el md-layout
-		//revisar asignar la misma medida si es más pequeña que la creada por el 
-		//md-layout y establecer un margin, pero al crear efecto rotate falla
-		//es necesario profundizar más para añadir esta característica, ya que,
-		//en el efecto rotate se intercambia el width  por el height, de momento,
-		//ignoramos
-			/*
-			if(this.ima.width<width){
-				console.log("medida estandar:",this.ima.width);
-				width=this.ima.width
-			}
-			*/			
-			//let width=document.querySelector(".div_effect_image").clientWidth;
-			
 			let height=this.getNewHeight(width,this.ima.width,this.ima.height);
-			//let height=parseInt(this.$refs.div_effect_image.clientHeight);
 			this.imaEffect.width=width;
 			this.imaEffect.height=height;
-			//si el efecto rotate está activado no actualizamos, ya que al estar
-			//las dimensiones invertidas se descoloca la imagen
 			if(this.rotateActivated ){
 				this.rotate(null);
-			}
-			//this.spaceColorActive=false;
+			}			
 		},
 			
-		cancelLoadImage(){
-			//pasamos a null para que se muestre el spinner
-			//this.tmpImage=null;
-			//desactivamos y reiniciamos el efecto 
+		cancelLoadImage(){			
 			this.cancelAll();
 			this.dialogImage=false;
 			this.tmpImage=null;
@@ -1668,44 +1237,26 @@ export default {
 		//muestra modal con un mensaje de confirmación o de información, detectando
 		//si existen otras tareas pendientes (activadas) del grupo 1  
 		confirmChange(type_effect){
-			
 			//se asigna el tipo de efecto (filter,polygon,polaroid...) a type para
 			//después desde el método setChange() (que es llamado al pulsar OK en el 
 			//modal de confirmación) llamara al efecto correspondiente
 			this.type=type_effect;
-			let list=this.testActivatedTasks(this.tasks);
-			//si no existen cambios pendientes y se ha pulsado el botón de deshacer todo
-			//o procesar todo se envia un dialog-alert en lugar de un dialog-confirm
+			let list=this.testActivatedTasks(this.tasks);			
 			if(!list && type_effect=="undoAll" ||
 				!list && type_effect=="processAll" ){
 				this.dialogInfoActive=true;
 				return;
-			}
-		
-			//(tareas posibles del grupo1: rotate o reflex, solo uno de los dos, 
-			//filter y polygon)
-			//En caso de que se use el método de actualización propio de filter o de 
-			//polygon (que se encuentran con el icono de check en el desplegable) se 
-			//comprueba que haya tareas pendientes del primer grupo que no sea la 
-			//propia, es decir, si pulsamos el botón de procesar filtro comprobamos que 
-			//exista otra tarea además de filter o si pulsamos el botón de procesar 
-			//forma que exista otra tarea además de polygon, ya que entonces no tendría 
-			//sentido incluir el aviso de que existen tareas pendientes
+			}		
+			let pendentTasks=[];
 
-		//Para lo descrito anteriormente creamos un array e incluimos todos los efectos 
-		//activados del primer grupo exceptuando el propio 
-		let pendentTasks=[];
-		if(list){
-			list.forEach((item)=> {
-				let split=item.split("A");
-				if(split[0]!=type_effect)
-					pendentTasks.push(split[0]);
-				
-			})
-		}
-		//se comprueba si existen otros efectos pendientes (del primer grupo) 
-		//y se asigna un mensaje que incluye un aviso de esas tareas pendientes,
-		//exceptuando los métodos processAll() y undoAll()
+			if(list){
+				list.forEach((item)=> {
+					let split=item.split("A");
+					if(split[0]!=type_effect)
+						pendentTasks.push(split[0]);
+				})
+			}
+
 			if(list && type_effect!="undoAll" && type_effect!="processAll" && pendentTasks.length>0){
 
 					this.dialog_selected=this.dialog_title.pendentTasks;
@@ -1749,13 +1300,11 @@ export default {
 						this.dialog_selected=this.dialog_title.effect;
 				}
 			}			
-			this.dialogConfirmActive=true;
-			console.log("Confirmando...",this.typeAction);
+			this.dialogConfirmActive=true;			
 		},
 		//método al dar OK en la confirmación de un efecto de filtro, o recorte de
 		// forma o efecto
-		setChange(){
-			//this.desactiveBtnByType();
+		setChange(){			
 			if(this.type){
 				switch(this.type){
 					case "filter":
@@ -1801,11 +1350,6 @@ export default {
 					default:
 						this.setEffect(this.type)
 				}
-				//console.log("desde setChange: ",this.type);
-				
-				//this.dialogImage=true;
-				//this.tmpImage=effect.data.image;
-
 			}
 		},
 		//deshace el filtro, necesario identificar desactivado
@@ -1814,44 +1358,17 @@ export default {
 			if(this.btnActive.effect)
 				this.btnActive.effect=false;			
 		},
-		
-		
-		//Al establecer una nueva imagen arpovechamos el método de recargar la imagen 
-		//desde el padre con reloadImage() creado para el componente Collections.
-		//Este método establece una vista previa al procesar un efecto o conjunto de 
-		//efectos apoyándose en la variable tmpImage, añadiendo tb una solicitud de 
-		//carga de imagen
-		//Para el filtro solamente no sería necesario, ya que las medidas no cambian
 		setTmpImage(){
-			//Recordar, el ima.src o image.src es solo el nombre aleatorio y la 
-			//extensión, mientras que el ima.name o image.name es la imagen en base64 
-			//o la ruta completa redirigiendo a la api ("http://.../get-image/nombrealeatorio.extensión")
-			console.log("image desde effect: ",this.tmpImage);
 			//ocultamos modal
 			this.dialogImage=false;
 			//pasamos a false para que realice la transición
-			this.imgTrans=false;
-		//con undoAll() desactivamos y reiniciamos las tareas activadas del primer 
-		//grupo y la tarea activada del segundo grupo
-		this.undoAll();		
-			//this.$emit("reload",dato);
-			//recargamos la nueva imagen
-			//pasamos un callback para que cuando recargue los datos de la imagen 
-			//vuelva a crear la transición (aunque no se aprecia, por lo menos, en local)
+			this.imgTrans=false;		
+			this.undoAll();					
 			this.$emit("reload",this.tmpImage,()=>{
-					console.log("llega al callback: ",this.type);
-					//comprobamos si el efecto es space_color y asignamos el nuevo
-					//spaceColor para reiniciar el desplegable de spaceColorActive y
-					//de esa forma muestra el botón de check cuando corresponde
-					//Nota: Recordar que la propiedad spaceColor no es nativa del 
-					//objeto image si no que se crea sobre la marcha:
-					//desde el componente Collections con un emit similar a éste y en 
-					//el headerComponent desde uploadServer()
 					if(this.type=="space_color"){
 						this.spaceColor=this.tmpImage.space_color;
 						this.setChannelSelected();
-					}
-					console.log("después de spaceColor: ",this);
+					}					
 					this.updateSizeCanvas();
 					setTimeout(()=> {
 						this.imgTrans=true;	
@@ -1865,17 +1382,6 @@ export default {
 }
 </script>
 <style>
-/*
-.fade-enter-active{
-	transition:opacity 5s
-}
-.fade-leave-active{
-	opacity:1;
-}
-.fade-enter, .fade-leave-to{
-	opacity:0;
-}
-*/
 .md_menu_custom{
 	padding:0;
 }

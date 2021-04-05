@@ -1,6 +1,5 @@
 <template>
-	<div >
-		<!--<md-progress-spinner md-mode="indeterminate" v-if="displayLoading"></md-progress-spinner>-->
+	<div>		
 <!--dialog session register y login -->
 	<md-dialog :md-active.sync="dialog" :md-click-outside-to-close="closeDialog" class="session-panel-dialog" v-if="!displayLoading">
 
@@ -149,8 +148,6 @@ export default {
 			timer:null,
 			timerSessionData:"",
 			dialogSession:true,
-			
-			//clear:null,
 		}	
 	},
 	validations:{
@@ -200,12 +197,6 @@ export default {
 			//actualizamos tiempo del contador
 			this.timer=this.time;
 		},false);
-	},
-
-	destroyed(){
-	//anulado
-		//no necesario, se puede prescindir en session y md-drawer de headerComponent
-		//this.$emit("btn","settings");
 	},
 	methods:{
 		//contador de sesión: se cierra la sesión al cabo de un tiempo determinado
@@ -263,24 +254,14 @@ export default {
 			//console.log(this.$v);
 			if(!this.$v.register.$invalid){
 				//con sending impedimos escritura en todos los input del formulario
-				this.sending=true;				
-					//setTimeout para prueba, en su lugar llamada a la API
-					/*window.setTimeout(()=> {
-						this.sending=false
-						this.clearForm()
-					},3000);*/
+				this.sending=true;					
 				this.register.password_confirmation =this.register.password;
-				
-				//this.dialog=false;
 				//efecto de carga en on
-				this.displayLoading=true;
-				//console.log("pasó");
+				this.displayLoading=true;				
 				axios.post(this.url+"register",this.register).then(function(res){
-					//console.log("pasó2");
 					//efecto de carga en off
 					self.displayLoading=false;
-					if(res.data.data){
-										
+					if(res.data.data){										
 						//Establecer el api_token en sessionStorage				
 						sessionStorage.setItem("biedit_name",res.data.data.name);
 						sessionStorage.setItem("biedit_email",res.data.data.email);
@@ -288,8 +269,7 @@ export default {
 						self.addAndActiveMsge("on",self.msges.onRegister);
 						self.changeDialog();
 						//establecemos botones disabled
-						this.$emit("setnav",true);
-						
+						this.$emit("setnav",true);						
 					}else{
 						if(res.data.message){
 							self.addAndActiveMsge("off",self.msges.offRegister);
@@ -305,8 +285,7 @@ export default {
 		//login de usuario	
 		loginUser(){
 			var self=this;
-			this.$v.login.$touch();
-			//console.log(this.$v);
+			this.$v.login.$touch();			
 			//al haber varios formularios es necesario especificar, no es suficiente con:
 			//if(!this.$v.$invalid) -> es necesario indicar si es login,register...,
 			//lo mismo con $touch más arriba
@@ -314,10 +293,7 @@ export default {
 				this.sending=true;
 				let headers={
 					headers:{
-						"Access-Control-Allow-Origin":'*',
-						//"Access-Control-Allow-Methods":"GET,POST,PUT,DELETE,OPTIONS",
-						//"Access-Control-Allow-Headers":"X-Requested-With,Content-Type,X-Token-Auth,Authorization,Origin,Accept",
-						//"Allow":"GET,POST,OPTIONS,PUT,DELETE"
+						"Access-Control-Allow-Origin":'*',						
 					}
 				};
 				//efecto de carga en on
@@ -331,7 +307,6 @@ export default {
 						sessionStorage.setItem("biedit_email",res.data.data.email);
 						sessionStorage.setItem("biedit_apitoken",res.data.data.api_token);
 						sessionStorage.setItem("biedit_audio",0.1);
-						//console.log("res.data.data1: ",res.data.data);
 						self.session.name=res.data.data.name;
 						self.session.email=res.data.data.email;
 						this.changeDialog();						
@@ -383,8 +358,6 @@ export default {
 					this.changeDialog();
 				}
 			}else{				
-				//self.message.errorRegister="Los datos no son correctos";
-				//self.errorDialog=true;
 				self.addAndActiveMsge("off",self.msges.errorData);
 			}
 			this.sending=false;
@@ -402,7 +375,6 @@ export default {
 					//efecto de carga en off
 					self.displayLoading=false;
 					if(res.data.data){
-
 						//eliminamos datos de sessionStorage
 						sessionStorage.removeItem("biedit_name");
 						sessionStorage.removeItem("biedit_email");
@@ -472,28 +444,8 @@ export default {
 				}
 				//volvemos a mostrar el dialogo de session para no acceder sin registrarse o loguearse
 				this.changeDialog(true)
-			}
-			
-						
+			}			
 		}
 	}
 }
 </script>
-<style>
-/*
-.dialog-alert-email .md-ripple{
-	color:white;
-	background-color:red;
-}
-.md-dialog.dialog_spinner{
-	background-color:rgba(255,255,255);
-	margin-top:50px;
-	position:absolute;
-	z-index:5;
-}
-.dialog_spinner>:first-child {
-	background:transparent !important;
-	box-shadow:none;
-}
-*/
-</style>

@@ -93,7 +93,6 @@ export default {
 			canvasCam:null,
 			canvasCamWidth:640,
 			canvasCamHeight:480,
-
 			//podría ir en global.js
 			constraints:{
 				audio:true,
@@ -166,56 +165,9 @@ export default {
 			this.stopCam()
 	},
 	methods:{
-		//obtener permisos (granted,denied o prompt) 
-		//solo probado que funciona en chrome en firefox lanza error
-		permisos(){
-			//micrófono
-			/*
-			navigator.permissions.query(
-			{name:'camera'}
-			//otros
-			//{name:'geolocation'}
-			//{name:'notifications'}
-			//{name:'midi',sysex:false}
-			//{name:'midi',sysex:true}
-			//{name:'push',userVisibleOnly:true}
-			//{name:'push'} //sin userVisibleOnly puede no ser
-			//soportado en algunos navegadores
-
-			
-			).then((permissionObj) => {
-				console.log(permissionObj.state);
-				
-			}).catch((error) => {
-				console.log("error: ",error);
-			})
-			*/
-
-			//video
-			/*
-			navigator.permissions.query({name:'camera'}).then((permissionObj) => {
-				console.log(permissionObj.state);
-			}).catch((error) => {
-				console.log("error: ",error);
-			})
-			*/
-
-		},
-
 		//parar camara, probar en produccion con https y varios navegadores
 
 		stopCam(){
-			//pausado 
-			//this.videoCam.pause();
-			
-
-			//apagar solo audio
-			//this.videoCam.srcObject.getAudioTracks()[0].stop();
-			//apagar solo video
-			//this.videoCam.srcObject.getVideoTracks()[0].stop();
-			//apagando audio y video de 1 medio 
-			//this.videoCam.srcObject.getTracks()[0].stop();
-			
 			//apagando audio y video de todos los medios
 			this.videoCam.srcObject.getTracks().forEach(track => {
 				track.stop();
@@ -243,79 +195,6 @@ export default {
 		initCam(stream){
 			this.videoCam.srcObject=stream;
 		},
-		
-
-		/* initCam antiguo (lo dejamos con comentarios que pueden ser útiles)*/	
-
-		/*initCam(){
-			let media=navigator.mediaDevices;
-			if(media && media.getUserMedia){
-				media.getUserMedia(this.constraints).then(stream => {
-					this.videoCam.srcObject=stream;
-					console.log("funcionando");
-		*/
-					//intento de comprobación en firefox devolviendo datos. En una
-					//primera revisión no se ve que dato puede identificar los permisos
-					//en caso de interés revisar mejor
-
-					/*
-					this.videoCam.onloadedmetadata=function(e){
-						console.log("llega onloadedmetadata: ",e);
-					}
-					*/
-		/*			
-				}).catch(error => {
-					this.titleDialogAlert="No se ha podido conectar con la cámara";
-					this.msgeDialogAlert=this.testErrorCam(error);
-		*/
-					/*
-					if(error.name== "NotFoundError" || error.name=="DevicesNotFoundError"){						
-						//no existe dispositivo o no tiene microfono: puede ser
-						//que la grabación esté desactivada aunque exista microfono
-						console.log("Dispositivo no encontrado");
-						this.msgeDialogAlert="Dispositivo no encontrado";
-						
-					} else if(error.name == "NotReadableError" || error.name=="TrackStartError"){
-						//webcam or mic are already in use
-						console.log("Dispositivo ya en uso");
-						this.msgeDialogAlert="Dispositivo ya en uso";
-					}else if(error.name == "OverconstrainedError" || error.name=="ConstraintNotSatisfiedError"){
-						//constraints can not satisfied by avb.devices
-						//los datos en media no son soportados por el hardware, e.g.
-						//alta resolución o alto ratio de frames,...
-						console.log("Parámetros en getUserMedia() no soportados ");
-						this.msgeDialogAlert="Parámetros en getUserMedia() no soportados";
-					}else if(error.name == "NotAllowedError" || error.name == "PermissionDeniedError"){
-						//permission denied in browser
-						//el usuario deniega los permisos o el navegador tiene la opción
-						//de microfono o video desactivada por defecto
-						console.log("Permiso denegado por el navegador");
-						this.msgeDialogAlert="Permiso denegado por el navegador";
-					}else if(error.name == "TypeError"){
-						//empty constraints object
-						//Los parámetros (constraints) están vacíos o asignados a false
-						console.log("Parámetros en getUserMedia() vacío");
-						this.msgeDialogAlert="Permiso denegado por el navegador";
-					}else if(error.name=="AbortError"){
-						//en firefox mostrado cuando ya está en uso el dispositivo, e.g.
-						//en otro navegador
-						console.log("Error con el dispositivo o ya se encuentra en uso")
-						this.msgeDialogAlert="Error con el dispositivo o ya se encuentra en uso";
-					}
-					else{					
-						//other errors
-						console.log("Error: ",error.name);
-						this.msgeDialogAlert=error.name;
-					}
-					*/
-			/*
-					this.dialogAlertActive=true;
-					
-				})
-			}
-			
-		},
-		*/
 		//dibujar imagen en canvas
 		capture(){
 			if(this.videoCam.srcObject){
@@ -325,11 +204,6 @@ export default {
 				this.dialogImageCam=true;
 				this.imageCam=this.canvasCam.toDataURL("image/jpg");	
 			}
-			
-			
-
-			// Other browsers will fall back to image/png
-				//img.src = canvasCam.toDataURL("image/webp");
 		},
 		playSound(){
 			let audio=this.$refs.captureAudio;
@@ -346,13 +220,10 @@ export default {
 			this.dialogImageCam=false;
 		},
 		loadImage(){
-
-			//console.log(this.imageCam)
 			this.uploadImageBase64(this.imageCam);
 		},
 
 		uploadImageBase643(image){
-			
 			let session=this.testSession();
 			if(!session){				
 				return;
@@ -383,7 +254,5 @@ export default {
 <style>
 #canvasCam{
 	display:none;
-	
-
 }
 </style>

@@ -2,7 +2,6 @@ import axios from 'axios';
 export default {
 
 	methods: {
-
 		//identifica si el usuario ha iniciado sesión y en caso afirmativo devuelve
 		//las variables de sessionStorage
 		testSession:()=>{
@@ -49,9 +48,7 @@ export default {
 				return;
 			}
 			let api_token=session.api_token,
-				email=session.email;
-				//let apitoken=sessionStorage.getItem("biedit_apitoken");
-				//let email=sessionStorage.getItem("biedit_email");
+				email=session.email;				
 			let data={
 				range:range,
 				email:email,
@@ -66,16 +63,11 @@ export default {
 				console.log(res);
 				if(res.data.image){
 					this.dialogImage=true;						
-					this.tmpImage=res.data.image;
-					console.log("tmpImage2: ",this.tmpImage);
-					//console.log(this.tmpImage);
-					console.log("dialog_image",res.data.image);
-				}else{
-					//console.log(res.data.data);
+					this.tmpImage=res.data.image;					
+				}else{					
 					console.log("hubo un error");
 				}
 			});
-			
 		},
 		//método de reflejo de imagen (componente EffectPanel)
 		setReflex(type){			
@@ -111,8 +103,7 @@ export default {
 
 		//procesa la solicitud de efecto filtro al server
 		setFilter(name=null){
-			return new Promise((resolve,reject)=> {
-				//console.log("llega a setFilter");
+			return new Promise((resolve,reject)=> {				
 				let session=this.testSession();
 				if(!session){				
 					return;
@@ -135,8 +126,7 @@ export default {
 					email:email
 				};
 				if(name)
-					data.name=name;
-				//console.log(this.filterProp);				
+					data.name=name;				
 				//desactivamos el filtro de la imagen creado con JavaScript
 				this.filter();					
 				
@@ -163,11 +153,7 @@ export default {
 //falta despintar botón polygon y effect
 		//almacenar imagen con la forma geométrica seleccionada
 		setPolygon(name=null){
-			return new Promise((resolve,reject) => {
-			//	console.log("llega a setPolygon");
-				//if(sessionStorage.getItem("biedit_apitoken")){
-				//	let api_token=sessionStorage.getItem("biedit_apitoken");
-				//	let email=sessionStorage.getItem("biedit_email");
+			return new Promise((resolve,reject) => {			
 				let session=this.testSession();
 				if(!session)
 					return;
@@ -190,14 +176,12 @@ export default {
 					email:email
 				};
 				if(name)
-					data.name=name;
-				console.log("lados: ",this.polygonProp);
+					data.name=name;				
 				//desactivamos el polígono mostrado en el canvas creado con JavaScript
 				this.deleteDrawCanvas();
 				//despintamos botón
 				this.btnActive.polygon=false;				
-				this.dialogImage=true;
-				console.log("tmpImage: ",this.tmpImage);
+				this.dialogImage=true;				
 				axios.post(this.url+'polygon',data,headers).then(res=>{
 					if(res.data.image){
 						//comprobar si el origen es processAll()
@@ -210,14 +194,11 @@ export default {
 					}else{
 						reject(Error("Error en effect"));
 					}
-					
-					
 				}).catch(error=>{
 					this.msgeDialogAlert="Se generó un error al procesar el efecto de forma";
 					this.dialogErrorActive=true;
 					console.log("Error server: ",error);
-				})
-				//}
+				})				
 			})
 		},
 
@@ -226,10 +207,6 @@ export default {
 			//la promesa tan solo es necesaria para el efecto rotate, ya que, al 
 			//pertenecer al primer grupo requiere asincronía para el processAll()
 			return new Promise((resolve,reject)=>{
-				//if(sessionStorage){
-					//if(sessionStorage.getItem("biedit_apitoken")){						
-					//	let api_token=sessionStorage.getItem("biedit_apitoken");
-					//	let email=sessionStorage.getItem("biedit_email");
 				let session=this.testSession();
 				if(!session)
 					return;
@@ -245,21 +222,13 @@ export default {
 					headers:{
 						Authorization:'Bearer '+api_token
 					}
-				};
-				//pòdemos pasar datos en el params y pasar el name temporal para el
-				//array, por ejemplo...
-				//if(params.name) data.name=params.name
-				/*
-				if(params && params.name){
-				}
-				*/
+				};				
 				let data={
 					name:this.ima.src,
 					effect:type_effect,
 					email:email,
 					params:params
-				};
-				console.log("params: ",params);
+				};				
 				//despintamos botón
 				this.btnActive.effect=false;
 				axios.post(this.url+'effect',data,headers).then(res=>{
@@ -284,9 +253,7 @@ export default {
 					this.msgeDialogAlert="Se generó un error al procesar el efecto";
 					this.dialogErrorActive=true;
 					console.log("Error server: ",error);
-				})
-					//}
-				//}
+				})				
 			})
 		},
 
@@ -303,10 +270,7 @@ export default {
 				return;
 			}
 			let api_token=session.api_token,
-				email=session.email;
-			//if(sessionStorage.getItem("biedit_apitoken")){
-			//	let api_token=sessionStorage.getItem("biedit_apitoken");
-			//	let email=sessionStorage.getItem("biedit_email");
+				email=session.email;			
 				let data={
 					params:{
 						api_token:api_token,
@@ -322,8 +286,7 @@ export default {
 				axios.get(this.url+'images',data,headers).then(res=>{
 					this.images=res.data.images;
 					console.log("las imagenes: ",this.images);
-				})
-			//}
+				})			
 		},
 		//elimina una lista de imagenes del server y de la db, destinado al proceso de
 		//actualización de varios efectos de una vez
@@ -350,10 +313,7 @@ export default {
 					'Authorization': 'Bearer '+api_token
 				}
 			}
-			axios.post(this.url+"images/delete",data,headers)
-			//.then(res => {
-			//	console.log(res);
-			//})
+			axios.post(this.url+"images/delete",data,headers)			
 		},
 
 		//solicita procesar los efectos de fusión, watermark y create-watermark al server
@@ -384,18 +344,10 @@ export default {
 					let headers={
 						withCredentials:false,
 						headers:{
-							'Authorization': 'Bearer '+api_token,
-							//'Content-Type':'application/json',
-							"Access-Control-Allow-Origin" : "*",
-							//"crossorigin":true,
-							//'Access-Control-Allow-Methods': "GET,POST,PUT,DELETE,OPTIONS",
-							'Access-Control-Allow-Headers': " Origin, X-Requested-With, Content-Type, Accept",
-							//'Access-Control-Allow-Credentials':true,
-							//'cache-control':'no-cache',
-						},
-						header:{
-
-						}
+							'Authorization': 'Bearer '+api_token,							
+							"Access-Control-Allow-Origin" : "*",							
+							'Access-Control-Allow-Headers': " Origin, X-Requested-With, Content-Type, Accept",							
+						},						
 					}
 					//identificamos si es el efecto de fusión o el watermark
 					if(this.typeAction=="fussion"){
@@ -667,8 +619,7 @@ export default {
 
 			let linkPage=1;
 			if(page){
-				linkPage=page;
-				//console.log("linkPage: ",linkPage)
+				linkPage=page;				
 			}
 
 			let session=this.testSession();
@@ -680,9 +631,9 @@ export default {
 				this.dialogErrorActive=true;
 				return;
 			}
-			//console.log("No ha sido posible eliminar la imagen, el usuario no ha iniciado sesión");
+
 			let api_token=session.api_token,
-				email=session.email;
+				email=session.email;			
 			let data={
 				params:{
 					api_token:api_token,
@@ -691,21 +642,7 @@ export default {
 				
 			};
 			let headers={
-				headers: {
-					/*"Access-Control-Allow-Origin": "*",
-					"Access-Control-Allow-Headers":"Authorization,X-API-KEY,Origin,X-Requested-With,Content-Type,Accept,Access-Control-Allow-Request-Method",
-					"Access-Control-Allow-Methods":"GET,POST,OPTIONS,PUT,DELETE",
-					"Allow":"GET,POST,OPTIONS,PUT,DELETE",
-					*/
-					/*
-					"Access-Control-Allow-Origin" : "*",
-					//crossorigin:true,
-					'Access-Control-Allow-Methods': "GET",
-					//'Access-Control-Allow-Headers': "Content-Type",
-					'Access-Control-Allow-Credentials':true,
-					'cache-control':'no-cache',
-					'Access-Control-Allow-Headers':"Origin, X-Requested-With, Content-Type, Accept",
-					*/
+				headers: {					
 					Authorization: 'Bearer '+api_token
 				}
 			};			
@@ -714,9 +651,7 @@ export default {
 				this.images=res.data.data;
 				this.totalPages=res.data.last_page;
 				this.actualPage=res.data.current_page;
-				this.totalImages=res.data.total;
-				//console.log("actualPage: ",this.actualPage);
-				//console.log("totalimages: ",res.data.data);
+				this.totalImages=res.data.total;				
 			}).catch(error => {
 				this.titleDialogAlert="No se han podido obtener las imágenes";
 				this.msgeDialogAlert=error.response.data.message;
@@ -729,8 +664,7 @@ export default {
 		//subida de archivo al servidor, dependiente de resizeImageToWidth()
 		uploadImageToServer(){
 
-			//no es necesario comprobar FormData, ya está comprobado anteriormente en resizeImageToWidth()
-			//if(sessionStorage && FormData){
+			//no es necesario comprobar FormData, ya está comprobado anteriormente en resizeImageToWidth()			
 			let session=this.testSession();
 			if(!session){				
 				return;
@@ -757,17 +691,7 @@ export default {
 
 			//cabeceras
 			let headers={
-				headers:{ 
-					/*
-					"Access-Control-Allow-Origin" : "*",
-					//crossorigin:true,
-					//'Access-Control-Allow-Methods': "GET",
-					"Access-Control-Allow-Methods":"GET,POST,OPTIONS,PUT,DELETE",
-					//'Access-Control-Allow-Headers': "Content-Type",
-					//'Access-Control-Allow-Credentials':true,
-					//'cache-control':'no-cache',
-					'Access-Control-Allow-Headers':"Origin, X-Requested-With, Content-Type, Accept",
-					*/
+				headers:{					
 					Authorization: 'Bearer '+api_token 
 				}
 			};
@@ -776,7 +700,7 @@ export default {
 //Al guardar la imagen en el servidor actualizamos los datos del objeto 
 //image, pero mateniendo la imagen base64 en el MainPanel y asignamos 
 //los datos para el panel de recorte (resizedImg)
-				//console.log("lo que devuelve: ",res);
+				
 				//el objeto resizedImg pasa los datos de ancho y alto al panel de recorte.
 				//Para pasar los datos en lugar de anular el objeto ima 
 				//como prop,indicados como params en la redirección se 
@@ -789,30 +713,13 @@ export default {
 				this.image.spaceColor=res.data.image.space_color;					
 	//comprobaciones para asignar el resizedImg (destinado al CutPanel e hijos)
 				let sizes = this.setSizeToCutPanel(res.data.image.width,res.data.image.height,this.minWidthHeight,this.maxWidthDefault,this.maxHeightDefault);
-				/*
-				//comprobamos si el ancho o el alto de la imagen es menor //o igual que el mínimo establecido
-				if((res.data.image.width)<=this.minWidthHeight){
-					this.image.widthCut=this.minWidthHeight;
-					this.image.heightCut=this.getNewHeight(this.image.widthCut,res.data.image.width,res.data.image.height);
-					this.resizedImg.width=this.minWidthHeight;
-					this.resizedImg.height=this.getNewHeight(this.resizedImg.width,res.data.image.width,res.data.image.height);
-				}else{
-				//obtenemos el ancho y alto tomando como referencia
-				//un ancho y alto máximos establecidos.
-					let resizeImg=this.getMaxResize(res.data.image.width,res.data.image.height,this.maxWidthDefault,this.maxHeightDefault);
-					this.image.widthCut=resizeImg[0];
-					this.image.heightCut=resizeImg[1];
-					this.resizedImg.width=resizeImg[0];
-					this.resizedImg.height=resizeImg[1];
-				}
-				*/
+				
 				this.image.widthCut=sizes.width;
 				this.image.heightCut=sizes.height;
 				this.resizedImg.width=sizes.width;
 				this.resizedImg.height=sizes.height;
 				//habilitamos botones
-				this.mainImage=false;
-				//console.log("desde upload() ",this.image);
+				this.mainImage=false;				
 			}).catch(error => {
 				this.titleDialogAlert="Se ha generado un error";
 				this.msgeDialogAlert=error.response.data.message;
