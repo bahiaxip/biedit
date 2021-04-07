@@ -122,6 +122,7 @@
 	</div>
 </template>
 <script>
+import Global from '../Global.js';
 import servicesMixin from '../mixins/servicesMixin';
 import methodsMixin from '../mixins/methodsMixin';
 export default {
@@ -144,7 +145,7 @@ export default {
 			imagetmp:null,
 			image:null,			
 			imagetmpmain:null,			
-			url:"http://localhost/biedit_backend/api/",			
+			url:Global.url,			
 			totalPages:null,
 			actualPage:null,
 			totalImages:null,

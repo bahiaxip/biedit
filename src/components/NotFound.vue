@@ -1,5 +1,5 @@
 <template>
-	<h2>Página no encontrada</h2>
+	<h2 style="font-family:Arial">Página no encontrada</h2>
 </template>
 <script>
 export default {

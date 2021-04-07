@@ -43,7 +43,7 @@ import 'verte/dist/verte.css';
 //slider
 import VueSplide from '@splidejs/vue-splide';
 
-//import NotFound from './components/NotFound.vue';
+import NotFound from './components/NotFound.vue';
 Vue.config.productionTip = false
 /*
 Vue.use(MdButton);
@@ -115,7 +115,7 @@ const routes = [
 	{path:'/effects',component:Effect,redirect:'/'},
 	{path:'/effects',component:Effect,name:'effect',props:true},
 	{path:'/cam',component:Cam,name:'cam',props:true},
-	//{path:'*',component:NotFound},
+	{path:'*',component:NotFound},
 	/*
 	{
 		path:'/cutout',
