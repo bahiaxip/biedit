@@ -343,7 +343,7 @@
 						<md-field style="">
 							<label for="space_color" v-if="spaceColorSelected==spaceColor">Espacio de Color actual</label>
 							<label for="space_color" v-else>Convertir a</label>
-							<md-select  v-model="spaceColorSelected" name="space_color" id="space_color" @input="selectSpaceColor()">
+							<md-select  v-model="spaceColorSelected" name="space_color" id="space_color" >
 								<md-option v-for="spacecolor in spacecolors" :key="spacecolor" :value="spacecolor">{{spacecolor}}
 									
 								</md-option>
@@ -359,7 +359,7 @@
 						<md-field style="">
 							<label for="channels">Canales</label>
 							<!--si el space color original es RGB o SRGB-->
-							<md-select  v-model="channelSelected" name="channels" id="channels" @input="selectChannel()" v-if="spaceColor=='RGB' || spaceColor=='SRGB'">
+							<md-select  v-model="channelSelected" name="channels" id="channels" v-if="spaceColor=='RGB' || spaceColor=='SRGB'">
 								<md-option value="RED">
 									RED
 								</md-option>
@@ -370,7 +370,7 @@
 									BLUE
 								</md-option>
 							</md-select>
-							<md-select  v-model="channelSelected" name="channels" id="channels" @input="selectChannel()" v-else-if="spaceColor=='CMYK'">
+							<md-select  v-model="channelSelected" name="channels" id="channels" v-else-if="spaceColor=='CMYK'">
 								<md-option value="CYAN">
 									CYAN
 								</md-option>
@@ -1100,7 +1100,7 @@ export default {
 		//desactiva el select de espacio de color
 			this.spaceColorActive=false;
 			this.spaceColorSelected=this.ima.spaceColor;
-		},
+		},	
 		
 		showListImage(action){		
 			this.hideDials();

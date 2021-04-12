@@ -10,8 +10,8 @@
 					</md-card-media>
 				
 					<md-card-area >
-						<md-card-header >
-							<span class="md-title f15" >{{image.title}}</span>
+						<md-card-header class="p_10">
+							<span   class="f15" >{{image.title}}</span>
 						</md-card-header>
 
 						<md-card-actions >

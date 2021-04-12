@@ -132,6 +132,9 @@ html,body{
 .p_top2{
     padding-top:2px;
 }
+.p_10{
+    padding:10px !important;
+}
 .d_in_block{
     display:inline-block;
 }
