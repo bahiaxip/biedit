@@ -83,7 +83,7 @@
 				</md-tabs>
 		</md-dialog>
 	<!-- ḿodal de confirmación de registro satisfactorio -->
-		<md-dialog-alert :md-active.sync="acceptDialog" :md-content="msge" md-confirm-text="Ok" @click="redirect()" :md-click-outside-to-close="false" style="z-index:110"/>
+		<md-dialog-alert :md-active.sync="acceptDialog" :md-content="msge" md-confirm-text="Ok" @click="/*redirect()*/" :md-click-outside-to-close="false" style="z-index:110"/>
 	<!-- ḿodal de confirmación de registro fallido -->
 		<md-dialog-alert class="dialog-alert-email" :md-active.sync="errorDialog" :md-content="msge" md-confirm-text="Ok" />
 
@@ -266,10 +266,13 @@ export default {
 						sessionStorage.setItem("biedit_name",res.data.data.name);
 						sessionStorage.setItem("biedit_email",res.data.data.email);
 						sessionStorage.setItem("biedit_apitoken",res.data.data.api_token);
+						console.log("establecidos los  sesionStorage: ",this)
 						self.addAndActiveMsge("on",self.msges.onRegister);
+						console.log("establecido el  addAndActivemsge: ",self)
 						self.changeDialog();
+						console.log("establecido el changedialog: ",this)
 						//establecemos botones disabled
-						this.$emit("setnav",true);						
+						//self.$emit("setnav",true);						
 					}else{
 						if(res.data.message){
 							self.addAndActiveMsge("off",self.msges.offRegister);
@@ -414,8 +417,10 @@ export default {
 			console.log("llega a changeDialog ",state);
 			//da error con el registro
 			//en el dialog de "perfil de usuario" añadimos la característica de que si se cierra la ventana se actualiza el nombre
-			if(sessionStorage && sessionStorage.getItem("biedit_name"))
+			if(sessionStorage && sessionStorage.getItem("biedit_name")){
 				this.session.name=sessionStorage.getItem("biedit_name");
+				this.session.email=sessionStorage.getItem("biedit_email");
+			}
 			//anulamos esta comprobación y desde el padre simplemente pasamos las 2 variables a false
 				
 			//limpiamos formulario
