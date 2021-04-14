@@ -59,8 +59,8 @@
 		<md-dialog :md-active.sync="dialogLogout" :md-click-outside-to-close="closeDialog" class="session-panel-dialog">
 			<md-dialog-title>Salir - Perfil de usuario</md-dialog-title>								<md-tabs md-dynamic-height>					
 					<md-tab md-label="Salir">
-						<md-button name="envio" class="md-primary md-raised" @click="changeDialog()">Cancelar</md-button>
-						<md-button name="envio" class="md-primary md-raised" @click="sessionLogout()">Salir</md-button>
+						<md-button name="envio" class="md-primary md-raised c_white" @click="changeDialog()">Cancelar</md-button>
+						<md-button name="envio" class="md-primary md-raised c_white" @click="sessionLogout()">Salir</md-button>
 					</md-tab>
 					<md-tab md-label="Perfil">
 						<form class="md-layout" @submit.prevent="sessionUser()">
@@ -75,8 +75,8 @@
 								<label for="email">Email</label>
 								<md-input name="email" id="email" v-model="session.email" disabled="disabled" />								
 							</md-field>													
-							<md-button name="envio" class="accent md-raised" @click="changeDialog()" >Cancelar</md-button>
-							<md-button name="envio" type="submit" class="md-primary md-raised">Actualizar</md-button>
+							<md-button name="envio" class="accent md-raised c_white" @click="changeDialog()" >Cancelar</md-button>
+							<md-button name="envio" type="submit" class="md-primary md-raised c_white">Actualizar</md-button>
 						</div>
 					</form>
 					</md-tab>
@@ -265,12 +265,9 @@ export default {
 						//Establecer el api_token en sessionStorage				
 						sessionStorage.setItem("biedit_name",res.data.data.name);
 						sessionStorage.setItem("biedit_email",res.data.data.email);
-						sessionStorage.setItem("biedit_apitoken",res.data.data.api_token);
-						console.log("establecidos los  sesionStorage: ",this)
+						sessionStorage.setItem("biedit_apitoken",res.data.data.api_token);						
 						self.addAndActiveMsge("on",self.msges.onRegister);
-						console.log("establecido el  addAndActivemsge: ",self)
-						self.changeDialog();
-						console.log("establecido el changedialog: ",this)
+						self.changeDialog();						
 						//establecemos botones disabled
 						//self.$emit("setnav",true);						
 					}else{
@@ -302,7 +299,7 @@ export default {
 				//efecto de carga en on
 				this.displayLoading=true;
 				axios.post(this.url+"login",this.login,headers).then(res => {
-					console.log("res: ",res.data.data);
+					
 					//efecto de carga en off
 					self.displayLoading=false;
 					if(res.data.data.api_token){						
@@ -400,9 +397,7 @@ export default {
 		//limpiar datos
 		clearData(){
 			let resizedImg=this.$parent.resizedImg;
-			let image=this.$parent.image;
-			console.log("desde session el padre: ",resizedImg)		
-			console.log("desde session el padre: ",image)		
+			let image=this.$parent.image;			
 			for(let d in resizedImg){
 				resizedImg[d]=null;
 			}
@@ -411,10 +406,10 @@ export default {
 				if(d!=="windowSize")
 					image[d]=null;
 			}
-			console.log(this.image)
+			
 		},
 		changeDialog(state=null){
-			console.log("llega a changeDialog ",state);
+			//console.log("llega a changeDialog ",state);
 			//da error con el registro
 			//en el dialog de "perfil de usuario" añadimos la característica de que si se cierra la ventana se actualiza el nombre
 			if(sessionStorage && sessionStorage.getItem("biedit_name")){
@@ -444,7 +439,7 @@ export default {
 			if(session != "success"){
 				//necesario para evitar error  "NavigationDuplicated: Avoided...", esto ocurre si se realiza un push() redirigiendo al mismo lugar donde se encuentra, si devuelve null es que se encuentra en la raíz
 				if(this.$route.name!=null){
-					console.log("fuera de raíz")
+					//console.log("fuera de raíz")
 					this.$router.push("/");
 				}
 			//anulado

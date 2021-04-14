@@ -724,6 +724,7 @@ export default {
 				this.resizedImg.height=sizes.height;
 				//habilitamos botones
 				this.mainImage=false;
+				this.mainBigImage=false;
 				//habilitamos botón effect y Acerca de..
 				this.sessionState=false;
 			}).catch(error => {

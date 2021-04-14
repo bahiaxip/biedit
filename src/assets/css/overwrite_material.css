@@ -33,40 +33,63 @@
 .md-drawer.opciones{
 	background-color:rgba(0,0,0,0.8);
 	color:white;
-	z-index:10
+	z-index:10;
+
+
 }
 .md-drawer.opciones{}
 .md-drawer.opciones ul{
 	background-color:transparent;
+
 	
 }
 .md-drawer.opciones li:hover{
 	background-color:rgba(0,0,0,.4);
 }
-.md-drawer.opciones span:hover{
-	color:orange;
+.md-drawer.opciones div:hover span{
+	color:#26ada7;
 }
 .md-drawer.opciones span{
 	color:white;
-	font-family:usuzi;
+	font-family:Quicksand;
+	font-weight: bold;
 	font-size:18px;
 }
 
 
 
 .md-dialog.acercade>:nth-child(n) {
-    background-color:rgba(0,0,0,.8) !important;
+    background-color:rgba(0,0,0,.85) !important;
     color:white;
-        
+}
+.md-dialog.acercade span{
+	font-family:Quicksand;
+	font-weight:bold;	
 }
 .md-dialog.acercade p{    
     color:white;
-    font-size:16px;
+    font-size:17px;
+    font-family:Quicksand;
+    font-weight: bold;
+    line-height:24px;
+}
+
+.md-dialog.acercade li{
+	font-size:15px;
+	font-family:Quicksand;
+    font-weight: bold;
+    
+}
+/*elemento span del lis de acercade de los paneles de biedit (panel principal,panel de recorte...)*/
+.md-dialog.acercade span.li_biedit_info{
+	color:#26ada7;
+	font-size:16px;
 }
 .md-dialog.acercade ul{
 	font-size:15px;
-	line-height:22px;
+	line-height:24px;
 }
+
 .tabs_acercade{
 	padding-bottom:15px;
 }

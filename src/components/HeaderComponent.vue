@@ -76,21 +76,22 @@
 			<md-dialog-title>Acerca de Biedit</md-dialog-title>
 			<md-tabs md-dynamics-height class="tabs_acercade">
 				<md-tab md-label="Biedit">
-					<p>Biedit es una aplicación de edición de fotografía sencilla, rápida e intuitiva que permite organizar nuestras imágenes en un álbum individual y realizar numerosos efectos y ajustes.</p> 
+					<p>Biedit es una aplicación de edición de imágenes sencilla, rápida e intuitiva que permite organizar nuestras imágenes favoritas en un álbum individual y generar distintos efectos y ajustes.</p> 
 				</md-tab>
 				<md-tab md-label="Paneles de Biedit">
-					<p>Biedit se compone de varios paneles con distintas funcionalidades.</p>
+					<p>Biedit dispone de varios paneles que permiten realizar las distintas acciones.</p>
 					<ul>
 						<li>
-							Panel principal: Permite redimensionar la imagen con la ayuda de un manejador y mostrarla en pantalla con las dimensiones deseadas.							
+							<span class="li_biedit_info">Panel principal:</span> Permite redimensionar la imagen con la ayuda de un manejador y almacenarla en el álbum con las dimensiones seleccionadas.
 						</li>
 						<li>
-							Panel de recorte: Permite recortar una región de la imagen con la ayuda de un cuadrante redimensionable deslizable
+							<span class="li_biedit_info">Panel de recorte:</span> Permite recortar una región de la imagen con la ayuda de un cuadrante redimensionable y deslizable
 						</li>
 						<li>
-							Panel de efectos: Permite realizar efectos a la imagen como filtros, formas poligonales, fusión entre dos imágenes...
+							<span class="li_biedit_info">Panel de efectos:</span> Permite realizar efectos a la imagen como filtros, formas poligonales, fusión entre dos imágenes, marcas de agua...
 						</li>
-						<li>Álbum: Permite organizar las imágenes mediante un sistema de paginación y gestiones como eliminar o cargar la imagen para acceder al resto de paneles
+						<li>
+							<span class="li_biedit_info">Álbum:</span> Permite administrar las imágenes y organizarlas mediante un sistema de paginación y ofrece información genérica de la imagen.
 						</li>
 					</ul>
 
@@ -102,7 +103,7 @@
 			mediante la variable parentMdDrawer y el método watch-->
 		<!--queda por solucionar los otros dialog de camara y acerca de biedit -->
 		<div v-if="parentMdDrawer" >
-			<md-drawer  :md-active.sync="showSidePanel" class="opciones" md-right style="z-index:10">
+			<md-drawer  :md-active.sync="showSidePanel" class="opciones" md-right style="">
 				<md-list>
 					<md-list-item @click="showSidePanel=false;dialogAcercade=true">
 						<span class="md-list-item-text">Acerca de Biedit</span>
@@ -113,9 +114,13 @@
 					</md-list-item>
 					<md-list-item @click="volumeActive=!volumeActive" v-if="!sessionState">
 						<span class="md-list-item-text" >Ajustes de sonido</span>
-					</md-list-item>
-					<md-list-item>
-						<input type="range" min="1" max="10" v-model="volume" v-if="volumeActive" @input="editVolume()"/>
+					</md-list-item>					
+					<md-list-item v-if="volumeActive">
+						<md-button style="" class="md-icon-button" @click="volumeState=!volumeState;editVolume()">
+							<md-icon class="c_white" v-if="volumeState">volume_up</md-icon>
+							<md-icon class="c_white" v-else>volume_off</md-icon>
+						</md-button>
+						<input type="range" min="0" max="10" v-model="volume"  @input="editVolume()"/>
 					</md-list-item>
 				</md-list>				
 			</md-drawer>
@@ -206,7 +211,9 @@ export default {
 			//interruptor para deshabilitar botones si no existe sesion
 			sessionState:null,
 			//interruptor para habilitar solo el botón de efectos, necesario para
-			//las imágenes enviadas desde collections mayores de 2MB.
+			//las imágenes enviadas desde collections mayores de 2MB., esto se 
+			//diferencia de mainImage pk effects si permite funciones con imágenes
+			//mayores de 2MB
 			mainBigImage:false,
 			//interruptor para deshabilitar botones si la imagen es demasiado grande
 			imgTooSize:false,
@@ -224,6 +231,8 @@ export default {
 			//volumen de la etiqueta audio usada en Cam y CutPanel, almacenada en sessionStorage
 			volume:null,
 			volumeActive:false,
+			//identificador de volumen encendido o apagado
+			volumeState:true,
 			//identificador para smallerHeader (botones de navegador más pequeños)
 			smallHeader:false,
 			//identificador para denseHeader (botones de navegador diminutos)
@@ -326,12 +335,13 @@ export default {
 		},
 		//asignar nuevo volumen
 		editVolume(){
+			//vol true: volumen activado, vol false volumen desactivado
 			let volume;
-			if(this.volume==10)
-				volume=1;
+			if(this.volumeState)				
+				(this.volume==10) ?	volume=1 : volume=parseFloat("0."+this.volume);
 			else
-				volume=parseFloat("0."+this.volume);
-			sessionStorage.setItem("biedit_audio",volume)			
+				volume=0;
+			sessionStorage.setItem("biedit_audio",volume)
 		},
 		//comprobar cámara
 		testCam(){
