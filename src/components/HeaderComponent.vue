@@ -74,7 +74,7 @@
 
 		<md-dialog class="acercade" :md-active.sync="dialogAcercade">
 			<md-dialog-title>Acerca de Biedit</md-dialog-title>
-			<md-tabs md-dynamics-height>
+			<md-tabs md-dynamics-height class="tabs_acercade">
 				<md-tab md-label="Biedit">
 					<p>Biedit es una aplicación de edición de fotografía sencilla, rápida e intuitiva que permite organizar nuestras imágenes en un álbum individual y realizar numerosos efectos y ajustes.</p> 
 				</md-tab>
@@ -102,7 +102,7 @@
 			mediante la variable parentMdDrawer y el método watch-->
 		<!--queda por solucionar los otros dialog de camara y acerca de biedit -->
 		<div v-if="parentMdDrawer" >
-			<md-drawer  :md-active.sync="showSidePanel" md-right style="z-index:10">
+			<md-drawer  :md-active.sync="showSidePanel" class="opciones" md-right style="z-index:10">
 				<md-list>
 					<md-list-item @click="showSidePanel=false;dialogAcercade=true">
 						<span class="md-list-item-text">Acerca de Biedit</span>

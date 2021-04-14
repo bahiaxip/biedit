@@ -112,6 +112,10 @@
 		md-cancel-text="Cancelar"		
 		@md-confirm="setAction(action)" 
 		:md-click-outside-to-close="dialogSwitch" />
+
+		<md-dialog :md-active.sync="loading" class="dialog_spinner_trans">
+			<md-progress-spinner   md-mode="indeterminate" class="m_auto" ></md-progress-spinner>
+		</md-dialog>
 		<!-- modal de imagen en pantalla completa -->
 		<transition name="fadeimg">
 			<md-dialog :md-active.sync="dialogImage" class="fullImage" v-if="showFullImage">				
@@ -163,6 +167,8 @@ export default {
 			dialogImage:false,
 			showFullImage:false,
 			diameterSpinner:100,
+			loading:false,
+			iconLoading:null,
 			headers:{
 				headers:{
 					"Access-Control-Allow-Origin" : "*",

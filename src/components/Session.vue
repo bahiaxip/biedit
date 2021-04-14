@@ -83,7 +83,7 @@
 				</md-tabs>
 		</md-dialog>
 	<!-- ḿodal de confirmación de registro satisfactorio -->
-		<md-dialog-alert :md-active.sync="acceptDialog" :md-content="msge" md-confirm-text="Ok" @click="/*redirect()*/" :md-click-outside-to-close="false" style="z-index:110"/>
+		<md-dialog-alert :md-active.sync="acceptDialog" :md-content="msge" md-confirm-text="Ok" @click="redirect()" :md-click-outside-to-close="false" style="z-index:110"/>
 	<!-- ḿodal de confirmación de registro fallido -->
 		<md-dialog-alert class="dialog-alert-email" :md-active.sync="errorDialog" :md-content="msge" md-confirm-text="Ok" />
 
@@ -312,10 +312,10 @@ export default {
 						sessionStorage.setItem("biedit_audio",0.1);
 						self.session.name=res.data.data.name;
 						self.session.email=res.data.data.email;
-						this.changeDialog();						
-						this.timerSession();
+						self.changeDialog();						
+						self.timerSession();
 						//establecemos botones disabled
-						this.$emit("setnav",true);
+						self.$emit("setnav",true);
 						if(this.$route.name=="collections"){
 							this.$router.push("/")
 						}
@@ -447,8 +447,9 @@ export default {
 					console.log("fuera de raíz")
 					this.$router.push("/");
 				}
+			//anulado
 				//volvemos a mostrar el dialogo de session para no acceder sin registrarse o loguearse
-				this.changeDialog(true)
+				//this.changeDialog(true)
 			}			
 		}
 	}

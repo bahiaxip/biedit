@@ -10,7 +10,7 @@
     background:transparent;
 }
 .md-overlay{
-    background:transparent;
+    background:transparent !important;
 }
 
 /*card*/
@@ -24,6 +24,65 @@
 .md-card-header span.f15{
 	font-size:15px;
 }
+
+/*panel md-drawer Acerca de biedit*/
+.md-dialog.acercade{
+
+
+}
+.md-drawer.opciones{
+	background-color:rgba(0,0,0,0.8);
+	color:white;
+	z-index:10
+}
+.md-drawer.opciones{}
+.md-drawer.opciones ul{
+	background-color:transparent;
+	
+}
+.md-drawer.opciones li:hover{
+	background-color:rgba(0,0,0,.4);
+}
+.md-drawer.opciones span:hover{
+	color:orange;
+}
+.md-drawer.opciones span{
+	color:white;
+	font-family:usuzi;
+	font-size:18px;
+}
+
+
+
+.md-dialog.acercade>:nth-child(n) {
+    background-color:rgba(0,0,0,.8) !important;
+    color:white;
+        
+}
+.md-dialog.acercade p{    
+    color:white;
+    font-size:16px;
+}
+.md-dialog.acercade ul{
+	font-size:15px;
+	line-height:22px;
+}
+.tabs_acercade{
+	padding-bottom:15px;
+}
+.tabs_acercade button:not(.md-active)>div{
+	color:white;
+}
+.tabs_acercade>:nth-child(n) {
+	color:white;
+}
+.tabs_acercade>:nth-child(n+0) {
+ 
+ 	background-color:transparent !important;
+ 	color:white;
+}
+
+
 
 /*esta @media sirve para corregir el md-dialog-fullscreen por defecto, que 
 incorpora una media query que por debajo de 600px de ancho pasa del width 80% a 100%, sobreescribimos para que se mantenga en 80%*/
@@ -44,6 +103,10 @@ incorpora una media query que por debajo de 600px de ancho pasa del width 80% a 
 .dialog-alert-email .md-ripple{
 	color:white;
 	background-color:red;
+}
+.md-dialog.dialog_spinner_trans>:first-child{
+	background:transparent !important;
+	box-shadow:none;
 }
 .md-dialog.dialog_spinner{
 	background-color:rgba(255,255,255);

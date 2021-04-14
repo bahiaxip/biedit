@@ -246,11 +246,15 @@ export default {
 		deleteDrawCanvas(){
 			//pasamos a null polygonProp
 			this.polygonProp=null;
-			var canvas = document.getElementById("canvas");
-			var ctx= canvas.getContext("2d");
-			ctx.beginPath();
-			canvas.width=this.imaEffect.width;
-			this.polygonActivated=false;			
+			if(this.$refs.canvas){
+				//var canvas = document.getElementById("canvas");
+				var canvas=this.$refs.canvas;
+				var ctx= canvas.getContext("2d");
+				ctx.beginPath();
+				canvas.width=this.imaEffect.width;
+				this.polygonActivated=false;				
+			}
+			
 		},
 
 		//reflejo horizontal y vertical de la imagen

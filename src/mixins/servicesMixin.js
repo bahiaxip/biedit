@@ -562,6 +562,8 @@ export default {
 					Authorization: 'Bearer '+api_token
 				}
 			};
+			//mostramos loading...
+			this.loading=true;
 			axios.post(this.url+'image/'+imagetmp.id,{dato:this.actualPage},headers).then(res => {				
 				//manejo de errores en api
 				if(res.data.error){
@@ -580,6 +582,8 @@ export default {
 					this.msgeDialogAlert=res.data.message;
 					this.dialogErrorActive=true;					
 
+					//ocultamos loading...
+					this.loading=false;
 				//anulamos si existe imageMain, ya que al recargar página en collections,
 				//no existiría imageMain y es necesario comprobar si la imagen a eliminar se ha
 				//enviado al panel principal, para eso usamos imagetmpmain, si es así, vaciamos
@@ -719,7 +723,9 @@ export default {
 				this.resizedImg.width=sizes.width;
 				this.resizedImg.height=sizes.height;
 				//habilitamos botones
-				this.mainImage=false;				
+				this.mainImage=false;
+				//habilitamos botón effect y Acerca de..
+				this.sessionState=false;
 			}).catch(error => {
 				this.titleDialogAlert="Se ha generado un error";
 				this.msgeDialogAlert=error.response.data.message;
