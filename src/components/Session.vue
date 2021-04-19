@@ -20,8 +20,8 @@
 								<span class="md-error" v-if="!$v.login.password.required">La contraseña es requerida</span>
 								<span class="md-error" v-if="!$v.login.password.minLength">La contraseña debe contener al menos 8 caracteres</span>
 							</md-field>							
-							<md-button name="envio" class="md-primary md-raised" @click="changeDialog()" >Cancelar</md-button>
-							<md-button name="envio" type="submit" class="md-primary md-raised">Enviar</md-button>
+							<md-button name="envio" class="md-primary md-raised c_white" @click="changeDialog()" >Cancelar</md-button>
+							<md-button name="envio" type="submit" class="md-primary md-raised c_white">Enviar</md-button>
 						</div>
 					</form>
 				</md-tab>
@@ -47,8 +47,8 @@
 								<span class="md-error" v-if="!$v.register.password.required">La contraseña es requerida</span>
 								<span class="md-error" v-if="!$v.register.password.minLength">La contraseña debe contener al menos 8 caracteres</span>
 							</md-field>							
-							<md-button name="envio" class="md-primary md-raised" @click="changeDialog()" disabled>Cancelar</md-button>
-							<md-button name="submit" type="submit" class="md-primary md-raised">Enviar</md-button>
+							<md-button name="envio" class="md-primary md-raised c_white" @click="changeDialog()" >Cancelar</md-button>
+							<md-button name="submit" type="submit" class="md-primary md-raised c_white">Enviar</md-button>
 						</div>
 					
 					</form>
