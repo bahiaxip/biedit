@@ -506,7 +506,7 @@ html,body{
     display:inline-block;
 }
 .pagination li .md-ripple{
-    padding-top:7px;
+    padding-top:2px;
     font-size:16px;
 }
 
