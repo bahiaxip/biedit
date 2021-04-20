@@ -9,7 +9,7 @@
 var Global = {
 	//live_server
 	//url: "http://localhost:8000/api/",
-	url: "//localhost/biedit_backend/api/",
+	url: "http://localhost/biedit_backend/api/",
 	widthDefault: 600,
 	maxWidthDefault: 1280,
 	maxHeightDefault: 1920,
