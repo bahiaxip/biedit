@@ -9,9 +9,9 @@
 				<splide :options="primaryOptions" ref="primary" style="background-color:rgba(0,0,0,.6);" class="splide_custom m_auto"  >
 					<splide-slide >
 						<div class="m_top30" >
-							<img src="img/home/chicago.jpg" style="" />
+							<img src="img/home/adult.jpg" style="" />
 						</div>
-						<div class="text_description"><p>Efecto de forma</p></div>
+						<div class="text_description"><p>Filtro escala de grises</p></div>
 					</splide-slide>
 
 					<splide-slide >
@@ -51,7 +51,7 @@
 				</splide>
 				<splide :options="secondaryOptions" ref="secondary" class="splide_custom m_auto">
 					<splide-slide class="c_pointer">
-						<img src="img/home/chicago.jpg" />
+						<img src="img/home/adult.jpg" />
 					</splide-slide>
 
 					<splide-slide class="c_pointer">
