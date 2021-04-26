@@ -1,8 +1,8 @@
 <template>
 	<div class="total" :class="{'page-container':parentMdDrawer}" >
 		
-		<div class="nav " style="background:#434540">
-
+		<div class="nav " style="background:#434540;min-height:70px" >
+<!--cambiar el min-height en el resize event-->
 			<div class="floatL"   >
 				<md-button class="primary_nav "  :class="[smallHeader ? 'md-icon-button' : 'md-fab',{'md-dense':denseHeader}]" title="Sesión" @click="switchDialog()" >
 					<md-icon class="c_white">person</md-icon>
@@ -15,7 +15,7 @@
 				</md-button>
 			</div>
 
-			<div class="m_auto">
+			<div class="m_auto" v-if="!sessionState">
 				<md-button class="primary_nav" :class="[smallHeader ? 'md-icon-button' : 'md-fab',{'md-dense':denseHeader}]" title="Subir imagen" @click="selectUpImage()" >
 					<md-icon class="c_white">
 						add_photo_alternate
@@ -52,7 +52,14 @@
 					</md-button>
 				</router-link>
 			</div>
-		</div>		
+		<!--para  el home-->
+			<div class="m_auto" style="" v-else>				
+				<img src="img/home/biedit_logo.png"  :class="smallHeader ? 'logo_min':'logo'"/>
+				
+			</div>
+		</div>
+
+				
 		<!-- el atributo key permite enviar la imagen al mainpanel -->
 		<router-view :key="$route.fullPath"  @reload="reloadImage" @setnav="setNav"></router-view>
 
@@ -107,6 +114,9 @@
 				<md-list>
 					<md-list-item @click="showSidePanel=false;dialogAcercade=true">
 						<span class="md-list-item-text">Acerca de Biedit</span>
+						<span>
+							<img src="img/home/biedit_b.png"  width="32"/>
+						</span>
 					</md-list-item>
 					<md-list-item @click="testCam()" v-if="!sessionState">
 						<span class="md-list-item-text">Cámara</span>
@@ -153,6 +163,7 @@ export default {
 	},
 	data(){
 		return{	
+			nav:false,
 			//ancho asignado para panel principal por defecto
 			widthDefault:Global.widthDefault,
 			minWidthHeight: Global.minWidthHeight,
@@ -645,5 +656,12 @@ export default {
 	width:100%;height:100%;
 	position:absolute !important;
 	top:0;
+}
+.logo{
+	height:65px !important;
+	margin-top:2px;
+}
+.logo_min{
+	height:40px !important;
 }
 </style>

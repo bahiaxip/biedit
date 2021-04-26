@@ -896,20 +896,10 @@ export default {
 	//por revisar si es necesario, el problema es con la transición left o top
 	//que realiza la primera transición pk es necesario establecer left o top 
 	//en los estilos.
-			//si es la primera vez que se inicia (suponiendo que llamamos al método
-			//desde mounted()) se da un tiempo más lento al setTimeout(), si no, 
-			//se da un tiempo más rápido (esto se debe a que la primera animación
-			//no la realiza correctamente y por eso le damos más tiempo). Para 
-			//identificar la primera vez comprobamos con bannerRepeated
+			
 				let time=100;
 				let time2=700;
-				/*
-				if(!this.bannerRepeated){
-					time=1000;
-					time2=1000;
-					this.bannerRepeated=true;
-				}
-				*/
+				
 					
 				setTimeout(()=> {
 					//comienzo de animación (opacity, top, rotate,...)

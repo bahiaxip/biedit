@@ -269,7 +269,7 @@ export default {
 						self.addAndActiveMsge("on",self.msges.onRegister);
 						self.changeDialog();						
 						//establecemos botones disabled
-						//self.$emit("setnav",true);						
+						self.$emit("setnav",true);						
 					}else{
 						if(res.data.message){
 							self.addAndActiveMsge("off",self.msges.offRegister);
@@ -315,7 +315,7 @@ export default {
 						self.$emit("setnav",true);
 						if(this.$route.name=="collections"){
 							this.$router.push("/")
-						}
+						}						
 						
 					}else if(res.data.data){						
 						self.addAndActiveMsge("off",res.data.data);

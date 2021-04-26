@@ -35,6 +35,7 @@ html,body{
 	z-index:1;
 }
 .total{
+    /*background-color:lightgray;*/
     min-width:320px !important;
     min-height:720px;
 }
@@ -110,7 +111,7 @@ html,body{
     float:left;
 }
 .floatR{
-    float:right;    
+    float:right ;    
 }
 .m_auto{
     margin:auto;
@@ -747,7 +748,14 @@ Accent: #ff5252 => Red A200
 .font_nikaia{
     font-family:nikaia;   
 }
+.section_home{
+    width:100%;
+    height:;
+}
+.home{
+    background:lightblue;
 
+}
 .home_image{
     
     

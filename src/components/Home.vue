@@ -1,12 +1,106 @@
 <template>
-	<div style="/*background-color:gray;*/min-height:720px;">
-		<div class="md-layout">			
-			<div class="banner1 md-xlarge-size-15 md-large-size-25 md-medium-hide md-small-hide">
-				<Banner :options="optionsBhBanner"></Banner>				
-			</div>
 
-			<div class="md-layout-item md-xlarge-size-70 md-large-50 md-medium-size-100 m_auto">
-				<splide :options="primaryOptions" ref="primary" style="background-color:rgba(0,0,0,.6);" class="splide_custom m_auto"  >
+	<div style="min-height:720px;">		
+	<!--1-->	
+		<div class="md-layout md-alignment-center-center"  style="background:linear-gradient(to bottom, rgba(38, 173, 167,.8) 0%, rgba(38, 173, 167,.1) 100%);" :style="{'height':divHeight+'px'}">			
+			<!--<div class="md-layout-item md-size-100">Biedit</div>-->
+			<div class="md-layout-item md-size-12"></div>
+			<div class="md-layout-item md-size-35 " >				
+				<div class="div_home1 " style="margin:auto;">
+					
+					<h2 style="font-family:corporate;color:black;letter-spacing: 1px;font-weight: normal;line-height:150%" :style="{'font-size':font+'px'}"
+					>
+					Edita tus imágenes con Biedit						
+					</h2>					
+					<p style="font-size:20px;font-family:corporate;color:#5a5a5a;line-height:120%">Edita tus imágenes de una forma práctica y sencilla. Biedit permite redimensionar, recortar, reflejar y aplicar distintos ajustes a tu imagen. </p>
+				</div>
+			</div>
+			<div class="md-layout-item md-size-6"></div>
+			<div class="md-layout-item md-size-35" >
+					<img src="img/home/adult.jpg" />
+			</div>
+			<div class="md-layout-item md-size-12"></div>
+		</div>		
+		<div class="clearfix" style="height:40px;background-color:white"></div>
+	<!--2-->
+	<div class="md-layout md-alignment-center-center" style="background-color:lightblue;padding-top:50px;padding-bottom:50px" >
+			<div class="md-layout-item md-size-12"></div>
+			<div class="md-layout-item md-size-35" style="height:100%">			
+				
+				<!--<img style="position:absolute;margin-left:50px;" src="img/home/oleo_labrador.jpg"/>-->
+				<!--<img style="position:absolute;margin-left:100px" src="img/home/redondear_oso_polar.png"/>-->
+				<img  src="img/home/oleo_labrador.jpg" />
+				
+			</div>
+			<div class="md-layout-item md-size-6"></div>
+			<div class="md-layout-item md-size-35">
+				<h2 style="color:#ff1e55;font-family:corporate;line-height:150%;letter-spacing: 1px;font-weight: normal;" :style="{'font-size':font+'px'}">Efectos originales</h2>
+						<p style="color:#5a5a5a;font-family:corporate;font-size:20px">Accede al panel de efectos y dale a tu imagen un estilo original</p>												
+				
+			</div>
+			<div class="md-layout-item md-size-12"></div>
+		</div>
+		<div class="clearfix" style="height:40px;background-color:white"></div>
+	<!--
+		<div class="md-layout md-alignment-center-center" style="background-color:lightblue;padding-top:50px;padding-bottom:50px" >
+			<div class="md-layout-item md-size-12"></div>
+			<div class="md-layout-item md-size-35">			
+				
+				<img src="img/home/oleo_labrador.jpg"/>
+				
+			</div>
+			<div class="md-layout-item md-size-6"></div>
+			<div class="md-layout-item md-size-35">
+				<h2 style="color:#ff1e55;font-family:corporate;line-height:150%;letter-spacing: 1px;font-weight: normal;" :style="{'font-size':font+'px'}">Organiza tus imágenes</h2>
+						<p style="color:#5a5a5a;font-family:corporate;font-size:20px">Administra tus imágenes favoritas y descárgalas desde cualquier lugar</p>												
+				
+			</div>
+			<div class="md-layout-item md-size-12"></div>
+		</div>
+		<div class="clearfix" style="height:40px;background-color:white"></div>
+	-->
+	<!--3-->
+		<div class="md-layout md-alignment-center-center"  style="background-color:rgba(55,255,157,.4);padding-top:50px;padding-bottom:50px" >
+			<div class="md-layout-item md-size-12"></div>
+			<div class="md-layout-item md-size-35 " >				
+				<div class="div_home1 " style="margin:auto;">
+					<h2 style="font-family:corporate;color:black;letter-spacing: 1px;font-weight: normal;line-height:150%" :style="{'font-size':font+'px'}"
+					>
+					Optimiza y ahorra espacio
+					</h2>					
+					<p style="font-size:20px;font-family:corporate;color:#5a5a5a">Cambia las dimensiones de tu foto, recorta o realiza una compresión liberando espacio en tu dispositivo</p>
+				</div>
+			</div>
+			<div class="md-layout-item md-size-6"></div>
+			<div class="md-layout-item md-size-35 " style="margin:auto;">
+				<div class="div_video" ref="div_video" style="display:inline-flex">
+					<video class="img_banner" autoplay muted ref="video" >
+						<source :src="videoSelected" >
+							<!--<source src="video/redimension.mp4" >-->
+					</video>
+				</div>
+			</div>
+			<div class="md-layout-item md-size-12"></div>
+		</div>		
+		<div class="clearfix" style="height:40px;background-color:white"></div>
+	<!--4-->	
+		<div class="md-layout md-alignment-center-center" style="background-color:lightblue;padding-top:50px;padding-bottom:50px">
+			<div class="md-layout-item md-size-12"></div>
+			<div class="md-layout-item md-size-35">			
+				<div class="div_home1" style="margin:auto">
+					<img src="img/home/ensalada.png"/>					
+				</div>
+			</div>
+			<div class="md-layout-item md-size-6"></div>
+			<div class="md-layout-item md-size-35">
+					<h2 style="font-family:corporate;color:#ff1e55;font-size:45px;line-height:150%;font-weight: normal" :style="{'font-size':font+'px'}">Crea tu marca de agua
+					</h2>
+					<p style="font-size:20px;font-family:corporate;color:#5a5a5a">Introduce tu texto y crea tu propia marca de agua</p>					
+			</div>
+			<div class="md-layout-item md-size-12"></div>
+		</div>
+		<div class="md-layout md-alignment-center-center" style="padding-top:50px;padding-bottom:50px">
+		<splide :options="primaryOptions" ref="primary" style="background-color:rgba(0,0,0,.6);" class="splide_custom m_auto"  >
 					<splide-slide >
 						<div class="m_top30" >
 							<img src="img/home/adult.jpg" style="" />
@@ -75,187 +169,28 @@
 					</splide-slide>
 				</splide>
 			</div>
-			<div class="banner2 md-xlarge-size-15 md-large-size-25  md-medium-hide">
-				<Banner :options="optionsBhBanner2"></Banner>
-			</div>
-		</div>
 	</div>
 </template>
 <script>
-import Banner from './Banner.vue';
+//import Banner from './Banner.vue';
+import servicesMixin from '../mixins/servicesMixin.js';
 export default {
 	name:'Home',
-	components:{Banner},
+	//components:{Banner},
+	mixins:{servicesMixin},
 	data (){
 		return {
-			optionsBhBanner:{
-				orientation:"vertical",
-				size:"medium",
-				fontSizeDefault:"22px",
-				images:[
-					//images element 1
-					[
-						"img/home/vineta_uva.jpg",
-						"img/home/forma_selfie.png",
-					],
-					//images element 2
-					[
-						"img/home/pareja.jpg",
-						"img/home/road-5724397_640.jpg"
-					],
-					//images element 3
-					[
-						"img/home/fun.jpg",
-						"img/home/circulo_pareja_sepia.png",
-						"img/home/fashion.JPG"
-					]
-				],
-				texts:[
-					[
-						"Regístrate",
-						"sube tus imágenes...",
-						"...descárgalas donde quieras",						
-					],
-					[
-						//"Sube tus imágenes...",
-						//"...descárgalas donde quieras",
-					],
-					[
-						"BIEDIT",
-						"bahiaxip.com"					
-					],
-				],
-				effects:{
-					1:{
-					//transitions
-						opacity:true,
-						//scale
-						width:false,
-						//scale
-						height:false,
-						//solo texto
-						fontSize:false,
-						scaleRotate:false,
-						scale:false,
-						positionLeft:false,
-					//set mode text
-						modeText:"true",
-					//set width image HTML
-						//solo imágenes
-						widthHTML:null
-					},
-					2:{
-						opacity:true,
-						positionLeft:true,
-						widthHTML:null
-					},
-					3:{						
-						modeText:true,
-						widthHTML:150,
-						scaleRotate:true
-					}
-				},			
-				order:{
-					0:[1],
-					1:[1],
-					2:[1,2],
-					3:[1,2,3]
-				}
-			},
-			optionsBhBanner2:{
-				orientation:"vertical",
-				size:"medium",
-				fontSizeDefault:"22px",
-				time:4000,
-				images:[
-					//images element 1
-					[
-						"img/home/vineta_uva.jpg",
-						"img/home/forma_selfie.png",
-					],
-					//images element 2
-					[
-						"img/home/pareja.jpg",
-						"img/home/road-5724397_640.jpg"
-					],
-					//images element 3
-					[
-						"img/home/fun.jpg",
-						"img/home/circulo_pareja_sepia.png",
-						"img/home/fashion.JPG"
-					]
-				],
-				texts:[
-					[
-						"Recorta tu imagen",
-						"con solo un clic",
-						"Dale a tus fotos un toque personal",
-						"desde el panel de efectos"
-					],
-					[
-						"Sube tus imágenes...",
-						"...descárgalas donde quieras",
-					],
-					[
-						"Crea tu propia marca de agua",
-						"Realiza fusiones con tus imágenes preferidas",
-						"Genera una nueva textura"						
-					],
-				],
-				videos:[
-					[
-						"video/video_cut_biedit.mp4"
-					],
-					[
-						"video/video_cut_biedit.mp4",
-						"video/filtro_byn.mp4"
-					],
-					[
-					]
-				],
-				effects:{
-					1:{
-						opacity:true,
-						//scale
-						width:false,
-						//scale
-						height:false,
-						//solo texto
-						fontSize:false,
-						scaleRotate:false,
-						scale:false,
-						positionTop:true,
-						modeText:true,
-						modeVideo:false,
-					//solo imágenes
-						widthHTML:null,
-					//solo textos
-						fontSizeStyle:"20px",
-					},
-					2:{
-						opacity:true,
-						width:false,
-						height:false,
-						fontSize:false,
-						positionLeft:true,
-						widthHTML:150,
-						modeVideo:true,
-					},
-					3:{
-						opacity:false,
-						modeText:true,
-						positionLeft:false,
-						scaleRotate:true,					
-						fontSizeStyle:"20px"
-					}
-				},
-				order:{
-					0:[1,3],
-					1:[1,2,3],
-					2:[1,3],
-					3:[1,2,3],
-				}
-			},
+			divHeight:null,
+			font:null,
+			videoSelected:null,
+			videos:[
+				"video/redimension.mp4",
+				"video/video_cut_biedit.mp4",
+				"video/filtro_byn.mp4"
+			],
+			counterVideo:0,
+			focus:true,	
+			
 			video:null,
 			canvas:null,
 			snap:null,
@@ -289,9 +224,113 @@ export default {
 			},
 		}
 	},
+	created(){		
+		window.addEventListener("resize",this.setHeightDiv);
+		this.setHeightDiv();
+		
+		
+	},
 	mounted(){
-	//slider vue
+		window.addEventListener("focus",()=> {
+			console.log("foco antes: ",this.focus)
+			this.focus=true;
+			console.log("foco después: ",this.focus)
+		})
+		window.addEventListener("blur",()=> {
+			this.focus=false
+		})
+		let vid=this.$refs.video;
+		this.videoSelected=this.videos[0];
+		let playPromise=vid.play();
+
+		if(playPromise !== undefined){
+			playPromise.then(() =>  {
+				console.log("dentro video")
+			}).catch(error => {
+				console.log("error  promise: ",error)
+			})
+		}	
+		
+		this.loopVideo();
+		//slider vue
 		this.$refs.primary.sync(this.$refs.secondary.splide);
 	},
+	methods:{
+		setHeightDiv(){
+			let b=document.body;
+			this.divHeight=b.clientHeight;
+			if(b.clientWidth<1300)
+				this.font=30;
+			else if(b.clientWidth<800)
+				this.font=20;
+			else
+				this.font=40;
+		},
+
+		loopVideo(){
+			
+			let vid=this.$refs.video;
+			let parentVid=this.$refs.div_video;
+			//let vid=this.$refs.video;			
+
+			setInterval(()=>{								
+				
+				parentVid.style.width=parentVid.clientWidth+"px";
+				parentVid.style.height=parentVid.clientHeight+"px";
+				//hide
+				setTimeout(()=> {
+					//console.log("en hide: ",this.counterVideo)
+					vid.style.opacity="0";
+					vid.pause();
+				},100);
+				
+				
+				//show
+				//Importante: Para que el método show no de error en la transición es
+				//necesario asignar un style.width/style.height fijos al padre del video
+				setTimeout(()=> {
+
+				//si es la primera vez modificamos el index a uno para poder 
+				//cambiar al segundo, ya que, el primero ya se ha asignado al inicio.
+				//añadimos la condición lista.length por si la lista solo tiene una 
+					if(this.counterVideo==0 && this.videos.length>1)
+						this.counterVideo=1;
+					//si ha llegado al último reseteamos al primero
+					else if(this.videos.length==this.counterVideo)
+						this.counterVideo=0;
+				//seleccionamos el siguiente de la lista y sumamos uno al index
+				//tmp[num].selected=list[tmp[num].index];
+					//console.log("en show: ",this.counterVideo)									
+					//this.videoSelected=this.videos[this.counterVideo];
+					vid.src=this.videos[this.counterVideo];
+					//si se está dentro de la pestaña del navegador (focus=true)
+					if(this.focus)
+						vid.play();
+					this.counterVideo=this.counterVideo+1;
+					
+					vid.style.opacity="1";
+					
+				},700);
+				
+				
+				
+				//vid.style.opacity="0";
+				
+				//vid.play();
+				//this.counterVideo++;
+				//vid.style.opacity="1";
+			},8000);
+				
+		},
+		
+	}
 }
 </script>
+<style>
+.div_video{
+	transition:all 0.5s linear;
+}
+.img_banner{
+	transition:all 0.5s linear;	
+}
+</style>
