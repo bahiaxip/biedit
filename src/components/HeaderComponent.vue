@@ -1,7 +1,7 @@
 <template>
 	<div class="total" :class="{'page-container':parentMdDrawer}" >
 		
-		<div class="nav " style="background:#434540;min-height:70px" >
+		<div class="nav " style="background:#434540;"  :class="[smallerHeader ? 'nav-min':'nav-normal',smallerHeader ? 'back-box-panel-min':'back-box-panel-normal']" >
 <!--cambiar el min-height en el resize event-->
 			<div class="floatL"   >
 				<md-button class="primary_nav "  :class="[smallHeader ? 'md-icon-button' : 'md-fab',{'md-dense':denseHeader}]" title="Sesión" @click="switchDialog()" >
