@@ -80,7 +80,7 @@ Vue.use(VueRouter);
 
 const routes = [
 	{path:"/",redirect:'/home'},
-	{path:'/home',component:Home},
+	{path:'/home',component:Home,name:'home'},
 	{path:'/main',redirect:'/'},
 	{path:'/main',component:MainPanel,name:'MainPanel',props:true},
 	{path:'/cutout',component:CutPanel,redirect:'/'},

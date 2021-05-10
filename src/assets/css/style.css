@@ -6,6 +6,42 @@ html,body{
 .md-overlay{
     display:table-cell !important;
 }
+                /*header panel */
+
+.logo_biedit span:hover{
+    color:#d81b60;
+    cursor:pointer    
+}
+.logo_biedit{
+    margin:auto;
+    color:white;
+    font-family:quicksand;
+    font-size:45px;
+    font-weight:bold;
+}
+/*con h2*/
+.logo_h2{
+    margin-top:0;
+    padding-top:20px;
+    height:65px !important;
+}
+.logo_min_h2{
+    margin-top:0;
+    padding-top:10px;
+    font-size:30px !important;
+    height:30px !important; 
+}
+/*con imagen (sustituido por logo en <span>)*/
+.logo{
+    margin-top:0;
+    height:65px !important;
+    margin-top:2px;
+}
+.logo_min{
+    margin-top:0;
+    height:40px !important;
+}
+
 .nav{
     
     /*primary vue material*/
@@ -34,8 +70,12 @@ html,body{
     //que el cutpanel si necesita acceder*/
 	z-index:1;
 }
+.nav{
+    margin-top:0 !important;
+    background:#434540;
+}
 .nav-normal{
-    min-height:70px
+    min-height:70px;
 }
 .nav-min{
     min-height:45px
@@ -46,7 +86,7 @@ html,body{
     min-height:720px;
 }
 
-
+                            /*fin de header*/
 
                     /*genéricos*/
 
@@ -101,6 +141,12 @@ html,body{
     
     background:linear-gradient(to bottom, rgba(38,173,167,.7) 0%, rgba(38,173,167,1), rgba(38,173,167,.7) 100%) !important;
 }
+.back_lightblue{
+    background-color:lightblue;
+}
+.back_lightgreen{
+    background-color:rgba(55,255,157,.4);
+}
 .c_bnext{
     color:rgba(255,30,85,1) !important;
 }
@@ -131,8 +177,14 @@ html,body{
 .c_white{
     color:white !important;
 }
+.c_black{
+    color:black;
+}
 .c_pointer{
     cursor:pointer;
+}
+.c_magenta{
+    color:#ff1e55 !important;
 }
 .p_auto{
     padding:auto;
@@ -163,6 +215,11 @@ html,body{
 }
 .clearL{
     clear:left;
+}
+
+.div_clear{
+    height:50px;
+    background-color:white;
 }
 /*usado en watermark (Effect panel)*/
 .icon_rotate{
@@ -720,6 +777,27 @@ Accent: #ff5252 => Red A200
                         /* fin Effect panel */
                         /* Home panel */
 
+.div_layout_first{
+    height:100vh;
+}
+.div_layout{
+    padding-top:50px;
+    padding-bottom:50px
+}
+
+.div_home h2{
+    font-family:corporate;    
+    letter-spacing: 1px;
+    font-weight: normal;
+    line-height:150%;    
+}
+.div_home p{
+    font-family:corporate;
+    color:#5a5a5a;
+    font-size:20px;
+    line-height:120%
+}
+
 /*splide*/
 .splide_custom{
     /*para resoluciones mayores  con @media por ejemplo*/
@@ -763,7 +841,7 @@ Accent: #ff5252 => Red A200
 }
 .section_home{
     width:100%;
-    height:;
+    /*height:;*/
 }
 .home{
     background:lightblue;

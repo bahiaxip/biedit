@@ -1,7 +1,7 @@
 <template>
 	<div class="total" :class="{'page-container':parentMdDrawer}" >
 		
-		<div class="nav " style="background:#434540;"  :class="[smallerHeader ? 'nav-min':'nav-normal',smallerHeader ? 'back-box-panel-min':'back-box-panel-normal']" >
+		<div class="nav" :class="[smallHeader ? 'nav-min':'nav-normal',smallHeader ? 'back-box-panel-min':'back-box-panel-normal']" >
 <!--cambiar el min-height en el resize event-->
 			<div class="floatL"   >
 				<md-button class="primary_nav "  :class="[smallHeader ? 'md-icon-button' : 'md-fab',{'md-dense':denseHeader}]" title="Sesión" @click="switchDialog()" >
@@ -53,10 +53,14 @@
 				</router-link>
 			</div>
 		<!--para  el home-->
-			<div class="m_auto" style="" v-else>				
-				<img src="img/home/biedit_logo.png"  :class="smallHeader ? 'logo_min':'logo'"/>
+			
+			<div class="logo_biedit" :class="smallHeader ? 'logo_min_h2':'logo_h2'" v-else>				
+				<!--<img src="img/home/biedit_logo.png"  :class="smallHeader ? 'logo_min':'logo'"/>-->
+				
+				<span class="">Biedit</span>
 				
 			</div>
+			
 		</div>
 
 				
@@ -235,8 +239,10 @@ export default {
 			constraints:{
 				audio:true,
 				video:{
+					/*
 					width:1280,
 					height:720
+					*/
 				}
 			},
 			//volumen de la etiqueta audio usada en Cam y CutPanel, almacenada en sessionStorage
@@ -656,12 +662,5 @@ export default {
 	width:100%;height:100%;
 	position:absolute !important;
 	top:0;
-}
-.logo{
-	height:65px !important;
-	margin-top:2px;
-}
-.logo_min{
-	height:40px !important;
 }
 </style>

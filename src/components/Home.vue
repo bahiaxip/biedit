@@ -1,46 +1,49 @@
 <template>
 
-	<div style="min-height:720px;">		
+	<div >		
 	<!--1-->	
-		<div class="md-layout md-alignment-center-center"  style="background:linear-gradient(to bottom, rgba(38, 173, 167,.8) 0%, rgba(38, 173, 167,.1) 100%);" :style="{'height':divHeight+'px'}">			
+		<div class="md-layout md-alignment-center-center div_layout_first">		
 			<!--<div class="md-layout-item md-size-100">Biedit</div>-->
-			<div class="md-layout-item md-size-12"></div>
-			<div class="md-layout-item md-size-35 " >				
-				<div class="div_home1 " style="margin:auto;">
-					
-					<h2 style="font-family:corporate;color:black;letter-spacing: 1px;font-weight: normal;line-height:150%" :style="{'font-size':font+'px'}"
+			<div class="md-layout-item md-size-12 md-xsmall-hide"></div>
+			<div class="md-layout-item md-size-35 md-xsmall-size-80">			
+				<div class="div_home m_auto" data-aos="fade-right">
+					<h2 class="c_black" :style="{'font-size':font+'px'}"
 					>
-					Edita tus imágenes con Biedit						
+						Edita tus imágenes con Biedit						
 					</h2>					
-					<p style="font-size:20px;font-family:corporate;color:#5a5a5a;line-height:120%">Edita tus imágenes de una forma práctica y sencilla. Biedit permite redimensionar, recortar, reflejar y aplicar distintos ajustes a tu imagen. </p>
+					<p>
+						Edita tus imágenes de una forma práctica y sencilla. Biedit permite redimensionar, recortar, reflejar y aplicar distintos ajustes a tu imagen.
+					</p>
 				</div>
 			</div>
-			<div class="md-layout-item md-size-6"></div>
-			<div class="md-layout-item md-size-35" >
-					<img src="img/home/adult.jpg" />
+			<div class="md-layout-item md-size-6 md-xsmall-hide"></div>
+			<div class="md-layout-item md-size-35 md-xsmall-size-80" >
+					<img src="img/home/adult.jpg" data-aos="fade-left" />
 			</div>
-			<div class="md-layout-item md-size-12"></div>
+			<div class="md-layout-item md-size-12 md-xsmall-hide"></div>
 		</div>		
-		<div class="clearfix" style="height:40px;background-color:white"></div>
+		<div class="div_clear"></div>
 	<!--2-->
-	<div class="md-layout md-alignment-center-center" style="background-color:lightblue;padding-top:50px;padding-bottom:50px" >
-			<div class="md-layout-item md-size-12"></div>
-			<div class="md-layout-item md-size-35" style="height:100%">			
+	<div class="md-layout md-alignment-center-center div_layout back_lightblue">
+			<div class="md-layout-item md-size-12 md-xsmall-hide"></div>
+			<div class="md-layout-item md-size-35 md-xsmall-size-80" >			
 				
 				<!--<img style="position:absolute;margin-left:50px;" src="img/home/oleo_labrador.jpg"/>-->
 				<!--<img style="position:absolute;margin-left:100px" src="img/home/redondear_oso_polar.png"/>-->
-				<img  src="img/home/oleo_labrador.jpg" />
+				<img  src="img/home/oleo_labrador.jpg" data-aos="flip-up" data-aos-duration="2000"/>
 				
 			</div>
-			<div class="md-layout-item md-size-6"></div>
-			<div class="md-layout-item md-size-35">
-				<h2 style="color:#ff1e55;font-family:corporate;line-height:150%;letter-spacing: 1px;font-weight: normal;" :style="{'font-size':font+'px'}">Efectos originales</h2>
-						<p style="color:#5a5a5a;font-family:corporate;font-size:20px">Accede al panel de efectos y dale a tu imagen un estilo original</p>												
+			<div class="md-layout-item md-size-6 md-xsmall-hide"></div>
+			<div class="md-layout-item md-size-35 md-xsmall-size-80">
+				<div class="div_home" data-aos="flip-up" data-aos-duration="2000">
+					<h2 class="c_magenta" :style="{'font-size':font+'px'}">Efectos originales</h2>
+					<p>Accede al panel de efectos y dale a tu imagen un estilo original</p>
+				</div>
 				
 			</div>
-			<div class="md-layout-item md-size-12"></div>
+			<div class="md-layout-item md-size-12 md-xsmall-hide"></div>
 		</div>
-		<div class="clearfix" style="height:40px;background-color:white"></div>
+		<div class="div_clear"></div>
 	<!--
 		<div class="md-layout md-alignment-center-center" style="background-color:lightblue;padding-top:50px;padding-bottom:50px" >
 			<div class="md-layout-item md-size-12"></div>
@@ -60,46 +63,53 @@
 		<div class="clearfix" style="height:40px;background-color:white"></div>
 	-->
 	<!--3-->
-		<div class="md-layout md-alignment-center-center"  style="background-color:rgba(55,255,157,.4);padding-top:50px;padding-bottom:50px" >
-			<div class="md-layout-item md-size-12"></div>
-			<div class="md-layout-item md-size-35 " >				
-				<div class="div_home1 " style="margin:auto;">
-					<h2 style="font-family:corporate;color:black;letter-spacing: 1px;font-weight: normal;line-height:150%" :style="{'font-size':font+'px'}"
+		<div class="md-layout md-alignment-center-center div_layout back_lightgreen"   >
+			<div class="md-layout-item md-size-12 md-xsmall-hide"></div>
+			<div class="md-layout-item md-size-35 md-xsmall-size-80" >				
+				<div class="div_home m_auto" data-aos="fade-right" data-aos-duration="2000">
+					<h2 class="c_black" :style="{'font-size':font+'px'}"
 					>
-					Optimiza y ahorra espacio
+						Optimiza y ahorra espacio
 					</h2>					
-					<p style="font-size:20px;font-family:corporate;color:#5a5a5a">Cambia las dimensiones de tu foto, recorta o realiza una compresión liberando espacio en tu dispositivo</p>
+					<p>
+						Cambia las dimensiones de tu foto, recorta o realiza una compresión liberando espacio en tu dispositivo
+					</p>
 				</div>
 			</div>
-			<div class="md-layout-item md-size-6"></div>
-			<div class="md-layout-item md-size-35 " style="margin:auto;">
-				<div class="div_video" ref="div_video" style="display:inline-flex">
-					<video class="img_banner" autoplay muted ref="video" >
+			<div class="md-layout-item md-size-6 md-xsmall-hide"></div>
+			<div class="md-layout-item md-size-35 md-xsmall-size-80 m_auto" >
+				<div class="div_video" ref="div_video"  data-aos="fade-left"  data-aos-duration="2000">
+					<video class="img_banner" autoplay muted ref="video">
 						<source :src="videoSelected" >
 							<!--<source src="video/redimension.mp4" >-->
 					</video>
 				</div>
 			</div>
-			<div class="md-layout-item md-size-12"></div>
+			<div class="md-layout-item md-size-12 md-xsmall-hide"></div>
 		</div>		
-		<div class="clearfix" style="height:40px;background-color:white"></div>
+		<div class="div_clear"></div>
 	<!--4-->	
-		<div class="md-layout md-alignment-center-center" style="background-color:lightblue;padding-top:50px;padding-bottom:50px">
-			<div class="md-layout-item md-size-12"></div>
-			<div class="md-layout-item md-size-35">			
-				<div class="div_home1" style="margin:auto">
-					<img src="img/home/ensalada.png"/>					
+		<div class="md-layout md-alignment-center-center div_layout back_lightblue">
+			<div class="md-layout-item md-size-12 md-xsmall-hide"></div>
+			<div class="md-layout-item md-size-35 md-xsmall-size-80">			
+				<div class="m_auto" data-aos="flip-up" data-aos-duration="1500">
+					<img src="img/home/ensalada.png"  />					
 				</div>
 			</div>
-			<div class="md-layout-item md-size-6"></div>
-			<div class="md-layout-item md-size-35">
-					<h2 style="font-family:corporate;color:#ff1e55;font-size:45px;line-height:150%;font-weight: normal" :style="{'font-size':font+'px'}">Crea tu marca de agua
+			<div class="md-layout-item md-size-6 md-xsmall-hide"></div>
+			<div class="md-layout-item md-size-35 md-xsmall-size-80">
+				<div class="div_home" data-aos="flip-up" data-aos-duration="1500">
+					<h2 class="c_magenta" :style="{'font-size':font+'px'}">
+						Crea tu marca de agua
 					</h2>
-					<p style="font-size:20px;font-family:corporate;color:#5a5a5a">Introduce tu texto y crea tu propia marca de agua</p>					
+					<p>
+						Introduce tu texto y crea tu propia marca de agua
+					</p>
+				</div>				
 			</div>
-			<div class="md-layout-item md-size-12"></div>
+			<div class="md-layout-item md-size-12 md-xsmall-hide"></div>
 		</div>
-		<div class="md-layout md-alignment-center-center" style="padding-top:50px;padding-bottom:50px">
+		<div class="md-layout md-alignment-center-center md-xsmall-hide div_layout">
 		<splide :options="primaryOptions" ref="primary" style="background-color:rgba(0,0,0,.6);" class="splide_custom m_auto"  >
 					<splide-slide >
 						<div class="m_top30" >
@@ -174,6 +184,7 @@
 <script>
 //import Banner from './Banner.vue';
 import servicesMixin from '../mixins/servicesMixin.js';
+import AOS from 'aos';
 export default {
 	name:'Home',
 	//components:{Banner},
@@ -198,7 +209,8 @@ export default {
 			constraints:{
 				audio:true,
 				video:{
-					width:1280,height:720
+					//anulamos
+					/*width:1280,height:720*/
 				}
 			},
 			context:null,
@@ -231,10 +243,11 @@ export default {
 		
 	},
 	mounted(){
+		AOS.init();
 		window.addEventListener("focus",()=> {
-			console.log("foco antes: ",this.focus)
+			//console.log("foco antes: ",this.focus)
 			this.focus=true;
-			console.log("foco después: ",this.focus)
+			//console.log("foco después: ",this.focus)
 		})
 		window.addEventListener("blur",()=> {
 			this.focus=false
@@ -245,7 +258,7 @@ export default {
 
 		if(playPromise !== undefined){
 			playPromise.then(() =>  {
-				console.log("dentro video")
+				//console.log("dentro video")
 			}).catch(error => {
 				console.log("error  promise: ",error)
 			})
@@ -264,7 +277,7 @@ export default {
 			else if(b.clientWidth<800)
 				this.font=20;
 			else
-				this.font=40;
+				this.font=40;			
 		},
 
 		loopVideo(){
@@ -328,7 +341,13 @@ export default {
 </script>
 <style>
 .div_video{
+	margin:auto;
+	height:100%;
+	display:inline-flex;
 	transition:all 0.5s linear;
+}
+.div_video video{
+	display:inline-flex;
 }
 .img_banner{
 	transition:all 0.5s linear;	
