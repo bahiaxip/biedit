@@ -872,6 +872,7 @@ export default {
 		},
 		//desactiva la tarea pasada por parámetro 
 		undoTask(task){
+
 			if(task=="rotate"){
 				//desactivar rotate
 				this.rotate(0);
@@ -993,7 +994,8 @@ export default {
 		//grupo (de uno en uno)
 		cancelAll(){			
 			let listActivated=this.testActivatedTasks(this.tasks2);
-			if(listActivated && listActivated.length==1){
+			//console.log(this.testActivatedTasks(this.tasks2));
+			if(listActivated && listActivated.length==1){			
 				let split=listActivated[0].split("A");				
 				this.cancelTask(split[0])
 			}else if(listActivated){
@@ -1001,6 +1003,11 @@ export default {
 					let split=task.split("A");					
 					this.cancelTask(split[0]);
 				})				
+			}			
+			else{
+			//solo puede ser texturize
+				if(this.rangeTexturize)				
+					this.cancelTask("texturize")
 			}
 		},
 
@@ -1171,7 +1178,7 @@ export default {
 			//se comprueban los desplegables dials
 			this.hideDials();
 			
-			if(action=="texturize" && !this.rangeTexturizeActive){				
+			if(action=="texturize" && !this.rangeTexturizeActive){
 				this.cancelAll();
 				this.rangeTexturizeActive=true;
 				this.texturizeActivated=true;
