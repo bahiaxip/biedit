@@ -14,6 +14,6 @@ var Global = {
 	maxWidthDefault: 1280,
 	maxHeightDefault: 1920,
 	minWidthHeight: 50,
-	maxSizeFile:2000000
+	maxSizeFile:20000000
 }
 export default Global;
