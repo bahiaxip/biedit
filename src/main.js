@@ -13,6 +13,8 @@ import App from './App.vue'
 
 import VueMaterial from 'vue-material';
 
+
+
 /*
 import {MdButton,MdMenu,MdList,MdIcon,MdCard,MdField,MdDialog,
 	MdTabs,MdDialogAlert,MdToolbar,MdSpeedDial,MdLayout,MdDialogConfirm,
@@ -44,6 +46,13 @@ import 'verte/dist/verte.css';
 import VueSplide from '@splidejs/vue-splide';
 
 import NotFound from './components/NotFound.vue';
+
+//probando animaciones con VueAnimXYZ, son necesarias manejar las variables con algún evento, yo quiero
+//al pasar el scroll, mejor AOS.
+//import VueAnimXYZ from '@animxyz/vue';
+//import '@animxyz/core';
+
+
 Vue.config.productionTip = false
 /*
 Vue.use(MdButton);
@@ -76,6 +85,10 @@ Vue.material.registerTheme({
 	}
 })
 */
+
+//anulado import AnimXYZ
+//Vue.use(VueAnimXYZ);
+
 Vue.use(VueRouter);
 
 const routes = [

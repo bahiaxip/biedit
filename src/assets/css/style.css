@@ -1,8 +1,30 @@
 html,body{
 	margin:0;height:100% !important;
+    background-color:black;
     
 	/*min-width:540px !important;*/
 }
+
+.div_text span{
+    margin-top:30px;
+    font-size:80px;
+    font-family:quicksand;
+    font-weight: bold;
+    color:white;
+
+    margin-left:10px;
+    margin-right:10px;
+
+}
+.title_biedit span{
+    font-size:70px;
+}
+
+.biedit_wheel span{
+    font-size:90px;
+    font-family:quicksand;letter-spacing:100px
+}
+
 .md-overlay{
     display:table-cell !important;
 }
@@ -147,6 +169,12 @@ html,body{
 .back_lightgreen{
     background-color:rgba(55,255,157,.4);
 }
+.back_black{
+    background-color: black;
+}
+.back_grey{
+    background-color: grey
+}
 .c_bnext{
     color:rgba(255,30,85,1) !important;
 }
@@ -218,8 +246,8 @@ html,body{
 }
 
 .div_clear{
-    height:50px;
-    background-color:white;
+    height:10px;
+    background-color:black;
 }
 /*usado en watermark (Effect panel)*/
 .icon_rotate{
@@ -778,8 +806,12 @@ Accent: #ff5252 => Red A200
                         /* Home panel */
 
 .div_layout_first{
-    height:100vh;
+    height:75vh;
 }
+
+
+
+
 .div_layout{
     padding-top:50px;
     padding-bottom:50px

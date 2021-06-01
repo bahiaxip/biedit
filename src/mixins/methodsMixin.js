@@ -86,10 +86,12 @@ export default {
 		validateImage(inputFile,size){
 			if(!(/\.(jpg|png|gif|jpeg)$/i).test(inputFile.name)){
 				alert("El archivo seleccionado no es una imagen válida");
+				//hay que resetear el input.value a ""
 				return false;
 			}
 			if(inputFile.size>size){
 				alert("El archivo es demasiado grande");
+				//hay que resetear el input.value a ""
 				return false;
 			}
 		},

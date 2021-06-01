@@ -57,7 +57,7 @@
 			<div class="logo_biedit" :class="smallHeader ? 'logo_min_h2':'logo_h2'" v-else>				
 				<!--<img src="img/home/biedit_logo.png"  :class="smallHeader ? 'logo_min':'logo'"/>-->
 				
-				<span class="">Biedit</span>
+				<!--<span class="">Biedit</span>-->
 				
 			</div>
 			
