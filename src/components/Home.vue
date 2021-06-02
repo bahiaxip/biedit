@@ -5,7 +5,6 @@
 				<span 
 					data-aos="fade-right"
 					data-aos-delay="500"
-					
 					>
 					B
 				</span>
@@ -44,78 +43,87 @@
 		<div class="md-layout md-alignment-center-center div_layout_first">
 			
 			<!--<div class="md-layout-item md-size-100">Biedit</div>-->
-			<div class="md-layout-item md-size-8 md-xsmall-hide" ></div>
-			<div class="md-layout-item md-size-40 md-xsmall-size-80">			
-				<div class=" m_auto" >
+			<div class="md-layout-item md-size-8 md-small-hide" ></div>
+			<div class="md-layout-item md-size-40 md-small-size-80">			
+				<div class="div_home m_auto">
 					
-					<h2 class="c_white" style="line-height:100%;font-family:quicksand;font-weight: bold" :style="{'font-size':font+'px'}"
+					<h2 class="c_white" :style="{'font-size':fontH2+'px'}"
+					
 					data-aos="fade-down"
 					data-aos-easing="linear"
 					data-aos-offset="200"
-					data-aos-duration="500" 
+					data-aos-duration="500"
 					>
 						Edita tus imágenes con Biedit						
 					</h2>					
-					<p class="c_white" style="font-size:20px;line-height:140%"
+					<p class="c_white" :style="{'font-size':fontText +'px'}"
+					
 					data-aos="fade-right" 
 					data-aos-easing="linear"
-					data-aos-delay="600"										
+					data-aos-delay="600"
 					data-aos-duration="1000">
 						Edita tus imágenes de una forma práctica y sencilla. Biedit permite redimensionar, recortar y una amplia variedad de ajustes y efectos.
 					</p>
 				</div>
 			</div>
-			<div class="md-layout-item md-size-4 md-xsmall-hide"></div>
-			<div class="md-layout-item md-size-40 md-xsmall-size-80" >
-					<img src="img/home/adult.jpg" 
+			<div class="md-layout-item md-size-4 md-small-hide"></div>
+			<div class="md-layout-item md-size-40 md-small-size-80" >
+					<img src="img/home/adult.jpg"
 					data-aos="zoom-out-up"
 					data-aos-delay="500"
 					data-aos-duration="2000"
 					data-aos-anchor-placement="center-bottom"
-					data-aos-offset="300" />
+					/>
 			</div>
-			<div class="md-layout-item md-size-8 md-xsmall-hide "></div>
+			<div class="md-layout-item md-size-8 md-small-hide "></div>
 		</div>		
 		<div class="div_clear "></div>
+
+		<div class="div_clear2" v-if="fontH2<=960 && divHeight<=800"></div>
+		<div class="div_clear2" v-if="fontH2<=960 && divHeight<=720"></div>
+		<div class="div_clear2" v-if="fontH2<=960 && divHeight<=640"></div>
+		<div class="div_clear2" v-if="fontH2<=960 && divHeight<=570"></div>
+
 	<!--2-->
-	<div class="md-layout md-alignment-center-center div_layout back_black">
-			<div class="md-layout-item md-size-8 md-xsmall-hide"></div>
-			<div class="md-layout-item md-size-40 md-xsmall-size-80" >			
+		<div class="md-layout md-alignment-center-center div_layout back_black">
+			<div class="md-layout-item md-size-8 md-small-hide"></div>
+			<div class="md-layout-item md-size-40 md-small-size-80" >			
 				
 				<!--<img style="position:absolute;margin-left:50px;" src="img/home/oleo_labrador.jpg"/>-->
 				<!--<img style="position:absolute;margin-left:100px" src="img/home/redondear_oso_polar.png"/>-->
 				<img  src="img/home/oleo_labrador.jpg" 
 				data-aos="flip-up" 
 				data-aos-duration="2000"
-
+				data-aos-mirror="true"
 				/>
 				
 			</div>
-			<div class="md-layout-item md-size-4 md-xsmall-hide"></div>
-			<div class="md-layout-item md-size-40 md-xsmall-size-80">
+			<div class="md-layout-item md-size-4 md-small-hide"></div>
+			<div class="md-layout-item md-size-40 md-small-size-80 ">
 				<div class="div_home" 
 				
 				>
-					<h2 class="c_white" :style="{'font-size':font+'px'}"
+					<h2 class="c_white" :style="{'font-size':fontH2+'px'}"
 					data-aos="fade-up" 
 					data-aos-duration="1500"
-
+					data-aos-mirror="true"
 					>
 					Efectos originales</h2>
-					<p class="c_white"
+					<p class="c_white" :style="{'font-size':fontText +'px'}"
 					data-aos="zoom-in-right"
 					data-aos-duration="500"
+					data-aos-mirror="true"
 					>Accede al panel de efectos y dale a tu imagen un estilo original</p>
 				</div>
 				
 			</div>
-			<div class="md-layout-item md-size-8 md-xsmall-hide"></div>
+			<div class="md-layout-item md-size-8 md-small-hide"></div>
 		</div>
 		<div class="div_clear"></div>
 
 		<div class="md-layout md-alignment-center-center div_layout back_black"   ref="div_wheel" style="cursor:default;height:300px">
 			<h2 ref="child_wheel" class="c_white biedit_wheel" :class="{title_biedit:titleBiedit}"  style="position:relative;display:inline-block;">
-				<span >
+				<span>
 					Biedit
 				</span>
 			</h2>
@@ -141,20 +149,20 @@
 	-->
 	<!--3-->
 		<div class="md-layout md-alignment-center-center div_layout back_black"   >
-			<div class="md-layout-item md-size-8 md-xsmall-hide"></div>
-			<div class="md-layout-item md-size-40 md-xsmall-size-80" >				
+			<div class="md-layout-item md-size-8 md-small-hide"></div>
+			<div class="md-layout-item md-size-40 md-small-size-80" >				
 				<div class="div_home m_auto" data-aos="fade-right" data-aos-duration="2000">
-					<h2 class="c_white" :style="{'font-size':font+'px'}"
+					<h2 class="c_white" :style="{'font-size':fontH2+'px'}"
 					>
 						Optimiza y ahorra espacio
 					</h2>					
-					<p class="c_white">
+					<p class="c_white" :style="{'font-size':fontText +'px'}">
 						Cambia las dimensiones de tu foto, recorta o realiza una compresión liberando espacio en tu dispositivo
 					</p>
 				</div>
 			</div>
-			<div class="md-layout-item md-size-4 md-xsmall-hide"></div>
-			<div class="md-layout-item md-size-40 md-xsmall-size-80 m_auto" >
+			<div class="md-layout-item md-size-4 md-small-hide"></div>
+			<div class="md-layout-item md-size-40 md-small-size-80 m_auto" >
 				<div class="div_video" ref="div_video"  data-aos="fade-left"  data-aos-duration="2000">
 					<video class="img_banner" autoplay muted ref="video">
 						<source :src="videoSelected" >
@@ -162,14 +170,14 @@
 					</video>
 				</div>
 			</div>
-			<div class="md-layout-item md-size-8 md-xsmall-hide"></div>
+			<div class="md-layout-item md-size-8 md-small-hide"></div>
 		</div>		
 		<div class="div_clear"></div>
 	<!--4-->
 		<div class="md-layout md-alignment-center-center div_layout">
-			<div class="md-layout-item md-size-70 md-xsmall-size-80">
-				<div class="div_home m_auto" data-aos="fade-right" data-aos-duration="2000">
-					<h2 class="c_white" :style="{'font-size':font+'px'}"
+			<div class="md-layout-item md-size-70 md-small-size-80">
+				<div class="div_home m_auto" >
+					<h2 class="c_white" :style="{'font-size':fontH2+'px'}"
 					data-aos="zoom-in-out" 
 					data-aos-delay="1000"
 					data-aos-duration="1000"
@@ -177,9 +185,9 @@
 								Editar tus fotos nunca fue tan fácil
 					</h2>
 					<div style="margin:auto;width:50%">
-						<p class="c_white" style=""
+						<p class="c_white" :style="{'font-size':fontText +'px'}" 
 						data-aos="fade-up"
-						data-aos-delay="1500"
+						data-aos-delay="1200"
 						>
 							Regístrate en Biedit y prueba todas las opciones que te ofrece. Puedes realizar efectos sencillos como rotar y reflejar tu imagen o aplicar efectos avanzados como efecto óleo, efecto remolino, generar texturas o redondear las esquinas de tu imagen
 						</p>
@@ -189,8 +197,8 @@
 		</div>
 	<!--5-->	
 		<div class="md-layout md-alignment-center-center div_layout back_black">
-			<div class="md-layout-item md-size-8 md-xsmall-hide"></div>
-			<div class="md-layout-item md-size-40 md-xsmall-size-80">			
+			<div class="md-layout-item md-size-8 md-small-hide"></div>
+			<div class="md-layout-item md-size-40 md-small-size-80">			
 				<div class="m_auto" 
 				data-aos="flip-right" 
 				data-aos-duration="1500"
@@ -199,17 +207,17 @@
 					<img src="img/home/ensalada.png"  />					
 				</div>
 			</div>
-			<div class="md-layout-item md-size-4 md-xsmall-hide"></div>
-			<div class="md-layout-item md-size-40 md-xsmall-size-80">
+			<div class="md-layout-item md-size-4 md-small-hide"></div>
+			<div class="md-layout-item md-size-40 md-small-size-80">
 				<div class="div_home" >
-					<h2 class="c_white" :style="{'font-size':font+'px'}"
+					<h2 class="c_white" :style="{'font-size':fontH2+'px'}"
 					data-aos="zoom-in-out" 
 					data-aos-delay="1000"
 					data-aos-duration="1000"
 					>
 						Crea marcas de agua
 					</h2>
-					<p class="c_white"
+					<p class="c_white" :style="{'font-size':fontText +'px'}"
 					data-aos="fade-up"
 					data-aos-delay="1500"
 					>
@@ -217,30 +225,13 @@
 					</p>
 				</div>				
 			</div>
-			<div class="md-layout-item md-size-8 md-xsmall-hide"></div>
+			<div class="md-layout-item md-size-8 md-small-hide"></div>
 		</div>
 	<!--6-->
 		<div class="md-layout md-alignment-center-center div_layout">
-			<div class="md-layout-item md-size-70 md-xsmall-size-80">
-				<div class="div_home m_auto" data-aos="fade-right" data-aos-duration="2000">
-					<h2 class="c_white" :style="{'font-size':font+'px'}"
-					data-aos="zoom-in-out" 
-					data-aos-delay="1000"
-					data-aos-duration="1000"
-					>
-								Herramientas útiles
-					</h2>
-					<div style="margin:auto;width:50%">
-						<p class="c_white" style=""
-						data-aos="fade-up"
-						data-aos-delay="1500"
-						>
-							Ya no necesitas un programa de edición profesional como Photoshop o Krita, ni tampoco conocimientos de edición, sube tu imagen y conviértela a CMYK con un solo clic
-						</p>
-					</div>
-				</div>
-				<div class="div_home m_auto" data-aos="fade-right" data-aos-duration="2000">
-					<h2 class="c_white" :style="{'font-size':font+'px'}"
+			<div class="md-layout-item md-size-70 md-small-size-80">
+				<div class="div_home m_auto"  >
+					<h2 class="c_white" :style="{'font-size':fontH2+'px'}"
 					data-aos="zoom-in-out" 
 					data-aos-delay="1000"
 					data-aos-duration="1000"
@@ -248,13 +239,27 @@
 								También para profesionales
 					</h2>
 					<div style="margin:auto;width:50%">
-						<p class="c_white" style=""
+						<p class="c_white" :style="{'font-size':fontText +'px'}" 
 						data-aos="fade-up"
-						data-aos-delay="1500"
+						data-aos-delay="1200"
 						>
-							Si te dedicas al sector de la fotografía o a las artes gráficas ya no necesitas encender tu ordenador, extrae todos los canales de tu imagen en escala de grises y descárgala desde tu dispositivo
+							Si te dedicas al sector de la fotografía o a las artes gráficas ya no necesitas encender tu ordenador, tampoco necesitas un programa de edición profesional como Photoshop o Krita. Con Biedit puedes subir tu imagen y convertirla en CMYK con un solo clic o extraer todos los canales en escala de grises y descargarlas desde tu dispositivo.
 						</p>
 					</div>
+				</div>
+			</div>
+		</div>
+		<div class="md-layout md-alignment-center-center md-xsmall-hide">
+			<div class="md-layout-item md-size-70 md-small-size-80">
+				<div class="div_home m_auto" >
+					<h2 class="c_white" :style="{'font-size':fontH2+'px'}"
+					data-aos="fade-right" 
+					data-aos-delay="1200"
+					data-aos-duration="1000"
+					data-aos-anchor-placement="top-center"
+					>
+								DEMO
+					</h2>
 				</div>
 			</div>
 		</div>
@@ -334,15 +339,19 @@
 //import Banner from './Banner.vue';
 import servicesMixin from '../mixins/servicesMixin.js';
 import AOS from 'aos';
+//no necesario
+//import 'aos/dist/aos.css';
 export default {
 	name:'Home',
 	//components:{Banner},
 	mixins:{servicesMixin},
+	props:["device"],
 	data (){
 		return {
 			titleBiedit:false,
 			divHeight:null,
-			font:null,
+			fontH2:null,
+			fontText:null,
 			videoSelected:null,
 			videos:[
 				"video/redimension.mp4",
@@ -386,20 +395,27 @@ export default {
 			},
 			counter:null,
 			sign:null,
-
 		}
 		
 	},
-	created(){		
+	created(){
 		window.addEventListener("resize",this.setHeightDiv);
 		this.setHeightDiv();
-		
-		
+		if(this.device)
+			console.log(this.device);
 	},
 	mounted(){
 		AOS.init();
+		//ejemplo de carga de un script js en Vue 
+		/*
+		let externalScript = document.createElement('script')
+		externalScript.setAttribute('src', 'https://unpkg.com/aos@2.3.1/dist/aos.js')
+		document.head.appendChild(externalScript)
+		*/
+		
 		this.$refs.child_wheel.style.left="1px";
-		window.add
+		//window.add
+		/*
 		window.addEventListener("focus",()=> {
 			//console.log("foco antes: ",this.focus)
 			this.focus=true;
@@ -408,6 +424,7 @@ export default {
 		window.addEventListener("blur",()=> {
 			this.focus=false
 		});
+		*/
 		this.$refs.div_wheel.addEventListener("wheel",(e)=>  {
 			console.log(e)
 			//detenemos scroll
@@ -463,29 +480,68 @@ export default {
 		this.$refs.primary.sync(this.$refs.secondary.splide);
 	},
 	methods:{
+		//si device es true (es movil) damos otra font-size distinta
 		setHeightDiv(){
 			let b=document.body;
 			this.divHeight=b.clientHeight;
-			if(b.clientWidth<1300){
-				this.font=40;
-				this.titleBiedit=true;				
+			console.log(b.clientWidth)
+			if(b.clientWidth<1400 && b.clientWidth>1200){
+				if(this.device){
+					this.fontH2=50;				
+					this.titleBiedit=true;
+					this.fontText=22;
+				}else{
+					this.fontH2=50;				
+					this.titleBiedit=true;
+					this.fontText=22;					
+				}
+			}else if(b.clientWidth<1200 && b.clientWidth>959){
+				if(this.device){
+					this.fontH2=45;
+					this.titleBiedit=true;
+					this.fontText=20;
+				}else{
+					this.fontH2=45;
+					this.titleBiedit=true;
+					this.fontText=20;
+				}
+			}else if(b.clientWidth<960 && b.clientWidth>800){
+				if(this.device){
+					this.fontH2=40;
+					this.titleBiedit=true;
+				}else{
+					this.fontH2=40;
+					this.titleBiedit=false;
+					this.fontText=18;
+				}
 			}else if(b.clientWidth<800){
-				this.font=30;
-				this.titleBiedit=true;
+				if(this.device){
+					this.fontH2=38;
+					this.titleBiedit=true;
+				}else{
+					this.fontH2=40;
+					this.titleBiedit=true;
+					this.fontText=16;
+				}
 			}else{
-				this.font=50;
-				this.titleBiedit=false;
+				if(this.device){
+					this.fontH2=50;
+					this.titleBiedit=false;
+					this.fontText=24;
+
+				}else{
+					this.fontH2=50;
+					this.titleBiedit=false;
+					this.fontText=24;
+				}
 			}
 		},
 
 		loopVideo(){
-			
 			let vid=this.$refs.video;
 			let parentVid=this.$refs.div_video;
-			//let vid=this.$refs.video;			
-
-			setInterval(()=>{								
-				
+			//let vid=this.$refs.video;
+			setInterval(()=>{
 				parentVid.style.width=parentVid.clientWidth+"px";
 				parentVid.style.height=parentVid.clientHeight+"px";
 				//hide
@@ -495,12 +551,10 @@ export default {
 					vid.pause();
 				},100);
 				
-				
 				//show
 				//Importante: Para que el método show no de error en la transición es
 				//necesario asignar un style.width/style.height fijos al padre del video
 				setTimeout(()=> {
-
 				//si es la primera vez modificamos el index a uno para poder 
 				//cambiar al segundo, ya que, el primero ya se ha asignado al inicio.
 				//añadimos la condición lista.length por si la lista solo tiene una 
@@ -518,22 +572,15 @@ export default {
 					if(this.focus)
 						vid.play();
 					this.counterVideo=this.counterVideo+1;
-					
 					vid.style.opacity="1";
-					
 				},700);
-				
-				
-				
 				//vid.style.opacity="0";
 				
 				//vid.play();
 				//this.counterVideo++;
 				//vid.style.opacity="1";
 			},8000);
-				
 		},
-		
 	}
 }
 </script>

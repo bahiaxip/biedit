@@ -249,6 +249,10 @@ html,body{
     height:10px;
     background-color:black;
 }
+.div_clear2{
+    height:50px;
+    background-color:black;
+}
 /*usado en watermark (Effect panel)*/
 .icon_rotate{
     transform:scale(1,-1);
@@ -818,16 +822,16 @@ Accent: #ff5252 => Red A200
 }
 
 .div_home h2{
-    font-family:corporate;    
+    font-family:quicksand;    
     letter-spacing: 1px;
-    font-weight: normal;
-    line-height:150%;    
+    font-weight: bold;
+    line-height:120%;    
 }
 .div_home p{
     font-family:corporate;
     color:#5a5a5a;
     font-size:20px;
-    line-height:120%
+    line-height:140%
 }
 
 /*splide*/

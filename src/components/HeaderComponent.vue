@@ -65,7 +65,7 @@
 
 				
 		<!-- el atributo key permite enviar la imagen al mainpanel -->
-		<router-view :key="$route.fullPath"  @reload="reloadImage" @setnav="setNav"></router-view>
+		<router-view :key="$route.fullPath"  @reload="reloadImage" @setnav="setNav" :device="mobileDevice"></router-view>
 
 		<Session :dialog="showDialog" :dialogLogout="showDialog2" @offdialog="changeDialog" @setnav="setNav"></Session>
 
@@ -166,7 +166,8 @@ export default {
 		}
 	},
 	data(){
-		return{	
+		return{
+			mobileDevice:false,
 			nav:false,
 			//ancho asignado para panel principal por defecto
 			widthDefault:Global.widthDefault,
@@ -258,6 +259,13 @@ export default {
 			dialogSwitch:false,
 		}
 	},
+	created:function(){
+		//comprobamos si es dispositivo movil
+		if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+			this.mobileDevice=true;
+			//console.log("es dispositivo movil");	
+		}
+	},
 	mounted:function(){
 		this.smallerHeader();
 		this.$nextTick(function(){
@@ -265,9 +273,12 @@ export default {
 		})
 		
 		//podría ser útil para la opción de facingMode en el componente Cam
+		/*
 		if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+			this.mobileDevice=true;
 			console.log("es dispositivo movil");	
 		}
+		*/
 		//asignamos el ancho máximo de la imagen según el ancho del dispositivo
 		let size=this.getWidthAccordingWindow();
 		this.image.windowSize={width:window.innerWidth,height:window.innerHeight};
