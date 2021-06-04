@@ -345,7 +345,7 @@ export default {
 	name:'Home',
 	//components:{Banner},
 	mixins:{servicesMixin},
-	props:["device"],
+	props:["options"],
 	data (){
 		return {
 			titleBiedit:false,
@@ -401,8 +401,8 @@ export default {
 	created(){
 		window.addEventListener("resize",this.setHeightDiv);
 		this.setHeightDiv();
-		if(this.device)
-			console.log(this.device);
+		if(this.options.mobileDevice)
+			console.log(this.options.mobileDevice);
 	},
 	mounted(){
 		AOS.init();
@@ -463,6 +463,7 @@ export default {
 			}
 			*/
 		})
+		//para el video pero sigue dando error
 		let vid=this.$refs.video;
 		this.videoSelected=this.videos[0];
 		let playPromise=vid.play();
@@ -480,13 +481,14 @@ export default {
 		this.$refs.primary.sync(this.$refs.secondary.splide);
 	},
 	methods:{
-		//si device es true (es movil) damos otra font-size distinta
+		//si options.mobileDevice es true (es movil) damos otra font-size distinta
 		setHeightDiv(){
 			let b=document.body;
 			this.divHeight=b.clientHeight;
 			console.log(b.clientWidth)
+			let device=this.options.mobileDevice
 			if(b.clientWidth<1400 && b.clientWidth>1200){
-				if(this.device){
+				if(device){
 					this.fontH2=50;				
 					this.titleBiedit=true;
 					this.fontText=22;
@@ -496,7 +498,7 @@ export default {
 					this.fontText=22;					
 				}
 			}else if(b.clientWidth<1200 && b.clientWidth>959){
-				if(this.device){
+				if(device){
 					this.fontH2=45;
 					this.titleBiedit=true;
 					this.fontText=20;
@@ -506,7 +508,7 @@ export default {
 					this.fontText=20;
 				}
 			}else if(b.clientWidth<960 && b.clientWidth>800){
-				if(this.device){
+				if(device){
 					this.fontH2=40;
 					this.titleBiedit=true;
 				}else{
@@ -515,7 +517,7 @@ export default {
 					this.fontText=18;
 				}
 			}else if(b.clientWidth<800){
-				if(this.device){
+				if(device){
 					this.fontH2=38;
 					this.titleBiedit=true;
 				}else{
@@ -524,7 +526,7 @@ export default {
 					this.fontText=16;
 				}
 			}else{
-				if(this.device){
+				if(device){
 					this.fontH2=50;
 					this.titleBiedit=false;
 					this.fontText=24;
@@ -596,5 +598,8 @@ export default {
 }
 .img_banner{
 	transition:all 0.5s linear;	
+}
+body{
+	
 }
 </style>

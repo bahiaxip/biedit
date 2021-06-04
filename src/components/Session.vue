@@ -307,6 +307,8 @@ export default {
 						sessionStorage.setItem("biedit_email",res.data.data.email);
 						sessionStorage.setItem("biedit_apitoken",res.data.data.api_token);
 						sessionStorage.setItem("biedit_audio",0.1);
+	//cambiar por servicio y comprobar en la db
+						sessionStorage.setItem("biedit_back","grey");
 						self.session.name=res.data.data.name;
 						self.session.email=res.data.data.email;
 						self.changeDialog();						

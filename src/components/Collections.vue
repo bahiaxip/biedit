@@ -1,9 +1,9 @@
-<template >
+<template>
 	
-	<div v-if="images" class="">
+	<div v-if="images" class="min_height" :class="getParentMdCard" >
 		<transition-group name="list" tag="md-card"  mode="out-in" >
-			<md-card v-for="image in images" :key="image.id" class="list-item" >
-				<md-card-media-cover  md-solid>
+			<md-card v-for="image in images" :key="image.id" class="list-item"   >
+				<md-card-media-cover  md-solid >
 
 					<md-card-media md-ratio="4:3">
 						<img  :src="url+'get-image/'+image.random_name" :width="image.width" :height="image.height"/>
@@ -21,7 +21,7 @@
 									<md-icon>description</md-icon>
 								</md-button>
 
-								<md-menu-content>
+								<md-menu-content >
 									<md-list class="md-dense">
 										<md-list-item>
 											<md-icon>
@@ -86,7 +86,7 @@
 				</md-card-media-cover>
 			</md-card>
 		</transition-group>
-		<ul class="pagination" v-if="totalImages>10">
+		<ul class="pagination"  v-if="totalImages>10">
 			<li v-for="(n) in totalPages" :key="n" >
 				<md-button class="md-icon-button md-raised primary c_white" v-if="n==actualPage" >
 				{{n}}
@@ -131,10 +131,15 @@ import servicesMixin from '../mixins/servicesMixin';
 import methodsMixin from '../mixins/methodsMixin';
 export default {
 	name:"collections",
-	props:['imageMain'],
+	props:['imageMain','options'],
 	mixins:[methodsMixin,servicesMixin],
 	data(){
-		return{	
+		return{
+			backtmp:null,
+			switchParentMdCard:false,
+			back:null,
+			//padre de .md-card para cambiar el fondo
+			parentMdCard:null,
 			//para que funcione el efecto transition no puede ser null		
 			images:[],
 			//utilizamos imageTmp  e image para imágenes temporales en confirmAction() y 
@@ -181,12 +186,32 @@ export default {
 				}
 			}
 		}
-	},	
-	mounted(){		
+	},
+	computed:{
+		getParentMdCard(){
+			console.log("pasar dato: ",this.options)
+			let parentMdCard;
+			let color=this.options.backColor;
+			if(color=="white"){
+				parentMdCard='parent_white'
+			}else if(color=="black"){
+				parentMdCard='parent_black'
+			}else{
+				parentMdCard='parent_grey'
+			}
+			return parentMdCard;
+		}
+	},
+	created(){
+		this.backtmp=this.options;
+		
+	},
+	mounted(){
+		console.log("backtmp: ",this.backtmp)		
 		//no es necesario el session ya que lo contiene el método getImages()
 		this.getImages();
 		if(!this.imageMain){
-			console.log("existe imagen en el panel: ",this.$refs);
+			console.log("no existe imagen en el panel: ",this.$refs);
 			console.log("recargando página");
 		}else if(this.imageMain && this.imageMain.src== null){
 			console.log("no hay nada en el panel principal");
@@ -194,8 +219,18 @@ export default {
 			//podríamos asignar imagetmpmain
 			console.log("existe imagen en el panel: ",this.imageMain);
 		}
+		//asignamos el color hexadecimal en back
+		this.back=this.getBackColor(this.testBackColor());
+		
+		
+		//establecemos el padre del div md-overlay(vue-material) para cambiarlo de color
+		this.parentMdCard=this.setParentMdCard(this.testBackColor());
+		this.switchParentMdCard=true;
+		console.log("parentMdCard: ",this.parentMdCard);
+
 	},	
-	methods:{	
+	methods:{
+		
 		setAction(action){
 			if(action=="delete")
 				this.deleteImage(this.imagetmp,this.imagetmpmain)

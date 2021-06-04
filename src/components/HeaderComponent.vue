@@ -1,7 +1,7 @@
 <template>
-	<div class="total" :class="{'page-container':parentMdDrawer}" >
+	<div class="total" :class="{'page-container':parentMdDrawer}" :style="{'background-color': back +' !important'}">
 		
-		<div class="nav" :class="[smallHeader ? 'nav-min':'nav-normal',smallHeader ? 'back-box-panel-min':'back-box-panel-normal']" >
+		<div class="nav" :class="[smallHeader ? 'nav-min':'nav-normal',smallHeader ? 'nav_min':'nav_normal']" >
 <!--cambiar el min-height en el resize event-->
 			<div class="floatL"   >
 				<md-button class="primary_nav "  :class="[smallHeader ? 'md-icon-button' : 'md-fab',{'md-dense':denseHeader}]" title="Sesión" @click="switchDialog()" >
@@ -65,7 +65,7 @@
 
 				
 		<!-- el atributo key permite enviar la imagen al mainpanel -->
-		<router-view :key="$route.fullPath"  @reload="reloadImage" @setnav="setNav" :device="mobileDevice"></router-view>
+		<router-view :key="$route.fullPath"  @reload="reloadImage" @setnav="setNav" :options="options"></router-view>
 
 		<Session :dialog="showDialog" :dialogLogout="showDialog2" @offdialog="changeDialog" @setnav="setNav"></Session>
 
@@ -114,7 +114,7 @@
 			mediante la variable parentMdDrawer y el método watch-->
 		<!--queda por solucionar los otros dialog de camara y acerca de biedit -->
 		<div v-if="parentMdDrawer" >
-			<md-drawer  :md-active.sync="showSidePanel" class="opciones" md-right style="">
+			<md-drawer  :md-active.sync="showSidePanel" class="opciones" md-right>
 				<md-list>
 					<md-list-item @click="showSidePanel=false;dialogAcercade=true">
 						<span class="md-list-item-text">Acerca de Biedit</span>
@@ -126,15 +126,26 @@
 						<span class="md-list-item-text">Cámara</span>
 						
 					</md-list-item>
-					<md-list-item @click="volumeActive=!volumeActive" v-if="!sessionState">
-						<span class="md-list-item-text" >Ajustes de sonido</span>
-					</md-list-item>					
-					<md-list-item v-if="volumeActive">
+					<md-list-item @click="volumeActive=!volumeActive"  v-if="!sessionState">
+						<span class="md-list-item-text" >Ajustes</span>
+					</md-list-item>	
+									
+					<md-list-item v-if="volumeActive"  style="padding-top:3px;padding-bottom:3px">
+						<label style="color:white">Volumen</label>
 						<md-button style="" class="md-icon-button" @click="volumeState=!volumeState;editVolume()">
 							<md-icon class="c_white" v-if="volumeState">volume_up</md-icon>
 							<md-icon class="c_white" v-else>volume_off</md-icon>
 						</md-button>
 						<input type="range" min="0" max="10" v-model="volume"  @input="editVolume()"/>
+					</md-list-item>
+
+					<md-list-item v-if="volumeActive" style="padding-top:3px;padding-bottom:3px">
+						<div style="color:white;">Fondo</div>
+						<div  class="clearL"></div>
+						<div class="theme"></div>						
+						<md-checkbox v-model="selectedBack" value="grey" @change="setBack()">Gris</md-checkbox>
+						<md-checkbox v-model="selectedBack" value="white" @change="setBack()">Blanco</md-checkbox>
+						<md-checkbox v-model="selectedBack" value="black" @change="setBack()">Negro</md-checkbox>
 					</md-list-item>
 				</md-list>				
 			</md-drawer>
@@ -161,13 +172,22 @@ export default {
 				this.parentMdDrawer=false;
 			}else{				
 				document.querySelector(".nav").style.zIndex="1";
+				/*document.body.style.backgroundColor="#676767"*/
 				this.parentMdDrawer=true;
 			}			
 		}
 	},
 	data(){
 		return{
-			mobileDevice:false,
+			selectedBack:null,
+			//color fondo global que establecemos en created()
+			back:null,	
+			options:{
+				mobileDevice:false,
+				//fondo de color global (asigna los estilos en varios divs con :style 
+				//y un div en Collections)
+				backColor:null
+			},
 			nav:false,
 			//ancho asignado para panel principal por defecto
 			widthDefault:Global.widthDefault,
@@ -197,8 +217,10 @@ export default {
 				heightInitial:null,
 				//identificador de class para añadir margin-top cuando redimensiona el 
 				//navegador en BoxPanel
-				boxPanelMargin:'8px',
+				boxPanelMargin:'10px',
 				windowSize:{},
+				
+				
 				
 			},			
 			//medidas para panel de recorte
@@ -262,9 +284,22 @@ export default {
 	created:function(){
 		//comprobamos si es dispositivo movil
 		if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-			this.mobileDevice=true;
+			this.options.mobileDevice=true;
 			//console.log("es dispositivo movil");	
 		}
+		//establecemos en la variable back el código hexadecimal del 
+		//background-color establecido en el sessionStorage necesario que está asignado
+		//a los estilos del primer div de este mismo componente(HeaderComponent)
+
+		//testBackColor() devuelve un string asignado en sessionStorage o 
+		//establece gris por defecto
+		//getBackColor() devuelve el código hexadecimal según el string pasado
+		this.selectedBack=this.testBackColor();
+		this.options.backColor=this.testBackColor();
+		//con back se establece el fondo global		
+		this.back=this.getBackColor(this.testBackColor());
+		console.log("back: ",this.back)
+		
 	},
 	mounted:function(){
 		this.smallerHeader();
@@ -275,7 +310,7 @@ export default {
 		//podría ser útil para la opción de facingMode en el componente Cam
 		/*
 		if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-			this.mobileDevice=true;
+			this.options.mobileDevice=true;
 			console.log("es dispositivo movil");	
 		}
 		*/
@@ -307,11 +342,33 @@ export default {
 	},
 
 	methods:{
+		setBack(){
+			//falta establecer en el servicio y actualizar la db			
+			this.setBackColor(this.selectedBack)
+			this.back=this.getBackColor(this.selectedBack)
+			this.options.backColor=this.selectedBack;
+		},
+		
+		resetSquareAndImage(square,boxImg){
+			//reiniciamos cuadro
+			square.style.top="0px";
+			square.style.left="0px";
+			//reiniciamos imagen del cuadro
+			boxImg.style.top="0px";
+			boxImg.style.left="0px";
+		},
 		
 		//anulado		
 //comprobar this.$route.name y solo actuar en componentes necesarios, chrome da muchos
 //tirones y se ralentiza al generar los cálculos, en firefox no da errores
 		smallerHeader(){
+			console.log("llegando a smallerHeader")
+
+			let square=document.querySelector(".square-panel");
+			let boxImg=document.querySelector("#box-img-main");
+			//reseteamos cuadro e imagen del cuadro cuando redimensionamos
+			if(square && boxImg)
+				this.resetSquareAndImage(square,boxImg);
 			let wSize={
 				width:window.innerWidth,
 				height:window.innerHeight
@@ -325,12 +382,13 @@ export default {
 			else if(wSize.width<520){
 				this.smallHeader=true;
 				this.denseHeader=false;
-				this.image.boxPanelMargin='36px';				
+				/*this.image.boxPanelMargin='36px';				*/
+				this.image.boxPanelMargin='44px';
 			}
 			else{
 				this.smallHeader=false;
 				this.denseHeader=false;
-				this.image.boxPanelMargin='8px';				
+				this.image.boxPanelMargin='11px';				
 				//actualizando panel de recorte				
 				if(this.$route.name=="cutout"){							
 					console.log("redimensionando...",this.$route.name);
@@ -612,7 +670,8 @@ export default {
 				this.sessionState=true;
 			else
 				this.sessionState=false;			
-			this.mainBigImage=state;		
+			this.mainBigImage=state;
+
 		},
 	}
 }

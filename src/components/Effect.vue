@@ -1,5 +1,5 @@
 <template>
-	<div v-if="ima && ima.width">		
+	<div v-if="ima && ima.width" class="min_height">		
 		<div class="" :style="{'padding-top':'10px'}" v-if="ima.width!=null && !displayLoading" >
 			<div class="m_auto t_center" >
 				<md-button class="md-icon-button md-raised " :class="[btnActive.rotateLeft ? 'accent' : 'primary',ima.windowSize.width<520 ? 'md-dense':'']"  md-menu-trigger @click="rotate('left')" title="Rotación Izquierda">
@@ -33,11 +33,11 @@
 			</div>
 
 <transition name="fade">
-	<div class="md-layout md-gutter m_top30" v-if="imgTrans">		
+	<div class="md-layout md-gutter m_top30 " v-if="imgTrans">		
 			<div class="md-layout-item md-large-size-15 md-medium-size-10 md-small-size-5" >
 			</div>
 
-			<div  class="md-layout-item md-medium-size-40 md-small-size-45 div_effect_image"    :style="{'text-align':'initial','width':imaEffect.width+'px','height':imaEffect.height+'px','display':'flex'}" ref="div_effect_image">
+			<div  class="md-layout-item md-medium-size-40 md-small-size-45 div_effect_image "    :style="{'text-align':'initial','width':imaEffect.width+'px','height':imaEffect.height+'px','display':'flex'}" ref="div_effect_image">
 
 					<canvas id="canvas" class=""  :style="{'margin':'auto','display':'flex'}" :width="imaEffect.width" :height="imaEffect.height" ref="canvas" v-if="!loadingImage"></canvas>
 					<div class="image_effect" :style="{'display':'block','backgroundImage':'url('+ima.name+')','width':imaEffect.width+'px','height':imaEffect.height+'px','position':'relative','background-size':'100%','background-repeat':'no-repeat','background-position':'center'}" ref="image_effect" v-if="!loadingImage">
@@ -45,9 +45,9 @@
 					<md-progress-spinner md-mode="indeterminate" class="m_auto" v-else></md-progress-spinner>
 			</div>
 		<!--botones de sidebar -->
-			<div class="md-layout-item md-layout md-gutter md-medium-size-40 md-small-size-50" >
+			<div class="md-layout-item md-layout md-gutter md-medium-size-40 md-small-size-50 " >
 
-				<div class="md-layout-item md-xlarge-size-50 md-medium-size-50 md-small-size-100" style="">
+				<div class="md-layout-item md-xlarge-size-50 md-medium-size-50 md-small-size-100 back_module_effect radius5" style="">
 					<md-menu class="md_menu_custom" md-align-trigger style="">
 						<md-button class="md-icon-button  md-raised" :class="[btnActive.filter ? 'accent':'primary',ima.windowSize.width<520 ? 'md-dense':'']"  md-menu-trigger @click="btnActive.filter=true;testGButton1('filter')">
 							<md-icon class="c_white">settings_brightness</md-icon>
@@ -151,65 +151,65 @@
 							</md-menu-item>
 							
 						</md-menu-content>
-				</md-menu>
-				<md-menu class="md_menu_custom" style="padding:auto" md-align-trigger >
-					<md-button class="md-icon-button  md-raised" :class="[btnActive.effect ? 'accent': 'primary',ima.windowSize.width<520 ? 'md-dense':'']"  md-menu-trigger @click="btnActive.effect=true;testGButton1('effect')">
-						<md-icon class="c_white">adjust</md-icon>
-						<md-tooltip md-direction="top">Efectos</md-tooltip>
-					</md-button>
-					<md-menu-content class="menu_filter" :style="{'max-height':imaEffect.height+'px'}">
+					</md-menu>
+					<md-menu class="md_menu_custom" style="padding:auto" md-align-trigger >
+						<md-button class="md-icon-button  md-raised" :class="[btnActive.effect ? 'accent': 'primary',ima.windowSize.width<520 ? 'md-dense':'']"  md-menu-trigger @click="btnActive.effect=true;testGButton1('effect')">
+							<md-icon class="c_white">adjust</md-icon>
+							<md-tooltip md-direction="top">Efectos</md-tooltip>
+						</md-button>
+						<md-menu-content class="menu_filter" :style="{'max-height':imaEffect.height+'px'}">
 
-						<md-menu-item title="Polaroid" @click="confirmChange('polaroid')">
-							<md-icon md-src="img/effect/polaroid.svg"></md-icon>
-							<md-tooltip md-direction="left">Polaroid</md-tooltip>
-						</md-menu-item>
-					
-						<md-menu-item title="Viñeta" @click="confirmChange('vignette')">
-							<md-icon>vignette</md-icon>
-							<md-tooltip md-direction="left">Viñeta</md-tooltip>
-						</md-menu-item>
+							<md-menu-item title="Polaroid" @click="confirmChange('polaroid')">
+								<md-icon md-src="img/effect/polaroid.svg"></md-icon>
+								<md-tooltip md-direction="left">Polaroid</md-tooltip>
+							</md-menu-item>
+						
+							<md-menu-item title="Viñeta" @click="confirmChange('vignette')">
+								<md-icon>vignette</md-icon>
+								<md-tooltip md-direction="left">Viñeta</md-tooltip>
+							</md-menu-item>
 
-						<md-menu-item title="Remolino" @click="confirmChange('remolino')">
-							<md-icon md-src="img/effect/fan.svg"></md-icon>
-							<md-tooltip md-direction="left">Remolino</md-tooltip>	
-						</md-menu-item>
+							<md-menu-item title="Remolino" @click="confirmChange('remolino')">
+								<md-icon md-src="img/effect/fan.svg"></md-icon>
+								<md-tooltip md-direction="left">Remolino</md-tooltip>	
+							</md-menu-item>
 
-						<md-menu-item title="Onda" @click="confirmChange('onda')">
-							<md-icon>waves</md-icon>
-							<md-tooltip md-direction="left">Onda</md-tooltip>	
-						</md-menu-item>
-						<md-menu-item title="Oleo" @click="confirmChange('oleo')" >
-							<md-icon md-src="img/effect/postage-stamp.svg"></md-icon>
-							<md-tooltip md-direction="left">Oleo</md-tooltip>	
-						</md-menu-item>
+							<md-menu-item title="Onda" @click="confirmChange('onda')">
+								<md-icon>waves</md-icon>
+								<md-tooltip md-direction="left">Onda</md-tooltip>	
+							</md-menu-item>
+							<md-menu-item title="Oleo" @click="confirmChange('oleo')" >
+								<md-icon md-src="img/effect/postage-stamp.svg"></md-icon>
+								<md-tooltip md-direction="left">Oleo</md-tooltip>	
+							</md-menu-item>
 
-						<md-menu-item title="Redondear" @click="confirmChange('esquinas')">
-							<md-icon>supervised_user_circle</md-icon>
-							<md-tooltip md-direction="left">Redondear</md-tooltip>	
-						</md-menu-item>
+							<md-menu-item title="Redondear" @click="confirmChange('esquinas')">
+								<md-icon>supervised_user_circle</md-icon>
+								<md-tooltip md-direction="left">Redondear</md-tooltip>	
+							</md-menu-item>
 
-						<md-menu-item title="Gaussiano" @click="confirmChange('gaussiano')">
-							<md-icon >grain</md-icon>
-							<md-tooltip md-direction="left">Gaussiano</md-tooltip>	
-						</md-menu-item>
-					</md-menu-content>
-				</md-menu>
+							<md-menu-item title="Gaussiano" @click="confirmChange('gaussiano')">
+								<md-icon >grain</md-icon>
+								<md-tooltip md-direction="left">Gaussiano</md-tooltip>	
+							</md-menu-item>
+						</md-menu-content>
+					</md-menu>
 		<!-- select -->
-				<div class="md_menu_custom" style="margin-top:20px">
-					<md-button class="md-icon-button md-raised buttons_composite"  md-menu-trigger @click="showListImage('fussion')" :class="[fussionActivated ? 'accent':'primary',ima.windowSize.width<520 ? 'md-dense':'']">
-						<md-icon md-src="img/effect/layers-plus_white.svg"></md-icon>
-						<md-tooltip>Fusión</md-tooltip>
-					</md-button>
-					<md-button class="md-icon-button  md-raised buttons_composite "  md-menu-trigger @click="showListImage('watermark')" :class="[wmActivated ? 'accent':'primary',ima.windowSize.width<520 ? 'md-dense':'']">
-						<md-icon md-src="img/effect/watermark-white.svg"></md-icon>
-						<md-tooltip>Marca de Agua</md-tooltip>
-					</md-button>
-					<md-button class="md-icon-button  md-raised  buttons_composite "  md-menu-trigger @click="showListImage('create-watermark')" :class="[createWmActivated ? 'accent':'primary',ima.windowSize.width<520 ? 'md-dense':'']">
-						<md-icon md-src="img/effect/format-annotation-plus-white.svg"></md-icon>
-						<md-tooltip>Crear marca de agua</md-tooltip>
-					</md-button>							
-					
-				</div>
+					<div class="md_menu_custom" style="margin-top:20px">
+						<md-button class="md-icon-button md-raised buttons_composite"  md-menu-trigger @click="showListImage('fussion')" :class="[fussionActivated ? 'accent':'primary',ima.windowSize.width<520 ? 'md-dense':'']">
+							<md-icon md-src="img/effect/layers-plus_white.svg"></md-icon>
+							<md-tooltip>Fusión</md-tooltip>
+						</md-button>
+						<md-button class="md-icon-button  md-raised buttons_composite "  md-menu-trigger @click="showListImage('watermark')" :class="[wmActivated ? 'accent':'primary',ima.windowSize.width<520 ? 'md-dense':'']">
+							<md-icon md-src="img/effect/watermark-white.svg"></md-icon>
+							<md-tooltip>Marca de Agua</md-tooltip>
+						</md-button>
+						<md-button class="md-icon-button  md-raised  buttons_composite "  md-menu-trigger @click="showListImage('create-watermark')" :class="[createWmActivated ? 'accent':'primary',ima.windowSize.width<520 ? 'md-dense':'']">
+							<md-icon md-src="img/effect/format-annotation-plus-white.svg"></md-icon>
+							<md-tooltip>Crear marca de agua</md-tooltip>
+						</md-button>							
+						
+					</div>
 					<div class="clearL"></div>
 				<!-- cancel botón -->
 					<div class="m_top10" v-if="compListActive || wmInputActive||rangeTexturizeActive||rangeCompressActive||spaceColorActive || channelActive">
@@ -413,7 +413,7 @@
 					<div class="clearL"></div>
 				</div>
 
-				<div class="md-layout-item md-xlarge-size-50 md-medium-size-50 md-small-size-100">
+				<div class="md-layout-item md-xlarge-size-50 md-medium-size-50 md-small-size-100 back_module_effect radius5">
 						<md-speed-dial md-event="click" md-direction="bottom" ref="dial">
 							<md-speed-dial-target class="md-icon-button md-dense primary" :class="{'accent':dial}"  @click="hideDials('dial');testGButton1('dials')">
 								<md-icon class="md-morph-initial" >miscellaneous_services</md-icon>

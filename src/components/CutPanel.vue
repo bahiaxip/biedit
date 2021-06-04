@@ -1,9 +1,9 @@
 <template>
-	<div >
+	<div class="min_height">
 		<div v-if="!ima.src">
-			<md-progress-spinner md-mode="indeterminate" v-if="displayLoading" style="position:absolute;top:50%;left:50%;"></md-progress-spinner>
+			<md-progress-spinner md-mode="indeterminate" v-if="displayLoading" class="progress_spinner"></md-progress-spinner>
 		</div>
-		<div v-else style="position:relative !important;overflow:visible !important">
+		<div v-else class="div_audio" :style="{'background-color':back}">
 			<audio id="crop-audio" src="audio/crop_audio.wav" preload="auto" ref="audio"></audio>
 
 			<md-button class="md-icon-button primary md-raised crop-button" @click="cropImage()" v-if="ima.widthCut>100 && ima.heightCut >100" :class="ima.windowSize.width<520 ? 'md-dense':''">
@@ -20,7 +20,7 @@
 					
 					
 					<!--<transition name="fade">-->
-			<md-dialog :md-active.sync="dialogBox" class="back-cut-panel " :md-click-outside-to-close="closeDialog" id="back-cut-panel" >
+			<md-dialog :md-active.sync="dialogBox" class="back-cut-panel " :md-click-outside-to-close="closeDialog" id="back-cut-panel" :style="{'background-color':back}">
 				
 				<div class="cut-panel" id="cut-panel" v-if="ima.widthCut>100 && ima.heightCut>100">
 					<transition name="fade">
@@ -53,12 +53,13 @@
 import BoxPanel from './BoxPanel.vue';
 import Global from '../Global.js';
 import servicesMixin from '../mixins/servicesMixin';
+import methodsMixin from '../mixins/methodsMixin';
 export default {	
 	name:'CutPanel',
 	components:{BoxPanel},
 	//evitamos el ima asignando el src en el resized, además del ima
 	props:['ima'],
-	mixins:[servicesMixin],	
+	mixins:[servicesMixin,methodsMixin],	
 	mounted(){
 		if(!this.ima.name){			
 			this.titleDialogAlert="La imagen principal aun no está disponible";
@@ -80,9 +81,14 @@ export default {
 				document.querySelector(".back-cut-panel").firstChild.style.height=this.ima.heightCut+"px";
 			},100)
 		}
+		if(this.ima)
+			this.back=this.getBackColor(this.testBackColor());
+
 	},
 	data(){
 		return {
+			//fondo de color (para back-cut-panel)
+			back:null,
 			url:Global.url,		
 			closeDialog:false,
 			dialogBox:true,

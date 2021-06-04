@@ -203,5 +203,55 @@ export default {
 			}
 			return msge;
 		},
+
+		//opciones de cambiar color global a toda la aplicación
+
+
+//falta actualiza la db (antes hay que crear el campo en la db)
+		//comprueba si existe en sessionStorage el color de fondo global
+		testBackColor(){			
+			if(!sessionStorage.getItem("biedit_back"))
+				return "grey";
+			if(sessionStorage.getItem("biedit_back")){
+				return sessionStorage.getItem("biedit_back");
+			}
+		},
+		//obtiene el código de color según el color en string pasado por parámetro
+		getBackColor(color){
+			let backColor="#676767";
+			switch(color){
+				case 'white':
+					backColor="#FFFFFF";
+					break;
+				case 'black':
+					backColor="#000000";
+					break;
+				case 'default':
+				case 	'grey':
+					backColor="#676767";
+			}
+			return backColor;
+		},
+		//asigna el color de fondo global en sessionStorage
+		setBackColor(color){
+			if(color== "white" || color=="black" || color=="grey")
+				sessionStorage.setItem("biedit_back",color);
+		},
+		//devuelve la clase(css) para cambiar de color de fondo el componente Collections  
+		setParentMdCard(color){
+			console.log("color:  ",color)
+			let parentMdCard;
+			if(color=="white"){
+				parentMdCard='parent_white'
+			}else if(color=="black"){
+				parentMdCard='parent_black'
+			}else{
+				parentMdCard='parent_grey'
+			}
+			return parentMdCard;
+		},
+
+		//fin opciones cambiar de color global
+		
 	}
 }

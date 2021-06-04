@@ -1,7 +1,7 @@
 <template>
 	<div class="box-panel effect" id="box-panel" :style="{width:ima.widthCut+'px',height:ima.heightCut+'px','margin-top':ima.boxPanelMargin}" >
 
-			<div class="square-panel" id="square-panel" @mousedown="activeMove($event)"   @touchstart="activeMove($event)" @touchend="inactiveMove($event)">
+			<div ref="squarePanel"  class="square-panel" id="square-panel" @mousedown="activeMove($event)"   @touchstart="activeMove($event)" @touchend="inactiveMove($event)">
 			<div class="box-square" style="" id="box-square-main">
 				<img class="box-img" :src="url+'get-image/'+ima.src" draggable="false" :style="{'max-width':ima.widthCut+'px'}" id="box-img-main">
 			</div>
@@ -21,14 +21,11 @@ export default {
 	mounted(){
 		this.box = document.querySelector("#box-panel");
 		this.square=document.querySelector(".square-panel");		
-		
-		if(this.ima.widthCut==Global.minWidthHeight){
-			this.square.style.width="100px";
-			this.square.style.height="100px";
-			document.querySelector("#box-img-main").width=Global.minWidthHeight;
-		}		
+		//No necesaria al tener un dialog que no permite una imagen menos de 
+		//100 de ancho o 100 de alto
+		//this.testMin(this.square);
 		this.square.style.left="0px";
-		this.square.style.top="0px";		
+		this.square.style.top="0px";	
 	},
 	//se activa al cambiar a otro componente
 	destroyed(){		
@@ -53,6 +50,20 @@ export default {
 //revisar si existen decimales en las pruebas por si falta algún parseInt(), al modificar el ancho
 //desde los estilos de un 30% a 33% no realizaba la suma, era necesario convertir el width de entrada a entero.
 	methods:{
+		//No necesaria al tener un dialod que no permite una imagen menos de 100 de ancho o 100 de alto
+		
+		/*
+		testMin(square){
+			//si es la minima anchura se 
+			if(this.ima.widthCut==Global.minWidthHeight){
+				console.log("llega al mínimo")
+				square.style.width="100px";
+				square.style.height="100px";
+				document.querySelector("#box-img-main").width=Global.minWidthHeight;
+			}
+			
+		},
+		*/
 		//movimiento Cuadrante
 		activeMove(e){
 			let square=this.square			

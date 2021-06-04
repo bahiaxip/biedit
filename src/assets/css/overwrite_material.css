@@ -10,10 +10,28 @@
     background:transparent;
 }
 .md-overlay{
+					/* revisar-color */
     background:transparent !important;
+    /*background-color: orange !important;*/
 }
 
-/*card*/
+/*card  (Collections)*/ 
+
+
+.parent_grey>.md-card{
+    background-color: #676767;
+    box-shadow: none;
+}
+.parent_white>.md-card{
+    background-color: #FFFFFF;
+    box-shadow: none;
+}
+.parent_black>.md-card{
+    background-color: #000000;
+    box-shadow: none;
+}
+
+
 .md-card-header{
 	padding:0;
 }
@@ -25,7 +43,14 @@
 	font-size:15px;
 }
 
-/*panel md-drawer Acerca de biedit*/
+				/*panel md-drawer Acerca de biedit*/
+
+/*checkbox ajustes*/
+.theme{
+	width: 15px;
+	height: 15px;
+	background-color: orange;
+}
 .md-dialog.acercade{
 
 
@@ -54,6 +79,14 @@
 	font-family:Quicksand;
 	font-weight: bold;
 	font-size:18px;
+}
+.md-drawer.opciones .md-list-item .md-checkbox.md-theme-default,
+.md-drawer.opciones .md-list-item .md-checkbox.md-theme-default>.md-checkbox-container {
+	background-color: rgba(0,0,0,.9);
+	color: white !important;
+	border-color: white !important;
+	font-weight: bold;
+	outline: white  !important;
 }
 
 
@@ -132,8 +165,8 @@ incorpora una media query que por debajo de 600px de ancho pasa del width 80% a 
 	box-shadow:none;
 }
 .md-dialog.dialog_spinner{
-	background-color:rgba(255,255,255);
-	margin-top:50px;
+	background-color:rgba(0,0,0,.8);
+	margin-top:70px;
 	position:absolute;
 	z-index:5;
 }

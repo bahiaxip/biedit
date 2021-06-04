@@ -1,5 +1,5 @@
 <template>
-	<div >
+	<div class="min_height">
 	<md-progress-spinner md-mode="indeterminate" v-if="displayLoading"  class="load_new_image"></md-progress-spinner>
 	<div class="back-main-panel" :style="{width:ima.width+'px'}" :v-if="ima.width!=null" ref="backMainPanel" style="touch-action:none">
 
