@@ -7,9 +7,12 @@
 //maxHeightDefault si es necesario, pero se puede asignar otro ya que el alto no 
 //altera el diseño de la aplicación.
 var Global = {
-	//live_server
+	//local>live_server
 	//url: "http://localhost:8000/api/",
+	//local>apache
 	url: "http://localhost/biedit_backend/api/",
+	//server>apache
+	//url:"//biedit.bahiaxip.com/api/",
 	widthDefault: 600,
 	maxWidthDefault: 1280,
 	maxHeightDefault: 1920,
