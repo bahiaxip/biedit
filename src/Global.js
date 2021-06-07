@@ -12,7 +12,7 @@ var Global = {
 	//local>apache
 	url: "http://localhost/biedit_backend/api/",
 	//server>apache
-	//url:"//biedit.bahiaxip.com/api/",
+	//url:"//api.biedit.bahiaxip.com/api/",
 	widthDefault: 600,
 	maxWidthDefault: 1280,
 	maxHeightDefault: 1920,

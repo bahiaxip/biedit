@@ -414,8 +414,10 @@ export default {
 		*/
 		
 		this.$refs.child_wheel.style.left="1px";
-		//window.add
-		/*
+		
+		//necesario para que el vídeo insertado no genere error al situarse fuera de 
+		//la pestaña del navegador, mediante la variable focus que  hace de interruptor
+		//utilizado después en el método loopVideo()
 		window.addEventListener("focus",()=> {
 			//console.log("foco antes: ",this.focus)
 			this.focus=true;
@@ -424,7 +426,7 @@ export default {
 		window.addEventListener("blur",()=> {
 			this.focus=false
 		});
-		*/
+		
 		this.$refs.div_wheel.addEventListener("wheel",(e)=>  {
 			console.log(e)
 			//detenemos scroll
@@ -463,18 +465,7 @@ export default {
 			}
 			*/
 		})
-		//para el video pero sigue dando error
-		let vid=this.$refs.video;
-		this.videoSelected=this.videos[0];
-		let playPromise=vid.play();
-
-		if(playPromise !== undefined){
-			playPromise.then(() =>  {
-				//console.log("dentro video")
-			}).catch(error => {
-				console.log("error  promise: ",error)
-			})
-		}	
+			
 		
 		this.loopVideo();
 		//slider vue
